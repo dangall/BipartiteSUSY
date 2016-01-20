@@ -40,6 +40,20 @@ getPmatrix::usage="Returns the P matrix. Rows are ordered lexicographically w.r.
 intoPolytope::usage="Returns only distinct vertices of the polytope, with their multiplicity"
 matroidPolytope::usage="Returns the coordinates of the matroid polytope (some of which may have higher multiplicity than 1). Each column is the coordinate of a perfect matching."
 moduliSpaceBFT::usage="Gives the moduli space of the BFT given by the Kasteleyn. It requires the input on which gauging it should use (i.e. gauging 1 or gauging 2)."
+lowNumberLoopsPM::usage="Returns the number of the perfect matching with lowest multiplicity, and hence the lowest number of loops in the corresponding perfect orientation."
+externalOrdering::usage="Gives a choice of external ordering of nodes, given in the form {X[i,j]\[Rule]1,X[k,l]\[Rule]2,...}."
+findSources::usage="Returns a list of edges which are sources in the perfect orientation corresponding to a given reference perfect matching."
+findSinks::usage="Returns a list of edges which are sinks in the perfect orientation corresponding to a given reference perfect matching."
+externalEdgesNodeNumbers::usage="Takes a list of external edges and gives the Kasteleyn node numbers of the edges."
+connectivityMatrix::usage="Returns the connectivity matrix of the diagram, i.e. a matrix containing all paths between all nodes."
+pathMatrix::usage="Gives the path matrix, i.e. the element of the Grassmannian before any signs are placed (which ensure manifest positivity of planar diagrams)."
+minorsAsPerfectMatchings::usage="Returns the minors of the pathmatrix, resembling Plucker coordinates of the Grassmannian, but without manifest-positivity signs."
+dimensionGrassmannian::usage="Returns the dimension of the Grassmannian, computed by looking at the tangent space of its minors."
+reducibilityBFTQ::usage="Gives the 'naive' reducibility of a graph, which is the same as the reducibility for a BFT, based on its moduli space. When gauging 2 is used, this is the same as reducibility for planar scattering diagrams."
+reducibilityBFTedges::usage="Gives those edges which may be removed without affecting the moduli space, which for gauging 2 is the same as reducibility for all planar diagrams and some non-planar diagrams."
+reducibilityQ::usage="Returns True or False, depending on whether the graph is reducible or not. Allows you to specify whether the graph is a BFTgraph, and if so which gaugign to use. Can correctly deal with non-planar scattering diagrams."
+reducibilityEdges::usage="Returns a list of edges which may be removed without affecting the moduli space (in the case of BFTs), or the Grassmannian in the case of scattering amplitudes."
+consistentEdgeRemoval::usage="Returns the full list of edges which should be consistently removed, given a choice of edge to be removed."
 
 Begin["Private`"]
 
@@ -267,6 +281,55 @@ multiplicity=Map[#[[2]]&,columnsandmultiplicity];
 {polytope,multiplicity}
 ];
 
+lowNumberLoopsPM[topleft_,topright_,bottomleft_,bottomright_]:=Block[{matroidpoly,multiplicitypolytope,perfmatchnumber},
+matroidpoly=matroidPolytope[topleft,topright,bottomleft,bottomright];
+multiplicitypolytope=intoPolytope[matroidpoly];
+perfmatchnumber=Position[Transpose[matroidpoly],multiplicitypolytope[[1]][[All,Ordering[multiplicitypolytope[[2]]][[1]]]]][[1,1]];
+perfmatchnumber
+];
+
+reducibilityBFTQ[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1||gauging===2):=Block[{pmatrix,modulispace,fullspacetranspose,modulitranspose,fullspaceshort,reducibility},
+pmatrix=getPmatrix[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph];
+modulispace=moduliSpaceBFT[topleft,topright,bottomleft,bottomright,gauging,checkneeded,BFTgraph];
+If[pmatrix=!=Null&&modulispace=!=Null,
+fullspacetranspose=Transpose[pmatrix];
+modulitranspose=Transpose[modulispace];
+(*Now we must multiply together those columns of the Pmatrix that project to the same coordinates in the moduli space*)
+fullspaceshort=Transpose[Map[Times@@fullspacetranspose[[Flatten[Position[modulitranspose,#]]]]&,DeleteDuplicates[modulitranspose]]];
+If[MemberQ[fullspaceshort,ConstantArray[0,Dimensions[fullspaceshort][[2]]]],reducibility=True;,reducibility=False;];
+,reducibility=Null;
+];
+reducibility
+];
+
+reducibilityBFTedges[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1||gauging===2):=Block[{pmatrix,modulispace,fullspacetranspose,modulitranspose,fullspaceshort,problemlines,reducibilityedges},
+pmatrix=getPmatrix[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph];
+modulispace=moduliSpaceBFT[topleft,topright,bottomleft,bottomright,gauging,checkneeded,BFTgraph];
+If[pmatrix=!=Null&&modulispace=!=Null,
+fullspacetranspose=Transpose[pmatrix];
+modulitranspose=Transpose[modulispace];
+(*Now we must multiply together those columns of the Pmatrix that project to the same coordinates in the moduli space*)
+fullspaceshort=Transpose[Map[Times@@fullspacetranspose[[Flatten[Position[modulitranspose,#]]]]&,DeleteDuplicates[modulitranspose]]];
+problemlines=Flatten[Position[fullspaceshort,ConstantArray[0,Dimensions[fullspaceshort][[2]]]]];
+reducibilityedges=Variables[joinupKasteleyn[topleft,topright,bottomleft,bottomright]][[problemlines]];
+,reducibilityedges=Null;
+];
+reducibilityedges
+];
+
+consistentEdgeRemoval[topleft_,topright_,bottomleft_,bottomright_,edgelist_,checkneeded_:False,BFTgraph_:False]:=Block[{varlist,rowstokill,pmatrix,survivingcolums,reducedpmatrix,consistentedgelist},
+varlist=Variables[joinupKasteleyn[topleft,topright,bottomleft,bottomright]];
+rowstokill=Flatten[Position[varlist,Alternatives@@edgelist]];
+pmatrix=getPmatrix[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph];
+If[pmatrix=!=Null,
+survivingcolums=Complement[Range[Dimensions[pmatrix][[2]]],Map[#[[2]]&,Position[pmatrix[[rowstokill]],1]]];
+reducedpmatrix=pmatrix[[All,survivingcolums]];
+consistentedgelist=varlist[[Flatten[Position[reducedpmatrix,ConstantArray[0,Dimensions[reducedpmatrix][[2]]]]]]];
+,consistentedgelist=Null;
+];
+consistentedgelist
+];
+
 
 
 (*Functions useful for scattering amplitudes*)
@@ -295,6 +358,122 @@ Break[];
 ];
 ];
 planar
+];
+
+externalOrdering[topright_,bottomleft_]:=Block[{ordering},
+ordering=Flatten[DeleteCases[Join[bottomleft,topright],0,{2}]];
+ordering=MapThread[Rule,{ordering,Range[Length[ordering]]}];
+ordering
+];
+
+findSources[topright_,bottomleft_,referenceperfmatch_]:=Block[{referencevars,sourceedges},
+referencevars=Variables[referenceperfmatch];
+(*Sources are those variables in the bottomleft that are not in referenceperfmatch, and those in topright which are*)
+sourceedges=Union[Complement[DeleteCases[Flatten[bottomleft],0],referencevars],Intersection[DeleteCases[Flatten[topright],0],referencevars]];
+sourceedges
+];
+
+findSinks[topright_,bottomleft_,referenceperfmatch_]:=Block[{perfmatchvars,sinkedges},
+perfmatchvars=Variables[referenceperfmatch];
+(*Sinks are those variables in the bottomleft that are in referenceperfmatch, and those in topright which are not*)
+sinkedges=Union[Complement[DeleteCases[Flatten[topright],0],perfmatchvars],Intersection[DeleteCases[Flatten[bottomleft],0],perfmatchvars]];
+sinkedges
+];
+
+externalEdgesNodeNumbers[topleft_,topright_,bottomleft_,bottomright_,externaledgelist_]:=Union[Map[#[[1]]&,Position[bottomleft,Alternatives@@externaledgelist]+Length[topleft]],Map[#[[2]]&,Position[topright,Alternatives@@externaledgelist]+Total[Dimensions[topleft]]+Length[bottomleft]]];
+
+connectivityMatrix[topleft_,topright_,bottomleft_,bottomright_,referenceperfmatch_]:=connectivityMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch]=Block[{kasteleyn,perfmatchvars,kastnopm,kastinvertedpm,bigmatrix,connectivitymat},
+kasteleyn=joinupKasteleyn[topleft,topright,bottomleft,bottomright];
+perfmatchvars=Variables[referenceperfmatch];
+(*We need to first form a large matrix based on the Kasteleyn, and then take its inverse*)
+kastnopm=-(kasteleyn/.Map[#->0&,perfmatchvars]);
+kastinvertedpm=-Transpose[kasteleyn/.Join[Map[#->1/#&,perfmatchvars],Map[#->0&,Complement[Variables[kasteleyn],perfmatchvars]]]];
+bigmatrix=Join[Join[IdentityMatrix[Length[kasteleyn]],kastinvertedpm],Join[kastnopm,IdentityMatrix[Dimensions[kasteleyn][[2]]]],2];
+connectivitymat=Inverse[bigmatrix];
+connectivitymat
+];
+
+pathMatrix[topleft_,topright_,bottomleft_,bottomright_,referenceperfmatch_]:=Block[{bigpathmatrix,externalrows,externalcolumns,finalpathmatrix},
+bigpathmatrix=connectivityMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch];
+(*bigpathmatrix contains the connectivity between ALL pairs of nodes. We need to select those entries corresponding to sources goign to external nodes.*)
+externalrows=externalEdgesNodeNumbers[topleft,topright,bottomleft,bottomright,findSources[topright,bottomleft,referenceperfmatch]];
+externalcolumns=Join[Range[Length[topleft]+1,Length[topleft]+Length[bottomleft]],Range[Total[Dimensions[topleft]]+Length[bottomleft]+1,Total[Dimensions[topleft]]+Length[bottomleft]+Dimensions[topright][[2]]]];
+finalpathmatrix=Expand[Simplify[bigpathmatrix[[externalrows,externalcolumns]]]];
+(*The determinant of bigpathmatrix gives the loop factor in the paths between external nodes.*)
+finalpathmatrix
+];
+
+minorsAsPerfectMatchings[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null]:=minorsAsPerfectMatchings[topleft,topright,bottomleft,bottomright]=minorsAsPerfectMatchings[topleft,topright,bottomleft,bottomright,referencematching]=Block[{referenceperfmatch,pathmat,minors,loopdenominator,truemapminortoperfmatch},
+(*If we haven't selected a specific perfect matching, choose one with lowest possible multiplicity*)
+If[referencematching===Null,
+referenceperfmatch=perfectMatchings[topleft,topright,bottomleft,bottomright][[lowNumberLoopsPM[topleft,topright,bottomleft,bottomright]]];
+,referenceperfmatch=referencematching;
+];
+pathmat=pathMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch];
+minors=Minors[pathmat,Length[pathmat]][[1]];
+loopdenominator=Expand[referenceperfmatch/Expand[Simplify[Det[connectivityMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch]]]]];
+truemapminortoperfmatch=Expand[Simplify[minors loopdenominator]];
+truemapminortoperfmatch
+];
+
+dimensionGrassmannian[topleft_,topright_,bottomleft_,bottomright_]:=dimensionGrassmannian[topleft,topright,bottomleft,bottomright]=Block[{minorexpressions,minorvars,tangentspacedim},
+minorexpressions=minorsAsPerfectMatchings[topleft,topright,bottomleft,bottomright];
+minorvars=Variables[minorexpressions];
+(*When computing the tangent space we need to subtract 1, because Plucker coordinates are projective variables*)
+tangentspacedim=MatrixRank[Table[D[minorexpressions[[iii]],minorvars[[jjj]]],{iii,Length[minorexpressions]},{jjj,Length[minorvars]}]]-1;
+tangentspacedim
+];
+
+reducibilityQ[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1||gauging===2):=Block[{edgesnaivereducibility,reducibility,dimgrassmannian,dimafteredgeremoval,ii},(*First need to find out which columns are the same point in the moduli space*)
+edgesnaivereducibility=reducibilityBFTedges[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph,gauging];
+If[edgesnaivereducibility===Null,
+reducibility=Null;(*there was some problem with the Kasteleyn*)
+,If[edgesnaivereducibility==={},
+(*the removal of any edge will necessarily change the matroid polytope, and so the graph cannot be reducible*)
+reducibility=False;
+,If[BFTgraph||planarityQ[topleft,topright,bottomleft,bottomright],
+(*if the graph is planar, if we may remove edges without changing the matroid polytope it means that the graph is reducible. Equally, this is the definition for a BFT graph to be reducible*)
+reducibility=True;
+,(*if we have a non-planar scattering graph, we need to do things carefully.*)
+dimgrassmannian=dimensionGrassmannian[topleft,topright,bottomleft,bottomright];
+If[polytopeDim[getPmatrix[topleft,topright,bottomleft,bottomright]]>dimensionGrassmannian[topleft,topright,bottomleft,bottomright],
+(*if the dimension of the Grassmannian is less than that from a naive counting of edges and perfect matchings, it is necessarily possible to remove edges without affecting the Grassmannian*)
+reducibility=True;
+,reducibility=False;
+(*assume the graph is not reducible until you find an edge which, when removed, does not reduce the dimension*)
+For[ii=1,ii<=Length[edgesnaivereducibility],ii++,
+dimafteredgeremoval=dimensionGrassmannian[topleft/.{edgesnaivereducibility[[ii]]->0},topright/.{edgesnaivereducibility[[ii]]->0},bottomleft/.{edgesnaivereducibility[[ii]]->0},bottomright];
+If[dimafteredgeremoval==dimgrassmannian,
+(*we have found an edge which may be removed without decreasing the dimension of the Grassmannian!*)
+reducibility=True;
+Break[]
+];
+];
+];
+];
+];
+];
+reducibility
+];
+
+reducibilityEdges[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1||gauging===2):=Block[{edgesnaivereducibility,reducibilityedgelist,dimgrassmannian,dimafteredgeremoval,ii},(*First need to find out which columns are the same point in the moduli space*)
+edgesnaivereducibility=reducibilityBFTedges[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph,gauging];
+If[edgesnaivereducibility===Null,
+reducibilityedgelist=Null;(*there was some problem with the Kasteleyn*)
+,If[edgesnaivereducibility==={},
+(*the removal of any edge will necessarily change the matroid polytope, and so the graph cannot be reducible*)
+reducibilityedgelist={};
+,If[BFTgraph||planarityQ[topleft,topright,bottomleft,bottomright],
+(*if the graph is planar, if we may remove edges without changing the matroid polytope it means that the graph is reducible. Equally, this is the definition for a BFT graph to be reducible*)
+reducibilityedgelist=edgesnaivereducibility;
+,(*if we have a non-planar scattering graph, we need to do things carefully.*)
+dimgrassmannian=dimensionGrassmannian[topleft,topright,bottomleft,bottomright];
+(*Just select those edgs which, when removed, do not decrease the dimension of the Grassmannian*)
+reducibilityedgelist=Cases[edgesnaivereducibility,zz_/;dimensionGrassmannian[topleft/.{zz->0},topright/.{zz->0},bottomleft/.{zz->0},bottomright]==dimgrassmannian];
+];
+];
+];
+reducibilityedgelist
 ];
 
 
