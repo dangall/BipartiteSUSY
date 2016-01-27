@@ -62,6 +62,16 @@ reductionGraphBFT::usage="Returns a list where each element is a set of edges wh
 reductionGraph::usage="Returns the sets of edges which may be removed without changing any of the physics. Is valid both for BFTs as well as planar and non-planar on-shell diagrams."
 nonPluckerPolesQ::usage="Tells you whether a reduced diagram has non-standard poles which are not simply products of Plucker coordinates."
 removableEdges::usage="Returns the list of removable edges. If checkneeded=True, it will also check if the starting graph is reduced or not."
+edgeOrderings::usage="Returns a list where each element is a consistent ordering of edges around a white or black node, i.e. where the edges are sequenced such that each subsequent edge's first index is equal to the previous edge's second index."
+nextStepBlackToWhite::usage="Returns the next edge in the zig-zag path and its position."
+nextStepWhiteToBlack::usage="Returns the next edge in the zig-zag path and its position."
+internalZigZagNumeratorDenominator::usage="Returns a list where the first element is a list of edges in the numerator of a zig-zag path, and the second element is a list of edges in the denominator of the zig-zag path. The zig-zag path starts from an edge."
+allZigZagNumeratorsDenominators::usage="Returns a list where each element corresponds to a zig-zag path. The information is given as a list of two elements, where the first element contains all variables in the numerator of the expression, and the second element contains the variables in the denominator. Assumes standard rules: turn left at white nodes and right at black nodes, and edges from white to black are in the numerator, and vice-versa."
+makeZigZags::usage="Returns a list of zig-zag paths. Edges in the numerator are directed from white to black nodes, edges in the denominator are directed from black to white nodes. The standard rule is to turn left at white nodes and right at black nodes; it's possible to choose the opposite option by setting the (optional) final argument to True."
+selfIntersectingZigZagsQ::usage="Tells you whether the graph has self-intersecting zig-zag paths. Returns True or False."
+badDoubleCrossingZigZagPairs::usage="Returns a list of pairs of zig-zags that have 'bad double crossings'. Every element contains a pair of lists of edges representing two zig-zags that have a bad double crossing."
+badDoubleCrossingZigZagQ::usage="Tells you whether the graph has 'bad double crossings'."
+zigZagsAsPerfectMatchings::usage="Returns a list where each element consists of pairs of perfect matchings. The first perfect matching divided by the second one equals a given zig-zag. Since there may be multiple alternatives to reach the same zig-zag, each element in the returned list may contain multiple pairs."
 
 
 Begin["Private`"]
@@ -403,6 +413,255 @@ edgereductions=Map[consistentEdgeRemoval[topleft,topright,bottomleft,bottomright
 ,edgereductions=Null;(*there was some problem with the Kasteleyn*)
 ];
 edgereductions
+];
+
+edgeOrderings[edges_,currentedge_]:=Module[{orderings,ii},
+(*Start with our current edge.*)
+orderings={Cases[edges,currentedge]};
+(*The next edge should have the structure _[currentedge[[2]],_]. There may however be multiple alternatives of this type, and not all of them are viable edge orderings that all match up. For for each alternative, try it out by adding this alternative onto {currentedge}. Ultimately we only want to keep those alternatives that match up.*)
+For[ii=1,ii<Length[edges],ii++,
+(*orderings contains a list of orderings. In each case, try and tag on another edge that makes sense. If there are none that make sense, this chain of edges wasn't a viable option for edge orderings, and this thread will get killed (because the MapThread function will take an empty list, and it will Map a Join function on each element of the empty list, which returns an empty list. "Sequence" then destroys it).*)
+orderings=MapThread[Sequence@@Function[{input1,input2},Map[Join[input1,{#}]&,input2]][#1,#2]&,{orderings,Map[Cases[Complement[edges,#],_[Last[#][[2]],_]]&,orderings]}];
+];
+orderings=Map[RotateLeft,orderings];
+orderings
+];
+
+nextStepBlackToWhite[topleftbottomleft_,currentedge_,currentposition_]:=Block[{nextedges,nextedge,nextedgepos},
+nextedges=edgeOrderings[Variables[topleftbottomleft[[All,currentposition[[2]]]]],currentedge][[1]];
+nextedge=nextedges[[1]];
+nextedgepos=Position[topleftbottomleft,nextedge][[1]];
+{nextedge,nextedgepos}
+];
+
+nextStepWhiteToBlack[toplefttopright_,currentedge_,currentposition_]:=Block[{nextedges,nextedge,nextedgepos},
+nextedges=edgeOrderings[Variables[toplefttopright[[currentposition[[1]]]]],currentedge][[1]];
+nextedge=nextedges[[1]];
+nextedgepos=Position[toplefttopright,nextedge][[1]];
+{nextedge,nextedgepos}
+];
+
+internalZigZagNumeratorDenominator[topleft_,topright_,bottomleft_,bottomright_,startingedge_,numeratorstart_:True]:=Block[{blacktowhitematrix,whitetoblackmatrix,kasteleyn,numeratoredges,denominatoredges,currentedge,currentposition},
+blacktowhitematrix=Join[topleft,bottomleft];
+whitetoblackmatrix=Join[topleft,topright,2];
+kasteleyn=joinupKasteleyn[topleft,topright,bottomleft,bottomright];
+If[numeratorstart,
+numeratoredges={startingedge};
+denominatoredges={};
+,numeratoredges={};
+denominatoredges={startingedge};
+];
+currentedge=startingedge;
+currentposition=Position[kasteleyn,currentedge][[1]];
+
+If[numeratorstart,
+(*We will first need to go from a black vertex to a white vertex, then from black to white, and so on, until reaching the starting point*)
+While[True,
+(*Now run along the column to find another edge whose first index is our currentedge's second index*)
+{currentedge,currentposition}=nextStepBlackToWhite[blacktowhitematrix,currentedge,currentposition];
+(*This new edge should be placed in the denominator in the zig-zag expression*)
+denominatoredges=Append[denominatoredges,currentedge];
+(*Now run along the row to find another edge whose first index is our currentedge's second index*)
+{currentedge,currentposition}=nextStepWhiteToBlack[whitetoblackmatrix,currentedge,currentposition];
+If[currentedge===startingedge,
+Break[];
+];
+(*This new edge should be placed in the numerator in the zig-zag expression*)
+numeratoredges=Append[numeratoredges,currentedge];
+];
+,(*We will first need to go from a white vertex to a black vertex, then from white to black, and so on, until reaching the starting point*)
+While[True,
+(*Now run along the row to find another edge whose first index is our currentedge's second index*)
+{currentedge,currentposition}=nextStepWhiteToBlack[whitetoblackmatrix,currentedge,currentposition];
+(*This new edge should be placed in the numerator in the zig-zag expression*)
+numeratoredges=Append[numeratoredges,currentedge];
+(*Now run along the column to find another edge whose first index is our currentedge's second index*)
+{currentedge,currentposition}=nextStepBlackToWhite[blacktowhitematrix,currentedge,currentposition];
+If[currentedge===startingedge,
+Break[];
+];
+(*This new edge should be placed in the denominator in the zig-zag expression*)
+denominatoredges=Append[denominatoredges,currentedge];
+];
+];
+{numeratoredges,denominatoredges}
+];
+
+allZigZagNumeratorsDenominators[topleft_,topright_,bottomleft_,bottomright_]:=Module[{kasteleyn,bottomleftvars,toprightvars,blacktowhitematrix,whitetoblackmatrix,zigZagFromExternalWhiteNode,zigZagFromExternalBlackNode,bottomleftzigzags,toprightzigzags,allnumeratoredges,alldenominatoredges,internalzigzagedges,internalzigzags,internalzigzag,allzigzags},
+kasteleyn=joinupKasteleyn[topleft,topright,bottomleft,bottomright];
+bottomleftvars=Variables[bottomleft];
+toprightvars=Variables[topright];
+blacktowhitematrix=Join[topleft,bottomleft];
+whitetoblackmatrix=Join[topleft,topright,2];
+(*We will begin by making a function that can give a zig-zag which starts from an external white node.*)
+zigZagFromExternalWhiteNode=Function[{startingedge},Block[{currentedge,currentposition,denominatoredges,numeratoredges},
+numeratoredges={startingedge};
+denominatoredges={};
+currentedge=startingedge;
+currentposition=Position[kasteleyn,currentedge][[1]];
+While[True,
+(*Now run along the column to find another edge whose first index is our currentedge's second index*)
+{currentedge,currentposition}=nextStepBlackToWhite[blacktowhitematrix,currentedge,currentposition];
+(*This new edge should be placed in the denominator in the zig-zag expression*)
+denominatoredges=Append[denominatoredges,currentedge];
+(*If we've reached another external node, we've finished the zig-zag*)
+If[MemberQ[Join[bottomleftvars,toprightvars],currentedge],
+Break[];
+];
+(*Now run along the row to find another edge whose first index is our currentedge's second index*)
+{currentedge,currentposition}=nextStepWhiteToBlack[whitetoblackmatrix,currentedge,currentposition];
+(*This new edge should be placed in the numerator in the zig-zag expression*)
+numeratoredges=Append[numeratoredges,currentedge];
+If[MemberQ[Join[bottomleftvars,toprightvars],currentedge],
+Break[];
+];
+];
+{numeratoredges,denominatoredges}]
+];
+zigZagFromExternalBlackNode=Function[{startingedge},Block[{currentedge,currentposition,denominatoredges,numeratoredges},
+numeratoredges={};
+denominatoredges={startingedge};
+currentedge=startingedge;
+currentposition=Position[kasteleyn,currentedge][[1]];
+While[True,
+{currentedge,currentposition}=nextStepWhiteToBlack[whitetoblackmatrix,currentedge,currentposition];
+numeratoredges=Append[numeratoredges,currentedge];
+If[MemberQ[Join[bottomleftvars,toprightvars],currentedge],
+Break[];
+];
+{currentedge,currentposition}=nextStepBlackToWhite[blacktowhitematrix,currentedge,currentposition];
+denominatoredges=Append[denominatoredges,currentedge];
+If[MemberQ[Join[bottomleftvars,toprightvars],currentedge],
+Break[];
+];
+];
+{numeratoredges,denominatoredges}]
+];
+(*Start from each of the external nodes and make the zig-zags that begin there.*)
+bottomleftzigzags=Map[zigZagFromExternalWhiteNode[#]&,bottomleftvars];
+toprightzigzags=Map[zigZagFromExternalBlackNode[#]&,toprightvars];
+allnumeratoredges=Sort[Flatten[Map[#[[1]]&,Join[bottomleftzigzags,toprightzigzags]]]];
+alldenominatoredges=Sort[Flatten[Map[#[[2]]&,Join[bottomleftzigzags,toprightzigzags]]]];
+(*If there are any edges that do not appear in any of the numerators, we must have a zig-zag path which is purely internal*)
+(*Start from each of the edges that are missing a zig-zag, and create the internal zig-zags that run over this edge*)
+internalzigzagedges=Complement[Variables[kasteleyn],allnumeratoredges];
+internalzigzags={};
+While[internalzigzagedges=!={},
+internalzigzag=internalZigZagNumeratorDenominator[topleft,topright,bottomleft,bottomright,internalzigzagedges[[1]]];
+internalzigzags=Append[internalzigzags,internalzigzag];
+allnumeratoredges=Join[allnumeratoredges,internalzigzag[[1]]];
+alldenominatoredges=Join[alldenominatoredges,internalzigzag[[2]]];
+internalzigzagedges=Complement[Variables[kasteleyn],allnumeratoredges];
+];
+(*There shouldn't be, but just in case also look at edge in the denominator in case there's some zig-zag we're missing*)
+internalzigzagedges=Complement[Variables[kasteleyn],alldenominatoredges];
+While[internalzigzagedges=!={},
+internalzigzag=internalZigZagNumeratorDenominator[topleft,topright,bottomleft,bottomright,internalzigzagedges[[1]],False];
+internalzigzags=Append[internalzigzags,internalzigzag];
+allnumeratoredges=Join[allnumeratoredges,internalzigzag[[1]]];
+alldenominatoredges=Join[alldenominatoredges,internalzigzag[[2]]];
+internalzigzagedges=Complement[Variables[kasteleyn],alldenominatoredges];
+];
+(*Now all edges have appeared in the numerator of some zig-zag and the denominator of some (possibly the same) zig-zag*)
+allzigzags=Join[bottomleftzigzags,toprightzigzags,internalzigzags];
+(*If there are any edges that do not appear in the actual expressions for the zig-zags, it means we have a self-intersecting zig-zag*)
+allzigzags
+];
+
+makeZigZags[topleft_,topright_,bottomleft_,bottomright_,invertedrule_:False]:=Block[{graphOK,allzigzags,zigzagexpressions},
+graphOK=checkKasteleynQ[topleft,topright,bottomleft,bottomright,True];
+If[graphOK,
+allzigzags=allZigZagNumeratorsDenominators[topleft,topright,bottomleft,bottomright];
+zigzagexpressions=Map[(Times@@#[[1]])/(Times@@#[[2]])&,allzigzags];
+(*If we want to turn right at white nodes and left at black nodes, all the zig-zags are inverted*)
+If[invertedrule,
+zigzagexpressions=Map[1/#&,zigzagexpressions];
+];
+,Print["The graph must be of BFT type for this function to work: edges must be of the form _[_Integer,_Integer] and be labeled according the numbering of faces."];
+zigzagexpressions=Null;
+];
+zigzagexpressions
+];
+
+selfIntersectingZigZagsQ[topleft_,topright_,bottomleft_,bottomright_]:=Block[{graphOK,allzigzags,selfintersectingzigzags,selfintersections},
+graphOK=checkKasteleynQ[topleft,topright,bottomleft,bottomright,True];
+If[graphOK,
+allzigzags=allZigZagNumeratorsDenominators[topleft,topright,bottomleft,bottomright];
+(*If an edge is both in the numerator and the denominator, we have a self-intersection*)
+selfintersectingzigzags=Cases[allzigzags,zz_/;Length[Intersection[zz[[1]],zz[[2]]]]>0];
+If[Length[selfintersectingzigzags]=!=0,
+selfintersections=True;
+,selfintersections=False;
+];
+,Print["The graph must be of BFT type for this function to work: edges must be of the form _[_Integer,_Integer] and be labeled according the numbering of faces."];
+selfintersections=Null;
+];
+selfintersections
+];
+
+badDoubleCrossingZigZagPairs[topleft_,topright_,bottomleft_,bottomright_]:=Module[{graphOK,edgeChronology,allzigzags,firstedges,internalzigzags,allzigzagpairs,doubleCrossingQ,doublecrossings},
+graphOK=checkKasteleynQ[topleft,topright,bottomleft,bottomright,True];
+If[graphOK,
+(*We begin by making all edges in the zig-zags appear in chronological order*)
+edgeChronology=Function[{edges,firstedge},
+Block[{orderings,ii},
+orderings={DeleteDuplicates[Cases[edges,firstedge]]};
+For[ii=1,ii<Length[edges],ii++,
+orderings=orderings=MapThread[Sequence@@Function[{input1,input2},Map[Join[input1,{#}]&,input2]][#1,#2]&,{orderings,Map[Cases[Variables[Plus@@edges-Plus@@#],_[Last[#][[2]],_]]&,orderings]}];
+];
+orderings]
+];
+allzigzags=allZigZagNumeratorsDenominators[topleft,topright,bottomleft,bottomright];
+(*We will make a list containing the first edge of each zig-zag, where for internal zig-zags there is no first edge so we will take the first edge in the numerator*)
+firstedges=MapThread[Join[#1,#2,#3][[1]]&,{Map[#[[1]]&,Map[Intersection[#,Variables[bottomleft]]&,allzigzags,{2}]],Map[#[[2]]&,Map[Intersection[#,Variables[topright]]&,allzigzags,{2}]],Map[#[[1]]&,Map[Intersection[#,Variables[topleft]]&,allzigzags,{2}]]}];
+allzigzags=Map[Join@@#&,allzigzags];
+allzigzags=MapThread[edgeChronology[#1,#2][[1]]&,{allzigzags,firstedges}];
+(*Now we have the chronological list of edes in each zig-zag. We need to now look at the pairwaise intersections between them to determine whether we have "bad double crossings"*)
+(*Since internal zig-zags are cyclic, we will write out two cycles of them, so that multiple intersections can be seen to occur chronologically correctly*)
+internalzigzags=Cases[allzigzags,zz_/;Intersection[zz,Variables[Join[bottomleft,topright]]]==={}];
+allzigzags=allzigzags/.Map[#->Join[#,#]&,internalzigzags];
+allzigzagpairs=Subsets[allzigzags,{2}];
+doubleCrossingQ=Function[{zigzag1,zigzag2},
+Block[{intersectionvars,zig1intersectionpairs,zig2intersections,badcrossing},
+intersectionvars=Alternatives@@Intersection[zigzag1,zigzag2];
+(*Look at all pairs of variables in zigzag1 and see whether they appear in the same order*)
+zig1intersectionpairs=Subsets[Cases[zigzag1,intersectionvars],{2}];
+zig2intersections=Cases[zigzag2,intersectionvars];
+badcrossing=Or@@Map[Cases[zig2intersections[[Range[Position[zig2intersections,#[[1]]][[1,1]],Length[zig2intersections]]]],#[[2]]]=!={}&,zig1intersectionpairs];
+badcrossing]
+];
+doublecrossings=Cases[allzigzagpairs,zz_/;doubleCrossingQ@@zz];
+,Print["The graph must be of BFT type for this function to work: edges must be of the form _[_Integer,_Integer] and be labeled according the numbering of faces."];
+doublecrossings=Null;
+];
+doublecrossings
+];
+
+badDoubleCrossingZigZagQ[topleft_,topright_,bottomleft_,bottomright_]:=Block[{baddoublecrossings,return},
+baddoublecrossings=badDoubleCrossingZigZagPairs[topleft,topright,bottomleft,bottomright];
+If[baddoublecrossings=!=Null,
+return=baddoublecrossings=!={};
+,return=Null;];
+return
+];
+
+zigZagsAsPerfectMatchings[topleft_,topright_,bottomleft_,bottomright_,invertedrule_:False]:=Block[{zigzags,perfmatchings,perfmatchzigzags,ii,jj,perfmatchratio,positions,tobereplacedwith,replacementrule},
+zigzags=makeZigZags[topleft,topright,bottomleft,bottomright,invertedrule];
+If[zigzags=!=Null,
+perfmatchings=perfectMatchings[topleft,topright,bottomleft,bottomright,False,True];
+perfmatchzigzags=Table[{},{iii,Length[zigzags]}];
+For[ii=1,ii<=Length[perfmatchings],ii++,
+For[jj=1,jj<=Length[perfmatchings],jj++,
+perfmatchratio=perfmatchings[[ii]]/perfmatchings[[jj]];
+positions=Flatten[Position[Map[#===perfmatchratio&,zigzags],True]];
+tobereplacedwith=Map[Append[#,{perfmatchings[[ii]],perfmatchings[[jj]]}]&,perfmatchzigzags[[positions]]];
+replacementrule=MapThread[Rule,{positions,tobereplacedwith}];
+perfmatchzigzags=ReplacePart[perfmatchzigzags,replacementrule];
+];
+];
+,perfmatchzigzags=Null;
+];
+perfmatchzigzags
 ];
 
 
