@@ -44,7 +44,7 @@ intoPolytope::usage="Returns only distinct vertices of the polytope, with their 
 matroidPolytope::usage="Returns the coordinates of the matroid polytope (some of which may have higher multiplicity than 1). Each column is the coordinate of a perfect matching."
 moduliSpaceBFT::usage="Gives the moduli space of the BFT given by the Kasteleyn. It requires the input on which gauging it should use (i.e. gauging 1 or gauging 2)."
 lowNumberLoopsPM::usage="Returns the number of the perfect matching with lowest multiplicity, and hence the lowest number of loops in the corresponding perfect orientation."
-externalOrdering::usage="Gives a choice of external ordering of nodes, given in the form {X[i,j]\[Rule]1,X[k,l]\[Rule]2,...}."
+externalOrderingDefault::usage="Gives a choice of external ordering of nodes, given in the form {X[i,j]\[Rule]1,X[k,l]\[Rule]2,...}."
 findSources::usage="Returns a list of edges which are sources in the perfect orientation corresponding to a given reference perfect matching."
 findSinks::usage="Returns a list of edges which are sinks in the perfect orientation corresponding to a given reference perfect matching."
 externalEdgesNodeNumbers::usage="Takes a list of external edges and gives the Kasteleyn node numbers of the edges."
@@ -72,6 +72,11 @@ selfIntersectingZigZagsQ::usage="Tells you whether the graph has self-intersecti
 badDoubleCrossingZigZagPairs::usage="Returns a list of pairs of zig-zags that have 'bad double crossings'. Every element contains a pair of lists of edges representing two zig-zags that have a bad double crossing."
 badDoubleCrossingZigZagQ::usage="Tells you whether the graph has 'bad double crossings'."
 zigZagsAsPerfectMatchings::usage="Returns a list where each element consists of pairs of perfect matchings. The first perfect matching divided by the second one equals a given zig-zag. Since there may be multiple alternatives to reach the same zig-zag, each element in the returned list may contain multiple pairs."
+matroidQ::usage="Tells you whether the inputted list of elements is a matroid or not."
+matroidViolationCheck::usage="Returns a list of pairs of matroid elements that do not satisfy the exchange axiom."
+pluckerRelations::usage="Returns a list of (generally not independent) Plucker relations. Each Plucker coordinate has the protected form minor[i,j,...]. It is necessary to act with ReleaseHold on the output of pluckerRelations to allow minor[i,j,...] etc. to take on predefined values."
+independentPluckerRelations::usage="Returns a list with two elements: the first contains a list of all independent Plucker relations, and the second contains the solution to these equations."
+minor::usage=""
 
 
 Begin["Private`"]
@@ -694,8 +699,8 @@ Break[];
 planar
 ];
 
-externalOrdering[topright_,bottomleft_]:=Block[{ordering},
-ordering=Flatten[DeleteCases[Join[bottomleft,topright],0,{2}]];
+externalOrderingDefault[topright_,bottomleft_]:=Block[{ordering},
+ordering=Flatten[DeleteCases[Join[bottomleft,Transpose[topright]],0,{2}]];
 ordering=MapThread[Rule,{ordering,Range[Length[ordering]]}];
 ordering
 ];
@@ -885,6 +890,111 @@ removables=Cases[varstotryout,zz_/;reducibilityQ[topleft/.Map[#->0&,zz],topright
 ,removables=Null;
 ];
 removables
+];
+
+matroidQ[inputmatroid_,checkneeded_:True]:=Block[{matroidcheck,matroidOK},
+matroidcheck=matroidViolationCheck[inputmatroid,checkneeded];
+If[matroidcheck=!=Null,
+matroidOK=matroidViolationCheck[inputmatroid,checkneeded]==={};
+,matroidOK=Null;
+];
+matroidOK
+];
+
+matroidViolationCheck[inputmatroid_,checkneeded_:True]:=Module[{inputOK,matroid,matroidelementpairs,checkMatroidPair,badmatroidelementpairs},
+inputOK=True;
+If[checkneeded,
+inputOK=Head[inputmatroid]===List&&And@@Map[Head[#]===List&,inputmatroid]&&And@@Flatten[Map[Head[#]===Integer&,inputmatroid,{2}]];
+];
+If[inputOK,
+matroid=Map[Sort,inputmatroid];
+matroidelementpairs=Subsets[matroid,{2}];
+checkMatroidPair=Function[{matroidelementpair},
+Block[{matroidpairOK,ii,jj,newelement},
+matroidpairOK={};
+For[ii=1,ii<=Length[matroidelementpair[[1]]],ii++,
+newelement=Delete[matroidelementpair[[1]],ii];
+For[jj=1,jj<=Length[matroidelementpair[[2]]],jj++,
+(*If there is any one that works, this matroid pair is OK.*)
+If[MemberQ[matroid,Sort[Append[newelement,matroidelementpair[[2,jj]]]]],
+matroidpairOK=Append[matroidpairOK,True];
+Break[]
+];
+If[jj==Length[matroidelementpair[[2]]],matroidpairOK=Append[matroidpairOK,False];];
+];
+];
+For[ii=1,ii<=Length[matroidelementpair[[2]]],ii++,
+newelement=Delete[matroidelementpair[[2]],ii];
+For[jj=1,jj<=Length[matroidelementpair[[1]]],jj++,
+(*If there is any one that works, this matroid pair is OK.*)
+If[MemberQ[matroid,Sort[Append[newelement,matroidelementpair[[1,jj]]]]],
+matroidpairOK=Append[matroidpairOK,True];
+Break[]
+];
+If[jj==Length[matroidelementpair[[1]]],matroidpairOK=Append[matroidpairOK,False];];
+];
+];
+matroidpairOK=And@@matroidpairOK;
+matroidpairOK]
+];
+badmatroidelementpairs=Cases[matroidelementpairs,zz_/;checkMatroidPair[zz]==False];
+,badmatroidelementpairs=Null;
+Print["The input must be of the form {{_Integer,_Integer,...},...}"];
+];
+badmatroidelementpairs
+];
+
+pluckerRelations[k_Integer,n_Integer]:=pluckerRelations[k,n]=Block[{indexlist1,indexlist2,relations,conditions,i,j,oppositerelations,todelete,ii},
+indexlist1=Subsets[Range[n],{k-1}];
+indexlist2=Subsets[Range[n],{k+1}];
+relations={};
+conditions=Map[HoldForm[minor][Sequence@@#]->0&,indexlist1];
+For[i=1,i<Length[indexlist1]+1,i++,
+For[j=1,j<Length[indexlist2]+1,j++,
+relations=Join[relations,{Sum[(-1)^(dum-1) (-1)^(PermutationOrder[Ordering[DeleteDuplicates[Join[indexlist1[[i]],{indexlist2[[j,dum]]}]]]]-1) HoldForm[minor][Sequence@@Union[Join[indexlist1[[i]],{indexlist2[[j,dum]]}]]]HoldForm[minor][Sequence@@Complement[indexlist2[[j]],{indexlist2[[j,dum]]}]],{dum,k+1}]==0}/.conditions];
+];
+];
+relations=DeleteDuplicates[DeleteCases[relations,True]];
+(*Remove the ones that are duplicate up to a minus sign*)
+oppositerelations=Map[-#[[1]]==0&,relations];
+todelete={};
+For[ii=1,ii<=Length[relations],ii++,
+If[FreeQ[todelete,ii],
+todelete=Join[todelete,Flatten[Position[oppositerelations,relations[[ii]]]]];
+];
+];
+relations=relations[[Complement[Range[Length[relations]],todelete]]](*/.{minor\[Rule]HoldForm[minor]}*);
+relations
+];
+
+independentPluckerRelations[k_Integer,n_Integer]:=Block[{pluckerrel,numindeppluckerrelations,solutions,independentrelations,newsolution,ii},
+pluckerrel=pluckerRelations[k,n];
+(*The number of independent plucker relations*)
+numindeppluckerrelations=Binomial[n,k]-1-k(n-k);
+solutions={};
+(*If we have any plukcer relations, start solving them*)
+If[pluckerrel=!={},
+independentrelations=pluckerrel[[{1}]];(*this variable will contain all independent relations*)
+newsolution=DeleteCases[Solve[And@@independentrelations],zz_/;MemberQ[zz,_->0]];
+solutions=Join[solutions,newsolution[[1]]];(*this variable will contain all independent solutions*)
+(*Go through the remianing plucker relations. If the next Plucker relations is not triviliazied by the solutions we already found to the previous relations, add it to the list of independent relations, and solve it.*)
+For[ii=2,ii<=Length[pluckerrel],ii++,
+If[Simplify[pluckerrel[[ii]]//.solutions]=!=True,
+independentrelations=Append[independentrelations,pluckerrel[[ii]]];
+newsolution=DeleteCases[Solve[And@@Simplify[independentrelations//.solutions]],zz_/;MemberQ[zz,_->0]];
+solutions=Join[solutions,newsolution[[1]]];
+(*If we have found as many solutions as there are independent relations in total, stop here, since the remainigs Plucker relations cannot be independent*)
+If[Length[solutions]==numindeppluckerrelations,
+Break[];
+];
+];
+];
+(*Tidy up the solutions so that they all depend on the same set of variables*)
+solutions=MapThread[Rule,{Map[#[[1]]&,solutions],Simplify[Map[#[[2]]&,solutions]//.solutions]}];
+,(*if there are no Plucker relations, return empty sets*)
+independentrelations={};
+];
+{independentrelations,solutions}
 ];
 
 

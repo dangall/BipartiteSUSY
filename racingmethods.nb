@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     27746,        592]
-NotebookOptionsPosition[     27314,        573]
-NotebookOutlinePosition[     27654,        588]
-CellTagsIndexPosition[     27611,        585]
+NotebookDataLength[     17440,        338]
+NotebookOptionsPosition[     17011,        319]
+NotebookOutlinePosition[     17351,        334]
+CellTagsIndexPosition[     17308,        331]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -49,300 +49,38 @@ Cell[BoxData[{
    RowBox[{"Block", "[", 
     RowBox[{
      RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
-     RowBox[{
-      RowBox[{"indexlist1", "=", 
-       RowBox[{"Subsets", "[", 
-        RowBox[{
-         RowBox[{"Range", "[", "n", "]"}], ",", 
-         RowBox[{"{", 
-          RowBox[{"k", "-", "1"}], "}"}]}], "]"}]}], ";", 
-      "\[IndentingNewLine]", 
-      RowBox[{"indexlist2", "=", 
-       RowBox[{"Subsets", "[", 
-        RowBox[{
-         RowBox[{"Range", "[", "n", "]"}], ",", 
-         RowBox[{"{", 
-          RowBox[{"k", "+", "1"}], "}"}]}], "]"}]}], ";", 
-      "\[IndentingNewLine]", 
-      RowBox[{"relations", "=", 
-       RowBox[{"{", "}"}]}], ";", "\[IndentingNewLine]", 
-      RowBox[{"conditions", "=", 
+     RowBox[{"Ordering", "[", 
+      RowBox[{"Flatten", "[", 
        RowBox[{"Map", "[", 
         RowBox[{
          RowBox[{
-          RowBox[{
-           RowBox[{"minor", "[", "#", "]"}], "\[Rule]", "0"}], "&"}], ",", 
-         "indexlist1"}], "]"}]}], ";", "\[IndentingNewLine]", 
-      RowBox[{"For", "[", 
-       RowBox[{
-        RowBox[{"i", "=", "1"}], ",", 
-        RowBox[{"i", "<", 
-         RowBox[{
-          RowBox[{"Length", "[", "indexlist1", "]"}], "+", "1"}]}], ",", 
-        RowBox[{"i", "++"}], ",", "\[IndentingNewLine]", 
-        RowBox[{
-         RowBox[{"For", "[", 
-          RowBox[{
-           RowBox[{"j", "=", "1"}], ",", 
-           RowBox[{"j", "<", 
+          RowBox[{"Position", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{
+             "1", ",", "3", ",", "5", ",", "4", ",", "6", ",", "2", ",", 
+              "7"}], "}"}], ",", "#"}], "]"}], "&"}], ",", 
+         RowBox[{"Flatten", "[", 
+          RowBox[{"Map", "[", 
+           RowBox[{
             RowBox[{
-             RowBox[{"Length", "[", "indexlist2", "]"}], "+", "1"}]}], ",", 
-           RowBox[{"j", "++"}], ",", "\[IndentingNewLine]", 
-           RowBox[{
-            RowBox[{"relations", "=", 
-             RowBox[{"Join", "[", 
-              RowBox[{"relations", ",", 
-               RowBox[{
-                RowBox[{"{", 
-                 RowBox[{
-                  RowBox[{"Sum", "[", 
-                   RowBox[{
-                    RowBox[{
-                    SuperscriptBox[
-                    RowBox[{"(", 
-                    RowBox[{"-", "1"}], ")"}], 
-                    RowBox[{"dum", "-", "1"}]], 
-                    SuperscriptBox[
-                    RowBox[{"(", 
-                    RowBox[{"-", "1"}], ")"}], 
-                    RowBox[{
-                    RowBox[{"PermutationOrder", "[", 
-                    RowBox[{"Ordering", "[", 
-                    RowBox[{"DeleteDuplicates", "[", 
-                    RowBox[{"Join", "[", 
-                    RowBox[{
-                    RowBox[{"indexlist1", "[", 
-                    RowBox[{"[", "i", "]"}], "]"}], ",", 
-                    RowBox[{"{", 
-                    RowBox[{"indexlist2", "[", 
-                    RowBox[{"[", 
-                    RowBox[{"j", ",", "dum"}], "]"}], "]"}], "}"}]}], "]"}], 
-                    "]"}], "]"}], "]"}], "-", "1"}]], 
-                    RowBox[{"minor", "[", 
-                    RowBox[{"Union", "[", 
-                    RowBox[{"Join", "[", 
-                    RowBox[{
-                    RowBox[{"indexlist1", "[", 
-                    RowBox[{"[", "i", "]"}], "]"}], ",", 
-                    RowBox[{"{", 
-                    RowBox[{"indexlist2", "[", 
-                    RowBox[{"[", 
-                    RowBox[{"j", ",", "dum"}], "]"}], "]"}], "}"}]}], "]"}], 
-                    "]"}], "]"}], 
-                    RowBox[{"minor", "[", 
-                    RowBox[{"Complement", "[", 
-                    RowBox[{
-                    RowBox[{"indexlist2", "[", 
-                    RowBox[{"[", "j", "]"}], "]"}], ",", 
-                    RowBox[{"{", 
-                    RowBox[{"indexlist2", "[", 
-                    RowBox[{"[", 
-                    RowBox[{"j", ",", "dum"}], "]"}], "]"}], "}"}]}], "]"}], 
-                    "]"}]}], ",", 
-                    RowBox[{"{", 
-                    RowBox[{"dum", ",", 
-                    RowBox[{"k", "+", "1"}]}], "}"}]}], "]"}], "\[Equal]", 
-                  "0"}], "}"}], "/.", "conditions"}]}], "]"}]}], ";"}]}], 
-          "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", "]"}],
-       ";", "\[IndentingNewLine]", 
-      RowBox[{"relations", "=", 
-       RowBox[{"DeleteDuplicates", "[", 
-        RowBox[{"DeleteCases", "[", 
-         RowBox[{"relations", ",", "True"}], "]"}], "]"}]}], ";", 
-      "\[IndentingNewLine]", 
-      RowBox[{"oppositerelations", "=", 
-       RowBox[{"Map", "[", 
-        RowBox[{
-         RowBox[{
-          RowBox[{
-           RowBox[{"-", 
-            RowBox[{"#", "[", 
-             RowBox[{"[", "1", "]"}], "]"}]}], "\[Equal]", "0"}], "&"}], ",", 
-         "relations"}], "]"}]}], ";", "\[IndentingNewLine]", 
-      RowBox[{"todelete", "=", 
-       RowBox[{"{", "}"}]}], ";", "\[IndentingNewLine]", 
-      RowBox[{"For", "[", 
-       RowBox[{
-        RowBox[{"ii", "=", "1"}], ",", 
-        RowBox[{"ii", "\[LessEqual]", 
-         RowBox[{"Length", "[", "relations", "]"}]}], ",", 
-        RowBox[{"ii", "++"}], ",", "\[IndentingNewLine]", 
-        RowBox[{
-         RowBox[{"If", "[", 
-          RowBox[{
-           RowBox[{"FreeQ", "[", 
-            RowBox[{"todelete", ",", "ii"}], "]"}], ",", 
-           "\[IndentingNewLine]", 
-           RowBox[{
-            RowBox[{"todelete", "=", 
-             RowBox[{"Join", "[", 
-              RowBox[{"todelete", ",", 
-               RowBox[{"Flatten", "[", 
-                RowBox[{"Position", "[", 
-                 RowBox[{"oppositerelations", ",", 
-                  RowBox[{"relations", "[", 
-                   RowBox[{"[", "ii", "]"}], "]"}]}], "]"}], "]"}]}], "]"}]}],
-             ";"}]}], "\[IndentingNewLine]", "]"}], ";"}]}], 
-       "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
-      RowBox[{"relations", "[", 
-       RowBox[{"[", 
-        RowBox[{"Complement", "[", 
-         RowBox[{
-          RowBox[{"Range", "[", 
-           RowBox[{"Length", "[", "relations", "]"}], "]"}], ",", 
-          "todelete"}], "]"}], "]"}], "]"}], ";"}]}], "\[IndentingNewLine]", 
-    "]"}]}], ";"}], "\[IndentingNewLine]", 
+             RowBox[{"Position", "[", 
+              RowBox[{
+               RowBox[{"Transpose", "[", "pathmat", "]"}], ",", "#"}], "]"}], 
+             "&"}], ",", 
+            RowBox[{"IdentityMatrix", "[", 
+             RowBox[{"Length", "[", "pathmat", "]"}], "]"}]}], "]"}], "]"}]}],
+         "]"}], "]"}], "]"}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"fun2", ":=", 
    RowBox[{"Block", "[", 
     RowBox[{
      RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
      RowBox[{
-      RowBox[{"indexlist1", "=", 
-       RowBox[{"Subsets", "[", 
-        RowBox[{
-         RowBox[{"Range", "[", "n", "]"}], ",", 
-         RowBox[{"{", 
-          RowBox[{"k", "-", "1"}], "}"}]}], "]"}]}], ";", 
-      "\[IndentingNewLine]", 
-      RowBox[{"indexlist2", "=", 
-       RowBox[{"Subsets", "[", 
-        RowBox[{
-         RowBox[{"Range", "[", "n", "]"}], ",", 
-         RowBox[{"{", 
-          RowBox[{"k", "+", "1"}], "}"}]}], "]"}]}], ";", 
-      "\[IndentingNewLine]", 
-      RowBox[{"relations", "=", 
-       RowBox[{"{", "}"}]}], ";", "\[IndentingNewLine]", 
-      RowBox[{"conditions", "=", 
-       RowBox[{"Map", "[", 
-        RowBox[{
-         RowBox[{
-          RowBox[{
-           RowBox[{"minor", "[", "#", "]"}], "\[Rule]", "0"}], "&"}], ",", 
-         "indexlist1"}], "]"}]}], ";", "\[IndentingNewLine]", 
-      RowBox[{"For", "[", 
-       RowBox[{
-        RowBox[{"i", "=", "1"}], ",", 
-        RowBox[{"i", "<", 
-         RowBox[{
-          RowBox[{"Length", "[", "indexlist1", "]"}], "+", "1"}]}], ",", 
-        RowBox[{"i", "++"}], ",", "\[IndentingNewLine]", 
-        RowBox[{
-         RowBox[{"For", "[", 
-          RowBox[{
-           RowBox[{"j", "=", "1"}], ",", 
-           RowBox[{"j", "<", 
-            RowBox[{
-             RowBox[{"Length", "[", "indexlist2", "]"}], "+", "1"}]}], ",", 
-           RowBox[{"j", "++"}], ",", "\[IndentingNewLine]", 
-           RowBox[{
-            RowBox[{"relations", "=", 
-             RowBox[{"Join", "[", 
-              RowBox[{"relations", ",", 
-               RowBox[{
-                RowBox[{"{", 
-                 RowBox[{
-                  RowBox[{"Sum", "[", 
-                   RowBox[{
-                    RowBox[{
-                    SuperscriptBox[
-                    RowBox[{"(", 
-                    RowBox[{"-", "1"}], ")"}], 
-                    RowBox[{"dum", "-", "1"}]], 
-                    SuperscriptBox[
-                    RowBox[{"(", 
-                    RowBox[{"-", "1"}], ")"}], 
-                    RowBox[{
-                    RowBox[{"PermutationOrder", "[", 
-                    RowBox[{"Ordering", "[", 
-                    RowBox[{"DeleteDuplicates", "[", 
-                    RowBox[{"Join", "[", 
-                    RowBox[{
-                    RowBox[{"indexlist1", "[", 
-                    RowBox[{"[", "i", "]"}], "]"}], ",", 
-                    RowBox[{"{", 
-                    RowBox[{"indexlist2", "[", 
-                    RowBox[{"[", 
-                    RowBox[{"j", ",", "dum"}], "]"}], "]"}], "}"}]}], "]"}], 
-                    "]"}], "]"}], "]"}], "-", "1"}]], 
-                    RowBox[{"minor", "[", 
-                    RowBox[{"Union", "[", 
-                    RowBox[{"Join", "[", 
-                    RowBox[{
-                    RowBox[{"indexlist1", "[", 
-                    RowBox[{"[", "i", "]"}], "]"}], ",", 
-                    RowBox[{"{", 
-                    RowBox[{"indexlist2", "[", 
-                    RowBox[{"[", 
-                    RowBox[{"j", ",", "dum"}], "]"}], "]"}], "}"}]}], "]"}], 
-                    "]"}], "]"}], 
-                    RowBox[{"minor", "[", 
-                    RowBox[{"Complement", "[", 
-                    RowBox[{
-                    RowBox[{"indexlist2", "[", 
-                    RowBox[{"[", "j", "]"}], "]"}], ",", 
-                    RowBox[{"{", 
-                    RowBox[{"indexlist2", "[", 
-                    RowBox[{"[", 
-                    RowBox[{"j", ",", "dum"}], "]"}], "]"}], "}"}]}], "]"}], 
-                    "]"}]}], ",", 
-                    RowBox[{"{", 
-                    RowBox[{"dum", ",", 
-                    RowBox[{"k", "+", "1"}]}], "}"}]}], "]"}], "\[Equal]", 
-                  "0"}], "}"}], "/.", "conditions"}]}], "]"}]}], ";"}]}], 
-          "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", "]"}],
-       ";", "\[IndentingNewLine]", 
-      RowBox[{"relations", "=", 
-       RowBox[{"DeleteDuplicates", "[", 
-        RowBox[{"DeleteCases", "[", 
-         RowBox[{"relations", ",", "True"}], "]"}], "]"}]}], ";", 
-      "\[IndentingNewLine]", 
-      RowBox[{"todel", "=", 
-       RowBox[{"{", "}"}]}], ";", "\[IndentingNewLine]", 
-      RowBox[{"For", "[", 
-       RowBox[{
-        RowBox[{"ii", "=", "1"}], ",", 
-        RowBox[{"ii", "<", 
-         RowBox[{
-          RowBox[{"Length", "[", "relations", "]"}], "+", "1"}]}], ",", 
-        RowBox[{"ii", "++"}], ",", "\[IndentingNewLine]", 
-        RowBox[{
-         RowBox[{"For", "[", 
-          RowBox[{
-           RowBox[{"jj", "=", 
-            RowBox[{"ii", "+", "1"}]}], ",", 
-           RowBox[{"jj", "<", 
-            RowBox[{
-             RowBox[{"Length", "[", "relations", "]"}], "+", "1"}]}], ",", 
-           RowBox[{"jj", "++"}], ",", "\[IndentingNewLine]", 
-           RowBox[{
-            RowBox[{"If", "[", 
-             RowBox[{
-              RowBox[{
-               RowBox[{
-                RowBox[{"relations", "[", 
-                 RowBox[{"[", "ii", "]"}], "]"}], "[", 
-                RowBox[{"[", "1", "]"}], "]"}], "\[Equal]", 
-               RowBox[{"-", 
-                RowBox[{
-                 RowBox[{"relations", "[", 
-                  RowBox[{"[", "jj", "]"}], "]"}], "[", 
-                 RowBox[{"[", "1", "]"}], "]"}]}]}], ",", 
-              "\[IndentingNewLine]", 
-              RowBox[{
-               RowBox[{"todel", "=", 
-                RowBox[{"Join", "[", 
-                 RowBox[{"todel", ",", 
-                  RowBox[{"{", 
-                   RowBox[{"{", "ii", "}"}], "}"}]}], "]"}]}], ";"}]}], 
-             "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", 
-          "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
-      "\[IndentingNewLine]", 
-      RowBox[{"relations", "=", 
-       RowBox[{"Delete", "[", 
-        RowBox[{"relations", ",", "todel"}], "]"}]}], ";"}]}], 
-    "\[IndentingNewLine]", "]"}]}], ";"}], "\[IndentingNewLine]", 
+      RowBox[{"pluckerRelationsCOMPILE", "[", 
+       RowBox[{"3", ",", "6"}], "]"}], ";"}]}], "\[IndentingNewLine]", 
+    "]"}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"fun3", ":=", 
    RowBox[{"Block", "[", 
@@ -367,7 +105,7 @@ Cell[BoxData[{
   RowBox[{"For", "[", 
    RowBox[{
     RowBox[{"aiai", "=", "1"}], ",", 
-    RowBox[{"aiai", "\[LessEqual]", "100"}], ",", 
+    RowBox[{"aiai", "\[LessEqual]", "1000"}], ",", 
     RowBox[{"aiai", "++"}], ",", "\[IndentingNewLine]", 
     RowBox[{
      RowBox[{"method1", "=", 
@@ -375,14 +113,16 @@ Cell[BoxData[{
        RowBox[{"method1", ",", 
         RowBox[{
          RowBox[{"AbsoluteTiming", "[", "fun1", "]"}], "[", 
-         RowBox[{"[", "1", "]"}], "]"}]}], "]"}]}], ";", 
-     "\[IndentingNewLine]", 
+         RowBox[{"[", "1", "]"}], "]"}]}], "]"}]}], ";"}]}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
      RowBox[{"method2", "=", 
       RowBox[{"Append", "[", 
        RowBox[{"method2", ",", 
         RowBox[{
          RowBox[{"AbsoluteTiming", "[", "fun2", "]"}], "[", 
-         RowBox[{"[", "1", "]"}], "]"}]}], "]"}]}], ";"}]}], 
+         RowBox[{"[", "1", "]"}], "]"}]}], "]"}]}], ";"}], "*)"}], 
    "\[IndentingNewLine]", 
    RowBox[{"(*", 
     RowBox[{
@@ -459,9 +199,11 @@ Cell[BoxData[{
    3.6628931730164795`*^9}, {3.662893278087468*^9, 3.6628933543737183`*^9}, {
    3.662893395590619*^9, 3.662893406879551*^9}, {3.6628934674841537`*^9, 
    3.662893485467821*^9}, 3.662893779799348*^9, {3.662893834813851*^9, 
-   3.6628938631151047`*^9}, {3.66289762827894*^9, 3.6628977096918063`*^9}}],
+   3.6628938631151047`*^9}, {3.66289762827894*^9, 3.6628977096918063`*^9}, {
+   3.6639182368198657`*^9, 3.6639183107360373`*^9}, {3.663935806661416*^9, 
+   3.6639358161744337`*^9}}],
 
-Cell[BoxData["0.007472245140226831`"], "Output",
+Cell[BoxData["0.00048412274849899865`"], "Output",
  CellChangeTimes->{
   3.662184976269184*^9, {3.6621851943912783`*^9, 3.662185200292393*^9}, 
    3.6621857624285955`*^9, {3.6621858230714126`*^9, 3.6621858424468155`*^9}, {
@@ -512,9 +254,12 @@ Cell[BoxData["0.007472245140226831`"], "Output",
    3.662893486530642*^9}, {3.662893742611493*^9, 3.6628937962441635`*^9}, {
    3.6628938323357267`*^9, 3.6628938474052687`*^9}, 3.6628939228677483`*^9, {
    3.6628976460932074`*^9, 3.662897663893024*^9}, {3.6628976992020717`*^9, 
-   3.6628977115929832`*^9}}],
+   3.6628977115929832`*^9}, {3.6639182493879585`*^9, 
+   3.6639183196546836`*^9}, {3.6639358122652903`*^9, 3.6639358169790573`*^9}}],
 
-Cell[BoxData["0.007643794719805775`"], "Output",
+Cell[BoxData[
+ RowBox[{"Mean", "[", 
+  RowBox[{"{", "}"}], "]"}]], "Output",
  CellChangeTimes->{
   3.662184976269184*^9, {3.6621851943912783`*^9, 3.662185200292393*^9}, 
    3.6621857624285955`*^9, {3.6621858230714126`*^9, 3.6621858424468155`*^9}, {
@@ -565,7 +310,8 @@ Cell[BoxData["0.007643794719805775`"], "Output",
    3.662893486530642*^9}, {3.662893742611493*^9, 3.6628937962441635`*^9}, {
    3.6628938323357267`*^9, 3.6628938474052687`*^9}, 3.6628939228677483`*^9, {
    3.6628976460932074`*^9, 3.662897663893024*^9}, {3.6628976992020717`*^9, 
-   3.662897711596485*^9}}]
+   3.6628977115929832`*^9}, {3.6639182493879585`*^9, 
+   3.6639183196546836`*^9}, {3.6639358122652903`*^9, 3.6639358169790573`*^9}}]
 }, Open  ]],
 
 Cell[BoxData["\[IndentingNewLine]"], "Input",
@@ -589,11 +335,11 @@ CellTagsIndex->{}
 Notebook[{
 Cell[558, 20, 387, 9, 31, "Input"],
 Cell[CellGroupData[{
-Cell[970, 33, 18690, 428, 1395, "Input"],
-Cell[19663, 463, 3771, 51, 31, "Output"],
-Cell[23437, 516, 3769, 51, 31, "Output"]
+Cell[970, 33, 8147, 170, 532, "Input"],
+Cell[9120, 205, 3877, 52, 31, "Output"],
+Cell[13000, 259, 3903, 54, 31, "Output"]
 }, Open  ]],
-Cell[27221, 570, 89, 1, 52, "Input"]
+Cell[16918, 316, 89, 1, 52, "Input"]
 }
 ]
 *)
