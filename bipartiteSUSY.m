@@ -76,8 +76,12 @@ matroidQ::usage="Tells you whether the inputted list of elements is a matroid or
 matroidViolationCheck::usage="Returns a list of pairs of matroid elements that do not satisfy the exchange axiom."
 pluckerRelations::usage="Returns a list of (generally not independent) Plucker relations. Each Plucker coordinate has the protected form minor[i,j,...]. It is necessary to act with ReleaseHold on the output of pluckerRelations to allow minor[i,j,...] etc. to take on predefined values."
 independentPluckerRelations::usage="Returns a list with two elements: the first contains a list of all independent Plucker relations, and the second contains the solution to these equations."
+(*We have to be able to bring the HoldForm[minor] out of the the package*)
 minor::usage=""
-
+makeOrderedPathMatrix::usage="This function returns the pathmatrix where, when possible, the external nodes have a cyclic planar ordering. IT SHOULD NOT BE LISTED IN THE LIST OF GLOBAL FUNCTIONS!"
+makeAutomaticBoundariesAndCuts::usage="This function returns a list of boundaries, corresponding to each external node, and cuts between these boundaries. IT SHOULD NOT BE LISTED IN THE LIST OF GLOBAL FUNCTIONS!"
+getGrassmannian::usage="This function returns the correspdoning element of the Grassmannian with all signs placed correctly to ensure manifest positivity of minors in planar diagrams, including signs associated to the rotation numnber of paths in the diagram. It only works when the graph can be embedded on genus zero (though it may have any number of boundaries)."
+pluckerCoordinates::usage="Returns the external ordering and the Plucker coordinates of the on-shell diagram. It is posisble to specify whether this function should place in all signs according to the boundary measurement, or whether the path matrix is sufficient."
 
 Begin["Private`"]
 
@@ -721,7 +725,11 @@ sinkedges
 
 externalEdgesNodeNumbers[topleft_,topright_,bottomleft_,bottomright_,externaledgelist_]:=Union[Map[#[[1]]&,Position[bottomleft,Alternatives@@externaledgelist]+Length[topleft]],Map[#[[2]]&,Position[topright,Alternatives@@externaledgelist]+Total[Dimensions[topleft]]+Length[bottomleft]]];
 
-connectivityMatrix[topleft_,topright_,bottomleft_,bottomright_,referenceperfmatch_]:=connectivityMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch]=Block[{kasteleyn,perfmatchvars,kastnopm,kastinvertedpm,bigmatrix,connectivitymat},
+connectivityMatrix[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null]:=connectivityMatrix[topleft,topright,bottomleft,bottomright,referencematching]=connectivityMatrix[topleft,topright,bottomleft,bottomright]=Block[{referenceperfmatch,kasteleyn,perfmatchvars,kastnopm,kastinvertedpm,bigmatrix,connectivitymat},
+If[referencematching===Null,
+referenceperfmatch=perfectMatchings[topleft,topright,bottomleft,bottomright][[lowNumberLoopsPM[topleft,topright,bottomleft,bottomright]]];
+,referenceperfmatch=referencematching;
+];
 kasteleyn=joinupKasteleyn[topleft,topright,bottomleft,bottomright];
 perfmatchvars=Variables[referenceperfmatch];
 (*We need to first form a large matrix based on the Kasteleyn, and then take its inverse*)
@@ -732,7 +740,11 @@ connectivitymat=Inverse[bigmatrix];
 connectivitymat
 ];
 
-pathMatrix[topleft_,topright_,bottomleft_,bottomright_,referenceperfmatch_]:=Block[{bigpathmatrix,externalrows,externalcolumns,finalpathmatrix},
+pathMatrix[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null]:=Block[{referenceperfmatch,bigpathmatrix,externalrows,externalcolumns,finalpathmatrix},
+If[referencematching===Null,
+referenceperfmatch=perfectMatchings[topleft,topright,bottomleft,bottomright][[lowNumberLoopsPM[topleft,topright,bottomleft,bottomright]]];
+,referenceperfmatch=referencematching;
+];
 bigpathmatrix=connectivityMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch];
 (*bigpathmatrix contains the connectivity between ALL pairs of nodes. We need to select those entries corresponding to sources goign to external nodes.*)
 externalrows=externalEdgesNodeNumbers[topleft,topright,bottomleft,bottomright,findSources[topright,bottomleft,referenceperfmatch]];
@@ -995,6 +1007,279 @@ solutions=MapThread[Rule,{Map[#[[1]]&,solutions],Simplify[Map[#[[2]]&,solutions]
 independentrelations={};
 ];
 {independentrelations,solutions}
+];
+
+makeOrderedPathMatrix[adjacencymatrix_,pathmat_,externalordering_,topleft_,topright_,bottomleft_,bottomright_]:=Block[{adjacencymat,planar,externals,extnum,permutations,externaladjacencyseed,externaladjencyattempts,ii,testgraph,ordering,rowordering,orderedpathmat},
+adjacencymat=adjacencymatrix;
+planar=False;
+If[externalordering===Null,
+(*If we haven't specified an external ordering, make a cyclic ordering when planar. If not planar, pick a default ordering based on the Kasteleyn*)
+(*Let's see if we can find a planar cyclic ordering*)
+externals=Flatten[Position[Map[Total,adjacencymat],1]];(*These are the row-numbers corresponding to external nodes*)
+extnum=Length[externals];
+(*We will now try and form a single external boundary by connecting up all external nodes sequentially*)
+permutations=Map[Append[#[[1]],extnum]&,Gather[Permutations[Range[extnum-1]],#1==Reverse[#2]&]];
+(*We will start by making an adjacency matrix for one choice of external boundary. We will then permute this matrix in all possible ways*)
+externaladjacencyseed=Normal[AdjacencyMatrix[PathGraph[Prepend[permutations[[1]],extnum]]]];
+externaladjencyattempts=Map[externaladjacencyseed[[#,#]]&,permutations];
+For[ii=1,ii<=Length[externaladjencyattempts],ii++,
+adjacencymat[[externals,externals]]=externaladjencyattempts[[ii]];
+testgraph=AdjacencyGraph[adjacencymat];
+If[PlanarGraphQ[testgraph],(*we found a cyclic planar ordering!*)
+planar=True;
+ordering=Ordering[permutations[[ii]]];
+rowordering=Ordering[Flatten[Map[Position[ordering,#]&,Flatten[Map[Position[Transpose[pathmat],#]&,IdentityMatrix[Length[pathmat]]]]]]];
+orderedpathmat=pathmat[[rowordering,ordering]];
+Break[];
+];
+];
+If[planar==False,(*if the graph is non-planar, pick the default ordering*)
+orderedpathmat=pathmat;
+];
+,(*if we specified an ordering, use that instead. Here we don't care whether the graph is planar or not, since the user is forced to specify all the boundaries and cuts etc.*)
+(*externalOrderingDefault is the same as that chosen by pathMatrix*)
+ordering=externalordering/.externalOrderingDefault[topright,bottomleft];
+rowordering=Ordering[Flatten[Map[Position[ordering,#]&,Flatten[Map[Position[Transpose[pathmat],#]&,IdentityMatrix[Length[pathmat]]]]]]];
+orderedpathmat=pathmat[[rowordering,ordering]];
+];
+{orderedpathmat,planar}
+];
+
+makeAutomaticBoundariesAndCuts[graph_,topleft_,topright_,bottomleft_,bottomright_]:=Module[{planargraph,verticespos,edgepos,boundaries,externalnodenumbers,nodenumberstoedges,verticestocoords,externalvertices,spiralInList,cutcoordinates,cutcoordinatesandnodes,edgesCrossQ,crossedEdges,cutsedgecrossings,extraCutEdges,extracrossededges,kasteleyn,bigkasteleyn,nameUndirectedEdges,edgenamerule,boundarypaircuts},
+If[PlanarGraphQ[graph],
+(*We shall begin by drawing out the graph such that no edges cross. In so doing we'll be able to extract the vertex coordinates and edge positions of this embedding*)
+planargraph=Graph[graph,GraphLayout->"PlanarEmbedding"];
+verticespos=MapThread[{#1,#2}&,{Range[Length[GraphEmbedding[planargraph]]],GraphEmbedding[planargraph]}];
+edgepos=Map[{{verticespos[[#[[1]],2]],verticespos[[#[[2]],2]]},#}&,EdgeList[planargraph]];
+edgepos=DeleteDuplicates[edgepos];(*in case there are bubbles*)
+(*Now we have the vertices and edges for an embedding with no edge crossings*)
+(*Each external vertex will be seen as having its own tiny boundary attached to it*)
+boundaries=Transpose[{Flatten[DeleteCases[Join[bottomleft,Transpose[topright]],0,{2}]]}];
+(*Now we'll construct the cuts: they will run directly between the external vertices, since the boundaries are so tiny*)
+externalnodenumbers=Join[Range[Length[bottomleft]]+Length[topleft],Range[Dimensions[topright][[2]]]+Total[Dimensions[topleft]]+Length[bottomleft]];
+verticestocoords=Map[Rule@@#&,verticespos];
+externalvertices=externalnodenumbers/.verticestocoords;
+(*Now we'll need to make a sequence of boundaries connected by cuts. We'll start with the external node with the highest y-coordinate, and proceed along external nodes as we spiral in to the middle. This ensures that the cuts never cross each other*)
+(*Before we start we'll make a rule that translates node numbers into edge labels. This will be useful to us at the very end*)
+nodenumberstoedges=MapThread[Rule,{externalnodenumbers,Flatten[boundaries]}];
+(*This function takes a list of vertices and orders them according to the spiralling-in order*)
+spiralInList=Function[{vertexlist},
+Block[{remainingvertices,nextnode,finalvertexlist,polardistances},
+remainingvertices=vertexlist;
+(*The first node is the one with the largest y-coordinate*)
+nextnode=Cases[remainingvertices,{_,Max[Map[#[[2]]&,remainingvertices]]}][[1]];
+finalvertexlist={nextnode};
+remainingvertices=DeleteCases[remainingvertices,nextnode];
+While[remainingvertices=!={},
+polardistances=Map[{#[[1]],Mod[#[[2]],2Pi]}&,Map[ToPolarCoordinates[#-nextnode]&,remainingvertices]];
+(*The next node is the first one reached going radially and clockwise from the current node*)
+nextnode=Cases[polardistances,{_,Max[Map[#[[2]]&,polardistances]]}];
+(*If there are multiple ones with the same angle, pick the nearest one*)
+nextnode=Cases[nextnode,{Min[Map[#[[1]]&,nextnode]],_}][[1]];
+nextnode=remainingvertices[[Position[polardistances,nextnode][[1,1]]]];
+finalvertexlist=Append[finalvertexlist,nextnode];
+remainingvertices=DeleteCases[remainingvertices,nextnode];
+];
+finalvertexlist]
+];
+(*Now we'll order our external vertices and our boundaries in this new order*)
+externalvertices=spiralInList[externalvertices];
+boundaries=Map[{#}&,externalvertices/.Map[#[[2]]->#[[1]]&,verticestocoords]]/.nodenumberstoedges;
+(*We may now form the cuts: they are (n-1) sequential pairs of externalvertices*)
+cutcoordinates=Table[{externalvertices[[iii]],externalvertices[[iii+1]]},{iii,Length[externalvertices]-1}];
+(*For convenience we'll also append to each of these pairs the two node numbers that they represent*)
+cutcoordinatesandnodes=MapThread[{#1,#2}&,{cutcoordinates,Map[Alternatives@@#&,cutcoordinates/.Map[#[[2]]->#[[1]]&,verticestocoords]]}];
+(*Now we need to see which edges are crossed by each cut (remember that in each cut we don't want to consider cutting edges that pass through the two external nodes)*)
+(*This function tells you whether two generic segments cross*)
+edgesCrossQ=Function[{cutcoords,edgecoords},
+Block[{matrixtoinvert,crossdistance,newcutcoords,crossq},
+matrixtoinvert={{cutcoords[[1,1]]-cutcoords[[2,1]],edgecoords[[2,1]]-edgecoords[[1,1]]},{cutcoords[[1,2]]-cutcoords[[2,2]],edgecoords[[2,2]]-edgecoords[[1,2]]}};
+If[Det[matrixtoinvert]=!=0.,(*if the matrix is invertible*)
+crossdistance=Inverse[matrixtoinvert].{cutcoords[[1,1]]-edgecoords[[1,1]],cutcoords[[1,2]]-edgecoords[[1,2]]};
+If[crossdistance[[2]]==1.||crossdistance[[2]]==0.,(*we are touching the endpoint of an edge*)
+(*In this case we should slightly shift the cut downwards and so that it doesn't go right through the node*)
+newcutcoords=Map[#-{0,0.05}&,cutcoords];
+matrixtoinvert={{newcutcoords[[1,1]]-newcutcoords[[2,1]],edgecoords[[2,1]]-edgecoords[[1,1]]},{newcutcoords[[1,2]]-newcutcoords[[2,2]],edgecoords[[2,2]]-edgecoords[[1,2]]}};
+If[Det[matrixtoinvert]=!=0.,
+crossdistance=Inverse[matrixtoinvert].{newcutcoords[[1,1]]-edgecoords[[1,1]],newcutcoords[[1,2]]-edgecoords[[1,2]]};
+,crossq=False;
+];
+];
+crossq=And@@Map[(#>=0)&&(#<=1)&,crossdistance];
+,(*the edges are parallel, and cannot cross*)
+crossq=False;
+];
+crossq]
+];
+(*This function takes a cut and tells you which UndirectedEdges in the graph it crosses*)
+crossedEdges=Function[{cutinfo},
+Map[#[[2]]&,DeleteCases[Cases[edgepos,zz_/;edgesCrossQ[cutinfo[[1]],zz[[1]]]],{___,UndirectedEdge[_,cutinfo[[2]]]}|{___,UndirectedEdge[cutinfo[[2]],_]}]]
+];
+(*Now we're able to determine which edges are crossed by each cut*)
+cutsedgecrossings=Map[crossedEdges,cutcoordinatesandnodes];
+(*In order to maintain the ordering of nodes we determined with our cuts, sometimes we need an external edge to be crossed an additional time by one of the two cuts in order to keep its position in the order of external nodes*)
+(*This function takes a pair of cuts and returns a list containing the additional edges that get crossed. We should assume that it is the first of the pair of cuts that crosses the edge*)
+extraCutEdges=Function[{pairofcutscoordinates},
+Block[{pairofcuts,externaledgename,externaledge,cutangles,edgeangle,rotatedcutangles,rotatededgeangle,return},
+pairofcuts=pairofcutscoordinates;
+externaledgename=Cases[edgepos,{{___,pairofcuts[[1,2]],___},___}][[1,2]];
+externaledge=Cases[edgepos,{{___,pairofcuts[[1,2]],___},___}][[1,1]];
+externaledge=DeleteCases[Map[#-pairofcuts[[1,2]]&,externaledge],{0.,0.}];
+pairofcuts=DeleteCases[Sequence@@@Map[#-pairofcuts[[1,2]]&,pairofcuts,{2}],{0.,0.}];
+cutangles=Map[Mod[#[[2]],2Pi]&,Map[ToPolarCoordinates,pairofcuts]];
+edgeangle=Map[Mod[#[[2]],2Pi]&,Map[ToPolarCoordinates,externaledge]];
+rotatedcutangles=Mod[cutangles-cutangles[[1]],2Pi];
+rotatededgeangle=Mod[edgeangle-cutangles[[1]],2Pi];
+If[rotatededgeangle[[1]]<rotatedcutangles[[2]],
+return={externaledgename};
+,return={};
+];
+return]
+];
+(*For each pair of cuts, we now get the additional edges that get crossed*)
+extracrossededges=Map[extraCutEdges,Table[{cutcoordinates[[iii]],cutcoordinates[[iii+1]]},{iii,Length[cutcoordinates]-1}]];
+(*These are added to cutsedgecrossings. Since the last cut never crosses an edge, add an empty list*)
+extracrossededges=Append[extracrossededges,{}];
+cutsedgecrossings=Map[DeleteDuplicates,MapThread[Join,{cutsedgecrossings,extracrossededges}]];
+(*We need to translate this into actual edge variable names*)
+kasteleyn=joinupKasteleyn[topleft,topright,bottomleft,bottomright];
+bigkasteleyn=Join[kasteleyn,Transpose[kasteleyn]];
+nameUndirectedEdges=Function[{undirectededge},
+undirectededge->Sequence@@Intersection@@Map[Variables[bigkasteleyn[[#]]]&,List@@undirectededge]
+];
+edgenamerule=Map[nameUndirectedEdges,DeleteDuplicates[EdgeList[graph]]];
+cutsedgecrossings=Map[#->-#&,cutsedgecrossings/.edgenamerule,{2}];
+boundarypaircuts=MapThread[Rule,{Table[{boundaries[[iii]],boundaries[[iii+1]]},{iii,Length[boundaries]-1}],cutsedgecrossings}];
+,Print["It must be possible to embed the graph on genus zero without any edges crossing."];
+boundaries=Null;
+boundarypaircuts=Null;
+];
+{boundaries,boundarypaircuts}
+];
+
+getGrassmannian[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null,externalordering_:Null,boundarylist_:Null,boundarycutreplacements_:Null]/;(externalordering===Null&&boundarylist===Null&&boundarycutreplacements===Null||externalordering=!=Null&&boundarylist=!=Null&&boundarycutreplacements=!=Null):=Module[{adjacencymat,graph,planar,referenceperfmatch,pathmat,orderedpathmat,loopdenominator,looplist,loopreplacement,loop,loopsigns,grassmannianmatrix,sourcenodes,boundaries,boundarypaircuts,pathmatorder,neworder,newroworder,cutSequence,finalloopsignsmatrix,implementFinalLoops,globalsigns},
+(*Let's first see if the graph can be embedded on genus zero*)
+adjacencymat=getAdjacencyMatrix[topleft,topright,bottomleft,bottomright];
+graph=AdjacencyGraph[adjacencymat];(*We have finished making the Mathematica graph!*)
+planar=False;
+If[PlanarGraphQ[graph],
+(*If it can be embedded on genus zero make the path matrix*)
+If[referencematching===Null,
+referenceperfmatch=perfectMatchings[topleft,topright,bottomleft,bottomright][[lowNumberLoopsPM[topleft,topright,bottomleft,bottomright]]];
+,referenceperfmatch=referencematching;
+];
+pathmat=pathMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch];
+(*We shall now pick an ordering of external edges for this path matrix, depending on whether the user specified an ordering or not*)
+{orderedpathmat,planar}=makeOrderedPathMatrix[adjacencymat,pathmat,externalordering,topleft,topright,bottomleft,bottomright];
+(*Now we have the ordered path matrix*)
+(*Now we will plug in the correct signs. We begin with those belonging to loops (excluding those loops formed by closing the path between multiple boundaries)*)
+(*First find the loops, if any*)
+loopdenominator=Expand[1/Expand[Simplify[Det[connectivityMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch]]]]];
+If[Head[loopdenominator]===Plus,
+(*we have multiple terms*)
+looplist=-DeleteCases[List@@loopdenominator,1];
+loopreplacement=MapThread[Rule,{looplist,Table[loop[iii],{iii,Length[looplist]}]}];
+,looplist={};
+loopreplacement={};
+];
+(*Now use a function to add the loop signs into the matrix*)
+loopsigns=Function[{matrixentry},
+Block[{terms},
+If[Head[matrixentry]===Integer,
+terms={matrixentry};
+,If[Head[matrixentry]===Plus,
+(*we have multiple terms*)
+terms=Expand[Simplify[(List@@matrixentry)loopdenominator]]/loopdenominator;
+,terms={Expand[Simplify[matrixentry loopdenominator]]/loopdenominator};
+];
+terms=terms//.loopreplacement;
+terms=terms/.Map[#[[2]]->-#[[2]]&,loopreplacement];
+(*If[externalordering===Null,
+(*If we chose an external ordering automatically and the graph is non-planar, we need to plug in additional signs*)
+If[planar===False,(*plug in signs from loops formed by going between different boundaries*)
+(*PLUG IN GEKHTMAN SIGNS*)
+Print["We're automatically doing a non-planar diagram!"];
+];
+,(*If we were given an external ordering, plug in the additional signs manually*)
+Print["We're manually doing a non-planar diagram."];
+];*)
+];
+Total[terms]]
+];
+(*We'll now put in the loop signs, including those from loops formed by closing the path between multiple boundaries*)
+grassmannianmatrix=Map[loopsigns,orderedpathmat,{2}];
+sourcenodes=Flatten[Map[Position[Transpose[orderedpathmat],#]&,IdentityMatrix[Length[orderedpathmat]]]];
+If[planar==False,
+If[externalordering===Null,
+{boundaries,boundarypaircuts}=makeAutomaticBoundariesAndCuts[graph,topleft,topright,bottomleft,bottomright];
+(*We'll need to re-rder the grassmannian nodes now that we have a new order determined by our cuts*)
+pathmatorder=Flatten[DeleteCases[Join[bottomleft,Transpose[topright]],0,{2}]];
+neworder=Flatten[boundaries]/.MapThread[Rule,{pathmatorder,Range[Length[pathmatorder]]}];
+newroworder=Ordering[Flatten[Map[Position[neworder,#]&,sourcenodes]]];
+sourcenodes=Sort[Flatten[Map[Position[neworder,#]&,sourcenodes]]];
+grassmannianmatrix=grassmannianmatrix[[newroworder,neworder]];
+,{boundaries,boundarypaircuts}={boundarylist,boundarycutreplacements};
+];
+(*This function takes a pair of external nodes and returns a list of replacement lists to be used on the grassmannian. These replacements represent all the cuts required to go from one boundary to the next*)
+cutSequence=Function[{externalnodepair},
+Block[{boundariestoconnect,boundarynumberrule,boundarypairnumbers,shortestpath,cutpath},
+boundariestoconnect=Cases[boundaries,zz_/;MemberQ[zz,Alternatives@@externalnodepair]];
+If[Length[boundariestoconnect]>1,(*the nodes are on different boundaries*)
+boundarynumberrule=MapThread[Rule,{boundaries,Range[Length[boundaries]]}];
+boundariestoconnect=boundariestoconnect/.boundarynumberrule;
+boundarypairnumbers=Map[#[[1]]&,boundarypaircuts]/.boundarynumberrule;
+(*Let's now find the shortest path between these two boundaries, using our cuts*)
+shortestpath=FindShortestPath[Graph[Map[UndirectedEdge@@#&,boundarypairnumbers]],Sequence@@boundariestoconnect];
+(*Turn this sequence of boundaries into pairs that can be identified with cuts*)
+shortestpath=Table[{shortestpath[[iii]],shortestpath[[iii+1]]},{iii,Length[shortestpath]-1}];
+(*This is the sequence of cuts we must do to go from one boundary to the other. These cuts must be performed sequentially, not all at once (in case some edges get cut multiple times)!*)
+cutpath=shortestpath/.(boundarypaircuts/.boundarynumberrule);
+,(*the two external nodes are on the same boundary*)
+cutpath={};
+];
+cutpath]
+];
+finalloopsignsmatrix=Map[cutSequence[Intersection[Variables[#],Variables[Join[topright,bottomleft]]]]&,grassmannianmatrix,{2}];
+implementFinalLoops=Function[{matrixentry,replacementlists},
+Block[{newmatrixentry,ii},
+newmatrixentry=matrixentry;
+For[ii=1,ii<=Length[replacementlists],ii++,
+newmatrixentry=newmatrixentry/.replacementlists[[ii]];
+];
+newmatrixentry]
+];
+grassmannianmatrix=MapThread[implementFinalLoops[#1,#2]&,{grassmannianmatrix,finalloopsignsmatrix},2];
+];
+(*We have finished putting in signs due to loops*)
+(*We'll now put in the global signs on matrix entries*)
+globalsigns=Partition[Map[Power[-1,Count[sourcenodes,zz_/;zz>#[[1]]&&zz<#[[2]]]]&,Map[Sort,Tuples[{sourcenodes,Range[Dimensions[grassmannianmatrix][[2]]]}]]],Dimensions[grassmannianmatrix][[2]]];
+grassmannianmatrix=(grassmannianmatrix globalsigns)/.Map[#[[2]]->#[[1]]&,loopreplacement];
+,(*If it cannot be embedded on genus zero,stop here*)
+Print["The diagram cannot be embedded on genus zero."];
+grassmannianmatrix=Null;
+];
+grassmannianmatrix
+];
+
+pluckerCoordinates[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null,withsigns_:False]:=Module[{referenceperfmatch,Cmatrix,minors,externalvarentries,sources,sinks,putsourcesinlist,externalordering,pathmat},
+If[referencematching===Null,
+referenceperfmatch=perfectMatchings[topleft,topright,bottomleft,bottomright][[lowNumberLoopsPM[topleft,topright,bottomleft,bottomright]]];
+,referenceperfmatch=referencematching;
+];
+If[withsigns,
+Cmatrix=getGrassmannian[topleft,topright,bottomleft,bottomright,referencematching];
+minors=Expand[Simplify[Minors[Cmatrix,Length[Cmatrix]][[1]]]];
+(*Now let's find the ordering of external edges*)
+externalvarentries=Map[Intersection[Variables[#],Variables[Join[bottomleft,topright]]]&,Cmatrix,{2}];
+sources=Map[Intersection@@DeleteCases[#,{}]&,externalvarentries];
+sinks=Map[Intersection@@#&,Transpose[externalvarentries]];
+putsourcesinlist=Function[{input},Block[{return},If[input==={},return=sources[[1]];sources=Delete[sources,1];,return=input;];return]];
+externalordering=Flatten[Map[putsourcesinlist[#]&,sinks]];
+,pathmat=pathMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch];
+minors=Expand[Simplify[Minors[pathmat,Length[pathmat]][[1]]]];
+externalordering=Flatten[DeleteCases[Join[bottomleft,Transpose[topright]],0,{2}]];
+];
+{externalordering,minors}
 ];
 
 
