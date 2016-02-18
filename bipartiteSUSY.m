@@ -82,6 +82,9 @@ makeOrderedPathMatrix::usage="This function returns the pathmatrix where, when p
 makeAutomaticBoundariesAndCuts::usage="This function returns a list of boundaries, corresponding to each external node, and cuts between these boundaries. IT SHOULD NOT BE LISTED IN THE LIST OF GLOBAL FUNCTIONS!"
 getGrassmannian::usage="This function returns the correspdoning element of the Grassmannian with all signs placed correctly to ensure manifest positivity of minors in planar diagrams, including signs associated to the rotation numnber of paths in the diagram. It only works when the graph can be embedded on genus zero (though it may have any number of boundaries)."
 pluckerCoordinates::usage="Returns the external ordering and the Plucker coordinates of the on-shell diagram. It is posisble to specify whether this function should place in all signs according to the boundary measurement, or whether the path matrix is sufficient."
+makeLoopVariablesBasis::usage="Returns a list of paths that form a basis with which it is possible to express any path in the graph. The output is of the form of two lists: the first one contains the internal faces, and if the optional input 'standardfacevariables' is False it also contains non-trivial cycles around surfaces with non-zero genus as well as products of external faces which circle around a boundary. The first list will generically be a linear combination of these paths. The second entry contains the remaining independent external faces, paths going between different boundaries, and if 'standardfacevariables' is True it also contains non-trivial cycles for non-zero genus."
+moduliLoopVariablesBFT::usage="Returns a list of three items: the first is the master space, the second is the moduli space, and the third is the loop variable basis used to make these spaces."
+
 
 Begin["Private`"]
 
@@ -317,8 +320,11 @@ chargesFterm=NullSpace[matrixP];
 gaugeCharge=Function[{edge,column},Block[{output=0},If[edge[[1]]==column,output=output+1;];If[edge[[2]]==column,output=output-1;];output]];
 edges=Variables[joinupKasteleyn[topleft,topright,bottomleft,bottomright]];
 intfaces=internalFaceLabels[topleft,topright,bottomleft,bottomright];
+If[intfaces=!={},
 gaugechargematrix=Table[gaugeCharge[edges[[iii]],intfaces[[jjj]]],{iii,Length[edges]},{jjj,Length[intfaces]}];
 chargesDterm=Transpose[LinearSolve[matrixP,gaugechargematrix]];
+,chargesDterm={};
+];
 modulispace=NullSpace[Join[chargesFterm,chargesDterm]];
 ,modulispace=Null;
 ];
@@ -328,11 +334,14 @@ modulispace
 ];
 
 polytopeDim[mat_]:=Block[{dimension,newmat},
-If[MemberQ[Transpose[mat],ConstantArray[0,Length[mat]]],
+If[MemberQ[Dimensions[mat],0],
+dimension=0;
+,If[MemberQ[Transpose[mat],ConstantArray[0,Length[mat]]],
 (*If the matrix has a column of zeros, the matrix rank gives you the dimension. Otherwise you need to shift the matrix so that a vertex is at the origin.*)
 dimension=MatrixRank[mat];
 ,newmat=mat-mat[[All,1]];(*this operation automatically threads over all the columns of the matrix.*)
 dimension=MatrixRank[newmat];
+];
 ];
 dimension
 ];
@@ -673,6 +682,141 @@ perfmatchzigzags=ReplacePart[perfmatchzigzags,replacementrule];
 perfmatchzigzags
 ];
 
+makeLoopVariablesBasis[topleft_,topright_,bottomleft_,bottomright_,standardfacevariables_:False]:=Module[{kasteleyn,alledges,externaledges,externaledgestonodenumbers,bpaths,adjacencymat,graph,bigkasteleyn,nameUndirectedEdges,bpathvectors,directedgraph,nameDirectedEdges,edgelist,internalpaths,internalpathvectors,facenames,facevariables,facevariablevectors,internalpos,internalfacevariables,internalfacevariablevectors,externalfacevariables,externalfacevariablevectors,accountedforvectors,newpathvectors,additionalpathvectors,tosolvefor,coef,coeflist,additionalpaths,loopvariablebasis},
+(*We'll begin by making all possible paths between boundaries. Some of these will correspond to external faces (or combinations thereof), but some will be paths stretching between different boundaries*)
+kasteleyn=joinupKasteleyn[topleft,topright,bottomleft,bottomright];
+alledges=Variables[kasteleyn];
+(*We need to extract the external edges*)
+externaledges=Variables[Join[bottomleft,topright]];
+externaledgestonodenumbers=MapThread[Rule,{Flatten[DeleteCases[Join[bottomleft,Transpose[topright]],0,{2}]],Join[Range[Length[bottomleft]]+Length[topleft],Range[Dimensions[topright][[2]]]+Total[Dimensions[topleft]]+Length[bottomleft]]}];
+bpaths=Subsets[externaledges,{2}];(*For now bpaths only contain the external edges. We'll now look for the shortest path between these edges, to complete the paths between boundaries*)
+adjacencymat=getAdjacencyMatrix[topleft,topright,bottomleft,bottomright];
+graph=AdjacencyGraph[adjacencymat];
+bpaths=Map[Table[UndirectedEdge[#[[iii]],#[[iii+1]]],{iii,Length[#]-1}]&,Map[FindShortestPath[graph,Sequence@@#]&,bpaths/.externaledgestonodenumbers]];
+(*Now each boundary path is expressed as a list of directed edges that go from one boundary to the next. We need to turn these directed edges into a product of edges*)
+bigkasteleyn=Join[kasteleyn,Transpose[kasteleyn]];
+nameUndirectedEdges=Function[{undirectededge},
+Block[{edgename,edgeweight},
+edgename=(Intersection@@Map[Variables[bigkasteleyn[[#]]]&,List@@undirectededge])[[1]];
+If[undirectededge[[1]]<undirectededge[[2]],
+edgeweight=edgename;
+,edgeweight=1/edgename;
+];
+edgeweight]
+];
+bpaths=Map[Times@@#&,Map[nameUndirectedEdges,bpaths,{2}]];
+(*Now we have the paths running between boundaries, expressed as products of edge variables*)
+bpathvectors=Map[Table[D[#,alledges[[iii]]],{iii,Length[alledges]}]/.Map[#->1&,alledges]&,bpaths];
+(*We shall now make all internal paths. These contain internal faces, non-trivial paths around higher-genus, and products of external faces around each boundary*)
+(*We start from a direct graph, as this will allow us to understand the direction of our internal loops*)
+directedgraph=AdjacencyGraph[UpperTriangularize[adjacencymat]];
+nameDirectedEdges=Function[{directededge},
+Block[{edgename},
+edgename=(Intersection@@Map[Variables[bigkasteleyn[[#]]]&,List@@directededge])[[1]];
+bigkasteleyn=bigkasteleyn/.{edgename->0};
+edgename]
+];
+edgelist=Map[nameDirectedEdges,EdgeList[directedgraph]];(*watch out! I have now changed bigkasteleyn! If you need it again, you'll need to reset it*)
+internalpaths=Map[Times@@Power[edgelist,#]&,Normal[EdgeCycleMatrix[directedgraph]]];
+internalpathvectors=Map[Table[D[#,alledges[[iii]]],{iii,Length[alledges]}]/.Map[#->1&,alledges]&,internalpaths];
+(*The only paths that we still need to make are the face variables. Some of these are included in internalpathvectors, but we don't know which so we'll make all of them*)
+facenames=allFaceLabels[topleft,topright,bottomleft,bottomright];
+facevariables=Map[(Times@@Cases[alledges,_[_,#]])/(Times@@Cases[alledges,_[#,_]])&,facenames];
+facevariablevectors=Map[Table[D[#,alledges[[iii]]],{iii,Length[alledges]}]/.Map[#->1&,alledges]&,facevariables];
+internalpos=Flatten[Position[facenames,Alternatives@@internalFaceLabels[topleft,topright,bottomleft,bottomright]]];
+internalfacevariables=facevariables[[internalpos]];
+internalfacevariablevectors=facevariablevectors[[internalpos]];
+externalfacevariables=Complement[facevariables,internalfacevariables];
+externalfacevariablevectors=Complement[facevariablevectors,internalfacevariablevectors];
+(*Since the face variables are not all independent, we'll remove one*)
+If[Length[internalfacevariables]==Length[facevariables],
+internalfacevariables=internalfacevariables[[Range[Length[internalfacevariables]-1]]];
+internalfacevariablevectors=internalfacevariablevectors[[Range[Length[internalfacevariablevectors]-1]]];
+,externalfacevariables=externalfacevariables[[Range[Length[externalfacevariables]-1]]];
+externalfacevariablevectors=externalfacevariablevectors[[Range[Length[externalfacevariablevectors]-1]]];
+];
+(*We'll now need to see which of all our paths are independent and forms a basis*)
+If[standardfacevariables,
+(*We need to give priority to facevariables, and then form the remaining paths with internalpaths and bpaths*)
+(*We will want to keep the internal faces separate as they can be gauged under gauging 1*)
+accountedforvectors=Join[internalfacevariablevectors,externalfacevariablevectors];(*the faces aren't all independent*)
+newpathvectors=Join[internalpathvectors,bpathvectors];
+,(*We need to give priority to internalpaths, as they can be gauged under gauging 2. We'll then form the remaining paths with facevariables and bpaths*)
+accountedforvectors=internalpathvectors;
+newpathvectors=Join[internalfacevariablevectors,externalfacevariablevectors,bpathvectors];
+];
+additionalpathvectors={};
+tosolvefor=Total[Table[coef[iii]accountedforvectors[[iii]],{iii,Length[accountedforvectors]}]];
+coeflist=Table[coef[iii],{iii,Length[accountedforvectors]}];
+newpathvectors=Cases[newpathvectors,zz_/;Length[Solve[tosolvefor==zz,coeflist]]==0];
+While[newpathvectors=!={},
+additionalpathvectors=Append[additionalpathvectors,newpathvectors[[1]]];
+accountedforvectors=Prepend[accountedforvectors,newpathvectors[[1]]];
+tosolvefor=tosolvefor+accountedforvectors[[1]]coef[Length[accountedforvectors]];
+coeflist=Append[coeflist,coef[Length[accountedforvectors]]];
+newpathvectors=Cases[newpathvectors,zz_/;Length[Solve[tosolvefor==zz,coeflist]]==0];
+];
+additionalpaths=Map[Times@@Power[alledges,#]&,additionalpathvectors];
+If[standardfacevariables,
+loopvariablebasis=Join[{internalfacevariables},{Join[externalfacevariables,additionalpaths]}];
+,loopvariablebasis=Join[{internalpaths},{additionalpaths}];
+];
+loopvariablebasis
+];
+
+moduliLoopVariablesBFT[topleft_,topright_,bottomleft_,bottomright_,gauging_,referencematching_:Null,loopvariablebasis_:Null]/;(gauging===1||gauging===2):=Block[{perfmatchings,referenceperfmatch,basispaths,basis,kasteleyn,allvariables,perfmatchingvectors,basisvectors,tosolvefor,coef,coeflist,perfmatchingsasloops,masterspace,modulispace,internalfacenames,internalfacevariables,internalfacevariablevectors,internalfacesasbasispaths,vectorMod},
+If[edgesBFTformQ[topleft,topright,bottomleft,bottomright],
+perfmatchings=perfectMatchings[topleft,topright,bottomleft,bottomright];
+If[referencematching===Null,
+referenceperfmatch=perfmatchings[[1]];
+,referenceperfmatch=referencematching;
+];
+If[loopvariablebasis===Null,
+(*make my own basis*)
+If[gauging==2,
+basispaths=makeLoopVariablesBasis[topleft,topright,bottomleft,bottomright];
+,basispaths=makeLoopVariablesBasis[topleft,topright,bottomleft,bottomright,True];
+];
+,basispaths=loopvariablebasis;
+];
+(*The first part contains the internal loops, the second contains remaining external faces, and the final contains paths strecthing between different boundaries*)
+basis=Flatten[basispaths];
+(*We'll now express each perfect matching as a vector describing which edges are present (1: in numerator; -1: in denominator; 0: absent)*)
+kasteleyn=joinupKasteleyn[topleft,topright,bottomleft,bottomright];
+allvariables=Variables[kasteleyn];
+perfmatchingvectors=Map[Table[D[#,allvariables[[iii]]],{iii,Length[allvariables]}]/.Map[#->1&,allvariables]&,perfmatchings/referenceperfmatch];
+(*We'll also express the path basis in this vectorial way*)
+basisvectors=Map[Table[D[#,allvariables[[iii]]],{iii,Length[allvariables]}]/.Map[#->1&,allvariables]&,basis];
+(*We can now solve for which basis vectors are required to form a given expression*)
+tosolvefor=Total[Table[coef[iii]basisvectors[[iii]],{iii,Length[basisvectors]}]];coeflist=Table[coef[iii],{iii,Length[basisvectors]}];
+perfmatchingsasloops=Map[#[[2]]&,Map[Solve[tosolvefor==#,coeflist][[1]]&,perfmatchingvectors],{2}];
+(*We now have the expression of each perfect matching in terms of the loop basis*)
+masterspace=Transpose[perfmatchingsasloops];
+(*We need to gauge away all internal faces, and if we use gauging 2 also all internal loops. This corresponds to the first rows of the masterspace*)
+If[loopvariablebasis===Null,
+(*if I made my own basis, I arranged it such that the first entry is what we'll be gauging away. Otherwise, we'll need to find what to gauge away by hand*)
+modulispace=masterspace[[Range[Length[basispaths[[1]]]+1,Length[basis]]]];
+,(*We need to gauge away internal faces only. We'll find out how to express internal faces in terms of basispaths, and then mod out by these expressions*)
+internalfacenames=internalFaceLabels[topleft,topright,bottomleft,bottomright];
+internalfacevariables=Map[(Times@@Cases[allvariables,_[_,#]])/(Times@@Cases[allvariables,_[#,_]])&,internalfacenames];
+internalfacevariablevectors=Map[Table[D[#,allvariables[[iii]]],{iii,Length[allvariables]}]/.Map[#->1&,allvariables]&,internalfacevariables];
+tosolvefor=Total[Table[coef[iii]basisvectors[[iii]],{iii,Length[basisvectors]}]];
+coeflist=Table[coef[iii],{iii,Length[basisvectors]}];
+(*We'll now express the internal faces as a combination of basis paths*)
+internalfacesasbasispaths=Map[#[[2]]&,Map[Solve[tosolvefor==#,coeflist][[1]]&,internalfacevariablevectors],{2}];
+(*We'll need to mod out by these vectors, as they represent internal faces*)
+vectorMod=Function[{vector,modoutbyvectors},
+Total[Map[Projection[vector,#]&,NullSpace[modoutbyvectors]]]
+];
+modulispace=Transpose[Map[vectorMod[#,internalfacesasbasispaths]&,perfmatchingsasloops]];
+];
+,Print["The graph must be of BFT type for this function to work: edges must be of the form _[_Integer,_Integer] and be labeled according the numbering of faces."];
+basis=Null;
+masterspace=Null;
+modulispace=Null;
+];
+{masterspace,modulispace,basis}
+];
 
 
 (*Functions useful for scattering amplitudes*)
