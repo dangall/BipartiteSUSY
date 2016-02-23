@@ -79,6 +79,9 @@ independentPluckerRelations::usage="Returns a list with two elements: the first 
 (*We have to be able to bring the HoldForm[minor] out of the the package*)
 minor::usage=""
 makeOrderedPathMatrix::usage="This function returns the pathmatrix where, when possible, the external nodes have a cyclic planar ordering. IT SHOULD NOT BE LISTED IN THE LIST OF GLOBAL FUNCTIONS!"
+spiralInList::usage="This function takes a list of vertices and orders them according to the spiralling-in order. IT SHOULD NOT BE LISTED IN THE LIST OF GLOBAL FUNCTIONS!"
+rotateExternalVertices::usage="This function rotates external vertices when a cut goes parallelly over the external edge. IT SHOULD NOT BE LISTED IN THE LIST OF GLOBAL FUNCTIONS!"
+makePlanarGraph::usage="Returns the vertex coordinates and edges (with their coordinates) of the graph drawn on genus zero, drawn ideally for the construction of unproblematic cuts between external boundaries. IT SHOULD NOT BE LISTED IN THE LIST OF GLOBAL FUNCTIONS!"
 makeAutomaticBoundariesAndCuts::usage="This function returns a list of boundaries, corresponding to each external node, and cuts between these boundaries. IT SHOULD NOT BE LISTED IN THE LIST OF GLOBAL FUNCTIONS!"
 getGrassmannian::usage="This function returns the correspdoning element of the Grassmannian with all signs placed correctly to ensure manifest positivity of minors in planar diagrams, including signs associated to the rotation numnber of paths in the diagram. It only works when the graph can be embedded on genus zero (though it may have any number of boundaries)."
 pluckerCoordinates::usage="Returns the external ordering and the Plucker coordinates of the on-shell diagram. It is posisble to specify whether this function should place in all signs according to the boundary measurement, or whether the path matrix is sufficient."
@@ -1153,7 +1156,7 @@ independentrelations={};
 {independentrelations,solutions}
 ];
 
-makeOrderedPathMatrix[adjacencymatrix_,pathmat_,externalordering_,topleft_,topright_,bottomleft_,bottomright_]:=Block[{adjacencymat,planar,externals,extnum,permutations,externaladjacencyseed,externaladjencyattempts,ii,testgraph,ordering,rowordering,orderedpathmat},
+makeOrderedPathMatrix[adjacencymatrix_,pathmat_,externalordering_,topleft_,topright_,bottomleft_,bottomright_]:=Block[{adjacencymat,planar,externals,extnum,allperms,numberofperms,permutations,externaladjacencyseed,externaladjencyattempts,ii,testgraph,ordering,rowordering,orderedpathmat},
 adjacencymat=adjacencymatrix;
 planar=False;
 If[externalordering===Null,
@@ -1162,9 +1165,18 @@ If[externalordering===Null,
 externals=Flatten[Position[Map[Total,adjacencymat],1]];(*These are the row-numbers corresponding to external nodes*)
 extnum=Length[externals];
 (*We will now try and form a single external boundary by connecting up all external nodes sequentially*)
-permutations=Map[Append[#[[1]],extnum]&,Gather[Permutations[Range[extnum-1]],#1==Reverse[#2]&]];
+allperms=Permutations[Range[extnum-1]];
+numberofperms=Length[allperms];
+permutations=Map[Append[#,extnum]&,allperms[[DeleteDuplicates[MapThread[Sort[{#1,#2}][[1]]&,{Range[numberofperms],Ordering[Map[Reverse[#]&,allperms]]}]]]]];
+(*permutations=Map[Append[#[[1]],extnum]&,Gather[Permutations[Range[extnum-1]],#1\[Equal]Reverse[#2]&]];*)
 (*We will start by making an adjacency matrix for one choice of external boundary. We will then permute this matrix in all possible ways*)
-externaladjacencyseed=Normal[AdjacencyMatrix[PathGraph[Prepend[permutations[[1]],extnum]]]];
+If[permutations[[1]]==={1,2},
+externaladjacencyseed={{0,1},{1,0}};
+,If[permutations[[1]]==={1},
+externaladjacencyseed={1};
+,externaladjacencyseed=Normal[AdjacencyMatrix[PathGraph[Prepend[permutations[[1]],extnum]]]];
+];
+];
 externaladjencyattempts=Map[externaladjacencyseed[[#,#]]&,permutations];
 For[ii=1,ii<=Length[externaladjencyattempts],ii++,
 adjacencymat[[externals,externals]]=externaladjencyattempts[[ii]];
@@ -1189,33 +1201,14 @@ orderedpathmat=pathmat[[rowordering,ordering]];
 {orderedpathmat,planar}
 ];
 
-makeAutomaticBoundariesAndCuts[graph_,topleft_,topright_,bottomleft_,bottomright_]:=Module[{planargraph,verticespos,edgepos,boundaries,externalnodenumbers,nodenumberstoedges,verticestocoords,externalvertices,spiralInList,cutcoordinates,cutcoordinatesandnodes,edgesCrossQ,crossedEdges,cutsedgecrossings,extraCutEdges,extracrossededges,kasteleyn,bigkasteleyn,nameUndirectedEdges,edgenamerule,boundarypaircuts},
-If[PlanarGraphQ[graph],
-(*We shall begin by drawing out the graph such that no edges cross. In so doing we'll be able to extract the vertex coordinates and edge positions of this embedding*)
-planargraph=Graph[graph,GraphLayout->"PlanarEmbedding"];
-verticespos=MapThread[{#1,#2}&,{Range[Length[GraphEmbedding[planargraph]]],GraphEmbedding[planargraph]}];
-edgepos=Map[{{verticespos[[#[[1]],2]],verticespos[[#[[2]],2]]},#}&,EdgeList[planargraph]];
-edgepos=DeleteDuplicates[edgepos];(*in case there are bubbles*)
-(*Now we have the vertices and edges for an embedding with no edge crossings*)
-(*Each external vertex will be seen as having its own tiny boundary attached to it*)
-boundaries=Transpose[{Flatten[DeleteCases[Join[bottomleft,Transpose[topright]],0,{2}]]}];
-(*Now we'll construct the cuts: they will run directly between the external vertices, since the boundaries are so tiny*)
-externalnodenumbers=Join[Range[Length[bottomleft]]+Length[topleft],Range[Dimensions[topright][[2]]]+Total[Dimensions[topleft]]+Length[bottomleft]];
-verticestocoords=Map[Rule@@#&,verticespos];
-externalvertices=externalnodenumbers/.verticestocoords;
-(*Now we'll need to make a sequence of boundaries connected by cuts. We'll start with the external node with the highest y-coordinate, and proceed along external nodes as we spiral in to the middle. This ensures that the cuts never cross each other*)
-(*Before we start we'll make a rule that translates node numbers into edge labels. This will be useful to us at the very end*)
-nodenumberstoedges=MapThread[Rule,{externalnodenumbers,Flatten[boundaries]}];
-(*This function takes a list of vertices and orders them according to the spiralling-in order*)
-spiralInList=Function[{vertexlist},
-Block[{remainingvertices,nextnode,finalvertexlist,polardistances},
+spiralInList[vertexlist_]:=Block[{remainingvertices,nextnode,finalvertexlist,polardistances},
 remainingvertices=vertexlist;
 (*The first node is the one with the largest y-coordinate*)
 nextnode=Cases[remainingvertices,{_,Max[Map[#[[2]]&,remainingvertices]]}][[1]];
-finalvertexlist={nextnode};
+finalvertexlist={nextnode+{0,0.1},nextnode};
 remainingvertices=DeleteCases[remainingvertices,nextnode];
 While[remainingvertices=!={},
-polardistances=Map[{#[[1]],Mod[#[[2]],2Pi]}&,Map[ToPolarCoordinates[#-nextnode]&,remainingvertices]];
+polardistances=Map[{#[[1]],Mod[#[[2]]-ToPolarCoordinates[finalvertexlist[[-2]]-nextnode][[2]],2Pi]}&,Map[ToPolarCoordinates[#-nextnode]&,remainingvertices]];
 (*The next node is the first one reached going radially and clockwise from the current node*)
 nextnode=Cases[polardistances,{_,Max[Map[#[[2]]&,polardistances]]}];
 (*If there are multiple ones with the same angle, pick the nearest one*)
@@ -1224,34 +1217,155 @@ nextnode=remainingvertices[[Position[polardistances,nextnode][[1,1]]]];
 finalvertexlist=Append[finalvertexlist,nextnode];
 remainingvertices=DeleteCases[remainingvertices,nextnode];
 ];
-finalvertexlist]
+finalvertexlist=Delete[finalvertexlist,1];
+finalvertexlist
 ];
-(*Now we'll order our external vertices and our boundaries in this new order*)
+
+rotateExternalVertices[verticespos_,edgepos_,externalnodenumbers_]:=Module[{externaledges,tocriticalnode,externalvertices,cutcoordinates,badexternalnodes,rotateExternalEdge,segmentCrossQ,newverticespos,newedgepos,iterationvector,accidentallycrossededges,newexternaledgecoords,edgeswemightcrossnow,newexternalnodesrule},
+(*We need to see if any of the cuts end up going through nodes attached to external nodes. If they do, things get complicated so it's better to rotate the external node to make sure to cut doesn't do this*)
+externaledges=Cases[edgepos,{___,UndirectedEdge[Alternatives@@externalnodenumbers,_]}|{___,UndirectedEdge[_,Alternatives@@externalnodenumbers]}];
+(*Our cuts may never go through the "critical nodes", i.e.  those nodes attached to external nodes*)
+tocriticalnode=Map[Rule@@#&,Join[Map[#[[1]]&,externaledges],Map[Reverse[#[[1]]]&,externaledges]]];
+(*Now we'll construct the cuts: they will run directly between the external vertices, since the boundaries are so tiny*)
+(*We'll make a sequence of boundaries connected by cuts. We'll start with the external node with the highest y-coordinate, and proceed along external nodes as we spiral in to the middle. This ensures that the cuts never cross each other*)
+externalvertices=Map[#[[2]]&,Cases[verticespos,{Alternatives@@externalnodenumbers,___}]];
 externalvertices=spiralInList[externalvertices];
-boundaries=Map[{#}&,externalvertices/.Map[#[[2]]->#[[1]]&,verticestocoords]]/.nodenumberstoedges;
 (*We may now form the cuts: they are (n-1) sequential pairs of externalvertices*)
 cutcoordinates=Table[{externalvertices[[iii]],externalvertices[[iii+1]]},{iii,Length[externalvertices]-1}];
-(*For convenience we'll also append to each of these pairs the two node numbers that they represent*)
-cutcoordinatesandnodes=MapThread[{#1,#2}&,{cutcoordinates,Map[Alternatives@@#&,cutcoordinates/.Map[#[[2]]->#[[1]]&,verticestocoords]]}];
-(*Now we need to see which edges are crossed by each cut (remember that in each cut we don't want to consider cutting edges that pass through the two external nodes)*)
+(*If we go through a critical node we need to take the external edges and rotate them. We must stay within the same face and also not cross any other edges.*)
+(*Let's find the coordinates of those external nodes whose position forces a cut do run parallel over the external edge*)
+badexternalnodes=Map[cutcoordinates[[Sequence@@#]]&,DeleteDuplicates[Position[Map[Table[Solve[#[[1]]+param(#[[2]]-#[[1]])==(#[[iii]]/.tocriticalnode),param]==={},{iii,2}]&,cutcoordinates],False],First[#1]==First[#2]&]];
+(*This function takes an external edge, finds the two nearest edges to it (coming from the same critical node), determines which ones has the smallest angle to our external edge, and rotates the external edge 95% (to the power "iteration") of the way there*)
+newverticespos=verticespos;
+newedgepos=edgepos;
+rotateExternalEdge=Function[{inputexternaledge,iteration},
+(*This function needs tocriticalnode, newedgepos*)
+Block[{criticalnode,externaledgenewcoordinates,otheredgesnewcoordinates,rotatedotheredgesnewcoordinates,anglesotheredges,smallestangle,newexternaledgeposition},
+criticalnode=inputexternaledge/.tocriticalnode;
+externaledgenewcoordinates=ToPolarCoordinates[inputexternaledge-criticalnode];
+otheredgesnewcoordinates=Map[DeleteCases[#,{0.,0.}][[1]]&,Map[#-criticalnode&,DeleteCases[Map[#[[1]]&,Cases[newedgepos,{{___,criticalnode},___}|{{criticalnode,___},___}]],{___,inputexternaledge}|{inputexternaledge,___}],{2}]];
+rotatedotheredgesnewcoordinates=Map[ToPolarCoordinates[RotationMatrix[-externaledgenewcoordinates[[2]]].#]&,otheredgesnewcoordinates];
+anglesotheredges=Map[Mod[#[[2]],2Pi]&,rotatedotheredgesnewcoordinates];
+anglesotheredges={Min[anglesotheredges],Max[anglesotheredges]-2Pi};
+smallestangle=anglesotheredges[[Ordering[Abs[anglesotheredges]][[1]]]];
+newexternaledgeposition=criticalnode+RotationMatrix[Power[0.95,iteration]smallestangle].(inputexternaledge-criticalnode);
+inputexternaledge->newexternaledgeposition]
+];
 (*This function tells you whether two generic segments cross*)
+segmentCrossQ=Function[{edge1coords,edge2coords},
+Block[{matrixtoinvert,crossdistance,crossq},
+matrixtoinvert={{edge1coords[[1,1]]-edge1coords[[2,1]],edge2coords[[2,1]]-edge2coords[[1,1]]},{edge1coords[[1,2]]-edge1coords[[2,2]],edge2coords[[2,2]]-edge2coords[[1,2]]}};
+If[N[Chop[Det[matrixtoinvert]]]=!=0.,(*if the matrix is invertible*)
+crossdistance=Inverse[matrixtoinvert].{edge1coords[[1,1]]-edge2coords[[1,1]],edge1coords[[1,2]]-edge2coords[[1,2]]};
+crossq=And@@Map[(#>=0)&&(#<=1)&,crossdistance];
+,(*the edges are parallel*)
+If[Solve[edge1coords[[1]]+param(edge1coords[[2]]-edge1coords[[1]])==edge2coords[[1]]&&0<=param<=1,param]=!={}||Solve[edge1coords[[1]]+param(edge1coords[[2]]-edge1coords[[1]])==edge2coords[[2]]&&0<=param<=1,param]=!={},
+(*the edges are parallel and overlap*)
+crossq=True;
+,crossq=False;];
+];
+crossq]
+];
+While[badexternalnodes=!={},
+(*Now let's rotate until all badexternalnodes nodes have been rotated, without crossing any other edges*)
+iterationvector=ConstantArray[1,Length[badexternalnodes]];(*iterationvector keeps track of how many times we've tried to rotate a node without accidentally crossing already existing edges. Each time we iterate we rotate it slightly less*)
+accidentallycrossededges=True;
+While[Or@@accidentallycrossededges,
+newexternaledgecoords=MapThread[{#1/.tocriticalnode,rotateExternalEdge[#1,#2][[2]]}&,{badexternalnodes,iterationvector}];
+edgeswemightcrossnow=Map[#[[1]]&,Map[DeleteCases[newedgepos,{{#,___},___}|{{___,#},___}]&,badexternalnodes/.tocriticalnode],{2}];
+accidentallycrossededges=MapThread[Or@@Table[segmentCrossQ[#1[[iii]],#2],{iii,Length[#1]}]&,{edgeswemightcrossnow,newexternaledgecoords}];
+iterationvector=iterationvector+accidentallycrossededges/.{False->0,True->1};
+];
+newexternalnodesrule=MapThread[rotateExternalEdge[#1,#2]&,{badexternalnodes,iterationvector}];
+newverticespos=newverticespos/.newexternalnodesrule;
+newedgepos=newedgepos/.newexternalnodesrule;
+externalvertices=spiralInList[externalvertices/.newexternalnodesrule];
+cutcoordinates=Table[{externalvertices[[iii]],externalvertices[[iii+1]]},{iii,Length[externalvertices]-1}];
+tocriticalnode=tocriticalnode/.newexternalnodesrule;
+badexternalnodes=Map[cutcoordinates[[Sequence@@#]]&,Position[Map[Table[Solve[#[[1]]+param(#[[2]]-#[[1]])==(#[[iii]]/.tocriticalnode),param]==={},{iii,2}]&,cutcoordinates],False]];
+];
+{newverticespos,newedgepos}
+];
+
+makePlanarGraph[graph_,topleft_,topright_,bottomleft_,bottomright_]:=Module[{planargraph,verticespos,edgepos,externalnodenumbers,verticestocoords,externalvertices,externaledges,decreaseExternalEdgeLength,shrinkedgesrule},
+planargraph=Graph[graph,GraphLayout->"PlanarEmbedding"];
+verticespos=MapThread[{#1,#2}&,{Range[Length[GraphEmbedding[planargraph]]],GraphEmbedding[planargraph]}];
+edgepos=Map[{{verticespos[[#[[1]],2]],verticespos[[#[[2]],2]]},#}&,EdgeList[planargraph]];
+edgepos=DeleteDuplicates[edgepos];(*in case there are bubbles*)
+(*Now decrease the length of all external edges by about 14%, since PlanarEmbedding tries to put everything as collinear as possible, which is problematic when we make cuts*)
+externalnodenumbers=Join[Range[Length[bottomleft]]+Length[topleft],Range[Dimensions[topright][[2]]]+Total[Dimensions[topleft]]+Length[bottomleft]];
+verticestocoords=Map[Rule@@#&,verticespos];
+externalvertices=externalnodenumbers/.verticestocoords;
+externaledges=Cases[edgepos,{___,UndirectedEdge[Alternatives@@externalnodenumbers,_]}|{___,UndirectedEdge[_,Alternatives@@externalnodenumbers]}];
+decreaseExternalEdgeLength=Function[{inputedge,decreasequantity},
+(*This function needs externalvertices to be accurate in order to work*)
+Block[{tosubtractcoords,externalnodepolarcoords,newposition,newpositionrule},
+tosubtractcoords=Cases[inputedge[[1]],Except[Alternatives@@externalvertices]][[1]];
+externalnodepolarcoords=ToPolarCoordinates[DeleteCases[Map[#-tosubtractcoords&,inputedge[[1]]],{0.,0.}][[1]]];
+newposition=tosubtractcoords+FromPolarCoordinates[{(1.-decreasequantity)externalnodepolarcoords[[1]],externalnodepolarcoords[[2]]}];
+newpositionrule=Cases[inputedge[[1]],Except[tosubtractcoords]][[1]]->newposition;
+newpositionrule]
+];
+shrinkedgesrule=Map[decreaseExternalEdgeLength[#,0.14]&,externaledges];
+verticespos=verticespos/.shrinkedgesrule;
+edgepos=edgepos/.shrinkedgesrule;
+{verticespos,edgepos}=rotateExternalVertices[verticespos,edgepos,externalnodenumbers];
+{verticespos,edgepos}
+];
+
+makeAutomaticBoundariesAndCuts[graph_,topleft_,topright_,bottomleft_,bottomright_]:=Module[{verticespos,edgepos,externalnodenumbers,externalvertices,coordstononumbers,boundaries,cutcoordinates,cutcoordinatesandnodes,edgesCrossQ,crossedEdges,cutsedgecrossings,extraCutEdges,extracrossededges,kasteleyn,bigkasteleyn,nameUndirectedEdges,edgenamerule,boundarypaircuts},
+If[PlanarGraphQ[graph],
+(*We shall begin by drawing out the graph such that no edges cross. The special way in which we draw it will also be useful to us when we make cuts between boundaries*)
+{verticespos,edgepos}=makePlanarGraph[graph,topleft,topright,bottomleft,bottomright];
+(*Now we have the vertices and edges for a good embedding with no edge crossings*)
+(*Each external vertex will be seen as having its own tiny boundary attached to it. We'll order the nodes according to the cuts. To avoid the cuts crossing each other, we'll start from an external node far out and spiral in: this determines the order of externalvertices*)
+externalnodenumbers=Join[Range[Length[bottomleft]]+Length[topleft],Range[Dimensions[topright][[2]]]+Total[Dimensions[topleft]]+Length[bottomleft]];
+externalvertices=Map[#[[2]]&,Cases[verticespos,{Alternatives@@externalnodenumbers,___}]];
+externalvertices=spiralInList[externalvertices];
+(*We may now form the tiny boundaries around each external node, and have them in the right order*)
+coordstononumbers=Map[#[[2]]->#[[1]]&,verticespos];
+boundaries=Transpose[{(externalvertices/.coordstononumbers)/.MapThread[Rule,{externalnodenumbers,Flatten[DeleteCases[Join[bottomleft,Transpose[topright]],0,{2}]]}]}];
+(*Now we'll construct the cuts: they will run directly between the external vertices, since the boundaries are so tiny. The cuts are are (n-1) sequential pairs of externalvertices*)
+cutcoordinates=Table[{externalvertices[[iii]],externalvertices[[iii+1]]},{iii,Length[externalvertices]-1}];
+(*For convenience we'll also append to each of these pairs the two node numbers that they represent*)
+cutcoordinatesandnodes=MapThread[{#1,#2}&,{cutcoordinates,Map[Alternatives@@#&,cutcoordinates/.coordstononumbers]}];
+(*Now we need to see which edges are crossed by each cut (remember that in each cut we don't want to consider cutting edges that pass through the two external nodes)*)
+(*This function tells you whether a cut crosses an edge*)
 edgesCrossQ=Function[{cutcoords,edgecoords},
 Block[{matrixtoinvert,crossdistance,newcutcoords,crossq},
 matrixtoinvert={{cutcoords[[1,1]]-cutcoords[[2,1]],edgecoords[[2,1]]-edgecoords[[1,1]]},{cutcoords[[1,2]]-cutcoords[[2,2]],edgecoords[[2,2]]-edgecoords[[1,2]]}};
-If[Det[matrixtoinvert]=!=0.,(*if the matrix is invertible*)
+If[N[Chop[Det[matrixtoinvert]]]=!=0.,(*if the matrix is invertible*)
 crossdistance=Inverse[matrixtoinvert].{cutcoords[[1,1]]-edgecoords[[1,1]],cutcoords[[1,2]]-edgecoords[[1,2]]};
 If[crossdistance[[2]]==1.||crossdistance[[2]]==0.,(*we are touching the endpoint of an edge*)
 (*In this case we should slightly shift the cut downwards and so that it doesn't go right through the node*)
 newcutcoords=Map[#-{0,0.05}&,cutcoords];
 matrixtoinvert={{newcutcoords[[1,1]]-newcutcoords[[2,1]],edgecoords[[2,1]]-edgecoords[[1,1]]},{newcutcoords[[1,2]]-newcutcoords[[2,2]],edgecoords[[2,2]]-edgecoords[[1,2]]}};
-If[Det[matrixtoinvert]=!=0.,
+If[N[Chop[Det[matrixtoinvert]]]=!=0.,
 crossdistance=Inverse[matrixtoinvert].{newcutcoords[[1,1]]-edgecoords[[1,1]],newcutcoords[[1,2]]-edgecoords[[1,2]]};
-,crossq=False;
+If[crossdistance[[2]]==1.||crossdistance[[2]]==0.,(*we are STILL touching the endpoint of an edge*)
+(*In this case we should slightly shift the cut to the right and so that it doesn't go right through the node*)
+newcutcoords=Map[#+{0.05,0}&,newcutcoords];
+matrixtoinvert={{newcutcoords[[1,1]]-newcutcoords[[2,1]],edgecoords[[2,1]]-edgecoords[[1,1]]},{newcutcoords[[1,2]]-newcutcoords[[2,2]],edgecoords[[2,2]]-edgecoords[[1,2]]}};
+If[N[Chop[Det[matrixtoinvert]]]=!=0.,
+crossdistance=Inverse[matrixtoinvert].{newcutcoords[[1,1]]-edgecoords[[1,1]],newcutcoords[[1,2]]-edgecoords[[1,2]]};
+,If[Solve[newcutcoords[[1]]+param(newcutcoords[[2]]-newcutcoords[[1]])==edgecoords[[1]]&&0<=param<=1,param]=!={}||Solve[newcutcoords[[1]]+param(newcutcoords[[2]]-newcutcoords[[1]])==edgecoords[[2]]&&0<=param<=1,param]=!={},
+(*the edges are parallel and overlap*)
+crossdistance={0.5,0.5};
+,crossdistance={2.,2.}];
+];
+];
+,If[Solve[newcutcoords[[1]]+param(newcutcoords[[2]]-newcutcoords[[1]])==edgecoords[[1]]&&0<=param<=1,param]=!={}||Solve[newcutcoords[[1]]+param(newcutcoords[[2]]-newcutcoords[[1]])==edgecoords[[2]]&&0<=param<=1,param]=!={},
+(*the edges are parallel and overlap*)
+crossdistance={0.5,0.5};
+,crossdistance={2.,2.}];
 ];
 ];
 crossq=And@@Map[(#>=0)&&(#<=1)&,crossdistance];
-,(*the edges are parallel, and cannot cross*)
-crossq=False;
+,(*the edges are parallel*)
+If[Solve[cutcoords[[1]]+param(cutcoords[[2]]-cutcoords[[1]])==edgecoords[[1]]&&0<=param<=1,param]=!={}||Solve[cutcoords[[1]]+param(cutcoords[[2]]-cutcoords[[1]])==edgecoords[[2]]&&0<=param<=1,param]=!={},
+(*the edges are parallel and overlap*)
+crossq=True;
+,crossq=False;];
 ];
 crossq]
 ];
