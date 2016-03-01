@@ -63,6 +63,7 @@ reductionGraph::usage="Returns the sets of edges which may be removed without ch
 nonPluckerPolesQ::usage="Tells you whether a reduced diagram has non-standard poles which are not simply products of Plucker coordinates."
 removableEdges::usage="Returns the list of removable edges. If checkneeded=True, it will also check if the starting graph is reduced or not."
 edgeOrderings::usage="Returns a list where each element is a consistent ordering of edges around a white or black node, i.e. where the edges are sequenced such that each subsequent edge's first index is equal to the previous edge's second index."
+cyclicEdgeOrderings::usage="Retuns a list of edges where the edges have been ordered accoring to the cyclic order, i.e. i.e. where the edges are sequenced such that each subsequent edge's first index is equal to the previous edge's second index."
 nextStepBlackToWhite::usage="Returns the next edge in the zig-zag path and its position."
 nextStepWhiteToBlack::usage="Returns the next edge in the zig-zag path and its position."
 internalZigZagNumeratorDenominator::usage="Returns a list where the first element is a list of edges in the numerator of a zig-zag path, and the second element is a list of edges in the denominator of the zig-zag path. The zig-zag path starts from an edge."
@@ -279,7 +280,7 @@ perfectmatchigns=Sort[MonomialList[newtonpolynomial]/.{Times[-1,zz_]->Times[zz]}
 perfectmatchigns
 ];
 
-getPmatrix[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False]:=(*getPmatrix[topleft,topright,bottomleft,bottomright]=getPmatrix[topleft,topright,bottomleft,bottomright,checkneeded]=getPmatrix[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph]=*)Block[{varlist,plist,pmatrix},
+getPmatrix[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False]:=getPmatrix[topleft,topright,bottomleft,bottomright]=getPmatrix[topleft,topright,bottomleft,bottomright,checkneeded]=getPmatrix[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph]=Block[{varlist,plist,pmatrix},
 varlist=Variables[joinupKasteleyn[topleft,topright,bottomleft,bottomright]];
 plist=perfectMatchings[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph];
 If[plist=!=Null,
@@ -448,6 +449,30 @@ For[ii=1,ii<Length[edges],ii++,
 orderings=MapThread[Sequence@@Function[{input1,input2},Map[Join[input1,{#}]&,input2]][#1,#2]&,{orderings,Map[Cases[Complement[edges,#],_[Last[#][[2]],_]]&,orderings]}];
 ];
 orderings=Map[RotateLeft,orderings];
+orderings
+];
+
+cyclicEdgeOrderings[edges_,currentedge_]:=Module[{listSubtraction,orderings,remainingedges,ii},
+(*Make a function that takes a list and subtracts away the elements from a second list*)
+listSubtraction=Function[{listtoremovefrom,listofremoveditems},
+Block[{newlist,newremovelist,jj},
+newlist=listtoremovefrom;
+newremovelist=listofremoveditems;
+For[jj=1,jj<=Length[listofremoveditems],jj++,
+newlist=Delete[newlist,Position[newlist,newremovelist[[1]]][[1]]];
+newremovelist=Delete[newremovelist,{1}]
+];
+newlist]
+];
+(*Start with our current edge.*)
+orderings={{currentedge}};
+(*In each ordering, we have used up a certain set of edges, so we'll also keep track of which edges remain available to us*)
+remainingedges=Map[listSubtraction[edges,#]&,orderings];
+(*The next edge should have the structure _[currentedge[[2]],_]. There may however be multiple alternatives of this type, and not all of them are viable edge orderings that all match up. For for each alternative, try it out by adding this alternative onto {currentedge}. Ultimately we only want to keep those alternatives that match up.*)
+For[ii=1,ii<Length[edges],ii++,
+orderings=MapThread[Sequence@@Function[{input1,input2},Map[Join[input1,{#}]&,input2]][#1,Cases[#2,_[Last[#1][[2]],_]]]&,{orderings,remainingedges}];
+remainingedges=Map[listSubtraction[edges,#]&,orderings];
+];
 orderings
 ];
 
@@ -623,23 +648,36 @@ selfintersections=Null;
 selfintersections
 ];
 
-badDoubleCrossingZigZagPairs[topleft_,topright_,bottomleft_,bottomright_]:=Module[{graphOK,edgeChronology,allzigzags,firstedges,internalzigzags,allzigzagpairs,doubleCrossingQ,doublecrossings},
+badDoubleCrossingZigZagPairs[topleft_,topright_,bottomleft_,bottomright_]:=Module[{graphOK,threadJointheLists,allzigzags,internalzigzags,allzigzagpairs,doubleCrossingQ,doublecrossings},
 graphOK=checkKasteleynQ[topleft,topright,bottomleft,bottomright,True];
 If[graphOK,
 (*We begin by making all edges in the zig-zags appear in chronological order*)
-edgeChronology=Function[{edges,firstedge},
-Block[{orderings,ii},
-orderings={DeleteDuplicates[Cases[edges,firstedge]]};
-For[ii=1,ii<Length[edges],ii++,
-orderings=orderings=MapThread[Sequence@@Function[{input1,input2},Map[Join[input1,{#}]&,input2]][#1,#2]&,{orderings,Map[Cases[Variables[Plus@@edges-Plus@@#],_[Last[#][[2]],_]]&,orderings]}];
+threadJointheLists=Function[{numerator,denominator},
+Block[{list1,list2},
+If[Length[numerator]>=Length[denominator],
+list1=Flatten[Transpose[{numerator,numerator}]];
+list2=denominator;
+,list1=Flatten[Transpose[{denominator,denominator}]];
+list2=numerator;
 ];
-orderings]
+(*Interweave the two lists*)
+list1[[Range[2,2Length[list2],2]]]=list2;
+list1=PadRight[list1,Length[numerator]+Length[denominator]];
+(*If the numerator and the denominator had the same numnber of edges, we don't know which edge should come first, so we'll need to check that the index structure is all correct*)
+If[Length[numerator]==Length[denominator],
+If[(And@@Map[Equal@@#&,Partition[Drop[Drop[Flatten[Map[List@@#&,list1]],1],-1],2]])==False,
+(*The index structure wasn't correct, and we should have started with the first edge in the denominator*)
+(*Print["had to do it the opposite way!"];*)
+list1=Flatten[Transpose[{numerator,numerator}]];
+list2=denominator;
+list1[[Range[1,2Length[list2],2]]]=list2;
+list1=PadRight[list1,Length[numerator]+Length[list2]];
+];
+];If[(And@@Map[Equal@@#&,Partition[Drop[Drop[Flatten[Map[List@@#&,list1]],1],-1],2]])==False,Print["We somehow still messed up!"];];
+list1]
 ];
 allzigzags=allZigZagNumeratorsDenominators[topleft,topright,bottomleft,bottomright];
-(*We will make a list containing the first edge of each zig-zag, where for internal zig-zags there is no first edge so we will take the first edge in the numerator*)
-firstedges=MapThread[Join[#1,#2,#3][[1]]&,{Map[#[[1]]&,Map[Intersection[#,Variables[bottomleft]]&,allzigzags,{2}]],Map[#[[2]]&,Map[Intersection[#,Variables[topright]]&,allzigzags,{2}]],Map[#[[1]]&,Map[Intersection[#,Variables[topleft]]&,allzigzags,{2}]]}];
-allzigzags=Map[Join@@#&,allzigzags];
-allzigzags=MapThread[edgeChronology[#1,#2][[1]]&,{allzigzags,firstedges}];
+allzigzags=Map[threadJointheLists[#[[1]],#[[2]]]&,allzigzags];
 (*Now we have the chronological list of edes in each zig-zag. We need to now look at the pairwaise intersections between them to determine whether we have "bad double crossings"*)
 (*Since internal zig-zags are cyclic, we will write out two cycles of them, so that multiple intersections can be seen to occur chronologically correctly*)
 internalzigzags=Cases[allzigzags,zz_/;Intersection[zz,Variables[Join[bottomleft,topright]]]==={}];

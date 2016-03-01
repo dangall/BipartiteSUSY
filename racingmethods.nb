@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     21909,        389]
-NotebookOptionsPosition[     21531,        371]
-NotebookOutlinePosition[     21893,        387]
-CellTagsIndexPosition[     21850,        384]
+NotebookDataLength[     22415,        392]
+NotebookOptionsPosition[     22037,        374]
+NotebookOutlinePosition[     22399,        390]
+CellTagsIndexPosition[     22356,        387]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -38,35 +38,31 @@ Cell[BoxData[{
    RowBox[{"Block", "[", 
     RowBox[{
      RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
-     RowBox[{"makeAutomaticBoundariesAndCuts", "[", 
-      RowBox[{
-      "graph", ",", "topleft", ",", "topright", ",", "bottomleft", ",", 
-       "bottomright"}], "]"}]}], "\[IndentingNewLine]", "]"}]}], 
-  ";"}], "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"zigzagnumdenom", "=", 
+       RowBox[{"allZigZagNumeratorsDenominators", "[", 
+        RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"allzigzags2", "=", 
+       RowBox[{"Map", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"threadJointheLists", "[", 
+           RowBox[{
+            RowBox[{"#", "[", 
+             RowBox[{"[", "1", "]"}], "]"}], ",", 
+            RowBox[{"#", "[", 
+             RowBox[{"[", "2", "]"}], "]"}]}], "]"}], "&"}], ",", 
+         "zigzagnumdenom"}], "]"}]}], ";"}]}], "\[IndentingNewLine]", "]"}]}],
+   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"fun2", ":=", 
    RowBox[{"Block", "[", 
     RowBox[{
      RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
-     RowBox[{"Transpose", "[", 
-      RowBox[{"{", 
-       RowBox[{
-        RowBox[{"(", 
-         RowBox[{"externalvertices", "/.", "coordstononumbers"}], ")"}], "/.", 
-        RowBox[{"MapThread", "[", 
-         RowBox[{"Rule", ",", 
-          RowBox[{"{", 
-           RowBox[{"externalnodenumbers", ",", 
-            RowBox[{"Flatten", "[", 
-             RowBox[{"DeleteCases", "[", 
-              RowBox[{
-               RowBox[{"Join", "[", 
-                RowBox[{"bottomleft", ",", 
-                 RowBox[{"Transpose", "[", "topright", "]"}]}], "]"}], ",", 
-               "0", ",", 
-               RowBox[{"{", "2", "}"}]}], "]"}], "]"}]}], "}"}]}], "]"}]}], 
-       "}"}], "]"}]}], "\[IndentingNewLine]", "]"}]}], 
-  ";"}], "\[IndentingNewLine]", 
+     RowBox[{"haha", "[", 
+      RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"fun3", ":=", 
    RowBox[{"Block", "[", 
@@ -99,16 +95,14 @@ Cell[BoxData[{
        RowBox[{"method1", ",", 
         RowBox[{
          RowBox[{"AbsoluteTiming", "[", "fun1", "]"}], "[", 
-         RowBox[{"[", "1", "]"}], "]"}]}], "]"}]}], ";"}]}], 
-   "\[IndentingNewLine]", 
-   RowBox[{"(*", 
-    RowBox[{
+         RowBox[{"[", "1", "]"}], "]"}]}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
      RowBox[{"method2", "=", 
       RowBox[{"Append", "[", 
        RowBox[{"method2", ",", 
         RowBox[{
          RowBox[{"AbsoluteTiming", "[", "fun2", "]"}], "[", 
-         RowBox[{"[", "1", "]"}], "]"}]}], "]"}]}], ";"}], "*)"}], 
+         RowBox[{"[", "1", "]"}], "]"}]}], "]"}]}], ";"}]}], 
    "\[IndentingNewLine]", 
    RowBox[{"(*", 
     RowBox[{
@@ -210,9 +204,12 @@ Cell[BoxData[{
    3.6651442250688334`*^9, {3.665207842885902*^9, 3.6652078654913225`*^9}, 
    3.6652093517829065`*^9, {3.6652219298461027`*^9, 3.6652219397182307`*^9}, {
    3.665223595123123*^9, 3.665223614336399*^9}, {3.6652310490084877`*^9, 
-   3.665231061508043*^9}}],
+   3.665231061508043*^9}, {3.6655865717797775`*^9, 3.6655865993353977`*^9}, {
+   3.6657694026250668`*^9, 3.6657694398014636`*^9}, {3.6657697884472375`*^9, 
+   3.665769791698882*^9}, {3.66576982797318*^9, 3.6657698417297096`*^9}, {
+   3.6657709189073744`*^9, 3.6657709737755013`*^9}}],
 
-Cell[BoxData["0.04211686302728142`"], "Output",
+Cell[BoxData["0.0070172200564821915`"], "Output",
  CellChangeTimes->{
   3.662184976269184*^9, {3.6621851943912783`*^9, 3.662185200292393*^9}, 
    3.6621857624285955`*^9, {3.6621858230714126`*^9, 3.6621858424468155`*^9}, {
@@ -287,11 +284,13 @@ Cell[BoxData["0.04211686302728142`"], "Output",
    3.665138662907052*^9}, 3.665138989211899*^9, 3.665144229846624*^9, {
    3.6652078498980083`*^9, 3.6652078676091847`*^9}, 3.66520935712819*^9, {
    3.6652219341997447`*^9, 3.665221942954173*^9}, {3.665223610912891*^9, 
-   3.66522361863509*^9}, {3.665231056973231*^9, 3.665231076118794*^9}}],
+   3.66522361863509*^9}, {3.665231056973231*^9, 3.665231076118794*^9}, {
+   3.665586583011454*^9, 3.665586608906906*^9}, {3.6657694246445746`*^9, 
+   3.6657694315879607`*^9}, 3.665769463714422*^9, 3.665769792870557*^9, {
+   3.6657698357675023`*^9, 3.66576985133632*^9}, 3.6657712581097865`*^9, 
+   3.66577133314707*^9}],
 
-Cell[BoxData[
- RowBox[{"Mean", "[", 
-  RowBox[{"{", "}"}], "]"}]], "Output",
+Cell[BoxData["0.018838978987095082`"], "Output",
  CellChangeTimes->{
   3.662184976269184*^9, {3.6621851943912783`*^9, 3.662185200292393*^9}, 
    3.6621857624285955`*^9, {3.6621858230714126`*^9, 3.6621858424468155`*^9}, {
@@ -366,12 +365,16 @@ Cell[BoxData[
    3.665138662907052*^9}, 3.665138989211899*^9, 3.665144229846624*^9, {
    3.6652078498980083`*^9, 3.6652078676091847`*^9}, 3.66520935712819*^9, {
    3.6652219341997447`*^9, 3.665221942954173*^9}, {3.665223610912891*^9, 
-   3.66522361863509*^9}, {3.665231056973231*^9, 3.665231076118794*^9}}]
+   3.66522361863509*^9}, {3.665231056973231*^9, 3.665231076118794*^9}, {
+   3.665586583011454*^9, 3.665586608906906*^9}, {3.6657694246445746`*^9, 
+   3.6657694315879607`*^9}, 3.665769463714422*^9, 3.665769792870557*^9, {
+   3.6657698357675023`*^9, 3.66576985133632*^9}, 3.6657712581097865`*^9, 
+   3.66577133314707*^9}]
 }, Open  ]]
 },
 Evaluator->"Local2",
-WindowSize->{1366, 685},
-WindowMargins->{{-8, Automatic}, {Automatic, 0}},
+WindowSize->{1362, 676},
+WindowMargins->{{Automatic, -5}, {Automatic, 0}},
 FrontEndVersion->"10.2 for Microsoft Windows (64-bit) (July 7, 2015)",
 StyleDefinitions->"Default.nb"
 ]
@@ -387,9 +390,9 @@ CellTagsIndex->{}
 (*NotebookFileOutline
 Notebook[{
 Cell[CellGroupData[{
-Cell[580, 22, 9828, 190, 552, "Input"],
-Cell[10411, 214, 5536, 75, 31, "Output"],
-Cell[15950, 291, 5565, 77, 31, "Output"]
+Cell[580, 22, 9864, 187, 552, "Input"],
+Cell[10447, 211, 5786, 79, 31, "Output"],
+Cell[16236, 292, 5785, 79, 31, "Output"]
 }, Open  ]]
 }
 ]
