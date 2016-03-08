@@ -854,6 +854,9 @@ Total[Map[Projection[vector,#]&,NullSpace[modoutbyvectors]]]
 ];
 modulispace=Transpose[Map[vectorMod[#,internalfacesasbasispaths]&,perfmatchingsasloops]];
 ];
+If[modulispace==={},
+modulispace={ConstantArray[0,Dimensions[masterspace][[2]]]};
+];
 ,Print["The graph must be of BFT type for this function to work: edges must be of the form _[_Integer,_Integer] and be labeled according the numbering of faces."];
 basis=Null;
 masterspace=Null;
@@ -925,7 +928,7 @@ sinkedges
 
 externalEdgesNodeNumbers[topleft_,topright_,bottomleft_,bottomright_,externaledgelist_]:=Union[Map[#[[1]]&,Position[bottomleft,Alternatives@@externaledgelist]+Length[topleft]],Map[#[[2]]&,Position[topright,Alternatives@@externaledgelist]+Total[Dimensions[topleft]]+Length[bottomleft]]];
 
-connectivityMatrix[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null]:=connectivityMatrix[topleft,topright,bottomleft,bottomright,referencematching]=connectivityMatrix[topleft,topright,bottomleft,bottomright]=Block[{referenceperfmatch,kasteleyn,perfmatchvars,kastnopm,kastinvertedpm,bigmatrix,connectivitymat},
+connectivityMatrix[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null]:=(*connectivityMatrix[topleft,topright,bottomleft,bottomright,referencematching]=connectivityMatrix[topleft,topright,bottomleft,bottomright]=*)Block[{referenceperfmatch,kasteleyn,perfmatchvars,kastnopm,kastinvertedpm,bigmatrix,connectivitymat},
 If[referencematching===Null,
 referenceperfmatch=perfectMatchings[topleft,topright,bottomleft,bottomright][[lowNumberLoopsPM[topleft,topright,bottomleft,bottomright]]];
 ,referenceperfmatch=referencematching;
