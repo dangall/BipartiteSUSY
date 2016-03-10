@@ -978,7 +978,7 @@ tangentspacedim=MatrixRank[Table[D[minorexpressions[[iii]],minorvars[[jjj]]],{ii
 tangentspacedim
 ];
 
-reducibilityQ[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1||gauging===2):=Block[{edgesnaivereducibility,reducibility,dimgrassmannian,dimafteredgeremoval,ii},(*First need to find out which columns are the same point in the moduli space*)
+reducibilityQ[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1||gauging===2):=Block[{edgesnaivereducibility,reducibility,numsources,numexternalnodes,maxpossibledimension,dimensionP,dimgrassmannian,dimafteredgeremoval,ii},(*First need to find out which columns are the same point in the moduli space*)
 edgesnaivereducibility=reducibilityBFTedges[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph,gauging];
 If[edgesnaivereducibility===Null,
 reducibility=Null;(*there was some problem with the Kasteleyn*)
@@ -989,8 +989,14 @@ reducibility=False;
 (*if the graph is planar, if we may remove edges without changing the matroid polytope it means that the graph is reducible. Equally, this is the definition for a BFT graph to be reducible*)
 reducibility=True;
 ,(*if we have a non-planar scattering graph, we need to do things carefully.*)
-dimgrassmannian=dimensionGrassmannian[topleft,topright,bottomleft,bottomright];
-If[polytopeDim[getPmatrix[topleft,topright,bottomleft,bottomright]]>dimgrassmannian,
+numsources=Length[findSources[topright,c,perfectMatchings[topleft,topright,bottomleft,bottomright][[1]]]];
+numexternalnodes=Length[bottomleft]+Length[Transpose[topright]];
+maxpossibledimension=numsources(numexternalnodes-numsources);
+dimensionP=polytopeDim[getPmatrix[topleft,topright,bottomleft,bottomright]];
+If[dimensionP>maxpossibledimension,
+reducibility=True;
+,dimgrassmannian=dimensionGrassmannian[topleft,topright,bottomleft,bottomright];
+If[dimensionP>dimgrassmannian,
 (*if the dimension of the Grassmannian is less than that from a naive counting of edges and perfect matchings, it is necessarily possible to remove edges without affecting the Grassmannian*)
 reducibility=True;
 ,reducibility=False;
@@ -1001,6 +1007,7 @@ If[dimafteredgeremoval==dimgrassmannian,
 (*we have found an edge which may be removed without decreasing the dimension of the Grassmannian!*)
 reducibility=True;
 Break[]
+];
 ];
 ];
 ];
@@ -1276,7 +1283,7 @@ finalvertexlist=Delete[finalvertexlist,1];
 finalvertexlist
 ];
 
-rotateExternalVertices[verticespos_,edgepos_,externalnodenumbers_]:=Module[{externaledges,tocriticalnode,externalvertices,cutcoordinates,badexternalnodes,rotateExternalEdge,segmentCrossQ,newverticespos,newedgepos,iterationvector,accidentallycrossededges,newexternaledgecoords,edgeswemightcrossnow,newexternalnodesrule},
+rotateExternalVertices[verticespos_,edgepos_,externalnodenumbers_]:=Module[{externaledges,tocriticalnode,externalvertices,cutcoordinates,freestandingexternalvertices,doesitavoidmycriticalnode,corrections,badexternalnodes,rotateExternalEdge,segmentCrossQ,newverticespos,newedgepos,iterationvector,accidentallycrossededges,newexternaledgecoords,edgeswemightcrossnow,newexternalnodesrule},
 (*We need to see if any of the cuts end up going through nodes attached to external nodes. If they do, things get complicated so it's better to rotate the external node to make sure to cut doesn't do this*)
 externaledges=Cases[edgepos,{___,UndirectedEdge[Alternatives@@externalnodenumbers,_]}|{___,UndirectedEdge[_,Alternatives@@externalnodenumbers]}];
 (*Our cuts may never go through the "critical nodes", i.e.  those nodes attached to external nodes*)
@@ -1289,7 +1296,14 @@ externalvertices=spiralInList[externalvertices];
 cutcoordinates=Table[{externalvertices[[iii]],externalvertices[[iii+1]]},{iii,Length[externalvertices]-1}];
 (*If we go through a critical node we need to take the external edges and rotate them. We must stay within the same face and also not cross any other edges.*)
 (*Let's find the coordinates of those external nodes whose position forces a cut do run parallel over the external edge*)
-badexternalnodes=Map[cutcoordinates[[Sequence@@#]]&,DeleteDuplicates[Position[Map[Table[Solve[#[[1]]+param(#[[2]]-#[[1]])==(#[[iii]]/.tocriticalnode),param]==={},{iii,2}]&,cutcoordinates],False],First[#1]==First[#2]&]];
+(*Sometimes an external vertex is not connected to an external edge*)
+freestandingexternalvertices=Cases[externalvertices,Except[Alternatives@@Map[Sequence@@#[[1]]&,externaledges]]];
+doesitavoidmycriticalnode=Map[Table[Solve[#[[1]]+param(#[[2]]-#[[1]])==(#[[iii]]/.tocriticalnode),param]==={},{iii,2}]&,cutcoordinates];
+corrections=Map[#&,Position[cutcoordinates,Alternatives@@freestandingexternalvertices]];
+For[jj=1,jj<=Length[corrections],jj++,
+doesitavoidmycriticalnode[[Sequence@@corrections[[jj]]]]=True;
+];
+badexternalnodes=Map[cutcoordinates[[Sequence@@#]]&,DeleteDuplicates[Position[doesitavoidmycriticalnode,False],First[#1]==First[#2]&]];
 (*This function takes an external edge, finds the two nearest edges to it (coming from the same critical node), determines which ones has the smallest angle to our external edge, and rotates the external edge 95% (to the power "iteration") of the way there*)
 newverticespos=verticespos;
 newedgepos=edgepos;
@@ -1379,7 +1393,7 @@ externalvertices=Map[#[[2]]&,Cases[verticespos,{Alternatives@@externalnodenumber
 externalvertices=spiralInList[externalvertices];
 (*We may now form the tiny boundaries around each external node, and have them in the right order*)
 coordstononumbers=Map[#[[2]]->#[[1]]&,verticespos];
-boundaries=Transpose[{(externalvertices/.coordstononumbers)/.MapThread[Rule,{externalnodenumbers,Flatten[DeleteCases[Join[bottomleft,Transpose[topright]],0,{2}]]}]}];
+boundaries=Transpose[{(externalvertices/.coordstononumbers)}];
 (*Now we'll construct the cuts: they will run directly between the external vertices, since the boundaries are so tiny. The cuts are are (n-1) sequential pairs of externalvertices*)
 cutcoordinates=Table[{externalvertices[[iii]],externalvertices[[iii+1]]},{iii,Length[externalvertices]-1}];
 (*For convenience we'll also append to each of these pairs the two node numbers that they represent*)
@@ -1435,7 +1449,9 @@ cutsedgecrossings=Map[crossedEdges,cutcoordinatesandnodes];
 extraCutEdges=Function[{pairofcutscoordinates},
 Block[{pairofcuts,externaledgename,externaledge,cutangles,edgeangle,rotatedcutangles,rotatededgeangle,return},
 pairofcuts=pairofcutscoordinates;
-externaledgename=Cases[edgepos,{{___,pairofcuts[[1,2]],___},___}][[1,2]];
+externaledgename=Cases[edgepos,{{___,pairofcuts[[1,2]],___},___}];
+If[externaledgename=!={},
+externaledgename=externaledgename[[1,2]];
 externaledge=Cases[edgepos,{{___,pairofcuts[[1,2]],___},___}][[1,1]];
 externaledge=DeleteCases[Map[#-pairofcuts[[1,2]]&,externaledge],{0.,0.}];
 pairofcuts=DeleteCases[Sequence@@@Map[#-pairofcuts[[1,2]]&,pairofcuts,{2}],{0.,0.}];
@@ -1447,6 +1463,7 @@ If[rotatededgeangle[[1]]<rotatedcutangles[[2]],
 return={externaledgename};
 ,return={};
 ];
+,return={};];
 return]
 ];
 (*For each pair of cuts, we now get the additional edges that get crossed*)
@@ -1526,7 +1543,7 @@ If[planar==False,
 If[externalordering===Null,
 {boundaries,boundarypaircuts}=makeAutomaticBoundariesAndCuts[graph,topleft,topright,bottomleft,bottomright];
 (*We'll need to re-rder the grassmannian nodes now that we have a new order determined by our cuts*)
-pathmatorder=Flatten[DeleteCases[Join[bottomleft,Transpose[topright]],0,{2}]];
+pathmatorder=Sort[Flatten[boundaries]];
 neworder=Flatten[boundaries]/.MapThread[Rule,{pathmatorder,Range[Length[pathmatorder]]}];
 newroworder=Ordering[Flatten[Map[Position[neworder,#]&,sourcenodes]]];
 sourcenodes=Sort[Flatten[Map[Position[neworder,#]&,sourcenodes]]];
