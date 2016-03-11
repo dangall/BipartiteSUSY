@@ -989,7 +989,7 @@ reducibility=False;
 (*if the graph is planar, if we may remove edges without changing the matroid polytope it means that the graph is reducible. Equally, this is the definition for a BFT graph to be reducible*)
 reducibility=True;
 ,(*if we have a non-planar scattering graph, we need to do things carefully.*)
-numsources=Length[findSources[topright,c,perfectMatchings[topleft,topright,bottomleft,bottomright][[1]]]];
+numsources=Length[findSources[topright,bottomleft,perfectMatchings[topleft,topright,bottomleft,bottomright][[1]]]];
 numexternalnodes=Length[bottomleft]+Length[Transpose[topright]];
 maxpossibledimension=numsources(numexternalnodes-numsources);
 dimensionP=polytopeDim[getPmatrix[topleft,topright,bottomleft,bottomright]];
@@ -1071,7 +1071,7 @@ nonstandardpoles=Null;
 nonstandardpoles
 ];
 
-removableEdges[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]:=Block[{startingpointbad,removables,varlist,varstotryout,quickReducibility,fullpmatrix,fullmodulispace,survivingperfmatchings,survivingrows,reducibilities},
+removableEdges[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]:=Block[{startingpointbad,removables,varlist,varstotryout,quickReducibility,fullpmatrix,dimpmatrix,fullmodulispace,survivingperfmatchings,survivingrows,reducibilities},
 startingpointbad=False;
 If[checkneeded,
 startingpointbad=reducibilityQ[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph,gauging];
@@ -1082,26 +1082,29 @@ Print["The starting graph is reducible. Reduce it first, using reductionGraph."]
 removables=Null;
 ,(*We need to try to remove in turn each of the edges of the graph, and check whether the resulting graph is reducible*)
 varlist=Variables[joinupKasteleyn[topleft,topright,bottomleft,bottomright]];
-varstotryout=Map[consistentEdgeRemoval[topleft,topright,bottomleft,bottomright,{#},False,BFTgraph]&,varlist];
+varstotryout=DeleteDuplicates[Map[consistentEdgeRemoval[topleft,topright,bottomleft,bottomright,{#},False,BFTgraph]&,varlist]];
 (*If we have a BFT graph, or a planar scattering graph, or a nonplanar scattering graph with no non-standard poles, we may use the moduli space / matroid polytope to determine reducibility.*)
 If[BFTgraph||planarityQ[topleft,topright,bottomleft,bottomright]||nonPluckerPolesQ[topleft,topright,bottomleft,bottomright]==False,
 (*Create a function that can give the reducibility of a given P-matrix with its corresponding moduli space / matroid polytope*)
 quickReducibility=Function[{pmatrix,modulispace},
 Block[{pmatrixtranspose,modulitranspose,pmatrixshort,reducib},
-pmatrixtranspose=Transpose[pmatrix];
-modulitranspose=Transpose[modulispace];
+If[pmatrix==={},
+reducib=True;
+,pmatrixtranspose=Transpose[pmatrix];
+If[modulispace==={},modulitranspose=Table[{0},Length[pmatrixtranspose]];,modulitranspose=Transpose[modulispace];];
 pmatrixshort=Transpose[Map[Times@@pmatrixtranspose[[Flatten[Position[modulitranspose,#]]]]&,DeleteDuplicates[modulitranspose]]];
-If[MemberQ[pmatrixshort,ConstantArray[0,Dimensions[pmatrixshort][[2]]]],reducib=True;,reducib=False;];
+If[MemberQ[pmatrixshort,ConstantArray[0,Dimensions[pmatrixshort][[2]]]],reducib=True;,reducib=False;];];
 reducib]];
 (*Now make the P-matrix and the moduli space / matroid polytope for the full graph*)
 fullpmatrix=getPmatrix[topleft,topright,bottomleft,bottomright];
+dimpmatrix=polytopeDim[fullpmatrix];
 fullmodulispace=moduliSpaceBFT[topleft,topright,bottomleft,bottomright,gauging,False,BFTgraph];
 (*In each of the edge-removals to try out, see which perfect matchings survive*)
 survivingperfmatchings=Map[survivingPerfectMatchings[topleft,topright,bottomleft,bottomright,#,False,BFTgraph]&,varstotryout];
 (*Also note which rows in P survive (all rows except for those corresponding to the edges we're trying to kill)*)
 survivingrows=Map[Complement[Range[Length[varlist]],Flatten[Position[varlist,Alternatives@@#]]]&,varstotryout];
-(*In each edge-removal case, now use quickReducibility to see whether the resulting graph is reducible or not*)
-reducibilities=MapThread[quickReducibility[fullpmatrix[[#1,#2]],fullmodulispace[[All,#2]]]&,{survivingrows,survivingperfmatchings}];
+(*In each edge-removal case, if the edge removal decreases the dimension by ONE, use quickReducibility to see whether the resulting graph is reducible or not. Otherwise it's not a valid removal*)
+reducibilities=MapThread[Function[{pmatrix,modulispace},Block[{reduc},If[polytopeDim[pmatrix]==dimpmatrix-1,reduc=quickReducibility[pmatrix,modulispace];,reduc=True;];reduc]][fullpmatrix[[#1,#2]],fullmodulispace[[All,#2]]]&,{survivingrows,survivingperfmatchings}];
 (*Only keep those cases for which the resulting graph is not reducible*)
 removables=varstotryout[[Flatten[Position[reducibilities,False]]]];
 ,(*we have a non-planar graph with nonstanard poles, so we need to check things carefully.*)
