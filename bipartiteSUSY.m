@@ -1084,7 +1084,7 @@ removables=Null;
 varlist=Variables[joinupKasteleyn[topleft,topright,bottomleft,bottomright]];
 varstotryout=DeleteDuplicates[Map[consistentEdgeRemoval[topleft,topright,bottomleft,bottomright,{#},False,BFTgraph]&,varlist]];
 (*If we have a BFT graph, or a planar scattering graph, or a nonplanar scattering graph with no non-standard poles, we may use the moduli space / matroid polytope to determine reducibility.*)
-If[BFTgraph||planarityQ[topleft,topright,bottomleft,bottomright]||nonPluckerPolesQ[topleft,topright,bottomleft,bottomright]==False,
+If[BFTgraph||planarityQ[topleft,topright,bottomleft,bottomright],
 (*Create a function that can give the reducibility of a given P-matrix with its corresponding moduli space / matroid polytope*)
 quickReducibility=Function[{pmatrix,modulispace},
 Block[{pmatrixtranspose,modulitranspose,pmatrixshort,reducib},
@@ -1108,8 +1108,9 @@ reducibilities=MapThread[Function[{pmatrix,modulispace},Block[{reduc},If[polytop
 (*Only keep those cases for which the resulting graph is not reducible*)
 removables=varstotryout[[Flatten[Position[reducibilities,False]]]];
 ,(*we have a non-planar graph with nonstanard poles, so we need to check things carefully.*)
-(*Only keep those cases for which the resulting graph is not reducible*)
-removables=Cases[varstotryout,zz_/;reducibilityQ[topleft/.Map[#->0&,zz],topright/.Map[#->0&,zz],bottomleft/.Map[#->0&,zz],bottomright,False,BFTgraph,gauging]==False];
+(*Only keep those cases for which the resulting graph is not reducible and where the dimension has decreased by one*)
+dimpmatrix=polytopeDim[getPmatrix[topleft,topright,bottomleft,bottomright]];
+removables=Cases[varstotryout,zz_/;reducibilityQ[topleft/.Map[#->0&,zz],topright/.Map[#->0&,zz],bottomleft/.Map[#->0&,zz],bottomright,False,BFTgraph,gauging]==False&&polytopeDim[getPmatrix[topleft/.Map[#->0&,zz],topright/.Map[#->0&,zz],bottomleft/.Map[#->0&,zz],bottomright]]==dimpmatrix-1];
 ];
 ];
 ,removables=Null;
