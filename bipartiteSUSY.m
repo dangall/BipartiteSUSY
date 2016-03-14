@@ -1555,8 +1555,10 @@ grassmannianmatrix=grassmannianmatrix[[newroworder,neworder]];
 ,{boundaries,boundarypaircuts}={boundarylist,boundarycutreplacements};
 ];
 (*This function takes a pair of external nodes and returns a list of replacement lists to be used on the grassmannian. These replacements represent all the cuts required to go from one boundary to the next*)
-cutSequence=Function[{externalnodepair},
-Block[{boundariestoconnect,boundarynumberrule,boundarypairnumbers,shortestpath,cutpath},
+cutSequence=Function[{externaledgepair},
+Block[{bigkasteleyn,externalnodepair,boundariestoconnect,boundarynumberrule,boundarypairnumbers,shortestpath,cutpath},
+bigkasteleyn=Join[joinupKasteleyn[topleft,topright,bottomleft,bottomright],Transpose[joinupKasteleyn[topleft,topright,bottomleft,bottomright]]];
+externalnodepair=Flatten[Map[Intersection[#,Flatten[boundaries]]&,Map[#[[1]]&,Map[Position[bigkasteleyn,#]&,externaledgepair],{2}]]];
 boundariestoconnect=Cases[boundaries,zz_/;MemberQ[zz,Alternatives@@externalnodepair]];
 If[Length[boundariestoconnect]>1,(*the nodes are on different boundaries*)
 boundarynumberrule=MapThread[Rule,{boundaries,Range[Length[boundaries]]}];
