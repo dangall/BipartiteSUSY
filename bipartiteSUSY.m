@@ -301,7 +301,7 @@ survivingcolums=Complement[Range[Dimensions[pmatrix][[2]]],Map[#[[2]]&,Position[
 survivingcolums
 ];
 
-matroidPolytope[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False]:=(*matroidPolytope[topleft,topright,bottomleft,bottomright]=matroidPolytope[topleft,topright,bottomleft,bottomright,checkneeded]=matroidPolytope[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph]=*)Block[{pmatrix,externaledges,externalrows,matroidpoly},
+matroidPolytope[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False]:=matroidPolytope[topleft,topright,bottomleft,bottomright]=matroidPolytope[topleft,topright,bottomleft,bottomright,checkneeded]=matroidPolytope[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph]=Block[{pmatrix,externaledges,externalrows,matroidpoly},
 pmatrix=getPmatrix[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph];
 If[pmatrix=!=Null,
 (*Only select those rows corresponding to external edges in the graph*)
@@ -316,7 +316,7 @@ matroidpoly={ConstantArray[0,Dimensions[pmatrix][[2]]]};
 matroidpoly
 ];
 
-moduliSpaceBFT[topleft_,topright_,bottomleft_,bottomright_,gauging_,checkneeded_:False,BFTgraph_:False]/;(gauging===1||gauging===2):=Block[{modulispace,matrixP,chargesFterm,gaugeCharge,edges,intfaces,gaugechargematrix,chargesDterm},
+moduliSpaceBFT[topleft_,topright_,bottomleft_,bottomright_,gauging_,checkneeded_:False,BFTgraph_:False]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{modulispace,matrixP,chargesFterm,gaugeCharge,edges,intfaces,gaugechargematrix,chargesDterm},
 If[gauging==2,
 modulispace=matroidPolytope[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph];
 ,If[gauging==1,
@@ -367,7 +367,7 @@ perfmatchnumber=Position[Transpose[matroidpoly],multiplicitypolytope[[1]][[All,O
 perfmatchnumber
 ];
 
-reducibilityBFTQ[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1||gauging===2):=Block[{pmatrix,modulispace,fullspacetranspose,modulitranspose,fullspaceshort,reducibility},
+reducibilityBFTQ[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{pmatrix,modulispace,fullspacetranspose,modulitranspose,fullspaceshort,reducibility},
 pmatrix=getPmatrix[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph];
 modulispace=moduliSpaceBFT[topleft,topright,bottomleft,bottomright,gauging,checkneeded,BFTgraph];
 If[pmatrix=!=Null&&modulispace=!=Null,
@@ -381,7 +381,7 @@ If[MemberQ[fullspaceshort,ConstantArray[0,Dimensions[fullspaceshort][[2]]]],redu
 reducibility
 ];
 
-reducibilityBFTedges[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1||gauging===2):=Block[{pmatrix,modulispace,fullspacetranspose,modulitranspose,fullspaceshort,problemlines,reducibilityedges},
+reducibilityBFTedges[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{pmatrix,modulispace,fullspacetranspose,modulitranspose,fullspaceshort,problemlines,reducibilityedges},
 pmatrix=getPmatrix[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph];
 modulispace=moduliSpaceBFT[topleft,topright,bottomleft,bottomright,gauging,checkneeded,BFTgraph];
 If[pmatrix=!=Null&&modulispace=!=Null,
@@ -409,7 +409,7 @@ consistentedgelist=varlist[[Flatten[Position[reducedpmatrix,ConstantArray[0,Dime
 consistentedgelist
 ];
 
-reductionGraphBFT[topleft_,topright_,bottomleft_,bottomright_,gauging_,checkneeded_:False,BFTgraph_:False]/;(gauging===1||gauging===2):=Block[{edges,modulispace,numpointsmodulispace,comboremove,edgereductions,comboremovnextlevel,ii},
+reductionGraphBFT[topleft_,topright_,bottomleft_,bottomright_,gauging_,checkneeded_:False,BFTgraph_:False]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{edges,modulispace,numpointsmodulispace,comboremove,edgereductions,comboremovnextlevel,ii},
 (*First check which edges can be removed without affeting the moduli space*)
 edges=reducibilityBFTedges[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph,gauging];
 If[edges=!=Null,
@@ -869,7 +869,8 @@ modulispace=Null;
 (*Functions useful for scattering amplitudes*)
 
 
-planarityQ[topleft_,topright_,bottomleft_,bottomright_]:=Block[{kasteleyn,oneskasteleyn,adjacencymat,graph,planar,externals,extnum,allperms,numberofperms,permutations,externaladjacencyseed,externaladjencyattempts,ii,testgraph},
+planarityQ[topleft_,topright_,bottomleft_,bottomright_]:=
+planarityQ[topleft,topright,bottomleft,bottomright]=Block[{kasteleyn,oneskasteleyn,adjacencymat,graph,planar,externals,extnum,allperms,numberofperms,permutations,externaladjacencyseed,externaladjencyattempts,ii,testgraph},
 adjacencymat=getAdjacencyMatrix[topleft,topright,bottomleft,bottomright];
 graph=AdjacencyGraph[adjacencymat];(*We have finished making the Mathematica graph!*)
 (*If the graph can be embedded on genus zero, try and see if we can do so with only one boundary*)
@@ -928,7 +929,7 @@ sinkedges
 
 externalEdgesNodeNumbers[topleft_,topright_,bottomleft_,bottomright_,externaledgelist_]:=Union[Map[#[[1]]&,Position[bottomleft,Alternatives@@externaledgelist]+Length[topleft]],Map[#[[2]]&,Position[topright,Alternatives@@externaledgelist]+Total[Dimensions[topleft]]+Length[bottomleft]]];
 
-connectivityMatrix[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null]:=(*connectivityMatrix[topleft,topright,bottomleft,bottomright,referencematching]=connectivityMatrix[topleft,topright,bottomleft,bottomright]=*)Block[{referenceperfmatch,kasteleyn,perfmatchvars,kastnopm,kastinvertedpm,bigmatrix,connectivitymat},
+connectivityMatrix[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null]:=connectivityMatrix[topleft,topright,bottomleft,bottomright,referencematching]=connectivityMatrix[topleft,topright,bottomleft,bottomright]=Block[{referenceperfmatch,kasteleyn,perfmatchvars,kastnopm,kastinvertedpm,bigmatrix,connectivitymat},
 If[referencematching===Null,
 referenceperfmatch=perfectMatchings[topleft,topright,bottomleft,bottomright][[lowNumberLoopsPM[topleft,topright,bottomleft,bottomright]]];
 ,referenceperfmatch=referencematching;
@@ -943,7 +944,8 @@ connectivitymat=Inverse[bigmatrix];
 connectivitymat
 ];
 
-pathMatrix[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null]:=Block[{referenceperfmatch,bigpathmatrix,externalrows,externalcolumns,finalpathmatrix},
+pathMatrix[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null]:=
+pathMatrix[topleft,topright,bottomleft,bottomright,referencematching]=pathMatrix[topleft,topright,bottomleft,bottomright]=Block[{referenceperfmatch,bigpathmatrix,externalrows,externalcolumns,finalpathmatrix},
 If[referencematching===Null,
 referenceperfmatch=perfectMatchings[topleft,topright,bottomleft,bottomright][[lowNumberLoopsPM[topleft,topright,bottomleft,bottomright]]];
 ,referenceperfmatch=referencematching;
@@ -978,7 +980,7 @@ tangentspacedim=MatrixRank[Table[D[minorexpressions[[iii]],minorvars[[jjj]]],{ii
 tangentspacedim
 ];
 
-reducibilityQ[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1||gauging===2):=Block[{edgesnaivereducibility,reducibility,numsources,numexternalnodes,maxpossibledimension,dimensionP,dimgrassmannian,dimafteredgeremoval,ii},(*First need to find out which columns are the same point in the moduli space*)
+reducibilityQ[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{edgesnaivereducibility,reducibility,numsources,numexternalnodes,maxpossibledimension,dimensionP,dimgrassmannian,dimafteredgeremoval,ii},(*First need to find out which columns are the same point in the moduli space*)
 edgesnaivereducibility=reducibilityBFTedges[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph,gauging];
 If[edgesnaivereducibility===Null,
 reducibility=Null;(*there was some problem with the Kasteleyn*)
@@ -1017,7 +1019,7 @@ Break[]
 reducibility
 ];
 
-reducibilityEdges[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1||gauging===2):=Block[{edgesnaivereducibility,reducibilityedgelist,dimgrassmannian,dimafteredgeremoval,ii},(*First need to find out which columns are the same point in the moduli space*)
+reducibilityEdges[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{edgesnaivereducibility,reducibilityedgelist,dimgrassmannian,dimafteredgeremoval,ii},(*First need to find out which columns are the same point in the moduli space*)
 edgesnaivereducibility=reducibilityBFTedges[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph,gauging];
 If[edgesnaivereducibility===Null,
 reducibilityedgelist=Null;(*there was some problem with the Kasteleyn*)
@@ -1037,7 +1039,7 @@ reducibilityedgelist=Cases[edgesnaivereducibility,zz_/;dimensionGrassmannian[top
 reducibilityedgelist
 ];
 
-reductionGraph[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]:=Block[{naivereductionedges,reductionedges,dimgrassmannian},
+reductionGraph[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{naivereductionedges,reductionedges,dimgrassmannian},
 naivereductionedges=reductionGraphBFT[topleft,topright,bottomleft,bottomright,gauging,checkneeded,BFTgraph];
 If[naivereductionedges=!=Null,
 If[naivereductionedges==={},
@@ -1071,7 +1073,7 @@ nonstandardpoles=Null;
 nonstandardpoles
 ];
 
-removableEdges[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]:=Block[{startingpointbad,removables,varlist,varstotryout,quickReducibility,fullpmatrix,dimpmatrix,fullmodulispace,survivingperfmatchings,survivingrows,reducibilities},
+removableEdges[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{startingpointbad,removables,varlist,varstotryout,quickReducibility,fullpmatrix,dimpmatrix,fullmodulispace,survivingperfmatchings,survivingrows,reducibilities},
 startingpointbad=False;
 If[checkneeded,
 startingpointbad=reducibilityQ[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph,gauging];
