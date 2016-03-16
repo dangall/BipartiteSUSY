@@ -29,7 +29,7 @@ internalFaces::usage="Gives the number of INTERNAL faces in the graph. Assumes t
 allFaceLabels::usage="Gives the name of the faces in the graph."
 externalFaceLabels::usage="Gives the name of the EXTERNAL faces in the graph."
 internalFaceLabels::usage="Gives the name of the INTERNAL faces in the graph."
-reducibilityQ::usage="Tells you whether a graph is reducible, in the scattering amplitudes sense. Set the last argument equal to True to get reducibility in the \!\(\*SubscriptBox[\(BFT\), \(2\)]\) sense"
+(*reducibilityQ::usage="Tells you whether a graph is reducible, in the scattering amplitudes sense. Set the last argument equal to True to get reducibility in the Subscript[BFT, 2] sense"*)
 getWeightedAdjacencyMatrix::usage="Gives the weighted adjacency matrix which can be used for WeightedAdjacencyGraph"
 getAdjacencyMatrix::usage="Gives the adjacency matrix which can be used for AdjacencyGraph"
 planarityQ::usage="Tells you whether a given graph can be embedded on the disk without any edges crossing"
@@ -47,6 +47,8 @@ lowNumberLoopsPM::usage="Returns the number of the perfect matching with lowest 
 externalOrderingDefault::usage="Gives a choice of external ordering of nodes, given in the form {X[i,j]\[Rule]1,X[k,l]\[Rule]2,...}."
 findSources::usage="Returns a list of edges which are sources in the perfect orientation corresponding to a given reference perfect matching."
 findSinks::usage="Returns a list of edges which are sinks in the perfect orientation corresponding to a given reference perfect matching."
+findSourceNodes::usage="Returns a list of nodes which are sources in the perfect orientation corresponding to a given reference perfect matching."
+findSinkNodes::usage="Returns a list of nodes which are sinks in the perfect orientation corresponding to a given reference perfect matching."
 externalEdgesNodeNumbers::usage="Takes a list of external edges and gives the Kasteleyn node numbers of the edges."
 connectivityMatrix::usage="Returns the connectivity matrix of the diagram, i.e. a matrix containing all paths between all nodes."
 pathMatrix::usage="Gives the path matrix, i.e. the element of the Grassmannian before any signs are placed (which ensure manifest positivity of planar diagrams)."
@@ -54,7 +56,7 @@ minorsAsPerfectMatchings::usage="Returns the minors of the pathmatrix, resemblin
 dimensionGrassmannian::usage="Returns the dimension of the Grassmannian, computed by looking at the tangent space of its minors."
 reducibilityBFTQ::usage="Gives the 'naive' reducibility of a graph, which is the same as the reducibility for a BFT, based on its moduli space. When gauging 2 is used, this is the same as reducibility for planar scattering diagrams."
 reducibilityBFTedges::usage="Gives those edges which may be removed without affecting the moduli space, which for gauging 2 is the same as reducibility for all planar diagrams and some non-planar diagrams."
-reducibilityQ::usage="Returns True or False, depending on whether the graph is reducible or not. Allows you to specify whether the graph is a BFTgraph, and if so which gaugign to use. Can correctly deal with non-planar scattering diagrams."
+reducibilityQ::usage="Returns True or False, depending on whether the graph is reducible or not. Allows you to specify whether the graph is a BFTgraph, and if so which gauging to use. Can correctly deal with non-planar scattering diagrams."
 reducibilityEdges::usage="Returns a list of edges which may be removed without affecting the moduli space (in the case of BFTs), or the Grassmannian in the case of scattering amplitudes."
 consistentEdgeRemoval::usage="Returns the full list of edges which should be consistently removed, given a choice of edge to be removed."
 survivingPerfectMatchings::usage="Gives you a list of which perfect-matching numbers survive after removing a given set of edges."
@@ -184,7 +186,7 @@ vars=Variables[kasteleyn];
 edgelabels=Map[Sort[(UndirectedEdge@@(Flatten[Position[kasteleyn,#]][[{1,2}]]+{0,Length[kasteleyn]}))]->#&,vars];
 (*Now that we associated edges to their names, we'll make a temporary list from which we'll remove elements as they get printed onto the graph*)
 tempedgelabels=edgelabels;
-finalgraph=Graph[edgelist,EdgeShapeFunction->Function[{edgepositions,edgename},
+finalgraph=Graph[graph,EdgeShapeFunction->Function[{edgepositions,edgename},
 edgeweightname=tempedgelabels[[Position[tempedgelabels,Sort[edgename]][[1,1]],2]];
 tempedgelabels=Delete[tempedgelabels,Position[tempedgelabels,Sort[edgename]][[1,1]]];
 {Text[Style[edgeweightname,Medium,Bold,Blue],Mean[edgepositions]],{Black,Line[edgepositions]}}],VertexLabels->"Name",VertexLabelStyle->15,VertexSize->Medium,VertexStyle->colors,ImagePadding->20];
@@ -726,13 +728,15 @@ perfmatchzigzags=ReplacePart[perfmatchzigzags,replacementrule];
 perfmatchzigzags
 ];
 
-makeLoopVariablesBasis[topleft_,topright_,bottomleft_,bottomright_,standardfacevariables_:False]:=Module[{kasteleyn,alledges,externaledges,externaledgestonodenumbers,bpaths,adjacencymat,graph,bigkasteleyn,nameUndirectedEdges,bpathvectors,directedgraph,nameDirectedEdges,edgelist,internalpaths,internalpathvectors,facenames,facevariables,facevariablevectors,internalpos,internalfacevariables,internalfacevariablevectors,externalfacevariables,externalfacevariablevectors,accountedforvectors,newpathvectors,additionalpathvectors,tosolvefor,coef,coeflist,additionalpaths,loopvariablebasis},
+makeLoopVariablesBasis[topleft_,topright_,bottomleft_,bottomright_,standardfacevariables_:False]:=Module[{kasteleyn,alledges,externaledges,extnodenumbers,externaledgestonodenumbers,bpaths,adjacencymat,graph,bigkasteleyn,nameUndirectedEdges,bpathvectors,directedgraph,nameDirectedEdges,edgelist,internalpaths,internalpathvectors,facenames,facevariables,facevariablevectors,internalpos,internalfacevariables,internalfacevariablevectors,externalfacevariables,externalfacevariablevectors,accountedforvectors,newpathvectors,additionalpathvectors,tosolvefor,coef,coeflist,additionalpaths,loopvariablebasis},
 (*We'll begin by making all possible paths between boundaries. Some of these will correspond to external faces (or combinations thereof), but some will be paths stretching between different boundaries*)
 kasteleyn=joinupKasteleyn[topleft,topright,bottomleft,bottomright];
 alledges=Variables[kasteleyn];
 (*We need to extract the external edges*)
 externaledges=Variables[Join[bottomleft,topright]];
-externaledgestonodenumbers=MapThread[Rule,{Flatten[DeleteCases[Join[bottomleft,Transpose[topright]],0,{2}]],Join[Range[Length[bottomleft]]+Length[topleft],Range[Dimensions[topright][[2]]]+Total[Dimensions[topleft]]+Length[bottomleft]]}];
+(*extnodenumbers=Flatten[Map[Cases[#[[1]],Alternatives@@Join[Range[Length[bottomleft]]+Length[topleft],Range[Dimensions[topright][[2]]]+Total[Dimensions[topleft]]+Length[bottomleft]]]&,Map[#[[{1,2}]]+{0,Length[kasteleyn]}&,Map[Position[kasteleyn,#]&,externaledges],{2}]]];*)
+extnodenumbers=Flatten[Map[externalEdgesNodeNumbers[topleft,topright,bottomleft,bottomright,{#}]&,externaledges]];
+externaledgestonodenumbers=MapThread[Rule,{externaledges,extnodenumbers}];
 bpaths=Subsets[externaledges,{2}];(*For now bpaths only contain the external edges. We'll now look for the shortest path between these edges, to complete the paths between boundaries*)
 adjacencymat=getAdjacencyMatrix[topleft,topright,bottomleft,bottomright];
 graph=AdjacencyGraph[adjacencymat];
@@ -823,7 +827,7 @@ basispaths=makeLoopVariablesBasis[topleft,topright,bottomleft,bottomright];
 ];
 ,basispaths=loopvariablebasis;
 ];
-(*The first part contains the internal loops, the second contains remaining external faces, and the final contains paths strecthing between different boundaries*)
+(*The first part contains what we'll gauge away (e.g. the internal loops), the second contains remaining paths (e.g. external faces, or those strecthing between different boundaries)*)
 basis=Flatten[basispaths];
 (*We'll now express each perfect matching as a vector describing which edges are present (1: in numerator; -1: in denominator; 0: absent)*)
 kasteleyn=joinupKasteleyn[topleft,topright,bottomleft,bottomright];
@@ -927,6 +931,20 @@ sinkedges=Union[Complement[DeleteCases[Flatten[topright],0],perfmatchvars],Inter
 sinkedges
 ];
 
+findSourceNodes[topleft_,topright_,bottomleft_,bottomright_,referenceperfmatch_]:=Block[{referencevars,sourcenodes},
+referencevars=Variables[referenceperfmatch];
+(*Sources are those nodes in the bottomleft that do not have variables in referenceperfmatch, and those in topright which do*)
+sourcenodes=Union[Flatten[Position[Transpose[topright],{___,Alternatives@@referencevars,___}]]+Total[Dimensions[topleft]]+Length[bottomleft],Length[topleft]+Complement[Range[Length[bottomleft]],Flatten[Position[bottomleft,{___,Alternatives@@referencevars,___}]]]];
+sourcenodes
+];
+
+findSinkNodes[topleft_,topright_,bottomleft_,bottomright_,referenceperfmatch_]:=Block[{perfmatchvars,sinknodes},
+perfmatchvars=Variables[referenceperfmatch];
+(*Sinks are those nodes in the bottomleft that have variables in referenceperfmatch, and those in topright which are do not*)
+sinknodes=Union[Complement[Range[Dimensions[topright][[2]]],Flatten[Position[Transpose[topright],{___,Alternatives@@referencevars,___}]]]+Total[Dimensions[topleft]]+Length[bottomleft],Length[topleft]+Flatten[Position[bottomleft,{___,Alternatives@@referencevars,___}]]];
+sinknodes
+];
+
 externalEdgesNodeNumbers[topleft_,topright_,bottomleft_,bottomright_,externaledgelist_]:=Union[Map[#[[1]]&,Position[bottomleft,Alternatives@@externaledgelist]+Length[topleft]],Map[#[[2]]&,Position[topright,Alternatives@@externaledgelist]+Total[Dimensions[topleft]]+Length[bottomleft]]];
 
 connectivityMatrix[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null]:=connectivityMatrix[topleft,topright,bottomleft,bottomright,referencematching]=connectivityMatrix[topleft,topright,bottomleft,bottomright]=Block[{referenceperfmatch,kasteleyn,perfmatchvars,kastnopm,kastinvertedpm,bigmatrix,connectivitymat},
@@ -952,7 +970,7 @@ referenceperfmatch=perfectMatchings[topleft,topright,bottomleft,bottomright][[lo
 ];
 bigpathmatrix=connectivityMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch];
 (*bigpathmatrix contains the connectivity between ALL pairs of nodes. We need to select those entries corresponding to sources goign to external nodes.*)
-externalrows=externalEdgesNodeNumbers[topleft,topright,bottomleft,bottomright,findSources[topright,bottomleft,referenceperfmatch]];
+externalrows=findSourceNodes[topleft,topright,bottomleft,bottomright,referenceperfmatch];
 externalcolumns=Join[Range[Length[topleft]+1,Length[topleft]+Length[bottomleft]],Range[Total[Dimensions[topleft]]+Length[bottomleft]+1,Total[Dimensions[topleft]]+Length[bottomleft]+Dimensions[topright][[2]]]];
 finalpathmatrix=Expand[Simplify[bigpathmatrix[[externalrows,externalcolumns]]]];
 (*The determinant of bigpathmatrix gives the loop factor in the paths between external nodes.*)
@@ -991,7 +1009,7 @@ reducibility=False;
 (*if the graph is planar, if we may remove edges without changing the matroid polytope it means that the graph is reducible. Equally, this is the definition for a BFT graph to be reducible*)
 reducibility=True;
 ,(*if we have a non-planar scattering graph, we need to do things carefully.*)
-numsources=Length[findSources[topright,bottomleft,perfectMatchings[topleft,topright,bottomleft,bottomright][[1]]]];
+numsources=Length[findSourceNodes[topleft,topright,bottomleft,bottomright,perfectMatchings[topleft,topright,bottomleft,bottomright][[1]]]];
 numexternalnodes=Length[bottomleft]+Length[Transpose[topright]];
 maxpossibledimension=numsources(numexternalnodes-numsources);
 dimensionP=polytopeDim[getPmatrix[topleft,topright,bottomleft,bottomright]];

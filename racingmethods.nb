@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     25469,        457]
-NotebookOptionsPosition[     25090,        439]
-NotebookOutlinePosition[     25452,        455]
-CellTagsIndexPosition[     25409,        452]
+NotebookDataLength[     24552,        435]
+NotebookOptionsPosition[     24194,        418]
+NotebookOutlinePosition[     24535,        433]
+CellTagsIndexPosition[     24492,        430]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -38,89 +38,64 @@ Cell[BoxData[{
    RowBox[{"Block", "[", 
     RowBox[{
      RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
-     RowBox[{
-      RowBox[{"bigkasteleyn", "=", 
-       RowBox[{"Join", "[", 
+     RowBox[{"Flatten", "[", 
+      RowBox[{"Map", "[", 
+       RowBox[{
         RowBox[{
-         RowBox[{"joinupKasteleyn", "[", 
-          RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], ",", 
-         RowBox[{"Transpose", "[", 
-          RowBox[{"joinupKasteleyn", "[", 
-           RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "]"}]}], 
-        "]"}]}], ";", "\[IndentingNewLine]", 
-      RowBox[{"haha", "=", 
-       RowBox[{"Flatten", "[", 
+         RowBox[{"Cases", "[", 
+          RowBox[{
+           RowBox[{"#", "[", 
+            RowBox[{"[", "1", "]"}], "]"}], ",", 
+           RowBox[{"Alternatives", "@@", 
+            RowBox[{"Join", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"Range", "[", 
+                RowBox[{"Length", "[", "bottomleft", "]"}], "]"}], "+", 
+               RowBox[{"Length", "[", "topleft", "]"}]}], ",", 
+              RowBox[{
+               RowBox[{"Range", "[", 
+                RowBox[{
+                 RowBox[{"Dimensions", "[", "topright", "]"}], "[", 
+                 RowBox[{"[", "2", "]"}], "]"}], "]"}], "+", 
+               RowBox[{"Total", "[", 
+                RowBox[{"Dimensions", "[", "topleft", "]"}], "]"}], "+", 
+               RowBox[{"Length", "[", "bottomleft", "]"}]}]}], "]"}]}]}], 
+          "]"}], "&"}], ",", 
         RowBox[{"Map", "[", 
          RowBox[{
           RowBox[{
-           RowBox[{"Intersection", "[", 
-            RowBox[{"#", ",", 
-             RowBox[{"Flatten", "[", "boundaries", "]"}]}], "]"}], "&"}], ",", 
+           RowBox[{
+            RowBox[{"#", "[", 
+             RowBox[{"[", 
+              RowBox[{"{", 
+               RowBox[{"1", ",", "2"}], "}"}], "]"}], "]"}], "+", 
+            RowBox[{"{", 
+             RowBox[{"0", ",", 
+              RowBox[{"Length", "[", "kasteleyn", "]"}]}], "}"}]}], "&"}], 
+          ",", 
           RowBox[{"Map", "[", 
            RowBox[{
             RowBox[{
-             RowBox[{"#", "[", 
-              RowBox[{"[", "1", "]"}], "]"}], "&"}], ",", 
-            RowBox[{"Map", "[", 
-             RowBox[{
-              RowBox[{
-               RowBox[{"Position", "[", 
-                RowBox[{"bigkasteleyn", ",", "#"}], "]"}], "&"}], ",", 
-              "externalnodepair"}], "]"}], ",", 
-            RowBox[{"{", "2", "}"}]}], "]"}]}], "]"}], "]"}]}]}]}], 
+             RowBox[{"Position", "[", 
+              RowBox[{"kasteleyn", ",", "#"}], "]"}], "&"}], ",", 
+            "externaledges"}], "]"}], ",", 
+          RowBox[{"{", "2", "}"}]}], "]"}]}], "]"}], "]"}]}], 
     "\[IndentingNewLine]", "]"}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"fun2", ":=", 
    RowBox[{"Block", "[", 
     RowBox[{
      RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
-     RowBox[{"Map", "[", 
-      RowBox[{
+     RowBox[{"Flatten", "[", 
+      RowBox[{"Map", "[", 
        RowBox[{
         RowBox[{
-         RowBox[{"Function", "[", 
-          RowBox[{
-           RowBox[{"{", "extedge", "}"}], ",", 
-           RowBox[{"Block", "[", 
-            RowBox[{
-             RowBox[{"{", "nodenum", "}"}], ",", 
-             RowBox[{
-              RowBox[{"If", "[", 
-               RowBox[{
-                RowBox[{"MemberQ", "[", 
-                 RowBox[{
-                  RowBox[{"Flatten", "[", "bottomleft", "]"}], ",", 
-                  "extedge"}], "]"}], ",", 
-                RowBox[{
-                 RowBox[{"nodenum", "=", 
-                  RowBox[{
-                   RowBox[{"Length", "[", "topleft", "]"}], "+", 
-                   RowBox[{
-                    RowBox[{"Position", "[", 
-                    RowBox[{"bottomleft", ",", "extedge"}], "]"}], "[", 
-                    RowBox[{"[", 
-                    RowBox[{"1", ",", "1"}], "]"}], "]"}]}]}], ";"}], ",", 
-                RowBox[{
-                 RowBox[{"If", "[", 
-                  RowBox[{
-                   RowBox[{"MemberQ", "[", 
-                    RowBox[{
-                    RowBox[{"Flatten", "[", "topright", "]"}], ",", 
-                    "extedge"}], "]"}], ",", 
-                   RowBox[{
-                    RowBox[{"nodenum", "=", 
-                    RowBox[{
-                    RowBox[{"Total", "[", 
-                    RowBox[{"Dimensions", "[", "topleft", "]"}], "]"}], "+", 
-                    RowBox[{"Length", "[", "bottomleft", "]"}], "+", 
-                    RowBox[{
-                    RowBox[{"Position", "[", 
-                    RowBox[{"topright", ",", "extedge"}], "]"}], "[", 
-                    RowBox[{"[", 
-                    RowBox[{"1", ",", "2"}], "]"}], "]"}]}]}], ";"}]}], "]"}],
-                  ";"}]}], "]"}], ";", "nodenum"}]}], "]"}]}], "]"}], "[", 
-         "#", "]"}], "&"}], ",", "externalnodepair"}], "]"}]}], 
-    "\[IndentingNewLine]", "]"}]}], ";"}], "\[IndentingNewLine]", 
+         RowBox[{"externalEdgesNodeNumbers", "[", 
+          RowBox[{"aa", ",", "bb", ",", "cc", ",", "dd", ",", 
+           RowBox[{"{", "#", "}"}]}], "]"}], "&"}], ",", "externaledges"}], 
+       "]"}], "]"}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"fun3", ":=", 
    RowBox[{"Block", "[", 
@@ -268,9 +243,11 @@ Cell[BoxData[{
    3.6657709189073744`*^9, 3.6657709737755013`*^9}, {3.665846360177791*^9, 
    3.6658463666621075`*^9}, {3.6658464151014643`*^9, 3.665846453852208*^9}, {
    3.6669481776929817`*^9, 3.666948190175148*^9}, {3.666948448175582*^9, 
-   3.6669484507937546`*^9}, {3.666948709025416*^9, 3.666948721266823*^9}}],
+   3.6669484507937546`*^9}, {3.666948709025416*^9, 3.666948721266823*^9}, {
+   3.667123078665792*^9, 3.6671230833540154`*^9}, {3.6671280822497387`*^9, 
+   3.6671280950597377`*^9}}],
 
-Cell[BoxData["0.00009328525178666796`"], "Output",
+Cell[BoxData["0.00021368770843679892`"], "Output",
  CellChangeTimes->{
   3.662184976269184*^9, {3.6621851943912783`*^9, 3.662185200292393*^9}, 
    3.6621857624285955`*^9, {3.6621858230714126`*^9, 3.6621858424468155`*^9}, {
@@ -351,9 +328,10 @@ Cell[BoxData["0.00009328525178666796`"], "Output",
    3.6657698357675023`*^9, 3.66576985133632*^9}, 3.6657712581097865`*^9, 
    3.66577133314707*^9, {3.6658464223780785`*^9, 3.6658464401115065`*^9}, {
    3.6669481872517*^9, 3.6669481904916005`*^9}, {3.666948454232564*^9, 
-   3.6669484565372066`*^9}, {3.6669487157158103`*^9, 3.666948725530033*^9}}],
+   3.6669484565372066`*^9}, {3.6669487157158103`*^9, 3.666948725530033*^9}, 
+   3.6671230868653145`*^9, {3.6671280892756133`*^9, 3.667128101060135*^9}}],
 
-Cell[BoxData["0.00007362720133011816`"], "Output",
+Cell[BoxData["0.00018530500978145538`"], "Output",
  CellChangeTimes->{
   3.662184976269184*^9, {3.6621851943912783`*^9, 3.662185200292393*^9}, 
    3.6621857624285955`*^9, {3.6621858230714126`*^9, 3.6621858424468155`*^9}, {
@@ -434,10 +412,10 @@ Cell[BoxData["0.00007362720133011816`"], "Output",
    3.6657698357675023`*^9, 3.66576985133632*^9}, 3.6657712581097865`*^9, 
    3.66577133314707*^9, {3.6658464223780785`*^9, 3.6658464401115065`*^9}, {
    3.6669481872517*^9, 3.6669481904916005`*^9}, {3.666948454232564*^9, 
-   3.6669484565372066`*^9}, {3.6669487157158103`*^9, 3.666948725530033*^9}}]
+   3.6669484565372066`*^9}, {3.6669487157158103`*^9, 3.666948725530033*^9}, 
+   3.6671230868653145`*^9, {3.6671280892756133`*^9, 3.667128101062641*^9}}]
 }, Open  ]]
 },
-Evaluator->"Local2",
 WindowSize->{1362, 676},
 WindowMargins->{{Automatic, -5}, {Automatic, 0}},
 FrontEndVersion->"10.2 for Microsoft Windows (64-bit) (July 7, 2015)",
@@ -455,9 +433,9 @@ CellTagsIndex->{}
 (*NotebookFileOutline
 Notebook[{
 Cell[CellGroupData[{
-Cell[580, 22, 12514, 248, 612, "Input"],
-Cell[13097, 272, 5987, 81, 31, "Output"],
-Cell[19087, 355, 5987, 81, 31, "Output"]
+Cell[580, 22, 11466, 225, 612, "Input"],
+Cell[12049, 249, 6063, 82, 31, "Output"],
+Cell[18115, 333, 6063, 82, 31, "Output"]
 }, Open  ]]
 }
 ]
