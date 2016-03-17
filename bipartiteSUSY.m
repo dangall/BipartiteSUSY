@@ -124,6 +124,10 @@ externalnf=Length[facelist];
 ,Print["Error! The edges must all have the form X[i,j] (where X may be any letter/letters)."];
 externalnf=Null;
 ];
+(*If there are external nodes with no edges attached to them, assume they are all in the same face, and declare this face to be external*)
+If[externalnf===0&&(Length[bottomleft]+Length[Transpose[topright]])>0,
+externalnf=1;
+];
 externalnf
 ];
 
@@ -147,6 +151,10 @@ If[Cases[varlist,_[_,_]]==varlist,
 facelist=Union[Flatten[List@@@varlist]];
 ,Print["Error! The edges must all have the form X[i,j] (where X may be any letter/letters)."];
 facelist=Null;
+];
+(*If there are external nodes with no edges attached to them, assume they are all in the same face, and declare this face to be external*)
+If[facelist==={}&&(Length[bottomleft]+Length[Transpose[topright]])>0,
+facelist={Last[Union[Flatten[List@@@Variables[joinupKasteleyn[topleft,topright,bottomleft,bottomright]]]]]};
 ];
 facelist
 ];
