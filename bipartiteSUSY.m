@@ -44,7 +44,8 @@ intoPolytope::usage="Returns only distinct vertices of the polytope, with their 
 matroidPolytope::usage="Returns the coordinates of the matroid polytope (some of which may have higher multiplicity than 1). Each column is the coordinate of a perfect matching."
 moduliSpaceBFT::usage="Gives the moduli space of the BFT given by the Kasteleyn. It requires the input on which gauging it should use (i.e. gauging 1 or gauging 2)."
 lowNumberLoopsPM::usage="Returns the number of the perfect matching with lowest multiplicity, and hence the lowest number of loops in the corresponding perfect orientation."
-externalOrderingDefault::usage="Gives a choice of external ordering of nodes, given in the form {X[i,j]\[Rule]1,X[k,l]\[Rule]2,...}."
+externalOrderingDefault::usage="Gives a choice of ordering of external edges, given in the form {X[i,j]\[Rule]1,X[k,l]\[Rule]2,...}. Only contains those edges which are present in the graph."
+externalNodeOrderingDefault::usage="Gives a choice of ordering of external nodes. Also contains external nodes with no external edge attached to it."
 findSources::usage="Returns a list of edges which are sources in the perfect orientation corresponding to a given reference perfect matching."
 findSinks::usage="Returns a list of edges which are sinks in the perfect orientation corresponding to a given reference perfect matching."
 findSourceNodes::usage="Returns a list of nodes which are sources in the perfect orientation corresponding to a given reference perfect matching."
@@ -90,7 +91,8 @@ getGrassmannian::usage="This function returns the correspdoning element of the G
 pluckerCoordinates::usage="Returns the external ordering and the Plucker coordinates of the on-shell diagram. It is posisble to specify whether this function should place in all signs according to the boundary measurement, or whether the path matrix is sufficient."
 makeLoopVariablesBasis::usage="Returns a list of paths that form a basis with which it is possible to express any path in the graph. The output is of the form of two lists: the first one contains the internal faces, and if the optional input 'standardfacevariables' is False it also contains non-trivial cycles around surfaces with non-zero genus as well as products of external faces which circle around a boundary. The first list will generically be a linear combination of these paths. The second entry contains the remaining independent external faces, paths going between different boundaries, and if 'standardfacevariables' is True it also contains non-trivial cycles for non-zero genus."
 moduliLoopVariablesBFT::usage="Returns a list of three items: the first is the master space, the second is the moduli space, and the third is the loop variable basis used to make these spaces."
-externalOrderingGrassmanian::usage="Returns the ordering of external nodes chosen by default by getGrassmannian"
+externalOrderingGrassmanian::usage="Returns the ordering of external edges chosen by default by getGrassmannian. Only contains those edges which are present in the Kasteleyn."
+externalNodeOrderingGrassmanian::usage="Returns the ordering of external nodes chosen by default by getGrassmannian."
 
 
 Begin["Private`"]
@@ -917,6 +919,8 @@ ordering=MapThread[Rule,{ordering,Range[Length[ordering]]}];
 ordering
 ];
 
+externalNodeOrderingDefault[topleft_,topright_,bottomleft_,bottomright_]:=Join[Range[Length[topleft]+1,Length[topleft]+Length[bottomleft]],Range[Total[Dimensions[topleft]]+Length[bottomleft]+1,Total[Dimensions[topleft]]+Length[bottomleft]+Dimensions[topright][[2]]]];
+
 findSources[topright_,bottomleft_,referenceperfmatch_]:=Block[{referencevars,sourceedges},
 referencevars=Variables[referenceperfmatch];
 (*Sources are those variables in the bottomleft that are not in referenceperfmatch, and those in topright which are*)
@@ -938,8 +942,8 @@ sourcenodes=Union[Flatten[Position[Transpose[topright],{___,Alternatives@@refere
 sourcenodes
 ];
 
-findSinkNodes[topleft_,topright_,bottomleft_,bottomright_,referenceperfmatch_]:=Block[{perfmatchvars,sinknodes},
-perfmatchvars=Variables[referenceperfmatch];
+findSinkNodes[topleft_,topright_,bottomleft_,bottomright_,referenceperfmatch_]:=Block[{referencevars,sinknodes},
+referencevars=Variables[referenceperfmatch];
 (*Sinks are those nodes in the bottomleft that have variables in referenceperfmatch, and those in topright which are do not*)
 sinknodes=Union[Complement[Range[Dimensions[topright][[2]]],Flatten[Position[Transpose[topright],{___,Alternatives@@referencevars,___}]]]+Total[Dimensions[topleft]]+Length[bottomleft],Length[topleft]+Flatten[Position[bottomleft,{___,Alternatives@@referencevars,___}]]];
 sinknodes
@@ -1243,7 +1247,7 @@ independentrelations={};
 {independentrelations,solutions}
 ];
 
-makeOrderedPathMatrix[adjacencymatrix_,pathmat_,externalordering_,topleft_,topright_,bottomleft_,bottomright_]:=Block[{adjacencymat,planar,externals,extnum,allperms,numberofperms,permutations,externaladjacencyseed,externaladjencyattempts,ii,testgraph,ordering,rowordering,orderedpathmat},
+makeOrderedPathMatrix[adjacencymatrix_,pathmat_,externalordering_,topleft_,topright_,bottomleft_,bottomright_]:=Block[{adjacencymat,planar,externals,extnum,allperms,numberofperms,permutations,externaladjacencyseed,externaladjencyattempts,ii,testgraph,defaultorder,ordering,rowordering,orderedpathmat},
 adjacencymat=adjacencymatrix;
 planar=False;
 If[externalordering===Null,
@@ -1279,8 +1283,9 @@ If[planar==False,(*if the graph is non-planar, pick the default ordering*)
 orderedpathmat=pathmat;
 ];
 ,(*if we specified an ordering, use that instead. Here we don't care whether the graph is planar or not, since the user is forced to specify all the boundaries and cuts etc.*)
-(*externalOrderingDefault is the same as that chosen by pathMatrix*)
-ordering=externalordering/.externalOrderingDefault[topright,bottomleft];
+(*externalNodeOrderingDefault is the same as that chosen by pathMatrix*)
+defaultorder=externalNodeOrderingDefault[topleft,topright,bottomleft,bottomright];
+ordering=externalordering/.MapThread[Rule,{defaultorder,Range[Length[defaultorder]]}];
 rowordering=Ordering[Flatten[Map[Position[ordering,#]&,Flatten[Map[Position[Transpose[pathmat],#]&,IdentityMatrix[Length[pathmat]]]]]]];
 orderedpathmat=pathmat[[rowordering,ordering]];
 ];
@@ -1307,8 +1312,8 @@ finalvertexlist=Delete[finalvertexlist,1];
 finalvertexlist
 ];
 
-rotateExternalVertices[verticespos_,edgepos_,externalnodenumbers_]:=Module[{externaledges,tocriticalnode,externalvertices,cutcoordinates,freestandingexternalvertices,doesitavoidmycriticalnode,corrections,badexternalnodes,rotateExternalEdge,segmentCrossQ,newverticespos,newedgepos,iterationvector,accidentallycrossededges,newexternaledgecoords,edgeswemightcrossnow,newexternalnodesrule},
-(*We need to see if any of the cuts end up going through nodes attached to external nodes. If they do, things get complicated so it's better to rotate the external node to make sure to cut doesn't do this*)
+rotateExternalVertices[verticespos_,edgepos_,externalnodenumbers_]:=Module[{externaledges,tocriticalnode,externalvertices,cutcoordinates,freestandingexternalvertices,doesitavoidmycriticalnode,corrections,jj,badexternalnodes,rotateExternalEdge,segmentCrossQ,newverticespos,newedgepos,iterationvector,accidentallycrossededges,newexternaledgecoords,edgeswemightcrossnow,newexternalnodesrule},
+(*We need to see if any of the cuts end up going through nodes attached to external nodes. If they do, things get complicated so it's better to rotate the external node to make sure the cut doesn't do this*)
 externaledges=Cases[edgepos,{___,UndirectedEdge[Alternatives@@externalnodenumbers,_]}|{___,UndirectedEdge[_,Alternatives@@externalnodenumbers]}];
 (*Our cuts may never go through the "critical nodes", i.e.  those nodes attached to external nodes*)
 tocriticalnode=Map[Rule@@#&,Join[Map[#[[1]]&,externaledges],Map[Reverse[#[[1]]]&,externaledges]]];
@@ -1548,15 +1553,6 @@ terms=Expand[Simplify[(List@@matrixentry)loopdenominator]]/loopdenominator;
 ];
 terms=terms//.loopreplacement;
 terms=terms/.Map[#[[2]]->-#[[2]]&,loopreplacement];
-(*If[externalordering===Null,
-(*If we chose an external ordering automatically and the graph is non-planar, we need to plug in additional signs*)
-If[planar===False,(*plug in signs from loops formed by going between different boundaries*)
-(*PLUG IN GEKHTMAN SIGNS*)
-Print["We're automatically doing a non-planar diagram!"];
-];
-,(*If we were given an external ordering, plug in the additional signs manually*)
-Print["We're manually doing a non-planar diagram."];
-];*)
 ];
 Total[terms]]
 ];
@@ -1617,7 +1613,7 @@ grassmannianmatrix=Null;
 grassmannianmatrix
 ];
 
-pluckerCoordinates[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null,withsigns_:False]:=Module[{referenceperfmatch,Cmatrix,minors,externalvarentries,sources,sinks,putsourcesinlist,externalordering,pathmat},
+pluckerCoordinates[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null,withsigns_:False]:=Module[{referenceperfmatch,Cmatrix,minors,pathmat},
 If[referencematching===Null,
 referenceperfmatch=perfectMatchings[topleft,topright,bottomleft,bottomright][[lowNumberLoopsPM[topleft,topright,bottomleft,bottomright]]];
 ,referenceperfmatch=referencematching;
@@ -1671,6 +1667,52 @@ externalvertices=spiralInList[externalvertices];
 ordering=ordering[[(externalvertices/.Map[#[[2]]->#[[1]]&,verticespos])/.MapThread[Rule,{externals,Range[Length[externals]]}]]];
 ];
 ordering=MapThread[Rule,{ordering,Range[Length[ordering]]}];
+,(*If it cannot be embedded on genus zero,stop here*)
+Print["The diagram cannot be embedded on genus zero."];
+ordering=Null;
+];
+ordering
+];
+
+externalNodeOrderingGrassmanian[topleft_,topright_,bottomleft_,bottomright_]:=Block[{ordering,adjacencymat,graph,planar,externals,extnum,allperms,numberofperms,permutations,externaladjacencyseed,externaladjencyattempts,ii,testgraph,verticespos,edgepos,externalvertices},
+ordering=Join[Range[Length[topleft]+1,Length[topleft]+Length[bottomleft]],Range[Total[Dimensions[topleft]]+Length[bottomleft]+1,Total[Dimensions[topleft]]+Length[bottomleft]+Dimensions[topright][[2]]]];
+adjacencymat=getAdjacencyMatrix[topleft,topright,bottomleft,bottomright];
+graph=AdjacencyGraph[adjacencymat];
+planar=False;
+If[PlanarGraphQ[graph],(*the graph can be embedded on genus zero, but may still be non-planar*)
+(*Make a cyclic ordering when planar. If not planar, pick a default ordering based on the Kasteleyn*)
+(*Let's see if we can find a planar cyclic ordering*)
+externals=Join[Range[Length[topleft]+1,Length[topleft]+Length[bottomleft]],Range[Total[Dimensions[topleft]]+Length[bottomleft]+1,Total[Dimensions[topleft]]+Length[bottomleft]+Dimensions[topright][[2]]]];(*These are the node numbers corresponding to external nodes*)
+extnum=Length[externals];
+(*We will now try and form a single external boundary by connecting up all external nodes sequentially*)
+allperms=Permutations[Range[extnum-1]];
+numberofperms=Length[allperms];
+permutations=Map[Append[#,extnum]&,allperms[[DeleteDuplicates[MapThread[Sort[{#1,#2}][[1]]&,{Range[numberofperms],Ordering[Map[Reverse[#]&,allperms]]}]]]]];
+(*We will start by making an adjacency matrix for one choice of external boundary. We will then permute this matrix in all possible ways*)
+If[permutations[[1]]==={1,2},
+externaladjacencyseed={{0,1},{1,0}};
+,If[permutations[[1]]==={1},
+externaladjacencyseed={1};
+,externaladjacencyseed=Normal[AdjacencyMatrix[PathGraph[Prepend[permutations[[1]],extnum]]]];
+];
+];
+externaladjencyattempts=Map[externaladjacencyseed[[#,#]]&,permutations];
+For[ii=1,ii<=Length[externaladjencyattempts],ii++,
+adjacencymat[[externals,externals]]=externaladjencyattempts[[ii]];
+testgraph=AdjacencyGraph[adjacencymat];
+If[PlanarGraphQ[testgraph],(*we found a cyclic planar ordering!*)
+planar=True;
+ordering=ordering[[Ordering[permutations[[ii]]]]];
+Break[];
+];
+];
+(*If the graph was planar, we now have the ordering of external nodes*)
+If[planar==False,
+{verticespos,edgepos}=makePlanarGraph[graph,topleft,topright,bottomleft,bottomright];
+externalvertices=Map[#[[2]]&,Cases[verticespos,{Alternatives@@externals,___}]];
+externalvertices=spiralInList[externalvertices];
+ordering=ordering[[(externalvertices/.Map[#[[2]]->#[[1]]&,verticespos])/.MapThread[Rule,{externals,Range[Length[externals]]}]]];
+];
 ,(*If it cannot be embedded on genus zero,stop here*)
 Print["The diagram cannot be embedded on genus zero."];
 ordering=Null;
