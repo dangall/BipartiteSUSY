@@ -996,17 +996,23 @@ referenceperfmatch=perfectMatchings[topleft,topright,bottomleft,bottomright][[lo
 ,referenceperfmatch=referencematching;
 ];
 pathmat=pathMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch];
-minors=Minors[pathmat,Length[pathmat]][[1]];
+If[pathmat==={},(*this happens for cases when we have no external nodes*)
+truemapminortoperfmatch={};
+,minors=Minors[pathmat,Length[pathmat]][[1]];
 loopdenominator=Expand[referenceperfmatch/Expand[Simplify[Det[connectivityMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch]]]]];
 truemapminortoperfmatch=Expand[Simplify[minors loopdenominator]];
+];
 truemapminortoperfmatch
 ];
 
 dimensionGrassmannian[topleft_,topright_,bottomleft_,bottomright_]:=dimensionGrassmannian[topleft,topright,bottomleft,bottomright]=Block[{minorexpressions,minorvars,tangentspacedim},
 minorexpressions=minorsAsPerfectMatchings[topleft,topright,bottomleft,bottomright];
-minorvars=Variables[minorexpressions];
+If[minorexpressions==={},(*this happens when we don't have any external nodes, for example*)
+tangentspacedim=0;
+,minorvars=Variables[minorexpressions];
 (*When computing the tangent space we need to subtract 1, because Plucker coordinates are projective variables*)
 tangentspacedim=MatrixRank[Table[D[minorexpressions[[iii]],minorvars[[jjj]]],{iii,Length[minorexpressions]},{jjj,Length[minorvars]}]]-1;
+];
 tangentspacedim
 ];
 
@@ -1536,7 +1542,9 @@ referenceperfmatch=perfectMatchings[topleft,topright,bottomleft,bottomright][[lo
 ,referenceperfmatch=referencematching;
 ];
 pathmat=pathMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch];
-(*We shall now pick an ordering of external edges for this path matrix, depending on whether the user specified an ordering or not*)
+If[pathmat==={},
+grassmannianmatrix={};
+,(*We shall now pick an ordering of external edges for this path matrix, depending on whether the user specified an ordering or not*)
 {orderedpathmat,planar}=makeOrderedPathMatrix[adjacencymat,pathmat,externalordering,topleft,topright,bottomleft,bottomright];
 (*Now we have the ordered path matrix*)
 (*Now we will plug in the correct signs. We begin with those belonging to loops (excluding those loops formed by closing the path between multiple boundaries)*)
@@ -1614,6 +1622,7 @@ grassmannianmatrix=MapThread[implementFinalLoops[#1,#2]&,{grassmannianmatrix,fin
 (*We'll now put in the global signs on matrix entries*)
 globalsigns=Partition[Map[Power[-1,Count[sourcenodes,zz_/;zz>#[[1]]&&zz<#[[2]]]]&,Map[Sort,Tuples[{sourcenodes,Range[Dimensions[grassmannianmatrix][[2]]]}]]],Dimensions[grassmannianmatrix][[2]]];
 grassmannianmatrix=(grassmannianmatrix globalsigns)/.Map[#[[2]]->#[[1]]&,loopreplacement];
+];
 ,(*If it cannot be embedded on genus zero,stop here*)
 Print["The diagram cannot be embedded on genus zero."];
 grassmannianmatrix=Null;
@@ -1628,9 +1637,11 @@ referenceperfmatch=perfectMatchings[topleft,topright,bottomleft,bottomright][[lo
 ];
 If[withsigns,
 Cmatrix=getGrassmannian[topleft,topright,bottomleft,bottomright,referenceperfmatch];
-minors=Expand[Simplify[Minors[Cmatrix,Length[Cmatrix]][[1]]]];
-,pathmat=pathMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch];
-minors=Expand[Simplify[Minors[pathmat,Length[pathmat]][[1]]]];
+,Cmatrix=pathMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch];
+];
+If[Cmatrix==={},
+minors={};
+,minors=Expand[Simplify[Minors[Cmatrix,Length[Cmatrix]][[1]]]];
 ];
 minors
 ];
@@ -1644,7 +1655,9 @@ If[PlanarGraphQ[graph],(*the graph can be embedded on genus zero, but may still 
 (*Make a cyclic ordering when planar. If not planar, pick a default ordering based on the Kasteleyn*)
 (*Let's see if we can find a planar cyclic ordering*)
 externals=Join[Range[Length[topleft]+1,Length[topleft]+Length[bottomleft]],Range[Total[Dimensions[topleft]]+Length[bottomleft]+1,Total[Dimensions[topleft]]+Length[bottomleft]+Dimensions[topright][[2]]]];(*These are the node numbers corresponding to external nodes*)
-extnum=Length[externals];
+If[externals==={},
+ordering={};
+,extnum=Length[externals];
 (*We will now try and form a single external boundary by connecting up all external nodes sequentially*)
 allperms=Permutations[Range[extnum-1]];
 numberofperms=Length[allperms];
@@ -1675,6 +1688,7 @@ externalvertices=spiralInList[externalvertices];
 ordering=ordering[[(externalvertices/.Map[#[[2]]->#[[1]]&,verticespos])/.MapThread[Rule,{externals,Range[Length[externals]]}]]];
 ];
 ordering=MapThread[Rule,{ordering,Range[Length[ordering]]}];
+];
 ,(*If it cannot be embedded on genus zero,stop here*)
 Print["The diagram cannot be embedded on genus zero."];
 ordering=Null;
@@ -1691,7 +1705,9 @@ If[PlanarGraphQ[graph],(*the graph can be embedded on genus zero, but may still 
 (*Make a cyclic ordering when planar. If not planar, pick a default ordering based on the Kasteleyn*)
 (*Let's see if we can find a planar cyclic ordering*)
 externals=Join[Range[Length[topleft]+1,Length[topleft]+Length[bottomleft]],Range[Total[Dimensions[topleft]]+Length[bottomleft]+1,Total[Dimensions[topleft]]+Length[bottomleft]+Dimensions[topright][[2]]]];(*These are the node numbers corresponding to external nodes*)
-extnum=Length[externals];
+If[externals==={},
+ordering={};
+,extnum=Length[externals];
 (*We will now try and form a single external boundary by connecting up all external nodes sequentially*)
 allperms=Permutations[Range[extnum-1]];
 numberofperms=Length[allperms];
@@ -1720,6 +1736,7 @@ If[planar==False,
 externalvertices=Map[#[[2]]&,Cases[verticespos,{Alternatives@@externals,___}]];
 externalvertices=spiralInList[externalvertices];
 ordering=ordering[[(externalvertices/.Map[#[[2]]->#[[1]]&,verticespos])/.MapThread[Rule,{externals,Range[Length[externals]]}]]];
+];
 ];
 ,(*If it cannot be embedded on genus zero,stop here*)
 Print["The diagram cannot be embedded on genus zero."];
