@@ -287,6 +287,9 @@ rowsmergedonleftandright=Map[{Join[topleft,bottomleft[[#[[1]]]]],Join[topright[[
 newtonpolynomial=Total[Map[Det[Join[#[[1]],#[[2]],2]]&,rowsmergedonleftandright]];
 (*Tidy up the signs, since perfect matchings are positive*)
 perfectmatchigns=Sort[MonomialList[newtonpolynomial]/.{Times[-1,zz_]->Times[zz]}];
+If[perfectmatchigns==={0},(*in case there are no perfect matchings*)
+perfectmatchigns={};
+];
 ,perfectmatchigns=Null;
 ];
 perfectmatchigns
