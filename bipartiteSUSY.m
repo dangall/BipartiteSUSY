@@ -69,6 +69,8 @@ edgeOrderings::usage="Returns a list where each element is a consistent ordering
 cyclicEdgeOrderings::usage="Retuns a list of edges where the edges have been ordered accoring to the cyclic order, i.e. i.e. where the edges are sequenced such that each subsequent edge's first index is equal to the previous edge's second index."
 nextStepBlackToWhite::usage="Returns the next edge in the zig-zag path and its position."
 nextStepWhiteToBlack::usage="Returns the next edge in the zig-zag path and its position."
+nextStepWhiteToBlackInternalZigzag::usage="Returns the next edge in the internal zig-zag path and its position."
+nextStepBlackToWhiteInternalZigzag::usage="Returns the next edge in the internal zig-zag path and its position."
 internalZigZagNumeratorDenominator::usage="Returns a list where the first element is a list of edges in the numerator of a zig-zag path, and the second element is a list of edges in the denominator of the zig-zag path. The zig-zag path starts from an edge."
 allZigZagNumeratorsDenominators::usage="Returns a list where each element corresponds to a zig-zag path. The information is given as a list of two elements, where the first element contains all variables in the numerator of the expression, and the second element contains the variables in the denominator. Assumes standard rules: turn left at white nodes and right at black nodes, and edges from white to black are in the numerator, and vice-versa."
 makeZigZags::usage="Returns a list of zig-zag paths. Edges in the numerator are directed from white to black nodes, edges in the denominator are directed from black to white nodes. The standard rule is to turn left at white nodes and right at black nodes; it's possible to choose the opposite option by setting the (optional) final argument to True."
@@ -338,6 +340,7 @@ modulispace=matroidPolytope[topleft,topright,bottomleft,bottomright,checkneeded,
 (*gauging 1 only works for graphs of BFT type, i.e. where the edges are labeled according to the faces they touch*)
 matrixP=getPmatrix[topleft,topright,bottomleft,bottomright,checkneeded,True];
 If[matrixP=!=Null,
+If[Dimensions[matrixP][[2]]>0,
 chargesFterm=NullSpace[matrixP];
 gaugeCharge=Function[{edge,column},Block[{output=0},If[edge[[1]]==column,output=output+1;];If[edge[[2]]==column,output=output-1;];output]];
 edges=Variables[joinupKasteleyn[topleft,topright,bottomleft,bottomright]];
@@ -348,6 +351,8 @@ chargesDterm=Transpose[LinearSolve[matrixP,gaugechargematrix]];
 ,chargesDterm={};
 ];
 modulispace=NullSpace[Join[chargesFterm,chargesDterm]];
+,modulispace={{}};
+];
 ,modulispace=Null;
 ];
 ];
@@ -386,11 +391,14 @@ reducibilityBFTQ[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,
 pmatrix=getPmatrix[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph];
 modulispace=moduliSpaceBFT[topleft,topright,bottomleft,bottomright,gauging,checkneeded,BFTgraph];
 If[pmatrix=!=Null&&modulispace=!=Null,
-fullspacetranspose=Transpose[pmatrix];
+If[Dimensions[pmatrix][[2]]==0&&Length[pmatrix]>0,
+reducibility=True;
+,fullspacetranspose=Transpose[pmatrix];
 modulitranspose=Transpose[modulispace];
 (*Now we must multiply together those columns of the Pmatrix that project to the same coordinates in the moduli space*)
 fullspaceshort=Transpose[Map[Times@@fullspacetranspose[[Flatten[Position[modulitranspose,#]]]]&,DeleteDuplicates[modulitranspose]]];
 If[MemberQ[fullspaceshort,ConstantArray[0,Dimensions[fullspaceshort][[2]]]],reducibility=True;,reducibility=False;];
+];
 ,reducibility=Null;
 ];
 reducibility
@@ -400,12 +408,15 @@ reducibilityBFTedges[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:Fa
 pmatrix=getPmatrix[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph];
 modulispace=moduliSpaceBFT[topleft,topright,bottomleft,bottomright,gauging,checkneeded,BFTgraph];
 If[pmatrix=!=Null&&modulispace=!=Null,
-fullspacetranspose=Transpose[pmatrix];
+If[Dimensions[pmatrix][[2]]==0&&Length[pmatrix]>0,
+reducibilityedges=Variables[joinupKasteleyn[topleft,topright,bottomleft,bottomright]];
+,fullspacetranspose=Transpose[pmatrix];
 modulitranspose=Transpose[modulispace];
 (*Now we must multiply together those columns of the Pmatrix that project to the same coordinates in the moduli space*)
 fullspaceshort=Transpose[Map[Times@@fullspacetranspose[[Flatten[Position[modulitranspose,#]]]]&,DeleteDuplicates[modulitranspose]]];
 problemlines=Flatten[Position[fullspaceshort,ConstantArray[0,Dimensions[fullspaceshort][[2]]]]];
 reducibilityedges=Variables[joinupKasteleyn[topleft,topright,bottomleft,bottomright]][[problemlines]];
+];
 ,reducibilityedges=Null;
 ];
 reducibilityedges
@@ -491,15 +502,37 @@ remainingedges=Map[listSubtraction[edges,#]&,orderings];
 orderings
 ];
 
-nextStepBlackToWhite[topleftbottomleft_,currentedge_,currentposition_]:=Block[{nextedges,nextedge,nextedgepos},
+nextStepBlackToWhite[topleftbottomleft_,currentedge_,currentposition_,notallowededges_]:=Block[{nextedges,nextedge,nextedgepos},
 nextedges=edgeOrderings[Variables[topleftbottomleft[[All,currentposition[[2]]]]],currentedge][[1]];
+nextedges=DeleteCases[nextedges,Alternatives@@notallowededges];
 nextedge=nextedges[[1]];
 nextedgepos=Position[topleftbottomleft,nextedge][[1]];
 {nextedge,nextedgepos}
 ];
 
-nextStepWhiteToBlack[toplefttopright_,currentedge_,currentposition_]:=Block[{nextedges,nextedge,nextedgepos},
+nextStepWhiteToBlack[toplefttopright_,currentedge_,currentposition_,notallowededges_]:=Block[{nextedges,nextedge,nextedgepos},
 nextedges=edgeOrderings[Variables[toplefttopright[[currentposition[[1]]]]],currentedge][[1]];
+nextedges=DeleteCases[nextedges,Alternatives@@notallowededges];
+nextedge=nextedges[[1]];
+nextedgepos=Position[toplefttopright,nextedge][[1]];
+{nextedge,nextedgepos}
+];
+
+nextStepBlackToWhiteInternalZigzag[topleftbottomleft_,currentedge_,currentposition_,notallowededges_,startingedge_]:=Block[{nextedges,nextedge,nextedgepos},
+nextedges=edgeOrderings[Variables[topleftbottomleft[[All,currentposition[[2]]]]],currentedge][[1]];
+If[nextedges[[1]]=!=startingedge,
+nextedges=DeleteCases[nextedges,Alternatives@@notallowededges]
+];
+nextedge=nextedges[[1]];
+nextedgepos=Position[topleftbottomleft,nextedge][[1]];
+{nextedge,nextedgepos}
+];
+
+nextStepWhiteToBlackInternalZigzag[toplefttopright_,currentedge_,currentposition_,notallowededges_,startingedge_]:=Block[{nextedges,nextedge,nextedgepos},
+nextedges=edgeOrderings[Variables[toplefttopright[[currentposition[[1]]]]],currentedge][[1]];
+If[nextedges[[1]]=!=startingedge,
+nextedges=DeleteCases[nextedges,Alternatives@@notallowededges]
+];
 nextedge=nextedges[[1]];
 nextedgepos=Position[toplefttopright,nextedge][[1]];
 {nextedge,nextedgepos}
@@ -522,11 +555,11 @@ If[numeratorstart,
 (*We will first need to go from a black vertex to a white vertex, then from black to white, and so on, until reaching the starting point*)
 While[True,
 (*Now run along the column to find another edge whose first index is our currentedge's second index*)
-{currentedge,currentposition}=nextStepBlackToWhite[blacktowhitematrix,currentedge,currentposition];
+{currentedge,currentposition}=nextStepBlackToWhiteInternalZigzag[blacktowhitematrix,currentedge,currentposition,denominatoredges,startingedge];
 (*This new edge should be placed in the denominator in the zig-zag expression*)
 denominatoredges=Append[denominatoredges,currentedge];
 (*Now run along the row to find another edge whose first index is our currentedge's second index*)
-{currentedge,currentposition}=nextStepWhiteToBlack[whitetoblackmatrix,currentedge,currentposition];
+{currentedge,currentposition}=nextStepWhiteToBlackInternalZigzag[whitetoblackmatrix,currentedge,currentposition,numeratoredges,startingedge];
 If[currentedge===startingedge,
 Break[];
 ];
@@ -536,11 +569,11 @@ numeratoredges=Append[numeratoredges,currentedge];
 ,(*We will first need to go from a white vertex to a black vertex, then from white to black, and so on, until reaching the starting point*)
 While[True,
 (*Now run along the row to find another edge whose first index is our currentedge's second index*)
-{currentedge,currentposition}=nextStepWhiteToBlack[whitetoblackmatrix,currentedge,currentposition];
+{currentedge,currentposition}=nextStepWhiteToBlackInternalZigzag[whitetoblackmatrix,currentedge,currentposition,numeratoredges,startingedge];
 (*This new edge should be placed in the numerator in the zig-zag expression*)
 numeratoredges=Append[numeratoredges,currentedge];
 (*Now run along the column to find another edge whose first index is our currentedge's second index*)
-{currentedge,currentposition}=nextStepBlackToWhite[blacktowhitematrix,currentedge,currentposition];
+{currentedge,currentposition}=nextStepBlackToWhiteInternalZigzag[blacktowhitematrix,currentedge,currentposition,denominatoredges,startingedge];
 If[currentedge===startingedge,
 Break[];
 ];
@@ -565,7 +598,7 @@ currentedge=startingedge;
 currentposition=Position[kasteleyn,currentedge][[1]];
 While[True,
 (*Now run along the column to find another edge whose first index is our currentedge's second index*)
-{currentedge,currentposition}=nextStepBlackToWhite[blacktowhitematrix,currentedge,currentposition];
+{currentedge,currentposition}=nextStepBlackToWhite[blacktowhitematrix,currentedge,currentposition,denominatoredges];
 (*This new edge should be placed in the denominator in the zig-zag expression*)
 denominatoredges=Append[denominatoredges,currentedge];
 (*If we've reached another external node, we've finished the zig-zag*)
@@ -573,7 +606,7 @@ If[MemberQ[Join[bottomleftvars,toprightvars],currentedge],
 Break[];
 ];
 (*Now run along the row to find another edge whose first index is our currentedge's second index*)
-{currentedge,currentposition}=nextStepWhiteToBlack[whitetoblackmatrix,currentedge,currentposition];
+{currentedge,currentposition}=nextStepWhiteToBlack[whitetoblackmatrix,currentedge,currentposition,numeratoredges];
 (*This new edge should be placed in the numerator in the zig-zag expression*)
 numeratoredges=Append[numeratoredges,currentedge];
 If[MemberQ[Join[bottomleftvars,toprightvars],currentedge],
@@ -588,12 +621,12 @@ denominatoredges={startingedge};
 currentedge=startingedge;
 currentposition=Position[kasteleyn,currentedge][[1]];
 While[True,
-{currentedge,currentposition}=nextStepWhiteToBlack[whitetoblackmatrix,currentedge,currentposition];
+{currentedge,currentposition}=nextStepWhiteToBlack[whitetoblackmatrix,currentedge,currentposition,numeratoredges];
 numeratoredges=Append[numeratoredges,currentedge];
 If[MemberQ[Join[bottomleftvars,toprightvars],currentedge],
 Break[];
 ];
-{currentedge,currentposition}=nextStepBlackToWhite[blacktowhitematrix,currentedge,currentposition];
+{currentedge,currentposition}=nextStepBlackToWhite[blacktowhitematrix,currentedge,currentposition,denominatoredges];
 denominatoredges=Append[denominatoredges,currentedge];
 If[MemberQ[Join[bottomleftvars,toprightvars],currentedge],
 Break[];
