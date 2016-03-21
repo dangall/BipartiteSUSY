@@ -538,15 +538,18 @@ nextedgepos=Position[toplefttopright,nextedge][[1]];
 {nextedge,nextedgepos}
 ];
 
-internalZigZagNumeratorDenominator[topleft_,topright_,bottomleft_,bottomright_,startingedge_,numeratorstart_:True]:=Block[{blacktowhitematrix,whitetoblackmatrix,kasteleyn,numeratoredges,denominatoredges,currentedge,currentposition},
+internalZigZagNumeratorDenominator[topleft_,topright_,bottomleft_,bottomright_,startingedge_,numeratorstart_:True,alreadytakenedges_:{{},{}}]:=Block[{blacktowhitematrix,whitetoblackmatrix,kasteleyn,allnumeratoredges,alldenominatoredges,numeratoredges,denominatoredges,currentedge,currentposition},
 blacktowhitematrix=Join[topleft,bottomleft];
 whitetoblackmatrix=Join[topleft,topright,2];
 kasteleyn=joinupKasteleyn[topleft,topright,bottomleft,bottomright];
+{allnumeratoredges,alldenominatoredges}=alreadytakenedges;
 If[numeratorstart,
 numeratoredges={startingedge};
+allnumeratoredges=Append[allnumeratoredges,startingedge];
 denominatoredges={};
 ,numeratoredges={};
 denominatoredges={startingedge};
+alldenominatoredges=Append[alldenominatoredges,startingedge];
 ];
 currentedge=startingedge;
 currentposition=Position[kasteleyn,currentedge][[1]];
@@ -555,30 +558,34 @@ If[numeratorstart,
 (*We will first need to go from a black vertex to a white vertex, then from black to white, and so on, until reaching the starting point*)
 While[True,
 (*Now run along the column to find another edge whose first index is our currentedge's second index*)
-{currentedge,currentposition}=nextStepBlackToWhiteInternalZigzag[blacktowhitematrix,currentedge,currentposition,denominatoredges,startingedge];
+{currentedge,currentposition}=nextStepBlackToWhiteInternalZigzag[blacktowhitematrix,currentedge,currentposition,alldenominatoredges,startingedge];
 (*This new edge should be placed in the denominator in the zig-zag expression*)
 denominatoredges=Append[denominatoredges,currentedge];
+alldenominatoredges=Append[alldenominatoredges,startingedge];
 (*Now run along the row to find another edge whose first index is our currentedge's second index*)
-{currentedge,currentposition}=nextStepWhiteToBlackInternalZigzag[whitetoblackmatrix,currentedge,currentposition,numeratoredges,startingedge];
+{currentedge,currentposition}=nextStepWhiteToBlackInternalZigzag[whitetoblackmatrix,currentedge,currentposition,allnumeratoredges,startingedge];
 If[currentedge===startingedge,
 Break[];
 ];
 (*This new edge should be placed in the numerator in the zig-zag expression*)
 numeratoredges=Append[numeratoredges,currentedge];
+allnumeratoredges=Append[allnumeratoredges,startingedge];
 ];
 ,(*We will first need to go from a white vertex to a black vertex, then from white to black, and so on, until reaching the starting point*)
 While[True,
 (*Now run along the row to find another edge whose first index is our currentedge's second index*)
-{currentedge,currentposition}=nextStepWhiteToBlackInternalZigzag[whitetoblackmatrix,currentedge,currentposition,numeratoredges,startingedge];
+{currentedge,currentposition}=nextStepWhiteToBlackInternalZigzag[whitetoblackmatrix,currentedge,currentposition,allnumeratoredges,startingedge];
 (*This new edge should be placed in the numerator in the zig-zag expression*)
 numeratoredges=Append[numeratoredges,currentedge];
+allnumeratoredges=Append[allnumeratoredges,startingedge];
 (*Now run along the column to find another edge whose first index is our currentedge's second index*)
-{currentedge,currentposition}=nextStepBlackToWhiteInternalZigzag[blacktowhitematrix,currentedge,currentposition,denominatoredges,startingedge];
+{currentedge,currentposition}=nextStepBlackToWhiteInternalZigzag[blacktowhitematrix,currentedge,currentposition,alldenominatoredges,startingedge];
 If[currentedge===startingedge,
 Break[];
 ];
 (*This new edge should be placed in the denominator in the zig-zag expression*)
 denominatoredges=Append[denominatoredges,currentedge];
+alldenominatoredges=Append[alldenominatoredges,startingedge];
 ];
 ];
 {numeratoredges,denominatoredges}
@@ -591,24 +598,29 @@ toprightvars=Variables[topright];
 blacktowhitematrix=Join[topleft,bottomleft];
 whitetoblackmatrix=Join[topleft,topright,2];
 (*We will begin by making a function that can give a zig-zag which starts from an external white node.*)
+allnumeratoredges={};
+alldenominatoredges={};
 zigZagFromExternalWhiteNode=Function[{startingedge},Block[{currentedge,currentposition,denominatoredges,numeratoredges},
 numeratoredges={startingedge};
+allnumeratoredges=Append[allnumeratoredges,startingedge];
 denominatoredges={};
 currentedge=startingedge;
 currentposition=Position[kasteleyn,currentedge][[1]];
 While[True,
 (*Now run along the column to find another edge whose first index is our currentedge's second index*)
-{currentedge,currentposition}=nextStepBlackToWhite[blacktowhitematrix,currentedge,currentposition,denominatoredges];
+{currentedge,currentposition}=nextStepBlackToWhite[blacktowhitematrix,currentedge,currentposition,alldenominatoredges];
 (*This new edge should be placed in the denominator in the zig-zag expression*)
 denominatoredges=Append[denominatoredges,currentedge];
+alldenominatoredges=Append[alldenominatoredges,currentedge];
 (*If we've reached another external node, we've finished the zig-zag*)
 If[MemberQ[Join[bottomleftvars,toprightvars],currentedge],
 Break[];
 ];
 (*Now run along the row to find another edge whose first index is our currentedge's second index*)
-{currentedge,currentposition}=nextStepWhiteToBlack[whitetoblackmatrix,currentedge,currentposition,numeratoredges];
+{currentedge,currentposition}=nextStepWhiteToBlack[whitetoblackmatrix,currentedge,currentposition,allnumeratoredges];
 (*This new edge should be placed in the numerator in the zig-zag expression*)
 numeratoredges=Append[numeratoredges,currentedge];
+allnumeratoredges=Append[allnumeratoredges,currentedge];
 If[MemberQ[Join[bottomleftvars,toprightvars],currentedge],
 Break[];
 ];
@@ -618,16 +630,19 @@ Break[];
 zigZagFromExternalBlackNode=Function[{startingedge},Block[{currentedge,currentposition,denominatoredges,numeratoredges},
 numeratoredges={};
 denominatoredges={startingedge};
+alldenominatoredges=Append[alldenominatoredges,startingedge];
 currentedge=startingedge;
 currentposition=Position[kasteleyn,currentedge][[1]];
 While[True,
-{currentedge,currentposition}=nextStepWhiteToBlack[whitetoblackmatrix,currentedge,currentposition,numeratoredges];
+{currentedge,currentposition}=nextStepWhiteToBlack[whitetoblackmatrix,currentedge,currentposition,allnumeratoredges];
 numeratoredges=Append[numeratoredges,currentedge];
+allnumeratoredges=Append[allnumeratoredges,currentedge];
 If[MemberQ[Join[bottomleftvars,toprightvars],currentedge],
 Break[];
 ];
-{currentedge,currentposition}=nextStepBlackToWhite[blacktowhitematrix,currentedge,currentposition,denominatoredges];
+{currentedge,currentposition}=nextStepBlackToWhite[blacktowhitematrix,currentedge,currentposition,alldenominatoredges];
 denominatoredges=Append[denominatoredges,currentedge];
+alldenominatoredges=Append[alldenominatoredges,currentedge];
 If[MemberQ[Join[bottomleftvars,toprightvars],currentedge],
 Break[];
 ];
@@ -637,14 +652,16 @@ Break[];
 (*Start from each of the external nodes and make the zig-zags that begin there.*)
 bottomleftzigzags=Map[zigZagFromExternalWhiteNode[#]&,bottomleftvars];
 toprightzigzags=Map[zigZagFromExternalBlackNode[#]&,toprightvars];
-allnumeratoredges=Sort[Flatten[Map[#[[1]]&,Join[bottomleftzigzags,toprightzigzags]]]];
+allnumeratoredges=Sort[allnumeratoredges];
+alldenominatoredges=Sort[alldenominatoredges];
+(*allnumeratoredges=Sort[Flatten[Map[#[[1]]&,Join[bottomleftzigzags,toprightzigzags]]]];
 alldenominatoredges=Sort[Flatten[Map[#[[2]]&,Join[bottomleftzigzags,toprightzigzags]]]];
-(*If there are any edges that do not appear in any of the numerators, we must have a zig-zag path which is purely internal*)
+*)(*If there are any edges that do not appear in any of the numerators, we must have a zig-zag path which is purely internal*)
 (*Start from each of the edges that are missing a zig-zag, and create the internal zig-zags that run over this edge*)
 internalzigzagedges=Complement[Variables[kasteleyn],allnumeratoredges];
 internalzigzags={};
 While[internalzigzagedges=!={},
-internalzigzag=internalZigZagNumeratorDenominator[topleft,topright,bottomleft,bottomright,internalzigzagedges[[1]]];
+internalzigzag=internalZigZagNumeratorDenominator[topleft,topright,bottomleft,bottomright,internalzigzagedges[[1]],True,{allnumeratoredges,alldenominatoredges}];
 internalzigzags=Append[internalzigzags,internalzigzag];
 allnumeratoredges=Join[allnumeratoredges,internalzigzag[[1]]];
 alldenominatoredges=Join[alldenominatoredges,internalzigzag[[2]]];
@@ -653,7 +670,7 @@ internalzigzagedges=Complement[Variables[kasteleyn],allnumeratoredges];
 (*There shouldn't be, but just in case also look at edge in the denominator in case there's some zig-zag we're missing*)
 internalzigzagedges=Complement[Variables[kasteleyn],alldenominatoredges];
 While[internalzigzagedges=!={},
-internalzigzag=internalZigZagNumeratorDenominator[topleft,topright,bottomleft,bottomright,internalzigzagedges[[1]],False];
+internalzigzag=internalZigZagNumeratorDenominator[topleft,topright,bottomleft,bottomright,internalzigzagedges[[1]],False,{allnumeratoredges,alldenominatoredges}];
 internalzigzags=Append[internalzigzags,internalzigzag];
 allnumeratoredges=Join[allnumeratoredges,internalzigzag[[1]]];
 alldenominatoredges=Join[alldenominatoredges,internalzigzag[[2]]];
@@ -861,6 +878,7 @@ loopvariablebasis
 moduliLoopVariablesBFT[topleft_,topright_,bottomleft_,bottomright_,gauging_,referencematching_:Null,loopvariablebasis_:Null]/;(gauging===1||gauging===2):=Block[{perfmatchings,referenceperfmatch,basispaths,basis,kasteleyn,allvariables,perfmatchingvectors,basisvectors,tosolvefor,coef,coeflist,perfmatchingsasloops,masterspace,modulispace,internalfacenames,internalfacevariables,internalfacevariablevectors,internalfacesasbasispaths,vectorMod},
 If[edgesBFTformQ[topleft,topright,bottomleft,bottomright],
 perfmatchings=perfectMatchings[topleft,topright,bottomleft,bottomright];
+If[perfmatchings=!={},
 If[referencematching===Null,
 referenceperfmatch=perfmatchings[[1]];
 ,referenceperfmatch=referencematching;
@@ -906,6 +924,19 @@ modulispace=Transpose[Map[vectorMod[#,internalfacesasbasispaths]&,perfmatchingsa
 ];
 If[modulispace==={},
 modulispace={ConstantArray[0,Dimensions[masterspace][[2]]]};
+];
+,
+If[loopvariablebasis===Null,
+(*make my own basis*)
+If[gauging==2,
+basispaths=makeLoopVariablesBasis[topleft,topright,bottomleft,bottomright];
+,basispaths=makeLoopVariablesBasis[topleft,topright,bottomleft,bottomright,True];
+];
+,basispaths=loopvariablebasis;
+];
+basis=Flatten[basispaths];
+masterspace=Table[{},{iii,Length[basis]}];
+modulispace=Table[{},{iii,Length[basispaths[[2]]]}];
 ];
 ,Print["The graph must be of BFT type for this function to work: edges must be of the form _[_Integer,_Integer] and be labeled according the numbering of faces."];
 basis=Null;
@@ -995,11 +1026,16 @@ sinknodes
 
 externalEdgesNodeNumbers[topleft_,topright_,bottomleft_,bottomright_,externaledgelist_]:=Union[Map[#[[1]]&,Position[bottomleft,Alternatives@@externaledgelist]+Length[topleft]],Map[#[[2]]&,Position[topright,Alternatives@@externaledgelist]+Total[Dimensions[topleft]]+Length[bottomleft]]];
 
-connectivityMatrix[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null]:=connectivityMatrix[topleft,topright,bottomleft,bottomright,referencematching]=connectivityMatrix[topleft,topright,bottomleft,bottomright]=Block[{referenceperfmatch,kasteleyn,perfmatchvars,kastnopm,kastinvertedpm,bigmatrix,connectivitymat},
+connectivityMatrix[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null]:=connectivityMatrix[topleft,topright,bottomleft,bottomright,referencematching]=connectivityMatrix[topleft,topright,bottomleft,bottomright]=Block[{perfmatchings,referenceperfmatch,kasteleyn,perfmatchvars,kastnopm,kastinvertedpm,bigmatrix,size,connectivitymat},
 If[referencematching===Null,
-referenceperfmatch=perfectMatchings[topleft,topright,bottomleft,bottomright][[lowNumberLoopsPM[topleft,topright,bottomleft,bottomright]]];
+perfmatchings=perfectMatchings[topleft,topright,bottomleft,bottomright];
+If[perfmatchings=!={},
+referenceperfmatch=perfmatchings[[lowNumberLoopsPM[topleft,topright,bottomleft,bottomright]]];
+,referenceperfmatch=0;
+];
 ,referenceperfmatch=referencematching;
 ];
+If[referenceperfmatch=!=0,
 kasteleyn=joinupKasteleyn[topleft,topright,bottomleft,bottomright];
 perfmatchvars=Variables[referenceperfmatch];
 (*We need to first form a large matrix based on the Kasteleyn, and then take its inverse*)
@@ -1007,30 +1043,47 @@ kastnopm=-(kasteleyn/.Map[#->0&,perfmatchvars]);
 kastinvertedpm=-Transpose[kasteleyn/.Join[Map[#->1/#&,perfmatchvars],Map[#->0&,Complement[Variables[kasteleyn],perfmatchvars]]]];
 bigmatrix=Join[Join[IdentityMatrix[Length[kasteleyn]],kastinvertedpm],Join[kastnopm,IdentityMatrix[Dimensions[kasteleyn][[2]]]],2];
 connectivitymat=Inverse[bigmatrix];
+,Print["This graph has no perfect matchings"];
+size=Total[Dimensions[joinupKasteleyn[topleft,topright,bottomleft,bottomright]]];
+connectivitymat=Table[0,{iii,size},{jjj,size}]+IdentityMatrix[size];
+];
 connectivitymat
 ];
 
 pathMatrix[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null]:=
-pathMatrix[topleft,topright,bottomleft,bottomright,referencematching]=pathMatrix[topleft,topright,bottomleft,bottomright]=Block[{referenceperfmatch,bigpathmatrix,externalrows,externalcolumns,finalpathmatrix},
+pathMatrix[topleft,topright,bottomleft,bottomright,referencematching]=pathMatrix[topleft,topright,bottomleft,bottomright]=Block[{perfmatchings,referenceperfmatch,bigpathmatrix,externalrows,externalcolumns,finalpathmatrix},
 If[referencematching===Null,
-referenceperfmatch=perfectMatchings[topleft,topright,bottomleft,bottomright][[lowNumberLoopsPM[topleft,topright,bottomleft,bottomright]]];
+perfmatchings=perfectMatchings[topleft,topright,bottomleft,bottomright];
+If[perfmatchings=!={},
+referenceperfmatch=perfmatchings[[lowNumberLoopsPM[topleft,topright,bottomleft,bottomright]]];
+,referenceperfmatch=0;
+];
 ,referenceperfmatch=referencematching;
 ];
+If[referenceperfmatch=!=0,
 bigpathmatrix=connectivityMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch];
 (*bigpathmatrix contains the connectivity between ALL pairs of nodes. We need to select those entries corresponding to sources goign to external nodes.*)
 externalrows=findSourceNodes[topleft,topright,bottomleft,bottomright,referenceperfmatch];
 externalcolumns=Join[Range[Length[topleft]+1,Length[topleft]+Length[bottomleft]],Range[Total[Dimensions[topleft]]+Length[bottomleft]+1,Total[Dimensions[topleft]]+Length[bottomleft]+Dimensions[topright][[2]]]];
 finalpathmatrix=Expand[Simplify[bigpathmatrix[[externalrows,externalcolumns]]]];
 (*The determinant of bigpathmatrix gives the loop factor in the paths between external nodes.*)
+,Print["This graph has no perfect matchings"];
+finalpathmatrix=Null;
+];
 finalpathmatrix
 ];
 
-minorsAsPerfectMatchings[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null]:=minorsAsPerfectMatchings[topleft,topright,bottomleft,bottomright]=minorsAsPerfectMatchings[topleft,topright,bottomleft,bottomright,referencematching]=Block[{referenceperfmatch,pathmat,minors,loopdenominator,truemapminortoperfmatch},
+minorsAsPerfectMatchings[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null]:=minorsAsPerfectMatchings[topleft,topright,bottomleft,bottomright]=minorsAsPerfectMatchings[topleft,topright,bottomleft,bottomright,referencematching]=Block[{perfmatchings,referenceperfmatch,pathmat,minors,loopdenominator,truemapminortoperfmatch},
 (*If we haven't selected a specific perfect matching, choose one with lowest possible multiplicity*)
 If[referencematching===Null,
-referenceperfmatch=perfectMatchings[topleft,topright,bottomleft,bottomright][[lowNumberLoopsPM[topleft,topright,bottomleft,bottomright]]];
+perfmatchings=perfectMatchings[topleft,topright,bottomleft,bottomright];
+If[perfmatchings=!={},
+referenceperfmatch=perfmatchings[[lowNumberLoopsPM[topleft,topright,bottomleft,bottomright]]];
+,referenceperfmatch=0;
+];
 ,referenceperfmatch=referencematching;
 ];
+If[referenceperfmatch=!=0,
 pathmat=pathMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch];
 If[pathmat==={},(*this happens for cases when we have no external nodes*)
 truemapminortoperfmatch={};
@@ -1038,21 +1091,26 @@ truemapminortoperfmatch={};
 loopdenominator=Expand[referenceperfmatch/Expand[Simplify[Det[connectivityMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch]]]]];
 truemapminortoperfmatch=Expand[Simplify[minors loopdenominator]];
 ];
+,truemapminortoperfmatch=Null;
+];
 truemapminortoperfmatch
 ];
 
 dimensionGrassmannian[topleft_,topright_,bottomleft_,bottomright_]:=dimensionGrassmannian[topleft,topright,bottomleft,bottomright]=Block[{minorexpressions,minorvars,tangentspacedim},
 minorexpressions=minorsAsPerfectMatchings[topleft,topright,bottomleft,bottomright];
-If[minorexpressions==={},(*this happens when we don't have any external nodes, for example*)
+If[minorexpressions===Null,
+tangentspacedim=-1;
+,If[minorexpressions==={},(*this happens when we don't have any external nodes, for example*)
 tangentspacedim=0;
 ,minorvars=Variables[minorexpressions];
 (*When computing the tangent space we need to subtract 1, because Plucker coordinates are projective variables*)
 tangentspacedim=MatrixRank[Table[D[minorexpressions[[iii]],minorvars[[jjj]]],{iii,Length[minorexpressions]},{jjj,Length[minorvars]}]]-1;
 ];
+];
 tangentspacedim
 ];
 
-reducibilityQ[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{edgesnaivereducibility,reducibility,numsources,numexternalnodes,maxpossibledimension,dimensionP,dimgrassmannian,dimafteredgeremoval,ii},(*First need to find out which columns are the same point in the moduli space*)
+reducibilityQ[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{edgesnaivereducibility,reducibility,pmatrix,numsources,numexternalnodes,maxpossibledimension,dimensionP,dimgrassmannian,dimafteredgeremoval,ii},(*First need to find out which columns are the same point in the moduli space*)
 edgesnaivereducibility=reducibilityBFTedges[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph,gauging];
 If[edgesnaivereducibility===Null,
 reducibility=Null;(*there was some problem with the Kasteleyn*)
@@ -1063,10 +1121,13 @@ reducibility=False;
 (*if the graph is planar, if we may remove edges without changing the matroid polytope it means that the graph is reducible. Equally, this is the definition for a BFT graph to be reducible*)
 reducibility=True;
 ,(*if we have a non-planar scattering graph, we need to do things carefully.*)
-numsources=Length[findSourceNodes[topleft,topright,bottomleft,bottomright,perfectMatchings[topleft,topright,bottomleft,bottomright][[1]]]];
+pmatrix=getPmatrix[topleft,topright,bottomleft,bottomright];
+If[Dimensions[pmatrix][[2]]==0&&Length[pmatrix]>0,
+reducibility=True;
+,numsources=Length[findSourceNodes[topleft,topright,bottomleft,bottomright,perfectMatchings[topleft,topright,bottomleft,bottomright][[1]]]];
 numexternalnodes=Length[bottomleft]+Length[Transpose[topright]];
 maxpossibledimension=numsources(numexternalnodes-numsources);
-dimensionP=polytopeDim[getPmatrix[topleft,topright,bottomleft,bottomright]];
+dimensionP=polytopeDim[pmatrix];
 If[dimensionP>maxpossibledimension,
 reducibility=True;
 ,dimgrassmannian=dimensionGrassmannian[topleft,topright,bottomleft,bottomright];
@@ -1081,6 +1142,7 @@ If[dimafteredgeremoval==dimgrassmannian,
 (*we have found an edge which may be removed without decreasing the dimension of the Grassmannian!*)
 reducibility=True;
 Break[]
+];
 ];
 ];
 ];
@@ -1184,7 +1246,7 @@ removables=varstotryout[[Flatten[Position[reducibilities,False]]]];
 ,(*we have a non-planar graph with nonstanard poles, so we need to check things carefully.*)
 (*Only keep those cases for which the resulting graph is not reducible and where the dimension has decreased by one*)
 dimpmatrix=polytopeDim[getPmatrix[topleft,topright,bottomleft,bottomright]];
-removables=Cases[varstotryout,zz_/;reducibilityQ[topleft/.Map[#->0&,zz],topright/.Map[#->0&,zz],bottomleft/.Map[#->0&,zz],bottomright,False,BFTgraph,gauging]==False&&polytopeDim[getPmatrix[topleft/.Map[#->0&,zz],topright/.Map[#->0&,zz],bottomleft/.Map[#->0&,zz],bottomright]]==dimpmatrix-1];
+removables=Cases[varstotryout,zz_/;polytopeDim[getPmatrix[topleft/.Map[#->0&,zz],topright/.Map[#->0&,zz],bottomleft/.Map[#->0&,zz],bottomright]]==dimpmatrix-1&&reducibilityQ[topleft/.Map[#->0&,zz],topright/.Map[#->0&,zz],bottomleft/.Map[#->0&,zz],bottomright,False,BFTgraph,gauging]==False];
 ];
 ];
 ,removables=Null;
@@ -1430,7 +1492,12 @@ newedgepos=newedgepos/.newexternalnodesrule;
 externalvertices=spiralInList[externalvertices/.newexternalnodesrule];
 cutcoordinates=Table[{externalvertices[[iii]],externalvertices[[iii+1]]},{iii,Length[externalvertices]-1}];
 tocriticalnode=tocriticalnode/.newexternalnodesrule;
-badexternalnodes=Map[cutcoordinates[[Sequence@@#]]&,Position[Map[Table[Solve[#[[1]]+param(#[[2]]-#[[1]])==(#[[iii]]/.tocriticalnode),param]==={},{iii,2}]&,cutcoordinates],False]];
+doesitavoidmycriticalnode=Map[Table[Solve[#[[1]]+param(#[[2]]-#[[1]])==(#[[iii]]/.tocriticalnode),param]==={},{iii,2}]&,cutcoordinates];
+corrections=Map[#&,Position[cutcoordinates,Alternatives@@freestandingexternalvertices]];
+For[jj=1,jj<=Length[corrections],jj++,
+doesitavoidmycriticalnode[[Sequence@@corrections[[jj]]]]=True;
+];
+badexternalnodes=Map[cutcoordinates[[Sequence@@#]]&,DeleteDuplicates[Position[doesitavoidmycriticalnode,False],First[#1]==First[#2]&]];
 ];
 {newverticespos,newedgepos}
 ];
@@ -1566,7 +1633,7 @@ boundarypaircuts=Null;
 {boundaries,boundarypaircuts}
 ];
 
-getGrassmannian[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null,externalordering_:Null,boundarylist_:Null,boundarycutreplacements_:Null]/;(externalordering===Null&&boundarylist===Null&&boundarycutreplacements===Null||externalordering=!=Null&&boundarylist=!=Null&&boundarycutreplacements=!=Null):=Module[{adjacencymat,graph,planar,referenceperfmatch,pathmat,orderedpathmat,loopdenominator,looplist,loopreplacement,loop,loopsigns,grassmannianmatrix,sourcenodes,boundaries,boundarypaircuts,pathmatorder,neworder,newroworder,cutSequence,finalloopsignsmatrix,implementFinalLoops,globalsigns},
+getGrassmannian[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null,externalordering_:Null,boundarylist_:Null,boundarycutreplacements_:Null]/;(externalordering===Null&&boundarylist===Null&&boundarycutreplacements===Null||externalordering=!=Null&&boundarylist=!=Null&&boundarycutreplacements=!=Null):=Module[{adjacencymat,graph,planar,perfmatchings,referenceperfmatch,pathmat,orderedpathmat,loopdenominator,looplist,loopreplacement,loop,loopsigns,grassmannianmatrix,sourcenodes,boundaries,boundarypaircuts,pathmatorder,neworder,newroworder,cutSequence,finalloopsignsmatrix,implementFinalLoops,globalsigns},
 (*Let's first see if the graph can be embedded on genus zero*)
 adjacencymat=getAdjacencyMatrix[topleft,topright,bottomleft,bottomright];
 graph=AdjacencyGraph[adjacencymat];(*We have finished making the Mathematica graph!*)
@@ -1574,9 +1641,14 @@ planar=False;
 If[PlanarGraphQ[graph],
 (*If it can be embedded on genus zero make the path matrix*)
 If[referencematching===Null,
-referenceperfmatch=perfectMatchings[topleft,topright,bottomleft,bottomright][[lowNumberLoopsPM[topleft,topright,bottomleft,bottomright]]];
+perfmatchings=perfectMatchings[topleft,topright,bottomleft,bottomright];
+If[perfmatchings=!={},
+referenceperfmatch=perfmatchings[[lowNumberLoopsPM[topleft,topright,bottomleft,bottomright]]];
+,referenceperfmatch=0;
+];
 ,referenceperfmatch=referencematching;
 ];
+If[referenceperfmatch=!=0,
 pathmat=pathMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch];
 If[pathmat==={},
 grassmannianmatrix={};
@@ -1659,6 +1731,9 @@ grassmannianmatrix=MapThread[implementFinalLoops[#1,#2]&,{grassmannianmatrix,fin
 globalsigns=Partition[Map[Power[-1,Count[sourcenodes,zz_/;zz>#[[1]]&&zz<#[[2]]]]&,Map[Sort,Tuples[{sourcenodes,Range[Dimensions[grassmannianmatrix][[2]]]}]]],Dimensions[grassmannianmatrix][[2]]];
 grassmannianmatrix=(grassmannianmatrix globalsigns)/.Map[#[[2]]->#[[1]]&,loopreplacement];
 ];
+,Print["This graph has no perfect matchings"];
+grassmannianmatrix=Null;
+];
 ,(*If it cannot be embedded on genus zero,stop here*)
 Print["The diagram cannot be embedded on genus zero."];
 grassmannianmatrix=Null;
@@ -1666,11 +1741,16 @@ grassmannianmatrix=Null;
 grassmannianmatrix
 ];
 
-pluckerCoordinates[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null,withsigns_:False]:=Module[{referenceperfmatch,Cmatrix,minors,pathmat},
+pluckerCoordinates[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null,withsigns_:False]:=Module[{perfmatchings,referenceperfmatch,Cmatrix,minors,pathmat},
 If[referencematching===Null,
-referenceperfmatch=perfectMatchings[topleft,topright,bottomleft,bottomright][[lowNumberLoopsPM[topleft,topright,bottomleft,bottomright]]];
+perfmatchings=perfectMatchings[topleft,topright,bottomleft,bottomright];
+If[perfmatchings=!={},
+referenceperfmatch=perfmatchings[[lowNumberLoopsPM[topleft,topright,bottomleft,bottomright]]];
+,referenceperfmatch=0;
+];
 ,referenceperfmatch=referencematching;
 ];
+If[referenceperfmatch=!=0,
 If[withsigns,
 Cmatrix=getGrassmannian[topleft,topright,bottomleft,bottomright,referenceperfmatch];
 ,Cmatrix=pathMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch];
@@ -1678,6 +1758,8 @@ Cmatrix=getGrassmannian[topleft,topright,bottomleft,bottomright,referenceperfmat
 If[Cmatrix==={},
 minors={};
 ,minors=Expand[Simplify[Minors[Cmatrix,Length[Cmatrix]][[1]]]];
+];
+,minors=Null;
 ];
 minors
 ];
