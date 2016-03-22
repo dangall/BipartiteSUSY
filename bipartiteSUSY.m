@@ -44,10 +44,10 @@ intoPolytope::usage="Returns only distinct vertices of the polytope, with their 
 matroidPolytope::usage="Returns the coordinates of the matroid polytope (some of which may have higher multiplicity than 1). Each column is the coordinate of a perfect matching."
 moduliSpaceBFT::usage="Gives the moduli space of the BFT given by the Kasteleyn. It requires the input on which gauging it should use (i.e. gauging 1 or gauging 2)."
 lowNumberLoopsPM::usage="Returns the number of the perfect matching with lowest multiplicity, and hence the lowest number of loops in the corresponding perfect orientation."
-externalOrderingDefault::usage="Gives a choice of ordering of external edges, given in the form {X[i,j]\[Rule]1,X[k,l]\[Rule]2,...}. Only contains those edges which are present in the graph."
+externalEdgeOrderingDefault::usage="Gives a choice of ordering of external edges, given in the form {X[i,j]\[Rule]1,X[k,l]\[Rule]2,...}. Only contains those edges which are present in the graph."
 externalNodeOrderingDefault::usage="Gives a choice of ordering of external nodes. Also contains external nodes with no external edge attached to it."
-findSources::usage="Returns a list of edges which are sources in the perfect orientation corresponding to a given reference perfect matching."
-findSinks::usage="Returns a list of edges which are sinks in the perfect orientation corresponding to a given reference perfect matching."
+findSourceEdges::usage="Returns a list of edges which are sources in the perfect orientation corresponding to a given reference perfect matching."
+findSinkEdges::usage="Returns a list of edges which are sinks in the perfect orientation corresponding to a given reference perfect matching."
 findSourceNodes::usage="Returns a list of nodes which are sources in the perfect orientation corresponding to a given reference perfect matching."
 findSinkNodes::usage="Returns a list of nodes which are sinks in the perfect orientation corresponding to a given reference perfect matching."
 externalEdgesNodeNumbers::usage="Takes a list of external edges and gives the Kasteleyn node numbers of the edges."
@@ -93,7 +93,7 @@ getGrassmannian::usage="This function returns the correspdoning element of the G
 pluckerCoordinates::usage="Returns the external ordering and the Plucker coordinates of the on-shell diagram. It is posisble to specify whether this function should place in all signs according to the boundary measurement, or whether the path matrix is sufficient."
 makeLoopVariablesBasis::usage="Returns a list of paths that form a basis with which it is possible to express any path in the graph. The output is of the form of two lists: the first one contains the internal faces, and if the optional input 'standardfacevariables' is False it also contains non-trivial cycles around surfaces with non-zero genus as well as products of external faces which circle around a boundary. The first list will generically be a linear combination of these paths. The second entry contains the remaining independent external faces, paths going between different boundaries, and if 'standardfacevariables' is True it also contains non-trivial cycles for non-zero genus."
 moduliLoopVariablesBFT::usage="Returns a list of three items: the first is the master space, the second is the moduli space, and the third is the loop variable basis used to make these spaces."
-externalOrderingGrassmanian::usage="Returns the ordering of external edges chosen by default by getGrassmannian. Only contains those edges which are present in the Kasteleyn."
+externalEdgeOrderingGrassmanian::usage="Returns the ordering of external edges chosen by default by getGrassmannian. Only contains those edges which are present in the Kasteleyn."
 externalNodeOrderingGrassmanian::usage="Returns the ordering of external nodes chosen by default by getGrassmannian."
 
 
@@ -988,22 +988,23 @@ planar=True;
 planar
 ];
 
-externalOrderingDefault[topright_,bottomleft_]:=Block[{ordering},
-ordering=Flatten[DeleteCases[Join[bottomleft,Transpose[topright]],0,{2}]];
-ordering=MapThread[Rule,{ordering,Range[Length[ordering]]}];
+externalEdgeOrderingDefault[topleft_,topright_,bottomleft_,bottomright_]:=Block[{bigkasteleyn,ordering},
+bigkasteleyn=Join[joinupKasteleyn[topleft,topright,bottomleft,bottomright],Transpose[joinupKasteleyn[topleft,topright,bottomleft,bottomright]]];
+ordering=externalNodeOrderingDefault[topleft,topright,bottomleft,bottomright];
+ordering=Map[#[[1,1]]->#[[2]]&,DeleteCases[MapThread[Rule,{Map[Variables[bigkasteleyn[[#]]]&,ordering],Range[Length[ordering]]}],{}->___]];
 ordering
 ];
 
 externalNodeOrderingDefault[topleft_,topright_,bottomleft_,bottomright_]:=Join[Range[Length[topleft]+1,Length[topleft]+Length[bottomleft]],Range[Total[Dimensions[topleft]]+Length[bottomleft]+1,Total[Dimensions[topleft]]+Length[bottomleft]+Dimensions[topright][[2]]]];
 
-findSources[topright_,bottomleft_,referenceperfmatch_]:=Block[{referencevars,sourceedges},
+findSourceEdges[topright_,bottomleft_,referenceperfmatch_]:=Block[{referencevars,sourceedges},
 referencevars=Variables[referenceperfmatch];
 (*Sources are those variables in the bottomleft that are not in referenceperfmatch, and those in topright which are*)
 sourceedges=Union[Complement[DeleteCases[Flatten[bottomleft],0],referencevars],Intersection[DeleteCases[Flatten[topright],0],referencevars]];
 sourceedges
 ];
 
-findSinks[topright_,bottomleft_,referenceperfmatch_]:=Block[{perfmatchvars,sinkedges},
+findSinkEdges[topright_,bottomleft_,referenceperfmatch_]:=Block[{perfmatchvars,sinkedges},
 perfmatchvars=Variables[referenceperfmatch];
 (*Sinks are those variables in the bottomleft that are in referenceperfmatch, and those in topright which are not*)
 sinkedges=Union[Complement[DeleteCases[Flatten[topright],0],perfmatchvars],Intersection[DeleteCases[Flatten[bottomleft],0],perfmatchvars]];
@@ -1045,7 +1046,7 @@ bigmatrix=Join[Join[IdentityMatrix[Length[kasteleyn]],kastinvertedpm],Join[kastn
 connectivitymat=Inverse[bigmatrix];
 ,Print["This graph has no perfect matchings"];
 size=Total[Dimensions[joinupKasteleyn[topleft,topright,bottomleft,bottomright]]];
-connectivitymat=Table[0,{iii,size},{jjj,size}]+IdentityMatrix[size];
+connectivitymat=IdentityMatrix[size];
 ];
 connectivitymat
 ];
@@ -1764,8 +1765,7 @@ minors={};
 minors
 ];
 
-externalOrderingGrassmanian[topleft_,topright_,bottomleft_,bottomright_]:=Block[{ordering,adjacencymat,graph,planar,externals,extnum,allperms,numberofperms,permutations,externaladjacencyseed,externaladjencyattempts,ii,testgraph,verticespos,edgepos,externalvertices},
-ordering=Flatten[DeleteCases[Join[bottomleft,Transpose[topright]],0,{2}]];
+externalEdgeOrderingGrassmanian[topleft_,topright_,bottomleft_,bottomright_]:=Block[{ordering,adjacencymat,graph,planar,externals,extnum,allperms,numberofperms,permutations,externaladjacencyseed,externaladjencyattempts,ii,testgraph,verticespos,edgepos,externalvertices,bigkasteleyn},
 adjacencymat=getAdjacencyMatrix[topleft,topright,bottomleft,bottomright];
 graph=AdjacencyGraph[adjacencymat];
 planar=False;
@@ -1773,6 +1773,7 @@ If[PlanarGraphQ[graph],(*the graph can be embedded on genus zero, but may still 
 (*Make a cyclic ordering when planar. If not planar, pick a default ordering based on the Kasteleyn*)
 (*Let's see if we can find a planar cyclic ordering*)
 externals=Join[Range[Length[topleft]+1,Length[topleft]+Length[bottomleft]],Range[Total[Dimensions[topleft]]+Length[bottomleft]+1,Total[Dimensions[topleft]]+Length[bottomleft]+Dimensions[topright][[2]]]];(*These are the node numbers corresponding to external nodes*)
+ordering=(*Flatten[DeleteCases[Join[bottomleft,Transpose[topright]],0,{2}]]*)externals;
 If[externals==={},
 ordering={};
 ,extnum=Length[externals];
@@ -1805,7 +1806,8 @@ externalvertices=Map[#[[2]]&,Cases[verticespos,{Alternatives@@externals,___}]];
 externalvertices=spiralInList[externalvertices];
 ordering=ordering[[(externalvertices/.Map[#[[2]]->#[[1]]&,verticespos])/.MapThread[Rule,{externals,Range[Length[externals]]}]]];
 ];
-ordering=MapThread[Rule,{ordering,Range[Length[ordering]]}];
+bigkasteleyn=Join[joinupKasteleyn[topleft,topright,bottomleft,bottomright],Transpose[joinupKasteleyn[topleft,topright,bottomleft,bottomright]]];
+ordering=Map[#[[1,1]]->#[[2]]&,DeleteCases[MapThread[Rule,{Map[Variables[bigkasteleyn[[#]]]&,ordering],Range[Length[ordering]]}],{}->___]];
 ];
 ,(*If it cannot be embedded on genus zero,stop here*)
 Print["The diagram cannot be embedded on genus zero."];
