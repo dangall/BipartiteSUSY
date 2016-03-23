@@ -32,6 +32,7 @@ internalFaceLabels::usage="Gives the name of the INTERNAL faces in the graph."
 (*reducibilityQ::usage="Tells you whether a graph is reducible, in the scattering amplitudes sense. Set the last argument equal to True to get reducibility in the Subscript[BFT, 2] sense"*)
 getWeightedAdjacencyMatrix::usage="Gives the weighted adjacency matrix which can be used for WeightedAdjacencyGraph"
 getAdjacencyMatrix::usage="Gives the adjacency matrix which can be used for AdjacencyGraph"
+getOrientedAdjacencyMatrix::usage="Gives the adjacency matrix of the graph directed according to a specified perfect orientation. The user specifies whether the output should be in terms of edge weights or not."
 planarityQ::usage="Tells you whether a given graph can be embedded on the disk without any edges crossing"
 viewGraph::usage="Shows you the graph"
 duplicateEdges::usage="Returns a list of edges not appearing in a correct way in the Kasteleyn"
@@ -52,7 +53,10 @@ findSourceNodes::usage="Returns a list of nodes which are sources in the perfect
 findSinkNodes::usage="Returns a list of nodes which are sinks in the perfect orientation corresponding to a given reference perfect matching."
 externalEdgesNodeNumbers::usage="Takes a list of external edges and gives the Kasteleyn node numbers of the edges."
 connectivityMatrix::usage="Returns the connectivity matrix of the diagram, i.e. a matrix containing all paths between all nodes."
+traditionalConnectivityMatrix::usage="Returns the connectivity matrix of the diagram, computed using the method described in 1310.3820, which involves the inverse of a particular adjacency matrix."
+traditionalPathMatrix::usage="Gives the path matrix, i.e. the element of the Grassmannian before any signs are placed (which ensure manifest positivity of planar diagrams), by using the traditionalConnectivityMatrix method, which involves the inverse of a matrix."
 pathMatrix::usage="Gives the path matrix, i.e. the element of the Grassmannian before any signs are placed (which ensure manifest positivity of planar diagrams)."
+getLoopDenominator::usage="Returns the sum of loops contributing to terms in the denominator of terms in the path matrix. Is of the form (1-loops). The user may specify to have it in the form (1+loops)."
 minorsAsPerfectMatchings::usage="Returns the minors of the pathmatrix, resembling Plucker coordinates of the Grassmannian, but without manifest-positivity signs."
 dimensionGrassmannian::usage="Returns the dimension of the Grassmannian, computed by looking at the tangent space of its minors."
 reducibilityBFTQ::usage="Gives the 'naive' reducibility of a graph, which is the same as the reducibility for a BFT, based on its moduli space. When gauging 2 is used, this is the same as reducibility for planar scattering diagrams."
@@ -180,6 +184,31 @@ kasteleyn=joinupKasteleyn[topleft,topright,bottomleft,bottomright];
 oneskasteleyn=kasteleyn/.Map[#->1&,Variables[kasteleyn]];
 adjacencymatrix=Join[Join[ConstantArray[0,{Length[oneskasteleyn],Length[oneskasteleyn]}],Transpose[oneskasteleyn]],Join[oneskasteleyn,ConstantArray[0,{Dimensions[oneskasteleyn][[2]],Dimensions[oneskasteleyn][[2]]}]],2];
 adjacencymatrix
+];
+
+getOrientedAdjacencyMatrix[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null,withedgeweights_:False]:=Block[{perfmatchings,referenceperfmatch,kasteleyn,turnoffreferencevars,turnoffothervars,adjacencymat},
+If[referencematching===Null,
+perfmatchings=perfectMatchings[topleft,topright,bottomleft,bottomright];
+If[perfmatchings=!={},
+referenceperfmatch=perfmatchings[[lowNumberLoopsPM[topleft,topright,bottomleft,bottomright]]];
+,referenceperfmatch=0;
+];
+,referenceperfmatch=referencematching;
+];
+If[referenceperfmatch=!=0,
+(*We'll make a graph oriented according to the perfect orientation associatedd to the perfect matching referencematching. Let's start with making all edges point from white to black.*)
+kasteleyn=joinupKasteleyn[topleft,topright,bottomleft,bottomright];
+turnoffreferencevars=Map[#->0&,Variables[referenceperfmatch]];
+turnoffothervars=Map[#->0&,Complement[Variables[kasteleyn],Variables[referenceperfmatch]]];
+(*Now we'll make the adjacency matrix, but which still contains the names of the edges. Those edges that are in the perfect matching should be oppositely oriented*)
+adjacencymat=Join[Join[Table[0,{iii,Length[kasteleyn]},{jjj,Length[kasteleyn]}],Transpose[kasteleyn]/.turnoffothervars],Join[kasteleyn/.turnoffreferencevars,Table[0,{iii,Dimensions[kasteleyn][[2]]},{jjj,Dimensions[kasteleyn][[2]]}]],2];
+If[withedgeweights==False,
+adjacencymat=adjacencymat/.Map[#->1&,Variables[kasteleyn]];
+];
+,Print["This graph has no perfect matchings"];
+adjacencymat=Null;
+];
+adjacencymat
 ];
 
 viewGraph[topleft_,topright_,bottomleft_,bottomright_,showedges_:True]:=Module[{badedges,adjacencymat,kasteleyn,colors,graph,edgelist,vars,edgelabels,tempedgelabels,finalgraph,edgeweightname},
@@ -1027,7 +1056,7 @@ sinknodes
 
 externalEdgesNodeNumbers[topleft_,topright_,bottomleft_,bottomright_,externaledgelist_]:=Union[Map[#[[1]]&,Position[bottomleft,Alternatives@@externaledgelist]+Length[topleft]],Map[#[[2]]&,Position[topright,Alternatives@@externaledgelist]+Total[Dimensions[topleft]]+Length[bottomleft]]];
 
-connectivityMatrix[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null]:=connectivityMatrix[topleft,topright,bottomleft,bottomright,referencematching]=connectivityMatrix[topleft,topright,bottomleft,bottomright]=Block[{perfmatchings,referenceperfmatch,kasteleyn,perfmatchvars,kastnopm,kastinvertedpm,bigmatrix,size,connectivitymat},
+traditionalConnectivityMatrix[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null]:=traditionalConnectivityMatrix[topleft,topright,bottomleft,bottomright,referencematching]=traditionalConnectivityMatrix[topleft,topright,bottomleft,bottomright]=Block[{perfmatchings,referenceperfmatch,kasteleyn,perfmatchvars,kastnopm,kastinvertedpm,bigmatrix,size,connectivitymat},
 If[referencematching===Null,
 perfmatchings=perfectMatchings[topleft,topright,bottomleft,bottomright];
 If[perfmatchings=!={},
@@ -1051,8 +1080,63 @@ connectivitymat=IdentityMatrix[size];
 connectivitymat
 ];
 
-pathMatrix[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null]:=
-pathMatrix[topleft,topright,bottomleft,bottomright,referencematching]=pathMatrix[topleft,topright,bottomleft,bottomright]=Block[{perfmatchings,referenceperfmatch,bigpathmatrix,externalrows,externalcolumns,finalpathmatrix},
+connectivityMatrix[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null]:=connectivityMatrix[topleft,topright,bottomleft,bottomright,referencematching]=connectivityMatrix[topleft,topright,bottomleft,bottomright]=Module[{perfmatchings,referenceperfmatch,kasteleyn,bigmatrix,adjacencymat,graph,connectivitymat,turnIntoContributionNoLoops,cycles,loopnodes,extraloopnodes,jj,toadd,duplnode,loopcontributions,cyclenodes,turnIntoContribution,size},
+If[referencematching===Null,
+perfmatchings=perfectMatchings[topleft,topright,bottomleft,bottomright];
+If[perfmatchings=!={},
+referenceperfmatch=perfmatchings[[lowNumberLoopsPM[topleft,topright,bottomleft,bottomright]]];
+,referenceperfmatch=0;
+];
+,referenceperfmatch=referencematching;
+];
+If[referenceperfmatch=!=0,
+kasteleyn=joinupKasteleyn[topleft,topright,bottomleft,bottomright];
+bigmatrix=getOrientedAdjacencyMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch,True];adjacencymat=bigmatrix/.Map[#->1&,Variables[kasteleyn]];
+graph=AdjacencyGraph[adjacencymat];
+(*We'll now find all paths between all nodes, expressed a lists of nodes traversed between the two endpoints*)
+connectivitymat=Table[FindPath[graph,iii,jjj,Infinity,All],{iii,Total[Dimensions[kasteleyn]]},{jjj,Total[Dimensions[kasteleyn]]}];
+(*FindPath misses the diagonal, i.e. from a node to itself, so we'll put that in by hand*)
+connectivitymat=MapThread[Join,{connectivitymat,Map[{{#}}&,DiagonalMatrix[Range[Total[Dimensions[kasteleyn]]]],{2}]/.{{{0}}->{}}},2];
+(*this function translates a sequence of nodes to an expression in terms of edge variables, neglecting the loop contributions in the denominator*)
+turnIntoContributionNoLoops=Function[{pathnodes},
+(Times@@Map[Power[bigmatrix[[Sequence@@#]],Signature[#]]&,Table[pathnodes[[{iii,iii+1}]],{iii,Length[pathnodes]-1}]])
+];
+(*for the final contribution to each element in the connectivity matrix, we'll need the contributions from loops*)
+cycles=FindCycle[graph,Infinity,All]/.{DirectedEdge->List};(*these are the loops*)
+(*we'll now turn each cycle into an expression similar to the output of FindPath*)
+loopnodes=MapThread[Prepend,{Map[#[[2]]&,cycles,{2}],Map[#[[1,1]]&,cycles]}];
+(*we now have the fundamental loops in the graph. We still need to add all combinations of independent loops (i.e. those loops which do not share nodes)*)
+extraloopnodes={};
+For[jj=2,jj<=Length[loopnodes],jj++,
+toadd=Cases[Subsets[loopnodes,{jj}],Except[{___,{___,duplnode_,___},___,{___,duplnode_,___},___}]];
+If[toadd==={},
+Break[];
+];
+extraloopnodes=Join[extraloopnodes,toadd];
+];
+loopnodes=Join[Transpose[{loopnodes}],extraloopnodes];
+(*loopcontributions contains the full list of loops, with their correct sign*)
+loopcontributions=Map[Power[-1,Length[#]-1](Times@@#)&,Map[turnIntoContributionNoLoops,loopnodes,{2}]];
+(*we want to know which nodes are occupied by each loopcontribution, in order to have the correct numerators. cyclenodes has the node numbers*)
+cyclenodes=Map[Union@@#&,loopnodes];
+turnIntoContribution=Function[{pathnodes},
+Module[{totalcontrib},
+totalcontrib=turnIntoContributionNoLoops[pathnodes];
+totalcontrib=totalcontrib/(1-Expand[Total[loopcontributions]]);
+totalcontrib=totalcontrib(1-Expand[Total[loopcontributions[[Flatten[Position[Map[Length[Intersection[#,pathnodes]]>0&,cyclenodes],False]]]]]]);
+totalcontrib
+]
+];
+connectivitymat=Map[Total,Map[turnIntoContribution,connectivitymat,{3}],{2}];
+,Print["This graph has no perfect matchings"];
+size=Total[Dimensions[joinupKasteleyn[topleft,topright,bottomleft,bottomright]]];
+connectivitymat=IdentityMatrix[size];
+];
+connectivitymat
+];
+
+traditionalPathMatrix[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null]:=
+traditionalPathMatrix[topleft,topright,bottomleft,bottomright,referencematching]=traditionalPathMatrix[topleft,topright,bottomleft,bottomright]=Block[{perfmatchings,referenceperfmatch,bigpathmatrix,externalrows,externalcolumns,finalpathmatrix},
 If[referencematching===Null,
 perfmatchings=perfectMatchings[topleft,topright,bottomleft,bottomright];
 If[perfmatchings=!={},
@@ -1074,6 +1158,109 @@ finalpathmatrix=Null;
 finalpathmatrix
 ];
 
+pathMatrix[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null]:=
+pathMatrix[topleft,topright,bottomleft,bottomright,referencematching]=pathMatrix[topleft,topright,bottomleft,bottomright]=Module[{perfmatchings,referenceperfmatch,kasteleyn,bigmatrix,adjacencymat,graph,sources,allexternalnodes,finalpathmatrix,turnIntoContributionNoLoops,cycles,loopnodes,extraloopnodes,jj,toadd,duplnode,loopcontributions,cyclenodes,turnIntoContribution},
+If[referencematching===Null,
+perfmatchings=perfectMatchings[topleft,topright,bottomleft,bottomright];
+If[perfmatchings=!={},
+referenceperfmatch=perfmatchings[[lowNumberLoopsPM[topleft,topright,bottomleft,bottomright]]];
+,referenceperfmatch=0;
+];
+,referenceperfmatch=referencematching;
+];
+If[referenceperfmatch=!=0,
+kasteleyn=joinupKasteleyn[topleft,topright,bottomleft,bottomright];
+bigmatrix=getOrientedAdjacencyMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch,True];adjacencymat=bigmatrix/.Map[#->1&,Variables[kasteleyn]];
+graph=AdjacencyGraph[adjacencymat];
+sources=findSourceNodes[topleft,topright,bottomleft,bottomright,referenceperfmatch];
+allexternalnodes=externalNodeOrderingDefault[topleft,topright,bottomleft,bottomright];
+(*We'll now find all paths between source nodes and external nodes, expressed a lists of nodes traversed between the two endpoints*)
+finalpathmatrix=Table[FindPath[graph,sources[[iii]],allexternalnodes[[jjj]],Infinity,All],{iii,Length[sources]},{jjj,Length[allexternalnodes]}];
+If[finalpathmatrix=!={},
+(*FindPath misses the diagonal, i.e. from a node to itself, so we'll put that in by hand*)
+finalpathmatrix[[All,Flatten[Position[allexternalnodes,Alternatives@@sources]]]]=Map[{{#}}&,DiagonalMatrix[sources],{2}]/.{{{0}}->{}};
+(*this function translates a sequence of nodes to an expression in terms of edge variables, neglecting the loop contributions in the denominator*)
+turnIntoContributionNoLoops=Function[{pathnodes},
+(Times@@Map[Power[bigmatrix[[Sequence@@#]],Signature[#]]&,Table[pathnodes[[{iii,iii+1}]],{iii,Length[pathnodes]-1}]])
+];
+(*for the final contribution to each element in the connectivity matrix, we'll need the contributions from loops*)
+cycles=FindCycle[graph,Infinity,All]/.{DirectedEdge->List};(*these are the loops*)
+(*we'll now turn each cycle into an expression similar to the output of FindPath*)
+loopnodes=MapThread[Prepend,{Map[#[[2]]&,cycles,{2}],Map[#[[1,1]]&,cycles]}];
+(*we now have the fundamental loops in the graph. We still need to add all combinations of independent loops (i.e. those loops which do not share nodes)*)
+extraloopnodes={};
+For[jj=2,jj<=Length[loopnodes],jj++,
+toadd=Cases[Subsets[loopnodes,{jj}],Except[{___,{___,duplnode_,___},___,{___,duplnode_,___},___}]];
+If[toadd==={},
+Break[];
+];
+extraloopnodes=Join[extraloopnodes,toadd];
+];
+loopnodes=Join[Transpose[{loopnodes}],extraloopnodes];
+(*loopcontributions contains the full list of loops, with their correct sign*)
+loopcontributions=Map[Power[-1,Length[#]-1](Times@@#)&,Map[turnIntoContributionNoLoops,loopnodes,{2}]];
+(*we want to know which nodes are occupied by each loopcontribution, in order to have the correct numerators. cyclenodes has the node numbers*)
+cyclenodes=Map[Union@@#&,loopnodes];
+turnIntoContribution=Function[{pathnodes},
+Module[{totalcontrib},
+totalcontrib=turnIntoContributionNoLoops[pathnodes];
+totalcontrib=totalcontrib/(1-Expand[Total[loopcontributions]]);
+totalcontrib=totalcontrib(1-Expand[Total[loopcontributions[[Flatten[Position[Map[Length[Intersection[#,pathnodes]]>0&,cyclenodes],False]]]]]]);
+totalcontrib
+]
+];
+finalpathmatrix=Map[Total,Map[turnIntoContribution,finalpathmatrix,{3}],{2}];
+];
+,Print["This graph has no perfect matchings"];
+finalpathmatrix=Null;
+];
+finalpathmatrix
+];
+
+getLoopDenominator[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null,withsigns_:False]:=
+(*getLoopDenominator[topleft,topright,bottomleft,bottomright,referencematching]=getLoopDenominator[topleft,topright,bottomleft,bottomright]=*)Module[{perfmatchings,referenceperfmatch,kasteleyn,bigmatrix,adjacencymat,graph,turnIntoContributionNoLoops,cycles,loopnodes,extraloopnodes,jj,toadd,duplnode,loopcontributions,loopdenominator},
+If[referencematching===Null,
+perfmatchings=perfectMatchings[topleft,topright,bottomleft,bottomright];
+If[perfmatchings=!={},
+referenceperfmatch=perfmatchings[[lowNumberLoopsPM[topleft,topright,bottomleft,bottomright]]];
+,referenceperfmatch=0;
+];
+,referenceperfmatch=referencematching;
+];
+If[referenceperfmatch=!=0,
+kasteleyn=joinupKasteleyn[topleft,topright,bottomleft,bottomright];
+bigmatrix=getOrientedAdjacencyMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch,True];adjacencymat=bigmatrix/.Map[#->1&,Variables[kasteleyn]];
+graph=AdjacencyGraph[adjacencymat];
+(*this function translates a sequence of nodes to an expression in terms of edge variables, neglecting the loop contributions in the denominator*)
+turnIntoContributionNoLoops=Function[{pathnodes},
+(Times@@Map[Power[bigmatrix[[Sequence@@#]],Signature[#]]&,Table[pathnodes[[{iii,iii+1}]],{iii,Length[pathnodes]-1}]])
+];
+(*for the final contribution to each element in the connectivity matrix, we'll need the contributions from loops*)
+cycles=FindCycle[graph,Infinity,All]/.{DirectedEdge->List};(*these are the loops*)
+(*we'll now turn each cycle into an expression similar to the output of FindPath*)
+loopnodes=MapThread[Prepend,{Map[#[[2]]&,cycles,{2}],Map[#[[1,1]]&,cycles]}];
+(*we now have the fundamental loops in the graph. We still need to add all combinations of independent loops (i.e. those loops which do not share nodes)*)
+extraloopnodes={};
+For[jj=2,jj<=Length[loopnodes],jj++,
+toadd=Cases[Subsets[loopnodes,{jj}],Except[{___,{___,duplnode_,___},___,{___,duplnode_,___},___}]];
+If[toadd==={},
+Break[];
+];
+extraloopnodes=Join[extraloopnodes,toadd];
+];
+loopnodes=Join[Transpose[{loopnodes}],extraloopnodes];
+(*loopcontributions contains the full list of loops, with their correct sign*)
+loopcontributions=Map[Power[-1,Length[#]-1](Times@@#)&,Map[turnIntoContributionNoLoops,loopnodes,{2}]];
+If[withsigns===False,
+loopdenominator=(1-Expand[Total[loopcontributions]]);
+,loopdenominator=(1+Expand[Total[loopcontributions]]);
+];
+,Print["This graph has no perfect matchings"];
+loopdenominator=Null;
+];
+loopdenominator
+];
+
 minorsAsPerfectMatchings[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null]:=minorsAsPerfectMatchings[topleft,topright,bottomleft,bottomright]=minorsAsPerfectMatchings[topleft,topright,bottomleft,bottomright,referencematching]=Block[{perfmatchings,referenceperfmatch,pathmat,minors,loopdenominator,truemapminortoperfmatch},
 (*If we haven't selected a specific perfect matching, choose one with lowest possible multiplicity*)
 If[referencematching===Null,
@@ -1089,7 +1276,7 @@ pathmat=pathMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch];
 If[pathmat==={},(*this happens for cases when we have no external nodes*)
 truemapminortoperfmatch={};
 ,minors=Minors[pathmat,Length[pathmat]][[1]];
-loopdenominator=Expand[referenceperfmatch/Expand[Simplify[Det[connectivityMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch]]]]];
+loopdenominator=Expand[referenceperfmatch getLoopDenominator[topleft,topright,bottomleft,bottomright,referenceperfmatch]];(*loopdenominator=Expand[referenceperfmatch/Expand[Simplify[Det[connectivityMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch]]]]];*)
 truemapminortoperfmatch=Expand[Simplify[minors loopdenominator]];
 ];
 ,truemapminortoperfmatch=Null;
