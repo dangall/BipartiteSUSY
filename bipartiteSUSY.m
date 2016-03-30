@@ -1431,7 +1431,7 @@ survivingrows=Map[Complement[Range[Length[varlist]],Flatten[Position[varlist,Alt
 reducibilities=MapThread[Function[{pmatrix,modulispace},Block[{reduc},If[polytopeDim[pmatrix]==dimpmatrix-1,reduc=quickReducibility[pmatrix,modulispace];,reduc=True;];reduc]][fullpmatrix[[#1,#2]],fullmodulispace[[All,#2]]]&,{survivingrows,survivingperfmatchings}];
 (*Only keep those cases for which the resulting graph is not reducible*)
 removables=varstotryout[[Flatten[Position[reducibilities,False]]]];
-,(*we have a non-planar graph with nonstanard poles, so we need to check things carefully.*)
+,(*we have a non-planar graph, so we need to check things carefully.*)
 (*Only keep those cases for which the resulting graph is not reducible and where the dimension has decreased by one*)
 dimpmatrix=polytopeDim[getPmatrix[topleft,topright,bottomleft,bottomright]];
 removables=Cases[varstotryout,zz_/;polytopeDim[getPmatrix[topleft/.Map[#->0&,zz],topright/.Map[#->0&,zz],bottomleft/.Map[#->0&,zz],bottomright]]==dimpmatrix-1&&reducibilityQ[topleft/.Map[#->0&,zz],topright/.Map[#->0&,zz],bottomleft/.Map[#->0&,zz],bottomright,False,BFTgraph,gauging]==False];
