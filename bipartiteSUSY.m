@@ -304,7 +304,7 @@ return
 perfectMatchings[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False]:=perfectMatchings[topleft,topright,bottomleft,bottomright]=perfectMatchings[topleft,topright,bottomleft,bottomright,checkneeded]=perfectMatchings[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph]=Block[{checkOK,externalrows,externalcolumns,rowandcolumnnumbers,rowsmergedonleftandright,newtonpolynomial,perfectmatchigns,zz},
 checkOK=True;
 If[checkneeded==True,
-checkOK=checkKasteleynQ[topleft,topright,bottomleft,bottomright,BFTgraph]
+checkOK=checkKasteleynQ[topleft,topright,bottomleft,bottomright,BFTgraph];
 ];
 If[checkOK==True,
 (*get all subsets of rows in bottomleft, and columns in topright*)
