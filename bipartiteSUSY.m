@@ -2249,7 +2249,161 @@ facelattice=Map[#[[All,1]]&,Table[facelatticeboundaries[iii],{iii,0,topdim}],{2}
 facelattice
 ];
 
-(*WORK HEWRE*)
+getStratificationGraph[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{checkOK,stratificationgraph,xlistandPmatrix,modulispace,startingplanarity,removable,topdim,varlist,makeDaughterGraphs,planarReducibility,tofixlevels,maxnonplanardimension,level,nonplanarpositions,templevel,boundarykillededges,newplanarity,planarpositions,planarboundaries,nonplanarboundaries,fix,identremovable,patternidentremovable,dim,locationofparents,thislevelspositions,identifiedboundaries,newlayer,alllayers,totalnumberofboundaries,tochangeposition,tokeeprowsandcolumns,adjacencymatrix},
+checkOK=True;
+If[checkneeded==True,
+checkOK=checkKasteleynQ[topleft,topright,bottomleft,bottomright,BFTgraph];
+];
+If[checkOK==True,
+(*We begin by making the face lattice of the matching polytope. Each element in the face lattice will be composed of three objects: the perfect matching matrix P, the moduli space/matroid polytope, and the answer to planarityQ. This will allow us to construct the face lattice while computing the perfect matchings and matrix P as few times as possible (not once per subgraph!)*)
+(*We'll start with making the top-dimensional element. In P we shall also tag on which edges correspond to each row, by making the first element of each row the edge name*)
+If[Dimensions[getPmatrix[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph]][[2]]===0,
+stratificationgraph=AdjacencyGraph[{}];
+,xlistandPmatrix=Join[Transpose[{Variables[joinupKasteleyn[topleft,topright,bottomleft,bottomright]]}],getPmatrix[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph],2];
+modulispace=moduliSpaceBFT[topleft,topright,bottomleft,bottomright,gauging,checkneeded,BFTgraph];
+(*This will be the top-dimensional element in our stratification*)
+startingplanarity=planarityQ[topleft,topright,bottomleft,bottomright];
+If[BFTgraph||startingplanarity,
+removable[0]={{xlistandPmatrix,modulispace,True}};
+(*Since planarity is inherited by subgraphs, this means we'll never have to assess planarity again and we can treat everything as planar. This will mean we can assess reducibility very fast and easily, and identify everything according to their moduli space.*)
+,removable[0]={{xlistandPmatrix,modulispace,startingplanarity}};
+];
+(*We'll save some basic information to avoid having to evaluate it many times*)
+topdim=polytopeDim[getPmatrix[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph]];
+varlist=Variables[joinupKasteleyn[topleft,topright,bottomleft,bottomright]];
+(*For each element in the face lattice, we will need to find all of its boundaries. These are found by deleting edges. makeDaughterGraphs takes an element in the face lattice and removes all possible edges, making potential boundaries (which will need to be verified). Initially the planarity of the subgraphs is inherited, i.e. is declared equal to the originating graph.*)
+makeDaughterGraphs=Function[{boundaryelement},
+Block[{pmat,moduli,elementplanarity,pmstokeep,daughters},
+pmat=boundaryelement[[1]];
+moduli=boundaryelement[[2]];
+elementplanarity=boundaryelement[[3]];
+pmstokeep=Table[Flatten[Position[boundaryelement[[1]][[jjj]],0,1]],{jjj,Length[pmat]}];
+daughters=Table[{DeleteCases[pmat[[All,Prepend[pmstokeep[[jjj]],1]]],Prepend[ConstantArray[0,Length[pmstokeep[[jjj]]]],_]],moduli[[All,pmstokeep[[jjj]]-1]],elementplanarity},{jjj,Length[pmstokeep]}];
+daughters
+]
+];
+(*After making allsubgraphs, we'll keep only those whose dimension has decreased by one. Furthermore, since we're unltimately only interested in reduced graphs, we'll remove those that are reducible. planarReducibility is able to take a planar case and tell you its reducibility very fast.*)
+planarReducibility=Function[{pmatrix,modulispace},
+Block[{pmatrixtranspose,modulitranspose,pmatrixshort,reducib},
+If[pmatrix==={},
+reducib=True;
+,pmatrixtranspose=Transpose[pmatrix];
+If[modulispace==={},modulitranspose=Table[{0},Length[pmatrixtranspose]];,modulitranspose=Transpose[modulispace];];
+pmatrixshort=Transpose[Map[Times@@pmatrixtranspose[[Flatten[Position[modulitranspose,#]]]]&,DeleteDuplicates[modulitranspose]]];
+If[MemberQ[pmatrixshort,ConstantArray[0,Dimensions[pmatrixshort][[2]]]],reducib=True;,reducib=False;];];
+reducib]
+];
+(*Now we'll go through each level, starting from the top-dimensional one and working our way down, and first contruct the face lattice, and then remove those elements which are reducible.*)
+(*Sometimes a level only contains reducible boundaries. In these cases we'll eliminate the reducible examples in a second step*)
+(*We'll start by assessing the reducibility of the starting point. If it's planar, we may use the fast way. Otherwise we'll need to use the dimension of the Grassmannian.*)
+If[BFTgraph,
+If[planarReducibility[Drop[removable[0][[1,1]],None,{1}],removable[0][[1,2]]]===False,
+tofixlevels={};
+,tofixlevels={0};
+];
+,If[dimensionGrassmannian[topleft,topright,bottomleft,bottomright]===topdim,
+tofixlevels={};
+,tofixlevels={0};
+];
+];
+(*We will only evaluate the Grassmannian dimension of those nonplanar diagrams that have a chance of not being reducible.*)
+maxnonplanardimension=topdim;
+For[level=1,level<=topdim,level++,
+(*For each element in removable[level-1] we make all subgraphs. We'll end up with many duplicates. Since they all inherit their planarity, some subgraphs are simultaneously labelled planar=True as well as planar=False. If any of these labels is True, then the graph has come from a planar one and must hence be planar. If it's still labelled non-planar, we'll later use planarityQ to check whether this is still the case.*)
+removable[level]=Map[{#[[1,1]],#[[1,2]],Or@@Map[Last,#]}&,GatherBy[Table[Sequence@@makeDaughterGraphs[removable[level-1][[iii]]],{iii,Length[removable[level-1]]}],First]];
+(*Now we'll remove those elements whose dimension has decreased by too much*)
+removable[level]=Cases[removable[level],zz_/;polytopeDim[Drop[zz[[1]],None,{1}]]===topdim-level];
+(*On the surviving elements, we'll reassess planarity on the nonplanar cases.*)
+nonplanarpositions=Flatten[Position[removable[level],{___,False}]];
+templevel=removable[level];
+(*Now we'll take the nonplanar cases and check whether they really are still nonplanar. Begin by turning each of these cases into a list of killed edges.*)
+boundarykillededges=Map[#->0&,Map[Complement[varlist,#[[1,All,1]]]&,removable[level][[nonplanarpositions]]],{2}];
+newplanarity=Map[planarityQ[topleft/.#,topright/.#,bottomleft/.#,bottomright]&,boundarykillededges];
+templevel[[nonplanarpositions,3]]=newplanarity;
+(*Now we know for sure that the planarity labelling is correct*)
+(*We'll now want to only keep reduced elements. For planar cases, planarReducibility is very fast at deterining this. For nonplanar cases, we'll need to check whether the dimension of the Grassmannian is the same as that of P. If not, it means we have secretly reduced the dimension of the Grassmannian too much by creating a reducible graph.*)
+planarpositions=Flatten[Position[templevel,{___,True}]];
+nonplanarpositions=Flatten[Position[templevel,{___,False}]];
+(*We'll put the reduced planar elements first, then the reduced non-planar ones*)
+planarboundaries=Cases[templevel[[planarpositions]],zz_/;planarReducibility[Drop[zz[[1]],None,{1}],zz[[2]]]===False];
+(*For the nonplanar boundaries we'll need to evluate the dimension of the Grassmannian. However, if at level=1 we already found that all nonplanar diagrams had at most dim(Grassmannian), the nonplanar diagrams at this level will not have a higher dimension than that. Hence, if that dimension is less than topdim-level, we do not even need to bother evaluating the Grassmannian*)
+If[maxnonplanardimension>=topdim-level,
+nonplanarboundaries=templevel[[nonplanarpositions]][[Flatten[Position[Map[dimensionGrassmannian[topleft/.#,topright/.#,bottomleft/.#,bottomright]&,boundarykillededges[[Flatten[Position[newplanarity,False]]]]],topdim-level]]]];
+,nonplanarboundaries={};
+];
+removable[level]=Join[planarboundaries,nonplanarboundaries];
+If[removable[level]==={},
+(*If some level happens to only contain reducible examples, we'll keep all boundaries, and remove the reducible ones later.*)
+removable[level]=templevel;
+tofixlevels=Append[tofixlevels,level];
+(*If we are the at the first level and there were no reduced boundaries, find out what the maximal dimension of the Grassmannian is for nonplanar diagrams, so that we don't need to evaluate it again until topdim-level is equal to this Grassmannian dimension.*)
+If[level==1,
+maxnonplanardimension=Max[Map[dimensionGrassmannian[topleft/.#,topright/.#,bottomleft/.#,bottomright]&,boundarykillededges[[Flatten[Position[newplanarity,False]]]]]];
+];
+];
+];
+For[fix=1,fix<=Length[tofixlevels],fix++,
+removable[tofixlevels[[fix]]]={};
+];
+(*Now we'll identify boundaries according to their substratification. From each element, it's sufficient to check the substratification one level down, since everything below that has been vetted by this first substratification level. At the bottom level (zero-dimensional) we can identify everything according to their moduli space.*)
+identremovable[topdim]=Map[#[[1,All,1]]&,GatherBy[removable[topdim],#[[2]]&],{2}];
+(*In order to compute the substratifications in a fast way, we'll check which boundaries of one dimension higher have these as subsets. We can do this by writing 0-dim boundaries as {___,edge1,___,edge2,__...} and check which boundaries of one dimension high fit this pattern*)
+patternidentremovable[topdim]=Map[Alternatives@@#&,Map[Riffle[#,___,{1,-1,2}]&,identremovable[topdim],{2}]];
+(*We'll go through each dimension. When we find the connectivity between the various dimensions, we'll store it in an adjacencymatrix format. At then end we'll turn this information into a stratification graph.*)
+For[dim=1,dim<=topdim,dim++,
+If[BFTgraph||startingplanarity,
+thislevelspositions=Range[Length[removable[topdim-dim]]];
+identifiedboundaries=GatherBy[thislevelspositions,Sort[DeleteDuplicates[Transpose[removable[topdim-dim][[#]][[2]]]]]&];
+removable[topdim-dim]=Map[#[[1,All,1]]&,removable[topdim-dim]];
+locationofparents=Map[Flatten[Position[removable[topdim-dim],#]]&,patternidentremovable[topdim-dim+1]];
+,(*Begin by turning the boundaries into lists of edges*)
+removable[topdim-dim]=Map[#[[1,All,1]]&,removable[topdim-dim]];
+(*For each of the sub-boundaries, we want to find which graphs of one dimension higher terminate in this sub-boundary*)
+locationofparents=Map[Flatten[Position[removable[topdim-dim],#]]&,patternidentremovable[topdim-dim+1]];
+(*In each of the elements in removable[topdim-dim], we now want to know where they are in the list of locationofparents.*)
+(*Since locationofparents indexes according to position, we'll turn removable[topdim-dim] into positions first.*)
+thislevelspositions=Range[Length[removable[topdim-dim]]];
+identifiedboundaries=GatherBy[thislevelspositions,Position[locationofparents,{___,#,___}]&];
+];
+identremovable[topdim-dim]=Map[removable[topdim-dim][[#]]&,identifiedboundaries,{2}];
+(*Now we're ready to do the same thing for the next dimension, and will need patternidentremovable for this dimension*)
+patternidentremovable[topdim-dim]=Map[Alternatives@@#&,Map[Riffle[#,___,{1,-1,2}]&,identremovable[topdim-dim],{2}]];
+(*Now we'll make a matrix with rows corresponding to boundaries in removable[topdim-dim] and columns corresponding to boundaries in identremovable[topdim-dim+1]. If an object in removable[topdim-dim] can access a subboundary in identremovable[topdim-dim+1] that entry has a 1, otherwise it is 0.*)
+(*The levels that contain no boundaries cause difficulties. Every time this happens, we'll place a fake boundary there with no connectivity to any other boundaries. When we've finished constructing the final adjacency matrix we'll throw away these fake boundaries.*)
+If[Length[identremovable[topdim-dim]]===0&&Length[locationofparents]===0,
+(*If the current level is empty and so is the next, create an isolated node with no connectivity*)
+newlayer[dim]={{0}};
+,If[Length[identremovable[topdim-dim]]===0&&Length[locationofparents]=!=0,
+(*If the current level is empty but the next one is not, create a temporary node (with no connectivity)*)
+newlayer[dim]=Table[0,{iii,1},{jjj,Length[locationofparents]}];
+,If[Length[identremovable[topdim-dim]]=!=0&&Length[locationofparents]===0,
+(*If the current level is not empty but the one beneath it is, create zero adjacency to the temporary node sitting at the empty level*)
+newlayer[dim]=Table[0,{iii,Length[identremovable[topdim-dim]]},{jjj,1}];
+,If[Length[identremovable[topdim-dim]]=!=0&&Length[locationofparents]=!=0,
+(*If we have boundaries going to other boundaries, make the correct connectivity matrix*)
+newlayer[dim]=Normal[SparseArray[Map[#->1&,MapThread[Sequence@@Transpose[{#1,ConstantArray[#2,Length[#1]]}]&,{locationofparents,Range[Length[locationofparents]]}]]]];
+(*After the identifications many objects in removable[topdim-dim] are declared to be the same. We'll therefore only select one representative from each such equivalence class of graphs.*)
+newlayer[dim]=newlayer[dim][[Complement[Range[Length[removable[topdim-dim]]],Map[Sequence@@Delete[#,1]&,identifiedboundaries]]]];
+];
+];
+];
+];
+];
+alllayers=Reverse[Table[newlayer[iii],{iii,1,topdim}]];
+(*In the highest-dimensional non-zero layer, we have the top-dimensional elements going to the codimension-1 elements. Since the top-dim elements are not connected to themselves in the stratification, we must add some zeros in front of newlayer[xxx] so that the adjacency matrix is correct.*)
+If[Length[alllayers]>0,
+alllayers[[1]]=Join[Table[0,{iii,Length[alllayers[[1]]]},{jjj,Length[alllayers[[1]]]}],alllayers[[1]],2];
+];
+totalnumberofboundaries=Total[Map[Dimensions[#][[2]]&,alllayers]];
+(*We need to throw away those boundaries that correspond to fake temporary nodes*)
+tokeeprowsandcolumns=Complement[Range[totalnumberofboundaries],Accumulate[Map[Dimensions[#][[1]]&,alllayers]][[tofixlevels+1]]];
+adjacencymatrix=Normal[SparseArray[Band[{1,1}]->alllayers,{totalnumberofboundaries,totalnumberofboundaries}]][[tokeeprowsandcolumns,tokeeprowsandcolumns]];
+stratificationgraph=AdjacencyGraph[adjacencymatrix];
+];
+,stratificationgraph=Null;
+];
+stratificationgraph
+];
 
 getFaceLatticeGraph[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{checkOK,xlistandPmatrix,facelatticeboundaries,topdim,makeDaughterGraphs,level,patternfacelatticeboundaries,locationofparents,newlayer,alllayers,totalnumberofboundaries,stratificationgraph},
 checkOK=True;
