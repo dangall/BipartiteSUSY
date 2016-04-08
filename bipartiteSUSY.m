@@ -1632,7 +1632,7 @@ cutcoordinates=Table[{externalvertices[[iii]],externalvertices[[iii+1]]},{iii,Le
 (*Let's find the coordinates of those external nodes whose position forces a cut do run parallel over the external edge*)
 (*Sometimes an external vertex is not connected to an external edge*)
 freestandingexternalvertices=Cases[externalvertices,Except[Alternatives@@Map[Sequence@@#[[1]]&,externaledges]]];
-doesitavoidmycriticalnode=Map[Table[Solve[#[[1]]+param(#[[2]]-#[[1]])==(#[[iii]]/.tocriticalnode),param]==={},{iii,2}]&,cutcoordinates];
+doesitavoidmycriticalnode=Map[Table[Solve[SetPrecision[#[[1]]+param(#[[2]]-#[[1]])==(#[[iii]]/.tocriticalnode)&&param<=1.,10],param]==={},{iii,2}]&,cutcoordinates];
 corrections=Map[#&,Position[cutcoordinates,Alternatives@@freestandingexternalvertices]];
 For[jj=1,jj<=Length[corrections],jj++,
 doesitavoidmycriticalnode[[Sequence@@corrections[[jj]]]]=True;
@@ -1662,7 +1662,7 @@ If[N[Chop[Det[matrixtoinvert]]]=!=0.,(*if the matrix is invertible*)
 crossdistance=Inverse[matrixtoinvert].{edge1coords[[1,1]]-edge2coords[[1,1]],edge1coords[[1,2]]-edge2coords[[1,2]]};
 crossq=And@@Map[(#>=0)&&(#<=1)&,crossdistance];
 ,(*the edges are parallel*)
-If[Solve[edge1coords[[1]]+param(edge1coords[[2]]-edge1coords[[1]])==edge2coords[[1]]&&0<=param<=1,param]=!={}||Solve[edge1coords[[1]]+param(edge1coords[[2]]-edge1coords[[1]])==edge2coords[[2]]&&0<=param<=1,param]=!={},
+If[(*Solve[edge1coords[[1]]+param(edge1coords[[2]]-edge1coords[[1]])\[Equal]edge2coords[[1]]&&0\[LessEqual]param\[LessEqual]1,param]=!={}||Solve[edge1coords[[1]]+param(edge1coords[[2]]-edge1coords[[1]])\[Equal]edge2coords[[2]]&&0\[LessEqual]param\[LessEqual]1,param]=!={},*)Solve[SetPrecision[edge1coords[[1]]+param(edge1coords[[2]]-edge1coords[[1]])==edge2coords[[1]]&&0<=param<=1,10],param]=!={}||Solve[SetPrecision[edge1coords[[1]]+param(edge1coords[[2]]-edge1coords[[1]])==edge2coords[[2]]&&0<=param<=1,10],param]=!={},
 (*the edges are parallel and overlap*)
 crossq=True;
 ,crossq=False;];
@@ -1850,7 +1850,8 @@ grassmannianmatrix={};
 (*Now we have the ordered path matrix*)
 (*Now we will plug in the correct signs. We begin with those belonging to loops (excluding those loops formed by closing the path between multiple boundaries)*)
 (*First find the loops, if any*)
-loopdenominator=Expand[1/Expand[Simplify[Det[connectivityMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch]]]]];
+(*loopdenominator=Expand[1/Expand[Simplify[Det[connectivityMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch]]]]];*)
+loopdenominator=getLoopDenominator[topleft,topright,bottomleft,bottomright,referenceperfmatch];
 If[Head[loopdenominator]===Plus,
 (*we have multiple terms*)
 looplist=-DeleteCases[List@@loopdenominator,1];
