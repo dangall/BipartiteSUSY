@@ -2214,7 +2214,7 @@ eulernumber=Sum[Power[(-1),iii+1]stratificationnumbers[[-iii]],{iii,Length[strat
 eulernumber
 ];
 
-getFaceLattice[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{checkOK,xlistandPmatrix,facelatticeboundaries,topdim,makeDaughterGraphs,level,facelattice},
+getFaceLattice[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False]:=Block[{checkOK,xlistandPmatrix,facelatticeboundaries,topdim,makeDaughterGraphs,level,facelattice},
 checkOK=True;
 If[checkneeded==True,
 checkOK=checkKasteleynQ[topleft,topright,bottomleft,bottomright,BFTgraph];
