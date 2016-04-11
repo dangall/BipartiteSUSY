@@ -2383,8 +2383,11 @@ newlayer[dim]=Table[0,{iii,Length[identremovable[topdim-dim]]},{jjj,1}];
 ,If[Length[identremovable[topdim-dim]]=!=0&&Length[locationofparents]=!=0,
 (*If we have boundaries going to other boundaries, make the correct connectivity matrix*)
 newlayer[dim]=Normal[SparseArray[Map[#->1&,MapThread[Sequence@@Transpose[{#1,ConstantArray[#2,Length[#1]]}]&,{locationofparents,Range[Length[locationofparents]]}]]]];
-(*After the identifications many objects in removable[topdim-dim] are declared to be the same. We'll therefore only select one representative from each such equivalence class of graphs.*)
-newlayer[dim]=newlayer[dim][[Complement[Range[Length[removable[topdim-dim]]],Map[Sequence@@Delete[#,1]&,identifiedboundaries]]]];
+(*After the identifications many objects in removable[topdim-dim] are declared to be the same. We'll therefore only select one representative from each such equivalence class of graphs. Since for scattering amplitudes all equivalence classes of graphs have the same subboundaries, we can just pick one of the graphs. For BFTs we'll have to create an object which has connectivity to any subgraphs accessible from this equivalence class.*)
+If[BFTgraph,
+newlayer[dim]=Map[Total,Map[newlayer[dim][[#]]&,identifiedboundaries,{2}]]/.{_?Positive->1};
+,newlayer[dim]=newlayer[dim][[Complement[Range[Length[removable[topdim-dim]]],Map[Sequence@@Delete[#,1]&,identifiedboundaries]]]];
+];
 ];
 ];
 ];
@@ -2406,7 +2409,7 @@ stratificationgraph=AdjacencyGraph[adjacencymatrix];
 stratificationgraph
 ];
 
-getFaceLatticeGraph[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{checkOK,xlistandPmatrix,facelatticeboundaries,topdim,makeDaughterGraphs,level,patternfacelatticeboundaries,locationofparents,newlayer,alllayers,totalnumberofboundaries,stratificationgraph},
+getFaceLatticeGraph[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False]:=Block[{checkOK,xlistandPmatrix,facelatticeboundaries,topdim,makeDaughterGraphs,level,patternfacelatticeboundaries,locationofparents,newlayer,alllayers,totalnumberofboundaries,stratificationgraph},
 checkOK=True;
 If[checkneeded==True,
 checkOK=checkKasteleynQ[topleft,topright,bottomleft,bottomright,BFTgraph];
