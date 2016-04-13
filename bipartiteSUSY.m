@@ -1532,7 +1532,7 @@ If[pluckerrel=!={},
 independentrelations=pluckerrel[[{1}]];(*this variable will contain all independent relations*)
 newsolution=DeleteCases[Solve[And@@independentrelations],zz_/;MemberQ[zz,_->0]];
 solutions=Join[solutions,newsolution[[1]]];(*this variable will contain all independent solutions*)
-(*Go through the remianing plucker relations. If the next Plucker relations is not triviliazied by the solutions we already found to the previous relations, add it to the list of independent relations, and solve it.*)
+(*Go through the remaining plucker relations. If the next Plucker relations is not triviliazied by the solutions we already found to the previous relations, add it to the list of independent relations, and solve it.*)
 For[ii=2,ii<=Length[pluckerrel],ii++,
 If[Simplify[pluckerrel[[ii]]//.solutions]=!=True,
 independentrelations=Append[independentrelations,pluckerrel[[ii]]];
