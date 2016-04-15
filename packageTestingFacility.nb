@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[   2708519,      62559]
-NotebookOptionsPosition[   2449864,      57129]
-NotebookOutlinePosition[   2450205,      57144]
-CellTagsIndexPosition[   2450162,      57141]
+NotebookDataLength[   2889511,      67580]
+NotebookOptionsPosition[   2594541,      61392]
+NotebookOutlinePosition[   2594882,      61407]
+CellTagsIndexPosition[   2594839,      61404]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -57125,7 +57125,4270 @@ using SubsetQ\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";"}]}],
   3.6696235746380396`*^9, {3.669623610098814*^9, 3.6696236195405407`*^9}, 
    3.669623753127334*^9, {3.669624024457741*^9, 3.66962405078391*^9}, {
    3.669624089402275*^9, 3.669624196840247*^9}}]
-}, Open  ]]
+}, Closed]],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.6697024289667234`*^9, 3.669702429154849*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{"Here", " ", "we", " ", "check", " ", "nonTrivialPoles"}], 
+  "*)"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6653076030813026`*^9, 3.6653083280341244`*^9, {3.6672045128408937`*^9, 
+   3.6672045182377415`*^9}, {3.669702432603629*^9, 3.6697024522585335`*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"CloseKernels", "[", "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"LaunchKernels", "[", "4", "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"DistributeDefinitions", "[", 
+   RowBox[{
+   "pathMatrix", ",", "pluckerRelations", ",", "nonPluckerPolesQ", ",", 
+    "planarityQ"}], "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"DistributeDefinitions", "[", "nonTrivialPoles", "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"formatrule", "=", 
+   RowBox[{"{", 
+    RowBox[{
+     SubscriptBox["XX_", 
+      RowBox[{"z1_", ",", "z2_"}]], "\[Rule]", 
+     RowBox[{"XX", "[", 
+      RowBox[{"z1", ",", "z2"}], "]"}]}], "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"For", "[", 
+   RowBox[{
+    RowBox[{"ii", "=", "1"}], ",", 
+    RowBox[{"ii", "\[LessEqual]", "104"}], ",", 
+    RowBox[{"ii", "++"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"Print", "[", 
+      RowBox[{"\"\<ii=\>\"", ",", "ii"}], "]"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"(*", 
+      RowBox[{
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Mod", "[", 
+           RowBox[{"ii", ",", "10"}], "]"}], "\[Equal]", "0"}], ",", 
+         RowBox[{
+          RowBox[{"Print", "[", 
+           RowBox[{"\"\<ii=\>\"", ",", "ii"}], "]"}], ";"}]}], 
+        "\[IndentingNewLine]", "]"}], ";"}], "*)"}], "\[IndentingNewLine]", 
+     SubscriptBox["bft", "ii"], ";", "\[IndentingNewLine]", 
+     RowBox[{"a", "=", 
+      RowBox[{"a", "/.", "formatrule"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"b", "=", 
+      RowBox[{"b", "/.", "formatrule"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"c", "=", 
+      RowBox[{"c", "/.", "formatrule"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"d", "=", 
+      RowBox[{"d", "/.", "formatrule"}]}], ";", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
+     RowBox[{"stratification", "=", 
+      RowBox[{"getStratification", "[", 
+       RowBox[{
+       "topleft", ",", "topright", ",", "bottomleft", ",", "bottomright"}], 
+       "]"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"allvars", "=", 
+      RowBox[{"Variables", "[", 
+       RowBox[{"Join", "[", 
+        RowBox[{
+        "topleft", ",", "topright", ",", "bottomleft", ",", "bottomright"}], 
+        "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"tozerostratification", "=", 
+      RowBox[{"Map", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"#", "\[Rule]", "0"}], "&"}], ",", 
+        RowBox[{"Map", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Complement", "[", 
+            RowBox[{"allvars", ",", "#"}], "]"}], "&"}], ",", 
+          RowBox[{"Map", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"#", "[", 
+              RowBox[{"[", "1", "]"}], "]"}], "&"}], ",", "stratification", 
+            ",", 
+            RowBox[{"{", "2", "}"}]}], "]"}], ",", 
+          RowBox[{"{", "2", "}"}]}], "]"}], ",", 
+        RowBox[{"{", "3", "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"DistributeDefinitions", "[", "tozerostratification", "]"}], ";",
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"maxrelationsize", "=", "3"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"secretrelationstratification", "=", 
+      RowBox[{"ParallelMap", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"nonTrivialPoles", "[", 
+          RowBox[{
+           RowBox[{"topleft", "/.", "#"}], ",", 
+           RowBox[{"topright", "/.", "#"}], ",", 
+           RowBox[{"bottomleft", "/.", "#"}], ",", "bottomright", ",", 
+           "maxrelationsize"}], "]"}], "&"}], ",", "tozerostratification", 
+        ",", 
+        RowBox[{"{", "2", "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"nonpluckerpoles", "=", 
+      RowBox[{"ParallelMap", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"nonPluckerPolesQ", "[", 
+          RowBox[{
+           RowBox[{"topleft", "/.", "#"}], ",", 
+           RowBox[{"topright", "/.", "#"}], ",", 
+           RowBox[{"bottomleft", "/.", "#"}], ",", "bottomright"}], "]"}], 
+         "&"}], ",", "tozerostratification", ",", 
+        RowBox[{"{", "2", "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
+     RowBox[{"areyourparentsOK", "=", 
+      RowBox[{"Function", "[", 
+       RowBox[{
+        RowBox[{"{", "positiontocheck", "}"}], ",", 
+        RowBox[{"And", "@@", 
+         RowBox[{"Map", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{
+              RowBox[{"secretrelationstratification", "[", 
+               RowBox[{"[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"positiontocheck", "[", 
+                   RowBox[{"[", "1", "]"}], "]"}], "-", "1"}], ",", "#"}], 
+                "]"}], "]"}], "=!=", 
+              RowBox[{"{", 
+               RowBox[{"{", "}"}], "}"}]}], "||", 
+             RowBox[{"nonpluckerpoles", "[", 
+              RowBox[{"[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"positiontocheck", "[", 
+                  RowBox[{"[", "1", "]"}], "]"}], "-", "1"}], ",", "#"}], 
+               "]"}], "]"}]}], "&"}], ",", 
+           RowBox[{"Map", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"#", "[", 
+               RowBox[{"[", "1", "]"}], "]"}], "&"}], ",", 
+             RowBox[{"Position", "[", 
+              RowBox[{
+               RowBox[{"stratification", "[", 
+                RowBox[{"[", 
+                 RowBox[{
+                  RowBox[{"positiontocheck", "[", 
+                   RowBox[{"[", "1", "]"}], "]"}], "-", "1"}], "]"}], "]"}], 
+               ",", 
+               RowBox[{"Alternatives", "@@", 
+                RowBox[{"Map", "[", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"Riffle", "[", 
+                    RowBox[{"#", ",", "___", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"1", ",", 
+                    RowBox[{"-", "1"}], ",", "2"}], "}"}]}], "]"}], "&"}], 
+                  ",", 
+                  RowBox[{"stratification", "[", 
+                   RowBox[{"[", 
+                    RowBox[{"Sequence", "@@", "positiontocheck"}], "]"}], 
+                   "]"}]}], "]"}]}]}], "]"}]}], "]"}]}], "]"}]}]}], "]"}]}], 
+     ";", "\[IndentingNewLine]", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"And", "@@", 
+          RowBox[{"Map", "[", 
+           RowBox[{"areyourparentsOK", ",", 
+            RowBox[{"DeleteCases", "[", 
+             RowBox[{
+              RowBox[{"Position", "[", 
+               RowBox[{"secretrelationstratification", ",", 
+                RowBox[{"Except", "[", 
+                 RowBox[{"{", 
+                  RowBox[{"{", "}"}], "}"}], "]"}], ",", "2"}], "]"}], ",", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"_", ",", "0"}], "}"}], "|", 
+               RowBox[{"{", "_", "}"}]}]}], "]"}]}], "]"}]}], ")"}], "=!=", 
+        "True"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"Print", "[", 
+         RowBox[{
+         "\"\<ii=\>\"", ",", "ii", ",", 
+          "\"\< : There's a problem with nonTrivialPoles! Some boundaries \
+with nonTrivial relations seem have arisen from higher-dim parents that do \
+not have non-trivial relations, and do not have a nonPluckerPole.\>\""}], 
+         "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"currentK", "=", 
+      RowBox[{"Length", "[", 
+       RowBox[{"findSourceNodes", "[", 
+        RowBox[{
+        "topleft", ",", "topright", ",", "bottomleft", ",", "bottomright", 
+         ",", 
+         RowBox[{
+          RowBox[{"perfectMatchings", "[", 
+           RowBox[{
+           "topleft", ",", "topright", ",", "bottomleft", ",", 
+            "bottomright"}], "]"}], "[", 
+          RowBox[{"[", "1", "]"}], "]"}]}], "]"}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"currentN", "=", 
+      RowBox[{
+       RowBox[{"Length", "[", "bottomleft", "]"}], "+", 
+       RowBox[{
+        RowBox[{"Dimensions", "[", "topright", "]"}], "[", 
+        RowBox[{"[", "2", "]"}], "]"}]}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"allminors", "=", 
+      RowBox[{"Map", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{
+          RowBox[{"HoldForm", "[", "minor", "]"}], "[", 
+          RowBox[{"Sequence", "@@", "#"}], "]"}], "&"}], ",", 
+        RowBox[{"Subsets", "[", 
+         RowBox[{
+          RowBox[{"Range", "[", "currentN", "]"}], ",", 
+          RowBox[{"{", "currentK", "}"}]}], "]"}]}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"topdimminorstoexpressions", "=", 
+      RowBox[{"MapThread", "[", 
+       RowBox[{"Rule", ",", 
+        RowBox[{"{", 
+         RowBox[{"allminors", ",", 
+          RowBox[{"minorsAsPerfectMatchings", "[", 
+           RowBox[{
+           "topleft", ",", "topright", ",", "bottomleft", ",", 
+            "bottomright"}], "]"}]}], "}"}]}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"topdimsecretrelations", "=", 
+      RowBox[{"secretrelationstratification", "[", 
+       RowBox[{"[", 
+        RowBox[{"1", ",", "1"}], "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"istherelationAccurate", "=", 
+      RowBox[{"Function", "[", 
+       RowBox[{
+        RowBox[{"{", "positiontocheck", "}"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"Block", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+           "alltherelationstocheck", ",", "currentminorstoexpressions", ",", 
+            "return"}], "}"}], ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"alltherelationstocheck", "=", 
+            RowBox[{"Flatten", "[", 
+             RowBox[{"Map", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"DeleteCases", "[", 
+                 RowBox[{"#", ",", 
+                  RowBox[{"Alternatives", "@@", 
+                   RowBox[{"Flatten", "[", "topdimsecretrelations", "]"}]}]}],
+                  "]"}], "&"}], ",", 
+               RowBox[{"secretrelationstratification", "[", 
+                RowBox[{"[", 
+                 RowBox[{"Sequence", "@@", "positiontocheck"}], "]"}], 
+                "]"}]}], "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"currentminorstoexpressions", "=", 
+            RowBox[{"MapThread", "[", 
+             RowBox[{"Rule", ",", 
+              RowBox[{"{", 
+               RowBox[{"allminors", ",", 
+                RowBox[{"minorsAsPerfectMatchings", "[", 
+                 RowBox[{
+                  RowBox[{"topleft", "/.", 
+                   RowBox[{"tozerostratification", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"Sequence", "@@", "positiontocheck"}], "]"}], 
+                    "]"}]}], ",", 
+                  RowBox[{"topright", "/.", 
+                   RowBox[{"tozerostratification", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"Sequence", "@@", "positiontocheck"}], "]"}], 
+                    "]"}]}], ",", 
+                  RowBox[{"bottomleft", "/.", 
+                   RowBox[{"tozerostratification", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"Sequence", "@@", "positiontocheck"}], "]"}], 
+                    "]"}]}], ",", "bottomright"}], "]"}]}], "}"}]}], "]"}]}], 
+           ";", "\[IndentingNewLine]", 
+           RowBox[{"return", "=", 
+            RowBox[{"And", "@@", 
+             RowBox[{"Map", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"Simplify", "[", 
+                   RowBox[{"#", "/.", "topdimminorstoexpressions"}], "]"}], "=!=",
+                   "True"}], "&&", 
+                 RowBox[{
+                  RowBox[{"Simplify", "[", 
+                   RowBox[{"#", "/.", "currentminorstoexpressions"}], "]"}], "===",
+                   "True"}]}], "&"}], ",", "alltherelationstocheck"}], 
+              "]"}]}]}], ";", "\[IndentingNewLine]", "return"}]}], "]"}]}], 
+       "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"And", "@@", 
+          RowBox[{"Map", "[", 
+           RowBox[{"istherelationAccurate", ",", 
+            RowBox[{"DeleteCases", "[", 
+             RowBox[{
+              RowBox[{"Position", "[", 
+               RowBox[{"secretrelationstratification", ",", 
+                RowBox[{"Except", "[", 
+                 RowBox[{"{", 
+                  RowBox[{"{", "}"}], "}"}], "]"}], ",", "2"}], "]"}], ",", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"_", ",", "0"}], "}"}], "|", 
+               RowBox[{"{", "_", "}"}], "|", 
+               RowBox[{"{", 
+                RowBox[{"1", ",", "_"}], "}"}]}]}], "]"}]}], "]"}]}], ")"}], "=!=",
+         "True"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"Print", "[", 
+         RowBox[{
+         "\"\<ii=\>\"", ",", "ii", ",", 
+          "\"\< : There's a problem with nonTrivialPoles! The new relations \
+that have arisen when taking the boundary seem to either not be true (when \
+plugging in minorsAsPerfectMatchings), or seem to also be obeyed by the \
+top-dimensional element, even though they aren't listed there.\>\""}], "]"}], 
+        ";"}]}], "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
+     RowBox[{"areyouIndepOfPluckerRels", "=", 
+      RowBox[{"Function", "[", 
+       RowBox[{
+        RowBox[{"{", "positiontocheck", "}"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"Block", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+           "alltherelationstocheck", ",", "zerominors", ",", "genericmatrix", 
+            ",", "nonzerominor", ",", "thesols", ",", 
+            "solutiontoshuttingoffminors", ",", "genericminors", ",", 
+            "currentminorrule", ",", "return"}], "}"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"alltherelationstocheck", "=", 
+            RowBox[{"Flatten", "[", 
+             RowBox[{"secretrelationstratification", "[", 
+              RowBox[{"[", 
+               RowBox[{"Sequence", "@@", "positiontocheck"}], "]"}], "]"}], 
+             "]"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"zerominors", "=", 
+            RowBox[{"Flatten", "[", 
+             RowBox[{"Position", "[", 
+              RowBox[{
+               RowBox[{"minorsAsPerfectMatchings", "[", 
+                RowBox[{
+                 RowBox[{"topleft", "/.", 
+                  RowBox[{"tozerostratification", "[", 
+                   RowBox[{"[", 
+                    RowBox[{"Sequence", "@@", "positiontocheck"}], "]"}], 
+                   "]"}]}], ",", 
+                 RowBox[{"topright", "/.", 
+                  RowBox[{"tozerostratification", "[", 
+                   RowBox[{"[", 
+                    RowBox[{"Sequence", "@@", "positiontocheck"}], "]"}], 
+                   "]"}]}], ",", 
+                 RowBox[{"bottomleft", "/.", 
+                  RowBox[{"tozerostratification", "[", 
+                   RowBox[{"[", 
+                    RowBox[{"Sequence", "@@", "positiontocheck"}], "]"}], 
+                   "]"}]}], ",", "bottomright"}], "]"}], ",", "0"}], "]"}], 
+             "]"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"genericmatrix", "=", 
+            RowBox[{"Table", "[", 
+             RowBox[{
+              SubscriptBox["entry", 
+               RowBox[{"iii", ",", "jjj"}]], ",", 
+              RowBox[{"{", 
+               RowBox[{"iii", ",", "currentK"}], "}"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"jjj", ",", "currentN"}], "}"}]}], "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"nonzerominor", "=", 
+            RowBox[{"List", "@@", 
+             RowBox[{"allminors", "[", 
+              RowBox[{"[", 
+               RowBox[{
+                RowBox[{"Complement", "[", 
+                 RowBox[{
+                  RowBox[{"Range", "[", 
+                   RowBox[{"Length", "[", "allminors", "]"}], "]"}], ",", 
+                  "zerominors"}], "]"}], "[", 
+                RowBox[{"[", "1", "]"}], "]"}], "]"}], "]"}]}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"genericmatrix", "[", 
+             RowBox[{"[", 
+              RowBox[{"All", ",", "nonzerominor"}], "]"}], "]"}], "=", 
+            RowBox[{"IdentityMatrix", "[", "currentK", "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"thesols", "=", 
+            RowBox[{"Solve", "[", 
+             RowBox[{"Map", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"#", "\[Equal]", "0"}], "&"}], ",", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"Minors", "[", 
+                  RowBox[{"genericmatrix", ",", "currentK"}], "]"}], "[", 
+                 RowBox[{"[", "1", "]"}], "]"}], "[", 
+                RowBox[{"[", "zerominors", "]"}], "]"}]}], "]"}], "]"}]}], 
+           ";", "\[IndentingNewLine]", 
+           RowBox[{"solutiontoshuttingoffminors", "=", 
+            RowBox[{
+             RowBox[{"Cases", "[", 
+              RowBox[{"thesols", ",", 
+               RowBox[{"zz_", "/;", 
+                RowBox[{
+                 RowBox[{"Length", "[", "zz", "]"}], "\[Equal]", 
+                 RowBox[{"Min", "[", 
+                  RowBox[{"Map", "[", 
+                   RowBox[{"Length", ",", "thesols"}], "]"}], "]"}]}]}]}], 
+              "]"}], "[", 
+             RowBox[{"[", "1", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"genericminors", "=", 
+            RowBox[{"Simplify", "[", 
+             RowBox[{
+              RowBox[{"Minors", "[", 
+               RowBox[{
+                RowBox[{
+                "genericmatrix", "/.", "solutiontoshuttingoffminors"}], ",", 
+                "currentK"}], "]"}], "[", 
+              RowBox[{"[", "1", "]"}], "]"}], "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"currentminorrule", "=", 
+            RowBox[{"MapThread", "[", 
+             RowBox[{"Rule", ",", 
+              RowBox[{"{", 
+               RowBox[{"allminors", ",", "genericminors"}], "}"}]}], "]"}]}], 
+           ";", "\[IndentingNewLine]", 
+           RowBox[{"return", "=", 
+            RowBox[{"And", "@@", 
+             RowBox[{"Map", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{
+                 RowBox[{"Simplify", "[", 
+                  RowBox[{"#", "/.", "currentminorrule"}], "]"}], "=!=", 
+                 "True"}], "&"}], ",", "alltherelationstocheck"}], "]"}]}]}], 
+           ";", "\[IndentingNewLine]", "return"}]}], "]"}]}], 
+       "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"And", "@@", 
+          RowBox[{"Map", "[", 
+           RowBox[{"areyouIndepOfPluckerRels", ",", 
+            RowBox[{"DeleteCases", "[", 
+             RowBox[{
+              RowBox[{"Position", "[", 
+               RowBox[{"secretrelationstratification", ",", 
+                RowBox[{"Except", "[", 
+                 RowBox[{"{", 
+                  RowBox[{"{", "}"}], "}"}], "]"}], ",", "2"}], "]"}], ",", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"_", ",", "0"}], "}"}], "|", 
+               RowBox[{"{", "_", "}"}]}]}], "]"}]}], "]"}]}], ")"}], "=!=", 
+        "True"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"Print", "[", 
+         RowBox[{
+         "\"\<ii=\>\"", ",", "ii", ",", 
+          "\"\< : There's a problem with nonTrivialPoles! For some \
+boundaries, the nonPlucker relations in reality follow from the Plucker \
+relations!\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";"}]}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", "]"}], ";"}]}], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.6669587504692273`*^9, 3.666958784986063*^9}, {
+   3.666958837936663*^9, 3.6669588572667584`*^9}, {3.666962590390283*^9, 
+   3.666962722153494*^9}, {3.6669627707156515`*^9, 3.6669627738141737`*^9}, {
+   3.6669629764667597`*^9, 3.6669629833508577`*^9}, 3.666963347713131*^9, 
+   3.6669634268317456`*^9, {3.6669638504130955`*^9, 3.6669638573315744`*^9}, 
+   3.6669651475331545`*^9, 3.667047520044245*^9, {3.667204214351387*^9, 
+   3.6672042546640077`*^9}, 3.667204335626052*^9, {3.667204440776396*^9, 
+   3.6672044754824395`*^9}, {3.667649607431472*^9, 3.667649613900576*^9}, {
+   3.667651417474597*^9, 3.667651425607109*^9}, 3.667651468330411*^9, 
+   3.667653583652979*^9, {3.6678286408996043`*^9, 3.6678286445597863`*^9}, {
+   3.669702466905157*^9, 3.669702704679533*^9}, {3.6697027396856337`*^9, 
+   3.6697028824256625`*^9}}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "1"}],
+  SequenceForm["ii=", 1],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677279472159185`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "2"}],
+  SequenceForm["ii=", 2],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677279474633493`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "3"}],
+  SequenceForm["ii=", 3],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677279477329206`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667727948397044*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "4"}],
+  SequenceForm["ii=", 4],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667727948614724*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "5"}],
+  SequenceForm["ii=", 5],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677279488202763`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "6"}],
+  SequenceForm["ii=", 6],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677279493679733`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677279500386314`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "7"}],
+  SequenceForm["ii=", 7],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677279506246324`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "8"}],
+  SequenceForm["ii=", 8],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667727950702764*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "9"}],
+  SequenceForm["ii=", 9],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667727951068048*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677279520062437`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677279531465755`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["ii=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677279537636433`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677279546966524`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667727955606144*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677279571380596`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "40"}],
+  SequenceForm["    jj=", 40],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677279591600513`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "50"}],
+  SequenceForm["    jj=", 50],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677279628208942`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "11"}],
+  SequenceForm["ii=", 11],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667727963123932*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677279655857773`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667727967877178*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "12"}],
+  SequenceForm["ii=", 12],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667727969083754*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667727972151806*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667727976295446*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.66772797954221*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "40"}],
+  SequenceForm["    jj=", 40],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667727981489745*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "13"}],
+  SequenceForm["ii=", 13],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677279818949842`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677279852503786`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677279898662376`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677279925350885`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "40"}],
+  SequenceForm["    jj=", 40],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677279974337296`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "50"}],
+  SequenceForm["    jj=", 50],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667728001200288*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "60"}],
+  SequenceForm["    jj=", 60],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280026348343`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "70"}],
+  SequenceForm["    jj=", 70],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280065953207`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "80"}],
+  SequenceForm["    jj=", 80],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667728012594311*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "90"}],
+  SequenceForm["    jj=", 90],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667728016246292*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "100"}],
+  SequenceForm["    jj=", 100],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667728018481783*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "110"}],
+  SequenceForm["    jj=", 110],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280190834084`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "14"}],
+  SequenceForm["ii=", 14],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280195310326`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667728021451291*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280238952065`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280273950343`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "40"}],
+  SequenceForm["    jj=", 40],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280293372355`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "15"}],
+  SequenceForm["ii=", 15],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280300860367`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280306564093`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280315274873`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280322267437`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "40"}],
+  SequenceForm["    jj=", 40],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667728033178569*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "16"}],
+  SequenceForm["ii=", 16],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280332768445`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "17"}],
+  SequenceForm["ii=", 17],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667728034297207*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "18"}],
+  SequenceForm["ii=", 18],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667728035214712*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "19"}],
+  SequenceForm["ii=", 19],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280362552423`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["ii=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667728037241959*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280387081847`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "21"}],
+  SequenceForm["ii=", 21],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280391092725`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "22"}],
+  SequenceForm["ii=", 22],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280400797834`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667728041229637*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "23"}],
+  SequenceForm["ii=", 23],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280418842897`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280433016176`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "24"}],
+  SequenceForm["ii=", 24],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667728043704713*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280439208813`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "25"}],
+  SequenceForm["ii=", 25],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280440367765`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280440743537`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280440743537`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280440899787`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "40"}],
+  SequenceForm["    jj=", 40],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280440899787`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "50"}],
+  SequenceForm["    jj=", 50],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280441368585`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "60"}],
+  SequenceForm["    jj=", 60],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667728044221504*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "26"}],
+  SequenceForm["ii=", 26],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667728044221504*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280444220533`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280444376793`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280444376793`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "40"}],
+  SequenceForm["    jj=", 40],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280444376793`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "50"}],
+  SequenceForm["    jj=", 50],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667728044457314*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "60"}],
+  SequenceForm["    jj=", 60],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280444598193`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "70"}],
+  SequenceForm["    jj=", 70],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280444598193`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "80"}],
+  SequenceForm["    jj=", 80],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280444598193`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "90"}],
+  SequenceForm["    jj=", 90],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667728044475449*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "100"}],
+  SequenceForm["    jj=", 100],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667728044475449*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "110"}],
+  SequenceForm["    jj=", 110],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280444910746`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "120"}],
+  SequenceForm["    jj=", 120],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280444910746`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "130"}],
+  SequenceForm["    jj=", 130],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280444910746`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "140"}],
+  SequenceForm["    jj=", 140],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280444910746`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "150"}],
+  SequenceForm["    jj=", 150],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280445067005`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "160"}],
+  SequenceForm["    jj=", 160],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280445067005`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "170"}],
+  SequenceForm["    jj=", 170],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280445067005`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "180"}],
+  SequenceForm["    jj=", 180],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280445223246`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "190"}],
+  SequenceForm["    jj=", 190],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280445223246`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "200"}],
+  SequenceForm["    jj=", 200],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280445223246`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "210"}],
+  SequenceForm["    jj=", 210],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.66772804453795*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "220"}],
+  SequenceForm["    jj=", 220],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.66772804453795*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "230"}],
+  SequenceForm["    jj=", 230],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.66772804453795*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "240"}],
+  SequenceForm["    jj=", 240],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667728044557585*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "250"}],
+  SequenceForm["    jj=", 250],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280448598394`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "260"}],
+  SequenceForm["    jj=", 260],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280448598394`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "270"}],
+  SequenceForm["    jj=", 270],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280448598394`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "280"}],
+  SequenceForm["    jj=", 280],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.66772804487595*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "290"}],
+  SequenceForm["    jj=", 290],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.66772804487595*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "300"}],
+  SequenceForm["    jj=", 300],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667728045278039*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "310"}],
+  SequenceForm["    jj=", 310],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667728045283543*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "320"}],
+  SequenceForm["    jj=", 320],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280452905474`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "330"}],
+  SequenceForm["    jj=", 330],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280452905474`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "340"}],
+  SequenceForm["    jj=", 340],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280452905474`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "27"}],
+  SequenceForm["ii=", 27],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280453061743`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280474975395`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280517933693`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667728055918955*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "28"}],
+  SequenceForm["ii=", 28],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280585098743`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667728064487259*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667728069229089*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280723748364`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "40"}],
+  SequenceForm["    jj=", 40],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667728078274013*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "29"}],
+  SequenceForm["ii=", 29],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677280809432216`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667728095930208*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.66772811239062*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.66772813075603*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "40"}],
+  SequenceForm["    jj=", 40],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667728139709787*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["ii=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677281472910986`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677282179333887`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667728317592743*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677283971028366`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "40"}],
+  SequenceForm["    jj=", 40],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667728499059983*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "50"}],
+  SequenceForm["    jj=", 50],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677285987548904`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "60"}],
+  SequenceForm["    jj=", 60],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677286981834044`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "70"}],
+  SequenceForm["    jj=", 70],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677288001025553`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "80"}],
+  SequenceForm["    jj=", 80],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677289008360415`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "31"}],
+  SequenceForm["ii=", 31],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667728951443762*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677289531317453`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667728957003953*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667728960496989*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "32"}],
+  SequenceForm["ii=", 32],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677289631334553`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677289700382357`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677289771193*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667728985977369*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "40"}],
+  SequenceForm["    jj=", 40],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.66772899438056*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "50"}],
+  SequenceForm["    jj=", 50],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729008778051*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "60"}],
+  SequenceForm["    jj=", 60],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729022009656*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "70"}],
+  SequenceForm["    jj=", 70],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729033570121*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "80"}],
+  SequenceForm["    jj=", 80],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729042827177*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "34"}],
+  SequenceForm["ii=", 34],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290538225236`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "35"}],
+  SequenceForm["ii=", 35],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290539696736`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "36"}],
+  SequenceForm["ii=", 36],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290546085725`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290554107833`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "37"}],
+  SequenceForm["ii=", 37],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290557428446`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290557897215`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290557897215`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290557897215`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "38"}],
+  SequenceForm["ii=", 38],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729055808357*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729055811864*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729055811864*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729055811864*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "40"}],
+  SequenceForm["    jj=", 40],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729055827492*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "40"}],
+  SequenceForm["ii=", 40],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729055827492*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290558431177`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290558431177`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290558431177`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "40"}],
+  SequenceForm["    jj=", 40],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290558587437`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "50"}],
+  SequenceForm["    jj=", 50],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290558587437`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "60"}],
+  SequenceForm["    jj=", 60],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290558587437`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "41"}],
+  SequenceForm["ii=", 41],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729055874367*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729055874367*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729055889993*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729055889993*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "42"}],
+  SequenceForm["ii=", 42],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729055889993*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729055907628*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290559121284`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290559121284`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "43"}],
+  SequenceForm["ii=", 43],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290559121284`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729055927762*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729055927762*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729055927762*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "40"}],
+  SequenceForm["    jj=", 40],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729055943386*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "44"}],
+  SequenceForm["ii=", 44],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729055943386*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729055943386*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729055959013*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729055959013*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "40"}],
+  SequenceForm["    jj=", 40],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729055959013*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "45"}],
+  SequenceForm["ii=", 45],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290559746404`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729056613797*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729058534566*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290602169127`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "40"}],
+  SequenceForm["    jj=", 40],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290623612485`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "50"}],
+  SequenceForm["    jj=", 50],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290635932274`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "60"}],
+  SequenceForm["    jj=", 60],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290647805576`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "46"}],
+  SequenceForm["ii=", 46],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729066172575*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729066219453*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729068024867*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729070368874*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "40"}],
+  SequenceForm["    jj=", 40],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290716758475`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "50"}],
+  SequenceForm["    jj=", 50],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729073514392*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "60"}],
+  SequenceForm["    jj=", 60],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729075232073*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "47"}],
+  SequenceForm["ii=", 47],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729078338055*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729078338055*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729078338055*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290783536873`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "40"}],
+  SequenceForm["    jj=", 40],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290783536873`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "50"}],
+  SequenceForm["    jj=", 50],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290783693147`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "48"}],
+  SequenceForm["ii=", 48],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290783693147`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290783693147`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "49"}],
+  SequenceForm["ii=", 49],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.66772907838494*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290789880342`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "52"}],
+  SequenceForm["ii=", 52],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729079542675*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290795895514`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290796051807`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290796051807`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "40"}],
+  SequenceForm["    jj=", 40],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290796051807`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "50"}],
+  SequenceForm["    jj=", 50],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729079625311*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "60"}],
+  SequenceForm["    jj=", 60],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290796273127`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "70"}],
+  SequenceForm["    jj=", 70],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290796273127`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "53"}],
+  SequenceForm["ii=", 53],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290796429434`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290796429434`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290796429434`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729079658569*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "40"}],
+  SequenceForm["    jj=", 40],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729079658569*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "54"}],
+  SequenceForm["ii=", 54],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290796741977`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "55"}],
+  SequenceForm["ii=", 55],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290796741977`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "56"}],
+  SequenceForm["ii=", 56],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290796741977`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "57"}],
+  SequenceForm["ii=", 57],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290796898203`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "58"}],
+  SequenceForm["ii=", 58],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290796898203`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "59"}],
+  SequenceForm["ii=", 59],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290796898203`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "60"}],
+  SequenceForm["ii=", 60],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729079705448*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "61"}],
+  SequenceForm["ii=", 61],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729079705448*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "62"}],
+  SequenceForm["ii=", 62],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729079725586*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "63"}],
+  SequenceForm["ii=", 63],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729079727589*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "64"}],
+  SequenceForm["ii=", 64],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729079727589*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "65"}],
+  SequenceForm["ii=", 65],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729079727589*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "66"}],
+  SequenceForm["ii=", 66],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290797432175`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290802758164`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "67"}],
+  SequenceForm["ii=", 67],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290806924553`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729082011589*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729082347542*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "68"}],
+  SequenceForm["ii=", 68],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290829663167`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290871633635`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677290947452955`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729103986185*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "40"}],
+  SequenceForm["    jj=", 40],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291126694155`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "69"}],
+  SequenceForm["ii=", 69],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291195674443`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291209175787`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291223050785`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729124620819*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "40"}],
+  SequenceForm["    jj=", 40],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291276319723`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "70"}],
+  SequenceForm["ii=", 70],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729128001465*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291282173386`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "71"}],
+  SequenceForm["ii=", 71],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729128352363*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "72"}],
+  SequenceForm["ii=", 72],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729128355363*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "73"}],
+  SequenceForm["ii=", 73],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729128355363*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729128956227*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "74"}],
+  SequenceForm["ii=", 74],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729129504049*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291295353017`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291310608788`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729132896107*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "40"}],
+  SequenceForm["    jj=", 40],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291339456863`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "50"}],
+  SequenceForm["    jj=", 50],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291353020678`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "60"}],
+  SequenceForm["    jj=", 60],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291366166744`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "75"}],
+  SequenceForm["ii=", 75],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291392272167`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729142250638*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291452106624`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729149268077*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "40"}],
+  SequenceForm["    jj=", 40],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729154178648*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "76"}],
+  SequenceForm["ii=", 76],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291565214777`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729169088373*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729173731055*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729176237652*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "40"}],
+  SequenceForm["    jj=", 40],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291853374157`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "77"}],
+  SequenceForm["ii=", 77],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729190550443*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "78"}],
+  SequenceForm["ii=", 78],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291916749086`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "79"}],
+  SequenceForm["ii=", 79],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291916749086`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291919223194`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291919223194`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291919223194`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "40"}],
+  SequenceForm["    jj=", 40],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291919379463`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "50"}],
+  SequenceForm["    jj=", 50],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291919379463`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "60"}],
+  SequenceForm["    jj=", 60],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291919535713`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "70"}],
+  SequenceForm["    jj=", 70],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291919535713`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "80"}],
+  SequenceForm["    jj=", 80],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291919535713`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "90"}],
+  SequenceForm["    jj=", 90],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291919697046`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "100"}],
+  SequenceForm["    jj=", 100],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291919752083`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "110"}],
+  SequenceForm["    jj=", 110],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.66772919197571*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "120"}],
+  SequenceForm["    jj=", 120],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.66772919197571*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "130"}],
+  SequenceForm["    jj=", 130],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729191991337*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "140"}],
+  SequenceForm["    jj=", 140],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729191991337*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "150"}],
+  SequenceForm["    jj=", 150],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729192006963*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "160"}],
+  SequenceForm["    jj=", 160],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729192006963*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "170"}],
+  SequenceForm["    jj=", 170],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729192022589*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "180"}],
+  SequenceForm["    jj=", 180],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729192022589*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "190"}],
+  SequenceForm["    jj=", 190],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729192022589*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "200"}],
+  SequenceForm["    jj=", 200],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291920382147`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "210"}],
+  SequenceForm["    jj=", 210],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291920382147`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "220"}],
+  SequenceForm["    jj=", 220],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291920538397`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "230"}],
+  SequenceForm["    jj=", 230],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291920538397`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "240"}],
+  SequenceForm["    jj=", 240],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291920538397`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "250"}],
+  SequenceForm["    jj=", 250],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291920734773`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "260"}],
+  SequenceForm["    jj=", 260],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291920759783`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "270"}],
+  SequenceForm["    jj=", 270],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729192376789*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "280"}],
+  SequenceForm["    jj=", 280],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729192376789*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "290"}],
+  SequenceForm["    jj=", 290],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729192376789*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "300"}],
+  SequenceForm["    jj=", 300],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729192392417*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "310"}],
+  SequenceForm["    jj=", 310],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729192392417*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "320"}],
+  SequenceForm["    jj=", 320],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729192408041*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "330"}],
+  SequenceForm["    jj=", 330],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729192408041*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "340"}],
+  SequenceForm["    jj=", 340],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729192408041*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "80"}],
+  SequenceForm["ii=", 80],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.66772919279318*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291937802486`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729194460003*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291949835124`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "40"}],
+  SequenceForm["    jj=", 40],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291965343933`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "50"}],
+  SequenceForm["    jj=", 50],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677291987422543`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "60"}],
+  SequenceForm["    jj=", 60],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677292010135903`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "81"}],
+  SequenceForm["ii=", 81],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677292026643057`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "82"}],
+  SequenceForm["ii=", 82],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729202949128*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677292041040616`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "83"}],
+  SequenceForm["ii=", 83],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677292047560806`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729206341496*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677292087311835`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677292117539034`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "40"}],
+  SequenceForm["    jj=", 40],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.66772921494588*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "84"}],
+  SequenceForm["ii=", 84],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677292155631256`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677292189895086`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729221873179*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729223127447*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "40"}],
+  SequenceForm["    jj=", 40],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677292261056128`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "50"}],
+  SequenceForm["    jj=", 50],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729227563661*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "85"}],
+  SequenceForm["ii=", 85],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677292275792913`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677292313251753`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677292348760567`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677292385899057`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "40"}],
+  SequenceForm["    jj=", 40],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677292428277493`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "86"}],
+  SequenceForm["ii=", 86],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729245917264*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677292470569987`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "87"}],
+  SequenceForm["ii=", 87],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677292471198645`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "88"}],
+  SequenceForm["ii=", 88],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677292471198645`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "89"}],
+  SequenceForm["ii=", 89],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729247389428*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "90"}],
+  SequenceForm["ii=", 90],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677292486616955`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729248708579*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729248724204*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729248739831*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "40"}],
+  SequenceForm["    jj=", 40],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729248739831*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "50"}],
+  SequenceForm["    jj=", 50],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677292487909875`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "60"}],
+  SequenceForm["    jj=", 60],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677292488821507`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "91"}],
+  SequenceForm["ii=", 91],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677292488977833`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729249746826*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "92"}],
+  SequenceForm["ii=", 92],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677292503659935`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677292504128776`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729250428502*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729250428502*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "40"}],
+  SequenceForm["    jj=", 40],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677292504441285`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "93"}],
+  SequenceForm["ii=", 93],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677292504441285`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677292504647646`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677292504662647`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677292504662647`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "40"}],
+  SequenceForm["    jj=", 40],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677292504818974`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "94"}],
+  SequenceForm["ii=", 94],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677292504818974`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729267445676*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677292736625223`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "30"}],
+  SequenceForm["    jj=", 30],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729282275943*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "40"}],
+  SequenceForm["    jj=", 40],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729295840063*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "50"}],
+  SequenceForm["    jj=", 50],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677293060443983`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "60"}],
+  SequenceForm["    jj=", 60],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729314632422*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "70"}],
+  SequenceForm["    jj=", 70],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677293248615*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "80"}],
+  SequenceForm["    jj=", 80],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677293369728737`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "95"}],
+  SequenceForm["ii=", 95],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677293502172756`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "96"}],
+  SequenceForm["ii=", 96],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677293502172756`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677293523913836`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "20"}],
+  SequenceForm["    jj=", 20],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677293549822454`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "97"}],
+  SequenceForm["ii=", 97],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729356485633*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "98"}],
+  SequenceForm["ii=", 98],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677293566015253`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "99"}],
+  SequenceForm["ii=", 99],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.66772935668617*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "100"}],
+  SequenceForm["ii=", 100],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677293570494757`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729357704417*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "101"}],
+  SequenceForm["ii=", 101],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677293581901264`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    jj=\"\>", "\[InvisibleSpace]", "10"}],
+  SequenceForm["    jj=", 10],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677293715831876`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "102"}],
+  SequenceForm["ii=", 102],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.667729374412387*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "103"}],
+  SequenceForm["ii=", 103],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677293744280148`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "104"}],
+  SequenceForm["ii=", 104],
+  Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6672042553446617`*^9, {3.667204477007663*^9, 3.6672045242003765`*^9}, 
+   3.6677293744280148`*^9}]
+}, Closed]],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.669623448419531*^9, 3.669623448616665*^9}}]
 },
 WindowSize->{1362, 674},
 WindowMargins->{{Automatic, -5}, {Automatic, 2}},
@@ -62560,7 +66823,765 @@ Cell[2431763, 56695, 1037, 23, 72, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
 Cell[2432803, 56720, 17045, 406, 1849, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
-}, Open  ]]
+}, Closed]],
+Cell[2449863, 57129, 94, 1, 25, "Input"],
+Cell[CellGroupData[{
+Cell[2449982, 57134, 345, 7, 31, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2450330, 57143, 21018, 493, 1633, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2471351, 57638, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2471672, 57648, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2471993, 57658, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2472314, 57668, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2472643, 57678, 316, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2472962, 57688, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2473283, 57698, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2473604, 57708, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2473935, 57718, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2474256, 57728, 316, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2474575, 57738, 316, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2474894, 57748, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2475225, 57758, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2475556, 57768, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2475879, 57778, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2476210, 57788, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2476539, 57798, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2476870, 57808, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2477201, 57818, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2477532, 57828, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2477853, 57838, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2478184, 57848, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2478513, 57858, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2478834, 57868, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2479163, 57878, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2479492, 57888, 325, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2479820, 57898, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2480149, 57908, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2480472, 57918, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2480803, 57928, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2481134, 57938, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2481465, 57948, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2481796, 57958, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2482125, 57968, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2482456, 57978, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2482787, 57988, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2483116, 57998, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2483445, 58008, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2483776, 58018, 330, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2484109, 58028, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2484432, 58038, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2484761, 58048, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2485092, 58058, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2485423, 58068, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2485754, 58078, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2486077, 58088, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2486408, 58098, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2486739, 58108, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2487070, 58118, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2487399, 58128, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2487722, 58138, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2488043, 58148, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2488364, 58158, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2488687, 58168, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2489008, 58178, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2489339, 58188, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2489662, 58198, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2489985, 58208, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2490314, 58218, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2490637, 58228, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2490968, 58238, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2491289, 58248, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2491620, 58258, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2491943, 58268, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2492274, 58278, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2492605, 58288, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2492936, 58298, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2493267, 58308, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2493598, 58318, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2493927, 58328, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2494248, 58338, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2494579, 58348, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2494910, 58358, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2495241, 58368, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2495572, 58378, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2495901, 58388, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2496232, 58398, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2496563, 58408, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2496894, 58418, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2497223, 58428, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2497554, 58438, 330, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2497887, 58448, 330, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2498220, 58458, 330, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2498553, 58468, 330, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2498886, 58478, 330, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2499219, 58488, 330, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2499552, 58498, 330, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2499885, 58508, 330, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2500218, 58518, 330, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2500551, 58528, 330, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2500884, 58538, 327, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2501214, 58548, 327, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2501544, 58558, 327, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2501874, 58568, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2502205, 58578, 330, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2502538, 58588, 330, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2502871, 58598, 330, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2503204, 58608, 327, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2503534, 58618, 327, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2503864, 58628, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2504195, 58638, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2504526, 58648, 330, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2504859, 58658, 330, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2505192, 58668, 330, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2505525, 58678, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2505848, 58688, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2506179, 58698, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2506510, 58708, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2506839, 58718, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2507162, 58728, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2507491, 58738, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2507820, 58748, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2508151, 58758, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2508480, 58768, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2508803, 58778, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2509132, 58788, 325, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2509460, 58798, 325, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2509788, 58808, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2510117, 58818, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2510440, 58828, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2510771, 58838, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2511100, 58848, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2511431, 58858, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2511760, 58868, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2512091, 58878, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2512422, 58888, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2512753, 58898, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2513084, 58908, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2513405, 58918, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2513736, 58928, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2514065, 58938, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2514394, 58948, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2514717, 58958, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2515048, 58968, 324, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2515375, 58978, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2515704, 58988, 325, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2516032, 58998, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2516361, 59008, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2516690, 59018, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2517019, 59028, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2517348, 59038, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2517671, 59048, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2517994, 59058, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2518317, 59068, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2518648, 59078, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2518971, 59088, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2519302, 59098, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2519633, 59108, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2519964, 59118, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2520285, 59128, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2520614, 59138, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2520943, 59148, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2521272, 59158, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2521601, 59168, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2521922, 59178, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2522253, 59188, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2522584, 59198, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2522915, 59208, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2523246, 59218, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2523577, 59228, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2523908, 59238, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2524229, 59248, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2524558, 59258, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2524887, 59268, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2525216, 59278, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2525537, 59288, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2525866, 59298, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2526197, 59308, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2526528, 59318, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2526851, 59328, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2527180, 59338, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2527509, 59348, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2527838, 59358, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2528167, 59368, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2528488, 59378, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2528817, 59388, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2529146, 59398, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2529475, 59408, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2529804, 59418, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2530127, 59428, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2530456, 59438, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2530785, 59448, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2531116, 59458, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2531447, 59468, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2531778, 59478, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2532109, 59488, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2532430, 59498, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2532759, 59508, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2533088, 59518, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2533417, 59528, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2533748, 59538, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2534077, 59548, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2534406, 59558, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2534727, 59568, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2535056, 59578, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2535385, 59588, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2535716, 59598, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2536047, 59608, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2536378, 59618, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2536701, 59628, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2537032, 59638, 317, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2537352, 59648, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2537683, 59658, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2538004, 59668, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2538335, 59678, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2538666, 59688, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2538997, 59698, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2539328, 59708, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2539657, 59718, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2539988, 59728, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2540319, 59738, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2540642, 59748, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2540973, 59758, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2541304, 59768, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2541633, 59778, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2541962, 59788, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2542285, 59798, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2542608, 59808, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2542931, 59818, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2543254, 59828, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2543577, 59838, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2543900, 59848, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2544221, 59858, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2544542, 59868, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2544863, 59878, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2545184, 59888, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2545505, 59898, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2545826, 59908, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2546149, 59918, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2546480, 59928, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2546803, 59938, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2547132, 59948, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2547461, 59958, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2547784, 59968, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2548115, 59978, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2548446, 59988, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2548775, 59998, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2549106, 60008, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2549429, 60018, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2549760, 60028, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2550091, 60038, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2550420, 60048, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2550751, 60058, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2551072, 60068, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2551403, 60078, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2551724, 60088, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2552045, 60098, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2552366, 60108, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2552695, 60118, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2553016, 60128, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2553347, 60138, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2553678, 60148, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2554007, 60158, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2554338, 60168, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2554669, 60178, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2555000, 60188, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2555323, 60198, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2555652, 60208, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2555983, 60218, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2556312, 60228, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2556641, 60238, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2556964, 60248, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2557293, 60258, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2557622, 60268, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2557951, 60278, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2558282, 60288, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2558603, 60298, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2558926, 60308, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2559249, 60318, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2559580, 60328, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2559911, 60338, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2560242, 60348, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2560573, 60358, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2560904, 60368, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2561235, 60378, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2561566, 60388, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2561897, 60398, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2562228, 60408, 330, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2562561, 60418, 327, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2562891, 60428, 327, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2563221, 60438, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2563552, 60448, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2563883, 60458, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2564214, 60468, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2564545, 60478, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2564876, 60488, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2565207, 60498, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2565538, 60508, 330, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2565871, 60518, 330, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2566204, 60528, 330, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2566537, 60538, 330, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2566870, 60548, 330, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2567203, 60558, 330, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2567536, 60568, 330, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2567869, 60578, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2568200, 60588, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2568531, 60598, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2568862, 60608, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2569193, 60618, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2569524, 60628, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2569855, 60638, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2570186, 60648, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2570517, 60658, 317, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2570837, 60668, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2571168, 60678, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2571497, 60688, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2571828, 60698, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2572159, 60708, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2572490, 60718, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2572821, 60728, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2573144, 60738, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2573465, 60748, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2573796, 60758, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2574119, 60768, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2574448, 60778, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2574779, 60788, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2575110, 60798, 325, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2575438, 60808, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2575761, 60818, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2576092, 60828, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2576421, 60838, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2576750, 60848, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2577081, 60858, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2577410, 60868, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2577733, 60878, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2578064, 60888, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2578395, 60898, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2578726, 60908, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2579057, 60918, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2579378, 60928, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2579709, 60938, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2580032, 60948, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2580355, 60958, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2580676, 60968, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2580999, 60978, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2581328, 60988, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2581657, 60998, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2581986, 61008, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2582315, 61018, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2582646, 61028, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2582977, 61038, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2583300, 61048, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2583629, 61058, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2583952, 61068, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2584283, 61078, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2584612, 61088, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2584941, 61098, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2585272, 61108, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2585595, 61118, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2585926, 61128, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2586257, 61138, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2586588, 61148, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2586919, 61158, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2587242, 61168, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2587571, 61178, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2587902, 61188, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2588231, 61198, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2588560, 61208, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2588891, 61218, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2589220, 61228, 324, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2589547, 61238, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2589878, 61248, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2590201, 61258, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2590524, 61268, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2590855, 61278, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2591186, 61288, 318, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2591507, 61298, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2591830, 61308, 317, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2592150, 61318, 322, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2592475, 61328, 326, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2592804, 61338, 322, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2593129, 61348, 328, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2593460, 61358, 320, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2593783, 61368, 322, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2594108, 61378, 322, 8, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}]
+}, Closed]],
+Cell[2594445, 61389, 92, 1, 25, "Input"]
 }
 ]
 *)
