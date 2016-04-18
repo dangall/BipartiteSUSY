@@ -105,6 +105,7 @@ getEulerNumber::usage="Gives the Euler number of the stratification of the graph
 getFaceLattice::usage="Returns a list of boundaries of the matching polytope. The elements are ordered by dimensionality, with the first element containing the top-dimensional boundaries and the last containing the zero-dimensional boundaries. Each boundary is expressed as a list of edges which are present in the graph."
 getStratificationGraph::usage="Returns the graph containing the full stratification of the graph in question, with all the connectivity between the boundaries of various dimensionality. The best way to view it is to view it using the option GraphLayout\[Rule]\"LayeredDigraphEmbedding\" (the user must do this as a second step, with the graph that this function returns)."
 getFaceLatticeGraph::usage="Returns the graph containing the full face lattive of the graph in question, with all the connectivity between the boundaries of various dimensionality. The best way to view it is to view it using the option GraphLayout\[Rule]\"LayeredDigraphEmbedding\" (the user must do this as a second step, with the graph that this function returns)."
+nonTrivialPoles::usage="Returns a list containing possible relations among Plucker coordinates that do not follow from the Plucker relations."
 
 Begin["Private`"]
 
@@ -2464,6 +2465,81 @@ stratificationgraph=AdjacencyGraph[Normal[SparseArray[Band[{1,1}]->alllayers,{to
 ,stratificationgraph=Null;
 ];
 stratificationgraph
+];
+
+nonTrivialPoles[topleft_,topright_,bottomleft_,bottomright_,sizeofrelation_]:=Module[{pathmat,minorintermsofedges,positionzerominors,allminors,nonzerominors,allorderrelations,minorstotheirexpression,positionsatisfiedrelations,pluckerRelSolution,solutiontopluckerrelations,assumptions,potentialsecretrelations,pospluckerrelations,nontrivialcleanrelations,secretrelationssolutions,turnIntoCleanRelation,secretrelations},
+(*In order to find all nonstandard poles, we'll start by creating all possible operators of a given size='sizeofrelation', e.g. sizeofrelation=3 gives operators of type (Plucker Plucker Plucker)\[Equal](Plucker Plucker Plucker). We'll then replace the Pluckers by their actual expressions in terms of edge variables. In general, many of these operators will trivially be equal to zero after this step. We'll then find out which of these follow from the Plucker relations and which are genuinely new.*)
+(*We'll begin by obtaining the path matrix, which in turn gives the expressions of the minors*)
+If[planarityQ[topleft,topright,bottomleft,bottomright],
+secretrelations={{}};
+,pathmat=pathMatrix[topleft,topright,bottomleft,bottomright];
+minorintermsofedges=Minors[pathmat,Length[pathmat]][[1]];
+(*We don't need to look for relations that contain minors which are trivially zero. We'll therefore find out which minors are nonzero*)
+positionzerominors=Position[minorintermsofedges,0];
+allminors=Map[HoldForm[minor][Sequence@@#]&,Subsets[Range[Dimensions[pathmat][[2]]],{Length[pathmat]}]];
+nonzerominors=Delete[allminors,positionzerominors];
+(*We'll now make all the possible relations between the Pluckers. We do this by first making operaors of size 1, i.e. Plucker=Plucker, then size 2, etc. up to size=sizeofrelation. Often (Plucker Plucker Plucker)\[Equal](Plucker Plucker Plucker) simplifies to (Plucker Plucker)\[Equal](Plucker Plucker), which we already had included. We therefore remove these relations with duplicate minors.*)
+allorderrelations=Map[(#[[1]]-#[[2]]==0)&,Map[Times@@#&,DeleteCases[Table[Sequence@@Subsets[Subsets[nonzerominors,{iii}],{2}],{iii,sizeofrelation}],{{___,duplminor_,___},{___,duplminor_,___}}],{2}]];
+(*We have all possible operators. We'll now find out which of these is satisfied by our current configuration (this may take a while)*)
+minorstotheirexpression=Delete[MapThread[Rule,{allminors,minorintermsofedges}],positionzerominors];
+positionsatisfiedrelations=Position[Map[Expand[#/.minorstotheirexpression]===True&,allorderrelations],True];
+(*Now we need to find out which of these follow from the Plucker relations. pluckerRelSolution gives the solution to the plucker relations for k & n when we have shut off certain minors.*)
+pluckerRelSolution=Function[{k,n,listofzerominors},
+Block[{tozerorule,pluckerrel,solutions,independentrelations,newsolution,ii},
+tozerorule=Map[#->0&,listofzerominors];
+pluckerrel=DeleteCases[pluckerRelations[k,n]/.tozerorule,True];
+solutions={};
+If[pluckerrel=!={},
+independentrelations=pluckerrel[[{1}]];(*this variable will contain all independent relations*)
+newsolution=DeleteCases[Solve[And@@independentrelations],zz_/;MemberQ[zz,_->0]];
+solutions=Join[solutions,newsolution[[1]]];(*this variable will contain all independent solutions*)
+(*Go through the remianing plucker relations. If the next Plucker relations is not triviliazied by the solutions we already found to the previous relations, add it to the list of independent relations, and solve it.*)
+For[ii=2,ii<=Length[pluckerrel],ii++,
+If[Simplify[pluckerrel[[ii]]//.solutions]=!=True,
+independentrelations=Append[independentrelations,pluckerrel[[ii]]];
+newsolution=DeleteCases[Solve[And@@Simplify[independentrelations//.solutions]],zz_/;MemberQ[zz,_->0]];
+solutions=Join[solutions,newsolution[[1]]];
+(*If we have found as many solutions as there are independent relations in total, stop here, since the remainigs Plucker relations cannot be independent*)
+];
+];
+(*Tidy up the solutions so that they all depend on the same set of variables*)
+solutions=MapThread[Rule,{Map[#[[1]]&,solutions],Simplify[Map[#[[2]]&,solutions]//.solutions]}];
+];
+solutions]
+];
+solutiontopluckerrelations=pluckerRelSolution[Length[pathmat],Dimensions[pathmat][[2]],allminors[[Flatten[positionzerominors]]]];
+assumptions=And@@Map[#!=0&,nonzerominors];
+(*Let's now mod out by the plucker relations by substituting in their solution*)
+potentialsecretrelations=Map[Simplify[#/.solutiontopluckerrelations,assumptions]&,allorderrelations[[Flatten[positionsatisfiedrelations]]]];
+(*We'll now remove those that are equal to plucker relations*)
+pospluckerrelations=Position[potentialsecretrelations,True];
+potentialsecretrelations=Delete[potentialsecretrelations,pospluckerrelations];
+nontrivialcleanrelations=Delete[allorderrelations[[Flatten[positionsatisfiedrelations]]],pospluckerrelations];
+(*Not all of these secret relations are independent. We'll find solutions that solve them all*)
+If[potentialsecretrelations=!={},(*they are not all equal to plucker relations*)
+secretrelationssolutions=Solve[(And@@potentialsecretrelations)&&assumptions];
+(*We'll pick the least restrictive of the solutions*)
+secretrelationssolutions=Cases[secretrelationssolutions,zz_/;Length[zz]==Min[Map[Length,secretrelationssolutions]]];
+,(*we only have plucker relations*)
+secretrelationssolutions={{}};
+];
+(*We now have (possibly multiple) solutions. We could just output these solutions, as they consistute operators vanishing that are independent of the plucker relations and of each other. But their form can look complicated, because we substituted in the solution to the plucker relations. Therefore, we'll turn each of these into its equuivalent form in allminors*)
+turnIntoCleanRelation=Function[{listofreplacements},
+Block[{remainingsecretrelations,remainingcleanrelations,outputcleanrelations,jj,relationsthattrivialize},
+remainingsecretrelations=potentialsecretrelations;
+remainingcleanrelations=nontrivialcleanrelations;
+outputcleanrelations={};
+For[jj=1,jj<=Length[listofreplacements],jj++,
+relationsthattrivialize=Position[Simplify[remainingsecretrelations/.{listofreplacements[[jj]]}],True];
+outputcleanrelations=Join[outputcleanrelations,remainingcleanrelations[[relationsthattrivialize[[1]]]]];
+remainingsecretrelations=Delete[remainingsecretrelations,relationsthattrivialize];
+remainingcleanrelations=Delete[remainingcleanrelations,relationsthattrivialize];
+];
+outputcleanrelations]
+];
+secretrelations=Map[turnIntoCleanRelation[#]&,secretrelationssolutions];
+];
+secretrelations
 ];
 
 
