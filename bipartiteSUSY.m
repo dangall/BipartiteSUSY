@@ -21,11 +21,11 @@
 
 BeginPackage["BipartiteSUSY`"]
 
-polytopeDim::usage="Takes a matrix as input and outputs the dimension of a polytope with vertices given the columns of that matrix"
-joinupKasteleyn::usage="REMOVE ME FROM GLOBAL FUNCTIONS!"
-totFaces::usage="Gives the TOTAL number of faces in the graph. Assumes that edges are of the form X[i,j], where i and j are face labels (faces must be labeled in numerical order)"
-externalFaces::usage="Gives the number of EXTERNAL faces in the graph. Assumes that edges are of the form X[i,j], where i and j are face labels (faces must be labeled in numerical order)"
-internalFaces::usage="Gives the number of INTERNAL faces in the graph. Assumes that edges are of the form X[i,j], where i and j are face labels (faces must be labeled in numerical order)"
+polytopeDim::usage="Takes a matrix as input and outputs the dimension of a polytope with vertices given the columns of that matrix."
+joinupKasteleyn::usage="Forms a single matrix from the four components of the Kasteleyn matrix."
+totFaces::usage="Gives the TOTAL number of faces in the graph. Assumes that edges are of the form X[i,j], where i and j are face labels (faces must be labeled in numerical order)."
+externalFaces::usage="Gives the number of EXTERNAL faces in the graph. Assumes that edges are of the form X[i,j], where i and j are face labels (faces must be labeled in numerical order)."
+internalFaces::usage="Gives the number of INTERNAL faces in the graph. Assumes that edges are of the form X[i,j], where i and j are face labels (faces must be labeled in numerical order)."
 allFaceLabels::usage="Gives the name of the faces in the graph."
 externalFaceLabels::usage="Gives the name of the EXTERNAL faces in the graph."
 internalFaceLabels::usage="Gives the name of the INTERNAL faces in the graph."
@@ -71,11 +71,11 @@ nonPluckerPolesQ::usage="Tells you whether a reduced diagram has non-standard po
 removableEdges::usage="Returns the list of removable edges. If checkneeded=True, it will also check if the starting graph is reduced or not."
 edgeOrderings::usage="Returns a list where each element is a consistent ordering of edges around a white or black node, i.e. where the edges are sequenced such that each subsequent edge's first index is equal to the previous edge's second index."
 cyclicEdgeOrderings::usage="Retuns a list of edges where the edges have been ordered accoring to the cyclic order, i.e. i.e. where the edges are sequenced such that each subsequent edge's first index is equal to the previous edge's second index."
-nextStepBlackToWhite::usage="Returns the next edge in the zig-zag path and its position."
-nextStepWhiteToBlack::usage="Returns the next edge in the zig-zag path and its position."
-nextStepWhiteToBlackInternalZigzag::usage="Returns the next edge in the internal zig-zag path and its position."
-nextStepBlackToWhiteInternalZigzag::usage="Returns the next edge in the internal zig-zag path and its position."
-internalZigZagNumeratorDenominator::usage="Returns a list where the first element is a list of edges in the numerator of a zig-zag path, and the second element is a list of edges in the denominator of the zig-zag path. The zig-zag path starts from an edge."
+(*nextStepBlackToWhite::usage="Returns the next edge in the zig-zag path and its position."*)
+(*nextStepWhiteToBlack::usage="Returns the next edge in the zig-zag path and its position."*)
+(*nextStepWhiteToBlackInternalZigzag::usage="Returns the next edge in the internal zig-zag path and its position."*)
+(*nextStepBlackToWhiteInternalZigzag::usage="Returns the next edge in the internal zig-zag path and its position."*)
+(*internalZigZagNumeratorDenominator::usage="Returns a list where the first element is a list of edges in the numerator of a zig-zag path, and the second element is a list of edges in the denominator of the zig-zag path. The zig-zag path starts from an edge."*)
 allZigZagNumeratorsDenominators::usage="Returns a list where each element corresponds to a zig-zag path. The information is given as a list of two elements, where the first element contains all variables in the numerator of the expression, and the second element contains the variables in the denominator. Assumes standard rules: turn left at white nodes and right at black nodes, and edges from white to black are in the numerator, and vice-versa."
 makeZigZags::usage="Returns a list of zig-zag paths. Edges in the numerator are directed from white to black nodes, edges in the denominator are directed from black to white nodes. The standard rule is to turn left at white nodes and right at black nodes; it's possible to choose the opposite option by setting the (optional) final argument to True."
 selfIntersectingZigZagsQ::usage="Tells you whether the graph has self-intersecting zig-zag paths. Returns True or False."
@@ -88,11 +88,11 @@ pluckerRelations::usage="Returns a list of (generally not independent) Plucker r
 independentPluckerRelations::usage="Returns a list with two elements: the first contains a list of all independent Plucker relations, and the second contains the solution to these equations."
 (*We have to be able to bring the HoldForm[minor] out of the the package*)
 minor::usage=""
-makeOrderedPathMatrix::usage="This function returns the pathmatrix where, when possible, the external nodes have a cyclic planar ordering. IT SHOULD NOT BE LISTED IN THE LIST OF GLOBAL FUNCTIONS!"
-spiralInList::usage="This function takes a list of vertices and orders them according to the spiralling-in order. IT SHOULD NOT BE LISTED IN THE LIST OF GLOBAL FUNCTIONS!"
-rotateExternalVertices::usage="This function rotates external vertices when a cut goes parallelly over the external edge. IT SHOULD NOT BE LISTED IN THE LIST OF GLOBAL FUNCTIONS!"
-makePlanarGraph::usage="Returns the vertex coordinates and edges (with their coordinates) of the graph drawn on genus zero, drawn ideally for the construction of unproblematic cuts between external boundaries. IT SHOULD NOT BE LISTED IN THE LIST OF GLOBAL FUNCTIONS!"
-makeAutomaticBoundariesAndCuts::usage="This function returns a list of boundaries, corresponding to each external node, and cuts between these boundaries. IT SHOULD NOT BE LISTED IN THE LIST OF GLOBAL FUNCTIONS!"
+(*makeOrderedPathMatrix::usage="This function returns the pathmatrix where, when possible, the external nodes have a cyclic planar ordering."*)
+(*spiralInList::usage="This function takes a list of vertices and orders them according to the spiralling-in order."*)
+(*rotateExternalVertices::usage="This function rotates external vertices when a cut goes parallelly over the external edge."*)
+(*makePlanarGraph::usage="Returns the vertex coordinates and edges (with their coordinates) of the graph drawn on genus zero, drawn ideally for the construction of unproblematic cuts between external boundaries."*)
+(*makeAutomaticBoundariesAndCuts::usage="This function returns a list of boundaries, corresponding to each external node, and cuts between these boundaries."*)
 getGrassmannian::usage="This function returns the correspdoning element of the Grassmannian with all signs placed correctly to ensure manifest positivity of minors in planar diagrams, including signs associated to the rotation numnber of paths in the diagram. It only works when the graph can be embedded on genus zero (though it may have any number of boundaries)."
 pluckerCoordinates::usage="Returns the external ordering and the Plucker coordinates of the on-shell diagram. It is posisble to specify whether this function should place in all signs according to the boundary measurement, or whether the path matrix is sufficient."
 makeLoopVariablesBasis::usage="Returns a list of paths that form a basis with which it is possible to express any path in the graph. The output is of the form of two lists: the first one contains the internal faces, and if the optional input 'standardfacevariables' is False it also contains non-trivial cycles around surfaces with non-zero genus as well as products of external faces which circle around a boundary. The first list will generically be a linear combination of these paths. The second entry contains the remaining independent external faces, paths going between different boundaries, and if 'standardfacevariables' is True it also contains non-trivial cycles for non-zero genus."
@@ -865,6 +865,7 @@ edgename]
 edgelist=Map[nameDirectedEdges,EdgeList[directedgraph]];(*watch out! I have now changed bigkasteleyn! If you need it again, you'll need to reset it*)
 internalpaths=Map[Times@@Power[edgelist,#]&,Normal[EdgeCycleMatrix[directedgraph]]];
 internalpathvectors=Map[Table[D[#,alledges[[iii]]],{iii,Length[alledges]}]/.Map[#->1&,alledges]&,internalpaths];
+If[standardfacevariables,
 (*The only paths that we still need to make are the face variables. Some of these are included in internalpathvectors, but we don't know which so we'll make all of them*)
 facenames=allFaceLabels[topleft,topright,bottomleft,bottomright];
 facevariables=Map[(Times@@Cases[alledges,_[_,#]])/(Times@@Cases[alledges,_[#,_]])&,facenames];
@@ -882,14 +883,13 @@ internalfacevariablevectors=internalfacevariablevectors[[Range[Length[internalfa
 externalfacevariablevectors=externalfacevariablevectors[[Range[Length[externalfacevariablevectors]-1]]];
 ];
 (*We'll now need to see which of all our paths are independent and forms a basis*)
-If[standardfacevariables,
 (*We need to give priority to facevariables, and then form the remaining paths with internalpaths and bpaths*)
 (*We will want to keep the internal faces separate as they can be gauged under gauging 1*)
 accountedforvectors=Join[internalfacevariablevectors,externalfacevariablevectors];(*the faces aren't all independent*)
 newpathvectors=Join[internalpathvectors,bpathvectors];
 ,(*We need to give priority to internalpaths, as they can be gauged under gauging 2. We'll then form the remaining paths with facevariables and bpaths*)
 accountedforvectors=internalpathvectors;
-newpathvectors=Join[internalfacevariablevectors,externalfacevariablevectors,bpathvectors];
+newpathvectors=bpathvectors;
 ];
 additionalpathvectors={};
 tosolvefor=Total[Table[coef[iii]accountedforvectors[[iii]],{iii,Length[accountedforvectors]}]];
@@ -1500,8 +1500,41 @@ Print["The input must be of the form {{_Integer,_Integer,...},...}"];
 badmatroidelementpairs
 ];
 
-pluckerRelations[k_Integer,n_Integer]:=pluckerRelations[k,n]=Block[{indexlist1,indexlist2,relations,conditions,i,j,oppositerelations,todelete,ii},
+(*pluckerRelations[k_Integer,n_Integer]:=pluckerRelations[k,n]=Block[{indexlist1,indexlist2,relations,conditions,i,j,oppositerelations,todelete,ii},
 indexlist1=Subsets[Range[n],{k-1}];
+indexlist2=Subsets[Range[n],{k+1}];
+relations={};
+conditions=Map[HoldForm[minor][Sequence@@#]\[Rule]0&,indexlist1];
+For[i=1,i<Length[indexlist1]+1,i++,
+For[j=1,j<Length[indexlist2]+1,j++,
+relations=Join[relations,{Sum[(-1)^(dum-1)(-1)^(PermutationOrder[Ordering[DeleteDuplicates[Join[indexlist1[[i]],{indexlist2[[j,dum]]}]]]]-1)HoldForm[minor][Sequence@@Union[Join[indexlist1[[i]],{indexlist2[[j,dum]]}]]]HoldForm[minor][Sequence@@Complement[indexlist2[[j]],{indexlist2[[j,dum]]}]],{dum,k+1}]\[Equal]0}/.conditions];
+];
+];
+relations=DeleteDuplicates[DeleteCases[relations,True]];
+(*Remove the ones that are duplicate up to a minus sign*)
+oppositerelations=Map[-#[[1]]\[Equal]0&,relations];
+todelete={};
+For[ii=1,ii\[LessEqual]Length[relations],ii++,
+If[FreeQ[todelete,ii],
+todelete=Join[todelete,Flatten[Position[oppositerelations,relations[[ii]]]]];
+];
+];
+relations=relations[[Complement[Range[Length[relations]],todelete]]](*/.{minor\[Rule]HoldForm[minor]}*);
+relations
+];*)
+
+getPremadePluckerRelations[]:=getPremadePluckerRelations[]=Block[{filename,premaderelationsfromfile},
+filename=FileNameJoin[{Directory[],"premadePluckerRelations"}];
+premaderelationsfromfile=Get[(filename)];
+premaderelationsfromfile
+];
+
+pluckerRelations[k_Integer,n_Integer]:=pluckerRelations[k,n]=Block[{filename,premaderelations,indexlist1,indexlist2,relations,conditions,i,j,oppositerelations,todelete,ii},
+filename=FileNameJoin[{Directory[],"premadePluckerRelations"}];
+If[9<=n<=10&&k>2&&k<(n-2)&&FileExistsQ[(filename)],
+premaderelations=getPremadePluckerRelations[];
+relations=premaderelations[[n-3,k-1]];
+,indexlist1=Subsets[Range[n],{k-1}];
 indexlist2=Subsets[Range[n],{k+1}];
 relations={};
 conditions=Map[HoldForm[minor][Sequence@@#]->0&,indexlist1];
@@ -1520,6 +1553,7 @@ todelete=Join[todelete,Flatten[Position[oppositerelations,relations[[ii]]]]];
 ];
 ];
 relations=relations[[Complement[Range[Length[relations]],todelete]]](*/.{minor\[Rule]HoldForm[minor]}*);
+];
 relations
 ];
 
