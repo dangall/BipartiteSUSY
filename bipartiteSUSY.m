@@ -106,6 +106,8 @@ getFaceLattice::usage="Returns a list of boundaries of the matching polytope. Th
 getStratificationGraph::usage="Returns the graph containing the full stratification of the graph in question, with all the connectivity between the boundaries of various dimensionality. The best way to view it is to view it using the option GraphLayout\[Rule]\"LayeredDigraphEmbedding\" (the user must do this as a second step, with the graph that this function returns)."
 getFaceLatticeGraph::usage="Returns the graph containing the full face lattive of the graph in question, with all the connectivity between the boundaries of various dimensionality. The best way to view it is to view it using the option GraphLayout\[Rule]\"LayeredDigraphEmbedding\" (the user must do this as a second step, with the graph that this function returns)."
 nonTrivialPoles::usage="Returns a list containing possible relations among Plucker coordinates that do not follow from the Plucker relations."
+squareMove::usage="Gives the four components of the Kasteleyn matrix (the top-left, top-right, bottom-left, and bottom-right) after a square move performed on a user-specified choice of nodes. In the case of BFTs the user may choose to instead specify the face name to perform the square move on."
+XX::usage=""
 
 Begin["Private`"]
 
@@ -979,6 +981,95 @@ masterspace=Null;
 modulispace=Null;
 ];
 {masterspace,modulispace,basis}
+];
+
+squareMove[topleft_,topright_,bottomleft_,bottomright_,fournodesorfacenum_,BFTgraph_:False,checkneeded_:True]/;(Head[fournodesorfacenum]===Integer&&BFTgraph===True||Head[fournodesorfacenum]===List):=Block[{oktoproceed,newtopleft,fournodes,rows,columns,facenum,positions,edgestosettozero,edge4by4,whitenodestoadd,blacknodestoadd,newedgeW,newedgeB,ii,iij,jjk,XX,final4by4,head,biggestindex,newedgesW,newedgesB,newbottomleft,newtopright,newbottomright,findDoubles,doubleedges,replacement},
+oktoproceed=True;
+If[checkneeded,
+oktoproceed=checkKasteleynQ[topleft,topright,bottomleft,bottomright,BFTgraph];
+];
+If[oktoproceed,
+newtopleft=topleft;
+(*We only need to manipulate columns and rows in topleft. At the end, we'll also make sure the other parts of the Kasteleyn have theright dimensions*)
+(*We'll now find out which rows and columns inside topleft are relevant to the square move*)
+If[Head[fournodesorfacenum]===List,
+(*the user specified four nodes*)
+fournodes=Sort[fournodesorfacenum];
+rows=Cases[fournodes,zz_/;zz<Length[topleft]+Length[bottomleft]];
+columns=Complement[fournodes,rows]-Length[topleft]-Length[bottomleft];
+,(*the user specified a face number*)
+facenum=fournodesorfacenum;
+positions=Position[topleft,_[facenum,_]|_[_,facenum]];
+rows=Union[Map[#[[1]]&,positions]];
+columns=Union[Map[#[[2]]&,positions]];
+];
+(*Now we'll remove the four edges connecting these nodes, and keep track of their name and position in edge4by4*)
+If[FreeQ[Flatten[newtopleft[[rows,columns]]],0],
+(*we indeed have a 4-edge cycle going between the nodes, and we can do a square move*)
+If[BFTgraph,
+(*Now we'll kill the connectivity between these four nodes. Since BFTgraph=True we want to kill those edges belonging to the same face. If BFTgraph=False it doesn't matter which edge we kill.*)
+If[Head[fournodesorfacenum]===List,
+edgestosettozero=Cases[Tuples[Sequence@@@Map[Variables[#]&,newtopleft[[rows,columns]],{2}]],{_[___,samefacenum_,___],_[___,samefacenum_,___],_[___,samefacenum_,___],_[___,samefacenum_,___]}][[1]];
+(*we would also like to know the face number*)
+facenum=(Intersection@@Map[List@@#&,edgestosettozero])[[1]];
+,edgestosettozero=Cases[Tuples[Sequence@@@Map[Variables[#]&,newtopleft[[rows,columns]],{2}]],{_[___,facenum,___],_[___,facenum,___],_[___,facenum,___],_[___,facenum,___]}][[1]];
+];
+edge4by4=newtopleft[[rows,columns]]/.Map[#->0&,Complement[Variables[newtopleft[[rows,columns]]],edgestosettozero]];
+newtopleft[[rows,columns]]=newtopleft[[rows,columns]]/.Map[#->0&,edgestosettozero];
+(*Now we'll add two new rows and two new columns, representing the four new nodes that appear when doing a square move*)
+whitenodestoadd=Table[0,{iii,2},{jjj,Dimensions[newtopleft][[2]]}];
+blacknodestoadd=Table[{0,0},Length[newtopleft]];
+For[ii=1,ii<=2,ii++,
+newedgeW=edge4by4[[All,{ii}]]/.{{{_[facenum,iij_]},{_[jjk_,facenum]}}->XX[jjk,iij],{{_[iij_,facenum]},{_[facenum,jjk_]}}->XX[iij,jjk]};
+whitenodestoadd[[ii,columns[[ii]]]]=newedgeW;
+newedgeB=edge4by4[[{ii}]]/.{{{_[facenum,iij_],_[jjk_,facenum]}}->XX[jjk,iij],{{_[iij_,facenum],_[facenum,jjk_]}}->XX[iij,jjk]};
+blacknodestoadd[[rows[[ii]],ii]]=newedgeB;
+];
+(*Finally we'll add the connectivity between the new white nodes and the new black nodes*)
+final4by4=Transpose[Map[#/.{head_[iij_,jjk_]->head[jjk,iij]}&,edge4by4,{2}]];
+,(*Now we'll kill the connectivity between these four nodes. Since BFTgraph=False it doesn't matter which edge we kill.*)
+edge4by4=Map[Variables[#][[1]]&,newtopleft[[rows,columns]],{2}];
+newtopleft[[rows,columns]]=Map[Total[Delete[Variables[#],1]]&,newtopleft[[rows,columns]],{2}];
+(*Now we'll add two new rows and two new columns, representing the four new nodes that appear when doing a square move*)
+whitenodestoadd=Table[0,{iii,2},{jjj,Dimensions[newtopleft][[2]]}];
+blacknodestoadd=Table[{0,0},Length[newtopleft]];
+(*We'll add edges indexed by an index that hasn't appeared yet, to make sure we don't create duplicate edge names*)
+biggestindex=Max[Flatten[Map[List@@#&,Variables[joinupKasteleyn[topleft,topright,bottomleft,bottomright]]]]];
+newedgesW=Map[XX[#]&,Range[biggestindex+1,biggestindex+2]];
+newedgesB=Map[XX[#]&,Range[biggestindex+3,biggestindex+4]];
+For[ii=1,ii<=2,ii++,
+whitenodestoadd[[ii,columns[[ii]]]]=newedgesW[[ii]];
+blacknodestoadd[[rows[[ii]],ii]]=newedgesB[[ii]];
+];
+(*Finally we'll add the connectivity between the new white nodes and the new black nodes. Since the indices don't matter in non-BFT graphs, we can copy edge4by4*)
+final4by4=edge4by4
+];
+newtopleft=Join[Join[newtopleft,whitenodestoadd],Join[blacknodestoadd,final4by4],2];
+newbottomleft=Join[bottomleft,Table[0,{iii,Length[bottomleft]},{jjj,2}],2];
+newtopright=Join[topright,Table[0,{iii,2},{jjj,Dimensions[topright][[2]]}]];
+newbottomright=bottomright;
+(*Now we're finished. In the event that we created a duplicate edge, we'll rename it by tagging an X onto its Head until it's no longer a duplicate*)
+(*This function makes a list of edges that appear twice*)
+findDoubles=Function[{aa,bb,cc,dd},
+Block[{tempkasteleyn,doubles},
+tempkasteleyn=joinupKasteleyn[aa,bb,cc,dd];
+doubles=Variables[tempkasteleyn][[Flatten[Position[Map[Length[Position[tempkasteleyn,#]]&,Variables[tempkasteleyn]],z_/;z>1]]]];
+doubles]
+];
+doubleedges=findDoubles[newtopleft,newtopright,newbottomleft,newbottomright];
+While[doubleedges=!={},
+replacement=Map[#->(Symbol[StringJoin[SymbolName[Head[#]],"X"]]@@#)&,doubleedges];
+newtopleft[[{-2,-1}]]=newtopleft[[{-2,-1}]]/.replacement;
+newtopleft[[All,{-2,-1}]]=newtopleft[[All,{-2,-1}]]/.replacement;
+doubleedges=findDoubles[newtopleft,newtopright,newbottomleft,newbottomright];
+];
+,Print["The square move can only be done on cycles with 4 edges. The current choice is invalid."];
+{newtopleft,newtopright,newbottomleft,newbottomright}={Null,Null,Null,Null};
+];
+,Print["The input Kasteleyn is not valid."];
+{newtopleft,newtopright,newbottomleft,newbottomright}={Null,Null,Null,Null};
+];
+{newtopleft,newtopright,newbottomleft,newbottomright}
 ];
 
 
