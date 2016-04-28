@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     48299,        817]
-NotebookOptionsPosition[     47916,        799]
-NotebookOutlinePosition[     48278,        815]
-CellTagsIndexPosition[     48235,        812]
+NotebookDataLength[     52821,        919]
+NotebookOptionsPosition[     52437,        901]
+NotebookOutlinePosition[     52799,        917]
+CellTagsIndexPosition[     52756,        914]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -54,143 +54,102 @@ Cell[BoxData[{
          RowBox[{
          "inputtopleft", ",", "inputtopright", ",", "inputbottomleft", ",", 
           "inputbottomright"}], "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
-      RowBox[{"kasteleyn", "=", 
-       RowBox[{"joinupKasteleyn", "[", 
-        RowBox[{
-        "inputtopleft", ",", "inputtopright", ",", "inputbottomleft", ",", 
-         "inputbottomright"}], "]"}]}], ";", "\[IndentingNewLine]", 
       RowBox[{"bivalentblacknodes", "=", 
-       RowBox[{"Cases", "[", 
-        RowBox[{"transposekasteleyn", ",", 
+       RowBox[{"DeleteCases", "[", 
+        RowBox[{
+         RowBox[{"Cases", "[", 
+          RowBox[{"transposekasteleyn", ",", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"0", "..."}], ",", 
+             RowBox[{"Except", "[", 
+              RowBox[{"0", "|", 
+               RowBox[{"somedge_", "+", "anotheredge_", "+", "___"}]}], "]"}],
+              ",", 
+             RowBox[{"0", "..."}], ",", 
+             RowBox[{"Except", "[", 
+              RowBox[{"0", "|", 
+               RowBox[{"somedge_", "+", "anotheredge_", "+", "___"}]}], "]"}],
+              ",", 
+             RowBox[{"0", "..."}]}], "}"}]}], "]"}], ",", 
          RowBox[{"{", 
           RowBox[{
-           RowBox[{"0", "..."}], ",", 
-           RowBox[{"Except", "[", 
-            RowBox[{"0", "|", 
-             RowBox[{"somedge_", "+", "anotheredge_", "+", "___"}]}], "]"}], 
-           ",", 
-           RowBox[{"0", "..."}], ",", 
-           RowBox[{"Except", "[", 
-            RowBox[{"0", "|", 
-             RowBox[{"somedge_", "+", "anotheredge_", "+", "___"}]}], "]"}], 
-           ",", 
-           RowBox[{"0", "..."}], ",", 
            RowBox[{"Sequence", "@@", 
             RowBox[{"ConstantArray", "[", 
              RowBox[{"0", ",", 
+              RowBox[{"Length", "[", "inputtopleft", "]"}]}], "]"}]}], ",", 
+           RowBox[{"Sequence", "@@", 
+            RowBox[{"ConstantArray", "[", 
+             RowBox[{"_", ",", 
               RowBox[{"Length", "[", "inputbottomleft", "]"}]}], "]"}]}]}], 
           "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
-      RowBox[{"todeletecolumns", "=", 
-       RowBox[{"Position", "[", 
-        RowBox[{"transposekasteleyn", ",", 
-         RowBox[{"Alternatives", "@@", "bivalentblacknodes"}]}], "]"}]}], ";",
-       "\[IndentingNewLine]", 
-      RowBox[{"tomergerows", "=", 
-       RowBox[{"ConnectedComponents", "[", 
-        RowBox[{"Graph", "[", 
-         RowBox[{"Map", "[", 
-          RowBox[{
-           RowBox[{
-            RowBox[{"UndirectedEdge", "@@", "#"}], "&"}], ",", 
-           RowBox[{"Map", "[", 
-            RowBox[{
-             RowBox[{
-              RowBox[{"DeleteCases", "[", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"bivalentblacknodes", "=!=", 
+         RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"outputtopright", "=", 
+          RowBox[{"Join", "[", 
+           RowBox[{"outputtopright", ",", 
+            RowBox[{"Transpose", "[", 
+             RowBox[{"bivalentblacknodes", "[", 
+              RowBox[{"[", 
+               RowBox[{"All", ",", 
+                RowBox[{"Range", "[", 
+                 RowBox[{"Length", "[", "inputtopleft", "]"}], "]"}]}], "]"}],
+               "]"}], "]"}], ",", "2"}], "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"outputbottomright", "=", 
+          RowBox[{"Join", "[", 
+           RowBox[{"outputbottomright", ",", 
+            RowBox[{"ConstantArray", "[", 
+             RowBox[{"0", ",", 
+              RowBox[{"{", 
                RowBox[{
-                RowBox[{"Flatten", "[", 
-                 RowBox[{"Position", "[", 
-                  RowBox[{"#", ",", 
-                   RowBox[{"Except", "[", "0", "]"}], ",", "1"}], "]"}], 
-                 "]"}], ",", "0"}], "]"}], "&"}], ",", "bivalentblacknodes"}],
-             "]"}]}], "]"}], "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
-      RowBox[{"newrows", "=", 
-       RowBox[{"Map", "[", 
-        RowBox[{
-         RowBox[{
-          RowBox[{"Total", "[", 
-           RowBox[{"kasteleyn", "[", 
-            RowBox[{"[", "#", "]"}], "]"}], "]"}], "&"}], ",", 
-         "tomergerows"}], "]"}]}], ";", "\[IndentingNewLine]", 
-      RowBox[{"tokeeprows", "=", 
-       RowBox[{"Complement", "[", 
-        RowBox[{
-         RowBox[{"Range", "[", 
-          RowBox[{"Length", "[", "kasteleyn", "]"}], "]"}], ",", 
-         RowBox[{"Union", "@@", "tomergerows"}]}], "]"}]}], ";", 
-      "\[IndentingNewLine]", 
-      RowBox[{"tokeeprows", "=", 
-       RowBox[{"Join", "[", 
-        RowBox[{
-         RowBox[{"Range", "[", 
-          RowBox[{"Length", "[", "newrows", "]"}], "]"}], ",", 
-         RowBox[{"tokeeprows", "+", 
-          RowBox[{"Length", "[", "newrows", "]"}]}]}], "]"}]}], ";", 
-      "\[IndentingNewLine]", 
-      RowBox[{"kasteleyn", "=", 
-       RowBox[{"Transpose", "[", 
-        RowBox[{"Delete", "[", 
-         RowBox[{
-          RowBox[{"Transpose", "[", 
+                RowBox[{"Length", "[", "outputbottomright", "]"}], ",", 
+                RowBox[{"Length", "[", "bivalentblacknodes", "]"}]}], "}"}]}],
+              "]"}], ",", "2"}], "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"todeletecolumns", "=", 
+          RowBox[{"Position", "[", 
+           RowBox[{"transposekasteleyn", ",", 
+            RowBox[{"Alternatives", "@@", "bivalentblacknodes"}]}], "]"}]}], 
+         ";", "\[IndentingNewLine]", 
+         RowBox[{"todeleterows", "=", 
+          RowBox[{"Map", "[", 
            RowBox[{
-            RowBox[{"Join", "[", 
-             RowBox[{"newrows", ",", "kasteleyn"}], "]"}], "[", 
-            RowBox[{"[", "tokeeprows", "]"}], "]"}], "]"}], ",", 
-          "todeletecolumns"}], "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
-      RowBox[{"outputtopleft", "=", 
-       RowBox[{"kasteleyn", "[", 
-        RowBox[{"[", 
-         RowBox[{
-          RowBox[{";;", 
-           RowBox[{"-", 
-            RowBox[{"(", 
-             RowBox[{
+            RowBox[{
+             RowBox[{"DeleteCases", "[", 
               RowBox[{
-               RowBox[{"Dimensions", "[", "inputbottomright", "]"}], "[", 
-               RowBox[{"[", "1", "]"}], "]"}], "+", "1"}], ")"}]}]}], ",", 
-          RowBox[{";;", 
-           RowBox[{"-", 
-            RowBox[{"(", 
-             RowBox[{
-              RowBox[{
-               RowBox[{"Dimensions", "[", "inputbottomright", "]"}], "[", 
-               RowBox[{"[", "2", "]"}], "]"}], "+", "1"}], ")"}]}]}]}], "]"}],
-         "]"}]}], ";", "\[IndentingNewLine]", 
-      RowBox[{"outputtopright", "=", 
-       RowBox[{"kasteleyn", "[", 
-        RowBox[{"[", 
-         RowBox[{
-          RowBox[{";;", 
-           RowBox[{"-", 
-            RowBox[{"(", 
-             RowBox[{
-              RowBox[{
-               RowBox[{"Dimensions", "[", "inputbottomright", "]"}], "[", 
-               RowBox[{"[", "1", "]"}], "]"}], "+", "1"}], ")"}]}]}], ",", 
-          RowBox[{
-           RowBox[{"-", 
-            RowBox[{"(", 
-             RowBox[{
-              RowBox[{"Dimensions", "[", "inputbottomright", "]"}], "[", 
-              RowBox[{"[", "2", "]"}], "]"}], ")"}]}], ";;"}]}], "]"}], 
-        "]"}]}], ";", "\[IndentingNewLine]", 
-      RowBox[{"outputbottomleft", "=", 
-       RowBox[{"kasteleyn", "[", 
-        RowBox[{"[", 
-         RowBox[{
-          RowBox[{
-           RowBox[{"-", 
-            RowBox[{"(", 
-             RowBox[{
-              RowBox[{"Dimensions", "[", "inputbottomright", "]"}], "[", 
-              RowBox[{"[", "1", "]"}], "]"}], ")"}]}], ";;"}], ",", 
-          RowBox[{";;", 
-           RowBox[{"-", 
-            RowBox[{"(", 
-             RowBox[{
-              RowBox[{
-               RowBox[{"Dimensions", "[", "inputbottomright", "]"}], "[", 
-               RowBox[{"[", "2", "]"}], "]"}], "+", "1"}], ")"}]}]}]}], "]"}],
-         "]"}]}], ";", "\[IndentingNewLine]", 
+               RowBox[{"Flatten", "[", 
+                RowBox[{"Position", "[", 
+                 RowBox[{"#", ",", 
+                  RowBox[{"Except", "[", "0", "]"}], ",", "1"}], "]"}], "]"}],
+                ",", "0"}], "]"}], "&"}], ",", 
+            RowBox[{"bivalentblacknodes", "[", 
+             RowBox[{"[", 
+              RowBox[{"All", ",", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"Length", "[", "inputtopleft", "]"}], "+", "1"}], 
+                ";;"}]}], "]"}], "]"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"outputtopleft", "=", 
+          RowBox[{"Transpose", "[", 
+           RowBox[{"Delete", "[", 
+            RowBox[{
+             RowBox[{"Transpose", "[", "outputtopleft", "]"}], ",", 
+             "todeletecolumns"}], "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"outputbottomleft", "=", 
+          RowBox[{"Transpose", "[", 
+           RowBox[{"Delete", "[", 
+            RowBox[{
+             RowBox[{"Transpose", "[", 
+              RowBox[{"Delete", "[", 
+               RowBox[{"outputbottomleft", ",", "todeleterows"}], "]"}], 
+              "]"}], ",", "todeletecolumns"}], "]"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"outputbottomright", "=", 
+          RowBox[{"Delete", "[", 
+           RowBox[{"outputbottomright", ",", "todeleterows"}], "]"}]}], 
+         ";"}]}], "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
       RowBox[{"{", 
        RowBox[{
        "outputtopleft", ",", "outputtopright", ",", "outputbottomleft", ",", 
@@ -201,10 +160,150 @@ Cell[BoxData[{
    RowBox[{
     RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
     RowBox[{
-     RowBox[{"collapseBlackNodesInternalInternalNEW", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "outputtopleft", ",", "outputtopright", ",", "outputbottomleft", ",", 
+        "outputbottomright"}], "}"}], "=", 
+      RowBox[{"{", 
+       RowBox[{
+       "inputtopleft", ",", "inputtopright", ",", "inputbottomleft", ",", 
+        "inputbottomright"}], "}"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"transposekasteleyn", "=", 
+      RowBox[{"Transpose", "[", 
+       RowBox[{"joinupKasteleyn", "[", 
+        RowBox[{
+        "inputtopleft", ",", "inputtopright", ",", "inputbottomleft", ",", 
+         "inputbottomright"}], "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"bivalentblacknodes", "=", 
+      RowBox[{"DeleteCases", "[", 
+       RowBox[{
+        RowBox[{"Cases", "[", 
+         RowBox[{"transposekasteleyn", ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"0", "..."}], ",", 
+            RowBox[{"Except", "[", 
+             RowBox[{"0", "|", 
+              RowBox[{"somedge_", "+", "anotheredge_", "+", "___"}]}], "]"}], 
+            ",", 
+            RowBox[{"0", "..."}], ",", 
+            RowBox[{"Except", "[", 
+             RowBox[{"0", "|", 
+              RowBox[{"somedge_", "+", "anotheredge_", "+", "___"}]}], "]"}], 
+            ",", 
+            RowBox[{"0", "..."}]}], "}"}]}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"Sequence", "@@", 
+           RowBox[{"ConstantArray", "[", 
+            RowBox[{"0", ",", 
+             RowBox[{"Length", "[", "inputtopleft", "]"}]}], "]"}]}], ",", 
+          RowBox[{"Sequence", "@@", 
+           RowBox[{"ConstantArray", "[", 
+            RowBox[{"_", ",", 
+             RowBox[{"Length", "[", "inputbottomleft", "]"}]}], "]"}]}]}], 
+         "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"If", "[", 
       RowBox[{
-      "topleft", ",", "topright", ",", "bottomleft", ",", "bottomright"}], 
-      "]"}], ";"}]}], "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+       RowBox[{"bivalentblacknodes", "=!=", 
+        RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"kasteleyn", "=", 
+         RowBox[{"Transpose", "[", 
+          RowBox[{"Join", "[", 
+           RowBox[{
+            RowBox[{"Cases", "[", 
+             RowBox[{"transposekasteleyn", ",", 
+              RowBox[{"Except", "[", 
+               RowBox[{"Alternatives", "@@", "bivalentblacknodes"}], "]"}]}], 
+             "]"}], ",", "bivalentblacknodes"}], "]"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"todeleterows", "=", 
+         RowBox[{"Map", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{"DeleteCases", "[", 
+              RowBox[{
+               RowBox[{"Position", "[", 
+                RowBox[{"#", ",", 
+                 RowBox[{"Except", "[", "0", "]"}], ",", "1"}], "]"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"___", ",", "0", ",", "___"}], "}"}]}], "]"}], "[", 
+             RowBox[{"[", 
+              RowBox[{"-", "1"}], "]"}], "]"}], "&"}], ",", 
+           "bivalentblacknodes"}], "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"kasteleyn", "=", 
+         RowBox[{"Delete", "[", 
+          RowBox[{"kasteleyn", ",", "todeleterows"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"bottomrightrownum", "=", 
+         RowBox[{
+          RowBox[{"Length", "[", "inputbottomright", "]"}], "-", 
+          RowBox[{"Length", "[", "todeleterows", "]"}]}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"bottomrightcolnum", "=", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Dimensions", "[", "inputbottomright", "]"}], "[", 
+           RowBox[{"[", "2", "]"}], "]"}], "+", 
+          RowBox[{"Length", "[", "bivalentblacknodes", "]"}]}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"outputtopleft", "=", 
+         RowBox[{"kasteleyn", "[", 
+          RowBox[{"[", 
+           RowBox[{
+            RowBox[{";;", 
+             RowBox[{"-", 
+              RowBox[{"(", 
+               RowBox[{"bottomrightrownum", "+", "1"}], ")"}]}]}], ",", 
+            RowBox[{";;", 
+             RowBox[{"-", 
+              RowBox[{"(", 
+               RowBox[{"bottomrightcolnum", "+", "1"}], ")"}]}]}]}], "]"}], 
+          "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"outputtopright", "=", 
+         RowBox[{"kasteleyn", "[", 
+          RowBox[{"[", 
+           RowBox[{
+            RowBox[{";;", 
+             RowBox[{"-", 
+              RowBox[{"(", 
+               RowBox[{"bottomrightrownum", "+", "1"}], ")"}]}]}], ",", 
+            RowBox[{
+             RowBox[{"-", 
+              RowBox[{"(", "bottomrightcolnum", ")"}]}], ";;"}]}], "]"}], 
+          "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"outputbottomleft", "=", 
+         RowBox[{"kasteleyn", "[", 
+          RowBox[{"[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"-", 
+              RowBox[{"(", "bottomrightrownum", ")"}]}], ";;"}], ",", 
+            RowBox[{";;", 
+             RowBox[{"-", 
+              RowBox[{"(", 
+               RowBox[{"bottomrightcolnum", "+", "1"}], ")"}]}]}]}], "]"}], 
+          "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"outputbottomright", "=", 
+         RowBox[{"kasteleyn", "[", 
+          RowBox[{"[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"-", 
+              RowBox[{"(", "bottomrightrownum", ")"}]}], ";;"}], ",", 
+            RowBox[{
+             RowBox[{"-", 
+              RowBox[{"(", "bottomrightcolnum", ")"}]}], ";;"}]}], "]"}], 
+          "]"}]}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+      "outputtopleft", ",", "outputtopright", ",", "outputbottomleft", ",", 
+       "outputbottomright"}], "}"}], ";"}]}], "\[IndentingNewLine]", 
+   "]"}]}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"fun3", ":=", 
    RowBox[{"Block", "[", 
@@ -245,7 +344,7 @@ Cell[BoxData[{
   RowBox[{"For", "[", 
    RowBox[{
     RowBox[{"aiai", "=", "1"}], ",", 
-    RowBox[{"aiai", "\[LessEqual]", "1000"}], ",", 
+    RowBox[{"aiai", "\[LessEqual]", "10000"}], ",", 
     RowBox[{"aiai", "++"}], ",", "\[IndentingNewLine]", 
     RowBox[{
      RowBox[{"method1", "=", 
@@ -466,9 +565,10 @@ Cell[BoxData[{
    3.670755358772359*^9, 3.6707553840994053`*^9}, {3.670755572057193*^9, 
    3.6707555843956366`*^9}, {3.670759159081023*^9, 3.6707593001876836`*^9}, {
    3.6707593763459563`*^9, 3.67075937641501*^9}, {3.670759678843994*^9, 
-   3.670759727086015*^9}}],
+   3.670759727086015*^9}, {3.670824906737342*^9, 3.670824910397296*^9}, {
+   3.6708256635124063`*^9, 3.670825709439763*^9}}],
 
-Cell[BoxData["0.002360203509124046`"], "Output",
+Cell[BoxData["0.0003780388384722041`"], "Output",
  CellChangeTimes->{
   3.662184976269184*^9, {3.6621851943912783`*^9, 3.662185200292393*^9}, 
    3.6621857624285955`*^9, {3.6621858230714126`*^9, 3.6621858424468155`*^9}, {
@@ -630,9 +730,10 @@ Cell[BoxData["0.002360203509124046`"], "Output",
    3.6707553929153996`*^9}, {3.6707555778210154`*^9, 3.670755589588954*^9}, 
    3.6707591701744704`*^9, 3.6707592404623213`*^9, {3.6707592762009797`*^9, 
    3.670759310680709*^9}, 3.670759397230338*^9, {3.6707597239153953`*^9, 
-   3.6707597338312807`*^9}}],
+   3.6707597338312807`*^9}, 3.670824911131699*^9, {3.6708256905648994`*^9, 
+   3.670825718543144*^9}}],
 
-Cell[BoxData["0.0038005100842271812`"], "Output",
+Cell[BoxData["0.00035535075275338316`"], "Output",
  CellChangeTimes->{
   3.662184976269184*^9, {3.6621851943912783`*^9, 3.662185200292393*^9}, 
    3.6621857624285955`*^9, {3.6621858230714126`*^9, 3.6621858424468155`*^9}, {
@@ -794,7 +895,8 @@ Cell[BoxData["0.0038005100842271812`"], "Output",
    3.6707553929153996`*^9}, {3.6707555778210154`*^9, 3.670755589588954*^9}, 
    3.6707591701744704`*^9, 3.6707592404623213`*^9, {3.6707592762009797`*^9, 
    3.670759310680709*^9}, 3.670759397230338*^9, {3.6707597239153953`*^9, 
-   3.6707597338312807`*^9}}]
+   3.6707597338312807`*^9}, 3.670824911131699*^9, {3.6708256905648994`*^9, 
+   3.670825718543144*^9}}]
 }, Open  ]]
 },
 Evaluator->"Local2",
@@ -815,9 +917,9 @@ CellTagsIndex->{}
 (*NotebookFileOutline
 Notebook[{
 Cell[CellGroupData[{
-Cell[580, 22, 23407, 446, 812, "Input"],
-Cell[23990, 470, 11953, 162, 31, "Output"],
-Cell[35946, 634, 11954, 162, 31, "Output"]
+Cell[580, 22, 27778, 546, 1132, "Input"],
+Cell[28361, 570, 12028, 163, 31, "Output"],
+Cell[40392, 735, 12029, 163, 31, "Output"]
 }, Open  ]]
 }
 ]
