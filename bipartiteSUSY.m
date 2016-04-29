@@ -108,6 +108,14 @@ getFaceLatticeGraph::usage="Returns the graph containing the full face lattive o
 nonTrivialPoles::usage="Returns a list containing possible relations among Plucker coordinates that do not follow from the Plucker relations."
 squareMove::usage="Gives the four components of the Kasteleyn matrix (the top-left, top-right, bottom-left, and bottom-right) after a square move performed on a user-specified choice of nodes. In the case of BFTs the user may choose to instead specify the face name to perform the square move on."
 XX::usage=""
+bubblesQ::usage="Tells whether there are bubbles in the diagram. The user may specify whether the diagram is a BFT under gauging 1 or not."
+removeBubbles::usage="Takes the Kasteleyn of a diagram and returns the four components of the Kasteleyn, where all bubbles have been removed. The user may specify whether the diagram is a BFT under gauging 1 or not."
+(*collapseBlackNodesInternalInternal::usage=""*)
+(*collapseWhiteNodesInternalInternal::usage=""*)
+(*collapseBlackNodesInternalExternal::usage=""*)
+(*collapseWhiteNodesInternalExternal::usage=""*)
+collapseBivalentNodes::usage="Takes the Kasteleyn of a diagram and returns the four components of the Kasteleyn, where all bivalent nodes have been collapsed."
+simplifyGraph::usage="Removes bubbles and collapses bivalent nodes, until this is no longer possible."
 
 Begin["Private`"]
 
@@ -1068,6 +1076,176 @@ doubleedges=findDoubles[newtopleft,newtopright,newbottomleft,newbottomright];
 ];
 ,Print["The input Kasteleyn is not valid."];
 {newtopleft,newtopright,newbottomleft,newbottomright}={Null,Null,Null,Null};
+];
+{newtopleft,newtopright,newbottomleft,newbottomright}
+];
+
+bubblesQ[topleft_,topright_,bottomleft_,bottomright_,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{aretherebubbles},
+If[BFTgraph&&gauging==1,
+aretherebubbles=MemberQ[joinupKasteleyn[topleft,topright,bottomleft,bottomright],{___,_[onenumber_,secondnumber_]+_[secondnumber_,thirdnumber_]+___,___}];
+,aretherebubbles=MemberQ[joinupKasteleyn[topleft,topright,bottomleft,bottomright],{___,firstedge_+secondedge_+___,___}];
+];
+aretherebubbles
+];
+
+removeBubbles[topleft_,topright_,bottomleft_,bottomright_,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{newtopleft,newtopright,newbottomleft,newbottomright,findDoubles,temporarykasteleyn,doubleedges,replacement,positioninwhichtoreplace,jj,onenumber,thirdnumber,rowandcolumnindexsplit,firstedge},
+If[BFTgraph&&gauging==1,
+(*we have to remove bubbles while keeping the index structure of the edges intact*)
+{newtopleft,newtopright,newbottomleft,newbottomright}={topleft,topright,bottomleft,bottomright}//.{_[onenumber_,secondnumber_]+_[secondnumber_,thirdnumber_]->XX[onenumber,thirdnumber]};
+(*We might have created duplicate edge names after doing this. We'll now remove the duplicates*)
+findDoubles=Function[{tempkasteleyn},
+Block[{doubles},
+doubles=Variables[tempkasteleyn][[Flatten[Position[Map[Length[Position[tempkasteleyn,#]]&,Variables[tempkasteleyn]],z_/;z>1]]]];
+doubles]
+];
+temporarykasteleyn=joinupKasteleyn[newtopleft,newtopright,newbottomleft,newbottomright];
+doubleedges=findDoubles[temporarykasteleyn];
+While[doubleedges=!={},
+replacement=Map[(Symbol[StringJoin[SymbolName[Head[#]],"X"]]@@#)&,doubleedges];
+positioninwhichtoreplace=Map[Position[temporarykasteleyn,#][[1]]&,doubleedges];
+For[jj=1,jj<=Length[replacement],jj++,
+temporarykasteleyn=ReplacePart[temporarykasteleyn,positioninwhichtoreplace[[jj]]->replacement[[jj]]];
+];
+doubleedges=findDoubles[temporarykasteleyn];
+];
+(*Now the duplicates are removed in temporarykasteleyn. We have to now split up this matrix into the four blocks corresponding to the top-left, top-right, bottom-left and bottom-right parts of the Kasteleyn.*)
+rowandcolumnindexsplit=Map[PadRight[#,2,{{}}]&,Table[Partition[Map[Range[#]&,Dimensions[temporarykasteleyn]][[iii]],Dimensions[newtopleft][[iii]],Dimensions[newtopleft][[iii]],1,{}],{iii,2}]];
+{newtopleft,newtopright,newbottomleft,newbottomright}=Map[temporarykasteleyn[[Sequence@@#]]&,Tuples[rowandcolumnindexsplit]];
+,(*if we have a scattering graph or a BFT under gauging 2, any two nodes connected by more than one edge count as forming a bubble. We'll thus only keep one of these edges.*)
+{newtopleft,newtopright,newbottomleft,newbottomright}={topleft,topright,bottomleft,bottomright}/.{firstedge_+secondedge_+___->firstedge};
+];
+{newtopleft,newtopright,newbottomleft,newbottomright}
+];
+
+collapseBlackNodesInternalInternal[inputtopleft_,inputtopright_,inputbottomleft_,inputbottomright_]:=Block[{outputtopleft,outputtopright,outputbottomleft,outputbottomright,kasteleyn,transposekasteleyn,bivalentblacknodes,somedge,anotheredge,todeletecolumns,tomergerows,newrows,tokeeprows,bottomrightrownum,bottomrightcolnum},
+(*We start by creating output matrices. If we have bivalent nodes we will manipulate these matrices to collapse these nodes.*)
+{outputtopleft,outputtopright,outputbottomleft,outputbottomright}={inputtopleft,inputtopright,inputbottomleft,inputbottomright};
+(*Bivalent black nodes that only connect with internal white nodes appear as columns in the Kasteleyn like this: {0,...,edge,0,...,another edge,0,...}, where the final zeros must be at least of the length of the bottom-left matrix.*)
+If[Dimensions[Join[inputtopleft,inputbottomleft]][[2]]>0,(*we have internal black nodes (which could potentially be bivalent)*)
+kasteleyn=joinupKasteleyn[inputtopleft,inputtopright,inputbottomleft,inputbottomright];
+transposekasteleyn=Transpose[kasteleyn];
+bivalentblacknodes=Cases[transposekasteleyn,{0...,Except[0|somedge_+anotheredge_+___],0...,Except[0|somedge_+anotheredge_+___],0...,Sequence@@ConstantArray[0,Length[inputbottomleft]]}];
+(*We have now a list of the columns representing bivalent black nodes. To collapse black nodes we do as follows: discover which two white nodes they connect. Then sum up the rows of these two white nodes. This sum is added as a new row in the Kasteleyn, and we remove the rows belonging to the white nodes in question. We also remove the column of the bivalent black node. In case we have BFTs, the index structure is guaranteed to be correctly preserved. If we have multiple bivalent black nodes connected to the same white node we will need to sum ALL the rows of the interconnected white nodes (i.e. the white nodes connected up through a series of bivalent black nodes). This will be our new row in the Kasteleyn. We then remove all these white nodes, and all the columns belonging to these bivalent black nodes.*)
+If[bivalentblacknodes=!={},
+todeletecolumns=Position[transposekasteleyn,Alternatives@@bivalentblacknodes];
+(*Let's see which groups of rows we need to sum together*)
+tomergerows=ConnectedComponents[Graph[Map[UndirectedEdge@@#&,Map[DeleteCases[Flatten[Position[#,Except[0],1]],0]&,bivalentblacknodes]]]];
+(*We'll now sum them up. Each of these sums will form a new row in the kasteleyn*)
+newrows=Map[Total[kasteleyn[[#]]]&,tomergerows];
+(*We'll need to throw away the rows corresponding to the nodes in tomergerows. We'll do this by only keeping the other rows in the kasteleyn.*)
+tokeeprows=Complement[Range[Length[kasteleyn]],Union@@tomergerows];
+tokeeprows=Join[Range[Length[newrows]],tokeeprows+Length[newrows]];
+(*We may now form our new kasteleyn*)
+kasteleyn=Transpose[Delete[Transpose[Join[newrows,kasteleyn][[tokeeprows]]],todeletecolumns]];
+(*from the kasteleyn we'll break off the top-left part, the top-right part and the bottom-left part*)
+bottomrightrownum=Length[inputbottomright];
+bottomrightcolnum=Dimensions[Join[inputtopright,inputbottomright]][[2]];
+outputtopleft=kasteleyn[[;;-(bottomrightrownum+1),;;-(bottomrightcolnum+1)]];
+outputtopright=kasteleyn[[;;-(bottomrightrownum+1),-(bottomrightcolnum);;]];
+outputbottomleft=kasteleyn[[-(bottomrightrownum);;,;;-(bottomrightcolnum+1)]];
+];
+];
+{outputtopleft,outputtopright,outputbottomleft,outputbottomright}
+];
+
+collapseWhiteNodesInternalInternal[inputtopleft_,inputtopright_,inputbottomleft_,inputbottomright_]:=Block[{outputtopleft,outputtopright,outputbottomleft,outputbottomright,kasteleyn,transposekasteleyn,bivalentwhitenodes,somedge,anotheredge,todeleterows,tomergecolumns,newcolumns,tokeepcolumns,bottomrightrownum,bottomrightcolnum},
+(*We start by creating output matrices. If we have bivalent nodes we will manipulate these matrices to collapse these nodes.*)
+{outputtopleft,outputtopright,outputbottomleft,outputbottomright}={inputtopleft,inputtopright,inputbottomleft,inputbottomright};
+(*Bivalent white nodes that only connect with internal black nodes appear as rows in the Kasteleyn like this: {0,...,edge,0,...,another edge,0,...}, where the final zeros must be at least of the length of the bottom-left matrix.*)
+If[Length[outputtopleft]>0||Length[outputtopright]>0,(*we have internal white nodes (which could potentially be bivalent)*)
+kasteleyn=joinupKasteleyn[inputtopleft,inputtopright,inputbottomleft,inputbottomright];
+transposekasteleyn=Transpose[kasteleyn];
+bivalentwhitenodes=Cases[kasteleyn,{0...,Except[0|somedge_+anotheredge_+___],0...,Except[0|somedge_+anotheredge_+___],0...,Sequence@@ConstantArray[0,Dimensions[inputtopright][[2]]]}];
+(*We have now a list of the columns representing bivalent white nodes. To collapse white nodes we do as follows: discover which two black nodes they connect. Then sum up the columns of these two black nodes. This sum is added as a new column in the Kasteleyn, and we remove the columns belonging to the black nodes in question. We also remove the rows of the bivalent white node. In case we have BFTs, the index structure is guaranteed to be correctly preserved. If we have multiple bivalent white nodes connected to the same black node we will need to sum ALL the columns of the interconnected black nodes (i.e. the black nodes connected up through a series of bivalent white nodes). This will be our new column in the Kasteleyn. We then remove all these black nodes, and all the rows belonging to these bivalent white nodes.*)
+If[bivalentwhitenodes=!={},
+todeleterows=Position[kasteleyn,Alternatives@@bivalentwhitenodes];
+(*Let's see which groups of columns we need to sum together*)
+tomergecolumns=ConnectedComponents[Graph[Map[UndirectedEdge@@#&,Map[DeleteCases[Flatten[Position[#,Except[0],1]],0]&,bivalentwhitenodes]]]];
+(*We'll now sum them up. Each of these sums will form a new column in the kasteleyn*)
+newcolumns=Map[Total[transposekasteleyn[[#]]]&,tomergecolumns];
+(*We'll need to throw away the columns corresponding to the nodes in tomergecolumns. We'll do this by only keeping the other columns in the kasteleyn.*)
+tokeepcolumns=Complement[Range[Length[transposekasteleyn]],Union@@tomergecolumns];
+tokeepcolumns=Join[Range[Length[newcolumns]],tokeepcolumns+Length[newcolumns]];
+(*We may now form our new kasteleyn*)
+kasteleyn=Delete[Join[Transpose[newcolumns],kasteleyn,2][[All,tokeepcolumns]],todeleterows];
+(*from the kasteleyn we'll break off the top-left part, the top-right part and the bottom-left part*)
+bottomrightrownum=Length[inputbottomright];
+bottomrightcolnum=Dimensions[Join[inputtopright,inputbottomright]][[2]];
+outputtopleft=kasteleyn[[;;-(bottomrightrownum+1),;;-(bottomrightcolnum+1)]];
+outputtopright=kasteleyn[[;;-(bottomrightrownum+1),-(bottomrightcolnum);;]];
+outputbottomleft=kasteleyn[[-(bottomrightrownum);;,;;-(bottomrightcolnum+1)]];
+];
+];
+{outputtopleft,outputtopright,outputbottomleft,outputbottomright}
+];
+
+collapseBlackNodesInternalExternal[inputtopleft_,inputtopright_,inputbottomleft_,inputbottomright_]:=Block[{outputtopleft,outputtopright,outputbottomleft,outputbottomright,transposekasteleyn,bivalentblacknodes,somedge,anotheredge,kasteleyn,todeleterows,bottomrightrownum,bottomrightcolnum},
+(*Here we want to remove bivalent nodes connected to an internal node and an external node. The way to do this is to throw away the external node and turn the bivalent node into the external node*)
+{outputtopleft,outputtopright,outputbottomleft,outputbottomright}={inputtopleft,inputtopright,inputbottomleft,inputbottomright};
+If[Dimensions[Join[inputtopleft,inputbottomleft]][[2]]>0,(*we have internal black nodes (which could potentially be bivalent)*)
+transposekasteleyn=Transpose[joinupKasteleyn[inputtopleft,inputtopright,inputbottomleft,inputbottomright]];
+bivalentblacknodes=DeleteCases[Cases[transposekasteleyn,{0...,Except[0|somedge_+anotheredge_+___],0...,Except[0|somedge_+anotheredge_+___],0...}],{Sequence@@ConstantArray[0,Length[inputtopleft]],Sequence@@ConstantArray[_,Length[inputbottomleft]]}];
+(*we found the bivalent nodes we're looking for. We now need to move these columns into the top-right part of the kasteleyn, and remove the rows associated to the external nodes we're throwing away.*)
+If[bivalentblacknodes=!={},
+kasteleyn=Transpose[Join[Cases[transposekasteleyn,Except[Alternatives@@bivalentblacknodes]],bivalentblacknodes]];
+todeleterows=Map[DeleteCases[Position[#,Except[0],1],{___,0,___}][[-1]]&,bivalentblacknodes];
+kasteleyn=Delete[kasteleyn,todeleterows];
+(*now we have the kasteleyn, let's break it up into its four components*)
+bottomrightrownum=Length[inputbottomright]-Length[todeleterows];
+bottomrightcolnum=Dimensions[Join[inputtopright,inputbottomright]][[2]]+Length[bivalentblacknodes];
+outputtopleft=kasteleyn[[;;-(bottomrightrownum+1),;;-(bottomrightcolnum+1)]];
+outputtopright=kasteleyn[[;;-(bottomrightrownum+1),-(bottomrightcolnum);;]];
+outputbottomleft=kasteleyn[[-(bottomrightrownum);;,;;-(bottomrightcolnum+1)]];
+outputbottomright=kasteleyn[[-(bottomrightrownum);;,-(bottomrightcolnum);;]];
+];
+];
+{outputtopleft,outputtopright,outputbottomleft,outputbottomright}
+];
+
+collapseWhiteNodesInternalExternal[inputtopleft_,inputtopright_,inputbottomleft_,inputbottomright_]:=Block[{outputtopleft,outputtopright,outputbottomleft,outputbottomright,kasteleyn,bivalentwhitenodes,somedge,anotheredge,todeletecolumns,bottomrightrownum,bottomrightcolnum},
+{outputtopleft,outputtopright,outputbottomleft,outputbottomright}={inputtopleft,inputtopright,inputbottomleft,inputbottomright};
+If[Length[outputtopleft]>0||Length[outputtopright]>0,(*we have internal white nodes (which could potentially be bivalent)*)
+kasteleyn=joinupKasteleyn[inputtopleft,inputtopright,inputbottomleft,inputbottomright];
+bivalentwhitenodes=DeleteCases[Cases[kasteleyn,{0...,Except[0|somedge_+anotheredge_+___],0...,Except[0|somedge_+anotheredge_+___],0...}],{Sequence@@ConstantArray[0,Dimensions[inputtopleft][[2]]],Sequence@@ConstantArray[_,Dimensions[inputtopright][[2]]]}];
+(*we found the bivalent nodes we're looking for. We now need to move these rows into the bottom-left part of the kasteleyn, and remove the columns associated to the external nodes we're throwing away.*)
+If[bivalentwhitenodes=!={},
+kasteleyn=Join[Cases[kasteleyn,Except[Alternatives@@bivalentwhitenodes]],bivalentwhitenodes];
+todeletecolumns=Map[DeleteCases[Position[#,Except[0],1],{___,0,___}][[-1]]&,bivalentwhitenodes];
+kasteleyn=Transpose[Delete[Transpose[kasteleyn],todeletecolumns]];
+(*now we have the kasteleyn, let's break it up into its four components*)
+bottomrightrownum=Length[inputbottomright]+Length[bivalentwhitenodes];
+bottomrightcolnum=Dimensions[Join[inputtopright,inputbottomright]][[2]]-Length[todeletecolumns];
+outputtopleft=kasteleyn[[;;-(bottomrightrownum+1),;;-(bottomrightcolnum+1)]];
+outputtopright=kasteleyn[[;;-(bottomrightrownum+1),-(bottomrightcolnum);;]];
+outputbottomleft=kasteleyn[[-(bottomrightrownum);;,;;-(bottomrightcolnum+1)]];
+outputbottomright=kasteleyn[[-(bottomrightrownum);;,-(bottomrightcolnum);;]];
+];
+];
+{outputtopleft,outputtopright,outputbottomleft,outputbottomright}
+];
+
+collapseBivalentNodes[topleft_,topright_,bottomleft_,bottomright_]:=Block[{previoustopleft,previoustopright,previousbottomleft,previousbottomright,newtopleft,newtopright,newbottomleft,newbottomright},
+(*Need to do the replacements on repeat until the Kasteleyn stops changing. We'll start by collapsing bivalnt nodes that connect to two internal nodes.*)
+{previoustopleft,previoustopright,previousbottomleft,previousbottomright}={topleft,topright,bottomleft,bottomright};
+{newtopleft,newtopright,newbottomleft,newbottomright}=collapseWhiteNodesInternalInternal[Sequence@@collapseBlackNodesInternalInternal[previoustopleft,previoustopright,previousbottomleft,previousbottomright]];
+While[{previoustopleft,previoustopright,previousbottomleft,previousbottomright}=!={newtopleft,newtopright,newbottomleft,newbottomright},
+{previoustopleft,previoustopright,previousbottomleft,previousbottomright}={newtopleft,newtopright,newbottomleft,newbottomright};
+{newtopleft,newtopright,newbottomleft,newbottomright}=collapseWhiteNodesInternalInternal[Sequence@@collapseBlackNodesInternalInternal[previoustopleft,previoustopright,previousbottomleft,previousbottomright]];
+];
+{newtopleft,newtopright,newbottomleft,newbottomright}=collapseWhiteNodesInternalExternal[Sequence@@collapseBlackNodesInternalExternal[previoustopleft,previoustopright,previousbottomleft,previousbottomright]];
+While[{previoustopleft,previoustopright,previousbottomleft,previousbottomright}=!={newtopleft,newtopright,newbottomleft,newbottomright},
+{previoustopleft,previoustopright,previousbottomleft,previousbottomright}={newtopleft,newtopright,newbottomleft,newbottomright};
+{newtopleft,newtopright,newbottomleft,newbottomright}=collapseWhiteNodesInternalExternal[Sequence@@collapseBlackNodesInternalExternal[previoustopleft,previoustopright,previousbottomleft,previousbottomright]];
+];
+{newtopleft,newtopright,newbottomleft,newbottomright}
+];
+
+simplifyGraph[topleft_,topright_,bottomleft_,bottomright_]:=Block[{previoustopleft,previoustopright,previousbottomleft,previousbottomright,newtopleft,newtopright,newbottomleft,newbottomright},
+{previoustopleft,previoustopright,previousbottomleft,previousbottomright}={topleft,topright,bottomleft,bottomright};
+{newtopleft,newtopright,newbottomleft,newbottomright}=collapseBivalentNodes[Sequence@@removeBubbles[previoustopleft,previoustopright,previousbottomleft,previousbottomright]];
+While[{previoustopleft,previoustopright,previousbottomleft,previousbottomright}=!={newtopleft,newtopright,newbottomleft,newbottomright},
+{previoustopleft,previoustopright,previousbottomleft,previousbottomright}={newtopleft,newtopright,newbottomleft,newbottomright};
+{newtopleft,newtopright,newbottomleft,newbottomright}=collapseBivalentNodes[Sequence@@removeBubbles[previoustopleft,previoustopright,previousbottomleft,previousbottomright]];
 ];
 {newtopleft,newtopright,newbottomleft,newbottomright}
 ];
