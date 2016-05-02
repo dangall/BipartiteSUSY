@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[   2926650,      67837]
-NotebookOptionsPosition[   2655275,      62135]
-NotebookOutlinePosition[   2655617,      62150]
-CellTagsIndexPosition[   2655574,      62147]
+NotebookDataLength[   2947984,      68149]
+NotebookOptionsPosition[   2676532,      62449]
+NotebookOutlinePosition[   2676874,      62464]
+CellTagsIndexPosition[   2676831,      62461]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -61700,92 +61700,6 @@ Cell[BoxData[{
      RowBox[{"d", "=", 
       RowBox[{"d", "/.", "formatrule"}]}], ";", "\[IndentingNewLine]", 
      "\[IndentingNewLine]", 
-     RowBox[{
-      RowBox[{"{", 
-       RowBox[{"newa", ",", "newb", ",", "newc", ",", "newd"}], "}"}], "=", 
-      RowBox[{"collapseBivalentNodes", "[", 
-       RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}]}], ";", 
-     "\[IndentingNewLine]", "\[IndentingNewLine]", 
-     RowBox[{"scatteringbubbles", "=", 
-      RowBox[{"bubblesQ", "[", 
-       RowBox[{"newa", ",", "newb", ",", "newc", ",", "newd", ",", "False"}], 
-       "]"}]}], ";", "\[IndentingNewLine]", 
-     RowBox[{"bft2bubbles", "=", 
-      RowBox[{"bubblesQ", "[", 
-       RowBox[{
-       "newa", ",", "newb", ",", "newc", ",", "newd", ",", "True", ",", "2"}],
-        "]"}]}], ";", "\[IndentingNewLine]", 
-     RowBox[{"bft1bubbles", "=", 
-      RowBox[{"bubblesQ", "[", 
-       RowBox[{
-       "newa", ",", "newb", ",", "newc", ",", "newd", ",", "True", ",", "1"}],
-        "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
-     RowBox[{"If", "[", 
-      RowBox[{
-       RowBox[{"scatteringbubbles", "=!=", "bft2bubbles"}], ",", 
-       "\[IndentingNewLine]", 
-       RowBox[{
-        RowBox[{"Print", "[", 
-         RowBox[{
-         "\"\<ii=\>\"", ",", "ii", ",", 
-          "\"\< : The scattering graph doesn't seem to see the same bubbles \
-as the BFT graph under gauging 2!\>\""}], "]"}], ";"}]}], 
-      "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
-     "\[IndentingNewLine]", 
-     RowBox[{"If", "[", 
-      RowBox[{"scatteringbubbles", ",", "\[IndentingNewLine]", 
-       RowBox[{
-        RowBox[{"If", "[", 
-         RowBox[{
-          RowBox[{
-           RowBox[{"reducibilityQ", "[", 
-            RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", "False"}], "]"}], 
-           "=!=", "True"}], ",", "\[IndentingNewLine]", 
-          RowBox[{
-           RowBox[{"Print", "[", 
-            RowBox[{
-            "\"\<ii=\>\"", ",", "ii", ",", 
-             "\"\< : The scattering graph has bubbles but is declared to not \
-be reducible!\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";"}]}], 
-      "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
-     RowBox[{"If", "[", 
-      RowBox[{"bft2bubbles", ",", "\[IndentingNewLine]", 
-       RowBox[{
-        RowBox[{"If", "[", 
-         RowBox[{
-          RowBox[{
-           RowBox[{"reducibilityQ", "[", 
-            RowBox[{
-            "a", ",", "b", ",", "c", ",", "d", ",", "True", ",", "2"}], "]"}],
-            "=!=", "True"}], ",", "\[IndentingNewLine]", 
-          RowBox[{
-           RowBox[{"Print", "[", 
-            RowBox[{
-            "\"\<ii=\>\"", ",", "ii", ",", 
-             
-             "\"\< : The BFt graph (gauging 2) has bubbles but is declared to \
-not be reducible!\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], 
-        ";"}]}], "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
-     RowBox[{"If", "[", 
-      RowBox[{"bft1bubbles", ",", "\[IndentingNewLine]", 
-       RowBox[{
-        RowBox[{"If", "[", 
-         RowBox[{
-          RowBox[{
-           RowBox[{"reducibilityQ", "[", 
-            RowBox[{
-            "a", ",", "b", ",", "c", ",", "d", ",", "True", ",", "1"}], "]"}],
-            "=!=", "True"}], ",", "\[IndentingNewLine]", 
-          RowBox[{
-           RowBox[{"Print", "[", 
-            RowBox[{
-            "\"\<ii=\>\"", ",", "ii", ",", 
-             "\"\< : The BFt graph (gauging 1) has bubbles but is declared to \
-not be reducible!\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], 
-        ";"}]}], "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]",
-    "\[IndentingNewLine]", 
-   RowBox[{"(*", 
-    RowBox[{
      RowBox[{"allcasestotryout", "=", 
       RowBox[{"Subsets", "[", 
        RowBox[{"Map", "[", 
@@ -61807,6 +61721,7 @@ not be reducible!\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}],
        RowBox[{"jj", "\[LessEqual]", 
         RowBox[{"Length", "[", "allcasestotryout", "]"}]}], ",", 
        RowBox[{"jj", "++"}], ",", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
        RowBox[{
         SubscriptBox["bft", "ii"], ";", "\[IndentingNewLine]", 
         RowBox[{"a", "=", 
@@ -61854,8 +61769,354 @@ not be reducible!\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}],
          RowBox[{"bubblesQ", "[", 
           RowBox[{
           "newa", ",", "newb", ",", "newc", ",", "newd", ",", "True", ",", 
-           "1"}], "]"}]}], ";"}]}], "\[IndentingNewLine]", "]"}], ";"}], 
-    "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", "]"}], 
+           "1"}], "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"scatteringbubbles", "=!=", "bft2bubbles"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"Print", "[", 
+            RowBox[{
+            "\"\<ii=\>\"", ",", "ii", ",", 
+             "\"\< : The scattering graph doesn't seem to see the same \
+bubbles as the BFT graph under gauging 2!\>\""}], "]"}], ";"}]}], 
+         "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+        "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{"scatteringbubbles", ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"reducibilityQ", "[", 
+               RowBox[{
+               "a", ",", "b", ",", "c", ",", "d", ",", "False", ",", 
+                "False"}], "]"}], "=!=", "True"}], ",", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"Print", "[", 
+               RowBox[{
+               "\"\<ii=\>\"", ",", "ii", ",", 
+                "\"\< : The scattering graph has bubbles but is declared to \
+not be reducible!\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], 
+           ";"}]}], "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+        "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{"bft2bubbles", ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"reducibilityQ", "[", 
+               RowBox[{
+               "a", ",", "b", ",", "c", ",", "d", ",", "False", ",", "True", 
+                ",", "2"}], "]"}], "=!=", "True"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"Print", "[", 
+               RowBox[{
+               "\"\<ii=\>\"", ",", "ii", ",", 
+                "\"\< : The BFT graph (gauging 2) has bubbles but is declared \
+to not be reducible!\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], 
+           ";"}]}], "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+        "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"duplicateEdges", "[", 
+             RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "\[Equal]", 
+            RowBox[{"{", "}"}]}], "&&", 
+           RowBox[{"edgesBFTformQ", "[", 
+            RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "&&", 
+           RowBox[{
+            RowBox[{"consistentKasteleyn", "[", 
+             RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "===", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"{", "}"}], ",", 
+              RowBox[{"{", "}"}]}], "}"}]}]}], ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"If", "[", 
+            RowBox[{"bft1bubbles", ",", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"reducibilityQ", "[", 
+                  RowBox[{
+                  "a", ",", "b", ",", "c", ",", "d", ",", "False", ",", 
+                   "True", ",", "1"}], "]"}], "=!=", "True"}], ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"Print", "[", 
+                  RowBox[{
+                  "\"\<ii=\>\"", ",", "ii", ",", 
+                   "\"\< : The BFT graph (gauging 1) has bubbles but is \
+declared to not be reducible!\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", 
+               "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+           "\[IndentingNewLine]", "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"bft2bubbles", "&&", 
+              RowBox[{"bft1bubbles", "\[Equal]", "False"}]}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{"(", 
+                 RowBox[{"Or", "@@", 
+                  RowBox[{"Flatten", "[", 
+                   RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Count", "[", 
+                    RowBox[{
+                    RowBox[{"Variables", "[", 
+                    RowBox[{"joinupKasteleyn", "[", 
+                    RowBox[{"newa", ",", "newb", ",", "newc", ",", "newd"}], 
+                    "]"}], "]"}], ",", 
+                    RowBox[{
+                    RowBox[{"_", "[", 
+                    RowBox[{"#", ",", "_"}], "]"}], "|", 
+                    RowBox[{"_", "[", 
+                    RowBox[{"_", ",", "#"}], "]"}]}]}], "]"}], "\[Equal]", 
+                    "2"}], "&"}], ",", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Intersection", "@@", 
+                    RowBox[{"(", 
+                    RowBox[{"List", "@@@", 
+                    RowBox[{"Variables", "[", "#", "]"}]}], ")"}]}], "&"}], 
+                    ",", 
+                    RowBox[{"Cases", "[", 
+                    RowBox[{
+                    RowBox[{"joinupKasteleyn", "[", 
+                    RowBox[{"newa", ",", "newb", ",", "newc", ",", "newd"}], 
+                    "]"}], ",", 
+                    RowBox[{"firstedge_", "+", "secondedge_"}], ",", "2"}], 
+                    "]"}]}], "]"}], ",", 
+                    RowBox[{"{", "2", "}"}]}], "]"}], "]"}]}], ")"}], ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"Print", "[", 
+                  RowBox[{
+                  "\"\<ii=\>\"", ",", "ii", ",", 
+                   "\"\< : The BFT graph has bubbles under gauging 2, but not \
+under gauging 1, even though the bubble-edges have shared which only appear \
+exactly in these two edges, which is the requirement for a gauging 1 bubble\>\
+\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";"}]}], 
+            "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", 
+         "]"}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"adjmat", "=", 
+         RowBox[{"getAdjacencyMatrix", "[", 
+          RowBox[{"newa", ",", "newb", ",", "newc", ",", "newd"}], "]"}]}], 
+        ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"MemberQ", "[", 
+            RowBox[{"adjmat", ",", 
+             RowBox[{"zz_", "/;", 
+              RowBox[{"zz", ">", "1"}]}], ",", "2"}], "]"}], "=!=", 
+           "bft2bubbles"}], ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"Print", "[", 
+            RowBox[{
+            "\"\<ii=\>\"", ",", "ii", ",", 
+             "\"\< : bubbblesQ doesn't agree with the adjacency matrix having \
+entries greater than 1 \>\"", ",", "bft2bubbles"}], "]"}], ";"}]}], 
+         "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+          "killbubbblesAscattering", ",", "killbubbblesBscattering", ",", 
+           "killbubbblesCscattering", ",", "killbubbblesDscattering"}], "}"}],
+          "=", 
+         RowBox[{"removeBubbles", "[", 
+          RowBox[{
+          "newa", ",", "newb", ",", "newc", ",", "newd", ",", "False"}], 
+          "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+          "killbubbblesAbft2", ",", "killbubbblesBbft2", ",", 
+           "killbubbblesCbft2", ",", "killbubbblesDbft2"}], "}"}], "=", 
+         RowBox[{"removeBubbles", "[", 
+          RowBox[{
+          "newa", ",", "newb", ",", "newc", ",", "newd", ",", "True", ",", 
+           "2"}], "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+          "killbubbblesAbft1", ",", "killbubbblesBbft1", ",", 
+           "killbubbblesCbft1", ",", "killbubbblesDbft1"}], "}"}], "=", 
+         RowBox[{"removeBubbles", "[", 
+          RowBox[{
+          "newa", ",", "newb", ",", "newc", ",", "newd", ",", "True", ",", 
+           "1"}], "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{
+            "killbubbblesAscattering", ",", "killbubbblesBscattering", ",", 
+             "killbubbblesCscattering", ",", "killbubbblesDscattering"}], 
+            "}"}], "=!=", 
+           RowBox[{"{", 
+            RowBox[{
+            "killbubbblesAbft2", ",", "killbubbblesBbft2", ",", 
+             "killbubbblesCbft2", ",", "killbubbblesDbft2"}], "}"}]}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"Print", "[", 
+            RowBox[{
+            "\"\<ii=\>\"", ",", "ii", ",", 
+             "\"\< : The removal of bubbles is acting differently for \
+scattering and BFT (gauging 2) graphs!\>\""}], "]"}], ";"}]}], 
+         "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+        "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{
+              "killbubbblesAbft2", ",", "killbubbblesBbft2", ",", 
+               "killbubbblesCbft2", ",", "killbubbblesDbft2"}], "}"}], "===", 
+             RowBox[{"{", 
+              RowBox[{"newa", ",", "newb", ",", "newc", ",", "newd"}], 
+              "}"}]}], ")"}], "=!=", 
+           RowBox[{"(", 
+            RowBox[{"bft2bubbles", "=!=", "True"}], ")"}]}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"Print", "[", 
+            RowBox[{
+            "\"\<ii=\>\"", ",", "ii", ",", 
+             
+             "\"\< : For gauging 2, the action of removeBubbles is at odds \
+with what bubblesQ says (either it has bubbles but the graph doesn't change, \
+or the graph removed bubbles even though bubblesQ says there aren't \
+any)\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{
+              "killbubbblesAbft1", ",", "killbubbblesBbft1", ",", 
+               "killbubbblesCbft1", ",", "killbubbblesDbft1"}], "}"}], "===", 
+             RowBox[{"{", 
+              RowBox[{"newa", ",", "newb", ",", "newc", ",", "newd"}], 
+              "}"}]}], ")"}], "=!=", 
+           RowBox[{"(", 
+            RowBox[{"bft1bubbles", "=!=", "True"}], ")"}]}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"Print", "[", 
+            RowBox[{
+            "\"\<ii=\>\"", ",", "ii", ",", 
+             "\"\< : For gauging 1, the action of removeBubbles is at odds \
+with what bubblesQ says (either it has bubbles but the graph doesn't change, \
+or the graph removed bubbles even though bubblesQ says there aren't \
+any)\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"duplicateEdges", "[", 
+            RowBox[{
+            "killbubbblesAbft1", ",", "killbubbblesBbft1", ",", 
+             "killbubbblesCbft1", ",", "killbubbblesDbft1"}], "]"}], "=!=", 
+           RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"Print", "[", 
+            RowBox[{
+            "\"\<ii=\>\"", ",", "ii", ",", 
+             "\"\< : The removal of bubbles caused duplicate edges to appear \
+in the Kasteleyn for BFT under gauging 1!\>\""}], "]"}], ";"}]}], 
+         "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+        "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"duplicateEdges", "[", 
+            RowBox[{
+            "killbubbblesAbft2", ",", "killbubbblesBbft2", ",", 
+             "killbubbblesCbft2", ",", "killbubbblesDbft2"}], "]"}], "=!=", 
+           RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"Print", "[", 
+            RowBox[{
+            "\"\<ii=\>\"", ",", "ii", ",", 
+             "\"\< : The removal of bubbles caused duplicate edges to appear \
+in the Kasteleyn for BFT under gauging 2!\>\""}], "]"}], ";"}]}], 
+         "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+        "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"duplicateEdges", "[", 
+             RowBox[{"newa", ",", "newb", ",", "newc", ",", "newd"}], "]"}], 
+            "\[Equal]", 
+            RowBox[{"{", "}"}]}], "&&", 
+           RowBox[{"edgesBFTformQ", "[", 
+            RowBox[{"newa", ",", "newb", ",", "newc", ",", "newd"}], "]"}], "&&", 
+           RowBox[{
+            RowBox[{"consistentKasteleyn", "[", 
+             RowBox[{"newa", ",", "newb", ",", "newc", ",", "newd"}], "]"}], "===", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"{", "}"}], ",", 
+              RowBox[{"{", "}"}]}], "}"}]}]}], ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"checkKasteleynQ", "[", 
+               RowBox[{
+               "killbubbblesAbft1", ",", "killbubbblesBbft1", ",", 
+                "killbubbblesCbft1", ",", "killbubbblesDbft1", ",", "True"}], 
+               "]"}], "=!=", "True"}], ",", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"Print", "[", 
+               RowBox[{
+               "\"\<ii=\>\"", ",", "ii", ",", 
+                "\"\< : Somehow removing bubbles hasn't preserved the index \
+structure of BFTs!\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], 
+           ";"}]}], "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+        "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"getAdjacencyMatrix", "[", 
+            RowBox[{
+            "killbubbblesAbft2", ",", "killbubbblesBbft2", ",", 
+             "killbubbblesCbft2", ",", "killbubbblesDbft2"}], "]"}], "=!=", 
+           RowBox[{"(", 
+            RowBox[{"adjmat", "/.", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"zz_", "/;", 
+                RowBox[{"(", 
+                 RowBox[{"zz", ">", "1"}], ")"}]}], "\[Rule]", "1"}], "}"}]}],
+             ")"}]}], ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"Print", "[", 
+            RowBox[{
+            "\"\<ii=\>\"", ",", "ii", ",", 
+             "\"\< : For BFT graphs under gauging 2, removeBubbles doesn't \
+seem to have produced the result in the adjacency matrix of turning to 1 \
+entries which were greater than one!\>\""}], "]"}], ";"}]}], 
+         "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], 
   ";"}]}], "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.},
  CellChangeTimes->{{3.664781819710851*^9, 3.66478198207829*^9}, {
@@ -61894,240 +62155,293 @@ not be reducible!\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}],
    3.670921581602537*^9, 3.670921583846383*^9}, {3.670921668755324*^9, 
    3.6709216696992855`*^9}, {3.670921701038556*^9, 3.6709217092945414`*^9}, {
    3.670921951057428*^9, 3.6709219736569033`*^9}, {3.670923557860277*^9, 
-   3.670923740702423*^9}}]
-}, Open  ]],
-
-Cell[CellGroupData[{
+   3.670923740702423*^9}, {3.6711806272308908`*^9, 3.6711806291505103`*^9}, {
+   3.671180770792122*^9, 3.671180776920453*^9}, {3.6711850605534196`*^9, 
+   3.671185107856476*^9}, {3.6711856353217745`*^9, 3.6711856664678745`*^9}, {
+   3.671185940099115*^9, 3.6711859589609222`*^9}, {3.6711860621969643`*^9, 
+   3.671186078877637*^9}, {3.671186137117034*^9, 3.6711861962369795`*^9}, {
+   3.671186229913108*^9, 3.6711862596264524`*^9}, {3.6711864166326313`*^9, 
+   3.671186482704314*^9}, {3.671186561754046*^9, 3.671186565992087*^9}, {
+   3.6711866136144*^9, 3.6711866222941666`*^9}, {3.671186975113619*^9, 
+   3.671186989984462*^9}, {3.6711870218638*^9, 3.6711870272972755`*^9}, 
+   3.671187263770239*^9, {3.6711873717966604`*^9, 3.671187377601221*^9}, 
+   3.671188081312666*^9, {3.6711886770722337`*^9, 3.6711886880917587`*^9}, {
+   3.671188720581915*^9, 3.6711887209436607`*^9}, {3.671191095241579*^9, 
+   3.6711910953728*^9}, {3.6711911440062494`*^9, 3.671191195964123*^9}, {
+   3.6711914673556395`*^9, 3.671191538574589*^9}, {3.6711915915923185`*^9, 
+   3.6711916635904813`*^9}, {3.6711918077105265`*^9, 
+   3.6711918973765507`*^9}, {3.6711919982763977`*^9, 
+   3.6711920142937403`*^9}, {3.6711920654310446`*^9, 3.671192138288003*^9}, {
+   3.6711921750304976`*^9, 3.671192210005745*^9}, {3.6711922536057405`*^9, 
+   3.671192255424406*^9}, {3.6711924535783424`*^9, 3.6711924763186398`*^9}, {
+   3.6711925669231076`*^9, 3.671192601549764*^9}, {3.6711927168449135`*^9, 
+   3.6711927416194983`*^9}, {3.6711928936644382`*^9, 3.671192943266226*^9}, {
+   3.671193003271166*^9, 3.6711930217250357`*^9}, 3.671193072263878*^9, 
+   3.6711931174707413`*^9, {3.671193166927243*^9, 3.671193167364518*^9}, {
+   3.671193228584111*^9, 3.6711932289848137`*^9}, {3.6711946047091045`*^9, 
+   3.671194611212427*^9}, {3.671194689892874*^9, 3.6711947353024483`*^9}, {
+   3.67119482850189*^9, 3.671194918448003*^9}, {3.671194979206033*^9, 
+   3.671195019714262*^9}, {3.671195109244729*^9, 3.67119511112999*^9}}],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "10"}],
   SequenceForm["ii=", 10],
   Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
  CellChangeTimes->{
   3.670921280066521*^9, {3.670921312577161*^9, 3.670921347392189*^9}, 
-   3.6709219747798557`*^9, 3.6709237419986277`*^9}],
+   3.6709219747798557`*^9, 3.6709237419986277`*^9, {3.671180615936412*^9, 
+   3.671180629570834*^9}, 3.671180782698709*^9, 3.6711850304537597`*^9, {
+   3.6711850990862103`*^9, 3.6711851082783737`*^9}, 3.6711856669733686`*^9, 
+   3.6711859597113695`*^9, 3.6711862008126955`*^9, 3.671186484200265*^9, 
+   3.671186566463196*^9, 3.671186623593872*^9, {3.6711869788579297`*^9, 
+   3.6711869903080463`*^9}, 3.6711870277372656`*^9, 3.6711872641079435`*^9, 
+   3.6711873781486855`*^9, 3.6711880817504306`*^9, 3.6711886778999863`*^9, {
+   3.6711887122521915`*^9, 3.671188750588504*^9}, 3.6711907947156873`*^9, {
+   3.671191181899227*^9, 3.671191196448194*^9}, {3.6711915130979447`*^9, 
+   3.6711915392909727`*^9}, 3.671191656028266*^9, 3.671191898341058*^9, 
+   3.6711920198553457`*^9, 3.6711921012663984`*^9, 3.6711921416563015`*^9, {
+   3.671192210625723*^9, 3.6711922566314707`*^9}, 3.6711924979179587`*^9, 
+   3.6711926030267153`*^9, {3.6711927301757603`*^9, 3.6711927545517435`*^9}, {
+   3.6711929549598074`*^9, 3.6711929609391327`*^9}, 3.6711930223429685`*^9, {
+   3.671193072964629*^9, 3.671193118208332*^9}, 3.671193956495117*^9, 
+   3.671194613115265*^9, 3.6711946964929276`*^9, 3.67119474502979*^9, 
+   3.671194919718176*^9, 3.6711950214482317`*^9, 3.671195165839884*^9}],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "20"}],
   SequenceForm["ii=", 20],
   Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
  CellChangeTimes->{
   3.670921280066521*^9, {3.670921312577161*^9, 3.670921347392189*^9}, 
-   3.6709219747798557`*^9, 3.670923742022152*^9}],
+   3.6709219747798557`*^9, 3.6709237419986277`*^9, {3.671180615936412*^9, 
+   3.671180629570834*^9}, 3.671180782698709*^9, 3.6711850304537597`*^9, {
+   3.6711850990862103`*^9, 3.6711851082783737`*^9}, 3.6711856669733686`*^9, 
+   3.6711859597113695`*^9, 3.6711862008126955`*^9, 3.671186484200265*^9, 
+   3.671186566463196*^9, 3.671186623593872*^9, {3.6711869788579297`*^9, 
+   3.6711869903080463`*^9}, 3.6711870277372656`*^9, 3.6711872641079435`*^9, 
+   3.6711873781486855`*^9, 3.6711880817504306`*^9, 3.6711886778999863`*^9, {
+   3.6711887122521915`*^9, 3.671188750588504*^9}, 3.6711907947156873`*^9, {
+   3.671191181899227*^9, 3.671191196448194*^9}, {3.6711915130979447`*^9, 
+   3.6711915392909727`*^9}, 3.671191656028266*^9, 3.671191898341058*^9, 
+   3.6711920198553457`*^9, 3.6711921012663984`*^9, 3.6711921416563015`*^9, {
+   3.671192210625723*^9, 3.6711922566314707`*^9}, 3.6711924979179587`*^9, 
+   3.6711926030267153`*^9, {3.6711927301757603`*^9, 3.6711927545517435`*^9}, {
+   3.6711929549598074`*^9, 3.6711929609391327`*^9}, 3.6711930223429685`*^9, {
+   3.671193072964629*^9, 3.671193118208332*^9}, 3.671193956495117*^9, 
+   3.671194613115265*^9, 3.6711946964929276`*^9, 3.67119474502979*^9, 
+   3.671194919718176*^9, 3.6711950243138466`*^9, 3.671195165839884*^9}],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "30"}],
   SequenceForm["ii=", 30],
   Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
  CellChangeTimes->{
   3.670921280066521*^9, {3.670921312577161*^9, 3.670921347392189*^9}, 
-   3.6709219747798557`*^9, 3.6709237423771024`*^9}],
+   3.6709219747798557`*^9, 3.6709237419986277`*^9, {3.671180615936412*^9, 
+   3.671180629570834*^9}, 3.671180782698709*^9, 3.6711850304537597`*^9, {
+   3.6711850990862103`*^9, 3.6711851082783737`*^9}, 3.6711856669733686`*^9, 
+   3.6711859597113695`*^9, 3.6711862008126955`*^9, 3.671186484200265*^9, 
+   3.671186566463196*^9, 3.671186623593872*^9, {3.6711869788579297`*^9, 
+   3.6711869903080463`*^9}, 3.6711870277372656`*^9, 3.6711872641079435`*^9, 
+   3.6711873781486855`*^9, 3.6711880817504306`*^9, 3.6711886778999863`*^9, {
+   3.6711887122521915`*^9, 3.671188750588504*^9}, 3.6711907947156873`*^9, {
+   3.671191181899227*^9, 3.671191196448194*^9}, {3.6711915130979447`*^9, 
+   3.6711915392909727`*^9}, 3.671191656028266*^9, 3.671191898341058*^9, 
+   3.6711920198553457`*^9, 3.6711921012663984`*^9, 3.6711921416563015`*^9, {
+   3.671192210625723*^9, 3.6711922566314707`*^9}, 3.6711924979179587`*^9, 
+   3.6711926030267153`*^9, {3.6711927301757603`*^9, 3.6711927545517435`*^9}, {
+   3.6711929549598074`*^9, 3.6711929609391327`*^9}, 3.6711930223429685`*^9, {
+   3.671193072964629*^9, 3.671193118208332*^9}, 3.671193956495117*^9, 
+   3.671194613115265*^9, 3.6711946964929276`*^9, 3.67119474502979*^9, 
+   3.671194919718176*^9, 3.671195027250759*^9, 3.671195165839884*^9}],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "40"}],
   SequenceForm["ii=", 40],
   Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
  CellChangeTimes->{
   3.670921280066521*^9, {3.670921312577161*^9, 3.670921347392189*^9}, 
-   3.6709219747798557`*^9, 3.6709237426335707`*^9}],
-
-Cell[BoxData[
- InterpretationBox[
-  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "45", 
-   "\[InvisibleSpace]", "\<\" : The BFt graph (gauging 2) has bubbles but is \
-declared to not be reducible!\"\>"}],
-  SequenceForm[
-  "ii=", 45, 
-   " : The BFt graph (gauging 2) has bubbles but is declared to not be \
-reducible!"],
-  Editable->False]], "Print",
- CellChangeTimes->{
-  3.670921280066521*^9, {3.670921312577161*^9, 3.670921347392189*^9}, 
-   3.6709219747798557`*^9, 3.6709237428973083`*^9}],
-
-Cell[BoxData[
- InterpretationBox[
-  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "46", 
-   "\[InvisibleSpace]", "\<\" : The BFt graph (gauging 2) has bubbles but is \
-declared to not be reducible!\"\>"}],
-  SequenceForm[
-  "ii=", 46, 
-   " : The BFt graph (gauging 2) has bubbles but is declared to not be \
-reducible!"],
-  Editable->False]], "Print",
- CellChangeTimes->{
-  3.670921280066521*^9, {3.670921312577161*^9, 3.670921347392189*^9}, 
-   3.6709219747798557`*^9, 3.6709237430359244`*^9}],
+   3.6709219747798557`*^9, 3.6709237419986277`*^9, {3.671180615936412*^9, 
+   3.671180629570834*^9}, 3.671180782698709*^9, 3.6711850304537597`*^9, {
+   3.6711850990862103`*^9, 3.6711851082783737`*^9}, 3.6711856669733686`*^9, 
+   3.6711859597113695`*^9, 3.6711862008126955`*^9, 3.671186484200265*^9, 
+   3.671186566463196*^9, 3.671186623593872*^9, {3.6711869788579297`*^9, 
+   3.6711869903080463`*^9}, 3.6711870277372656`*^9, 3.6711872641079435`*^9, 
+   3.6711873781486855`*^9, 3.6711880817504306`*^9, 3.6711886778999863`*^9, {
+   3.6711887122521915`*^9, 3.671188750588504*^9}, 3.6711907947156873`*^9, {
+   3.671191181899227*^9, 3.671191196448194*^9}, {3.6711915130979447`*^9, 
+   3.6711915392909727`*^9}, 3.671191656028266*^9, 3.671191898341058*^9, 
+   3.6711920198553457`*^9, 3.6711921012663984`*^9, 3.6711921416563015`*^9, {
+   3.671192210625723*^9, 3.6711922566314707`*^9}, 3.6711924979179587`*^9, 
+   3.6711926030267153`*^9, {3.6711927301757603`*^9, 3.6711927545517435`*^9}, {
+   3.6711929549598074`*^9, 3.6711929609391327`*^9}, 3.6711930223429685`*^9, {
+   3.671193072964629*^9, 3.671193118208332*^9}, 3.671193956495117*^9, 
+   3.671194613115265*^9, 3.6711946964929276`*^9, 3.67119474502979*^9, 
+   3.671194919718176*^9, 3.6711950684873657`*^9, 3.671195165839884*^9}],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "50"}],
   SequenceForm["ii=", 50],
   Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
  CellChangeTimes->{
   3.670921280066521*^9, {3.670921312577161*^9, 3.670921347392189*^9}, 
-   3.6709219747798557`*^9, 3.670923743061948*^9}],
-
-Cell[BoxData[
- InterpretationBox[
-  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "50", 
-   "\[InvisibleSpace]", "\<\" : The BFt graph (gauging 2) has bubbles but is \
-declared to not be reducible!\"\>"}],
-  SequenceForm[
-  "ii=", 50, 
-   " : The BFt graph (gauging 2) has bubbles but is declared to not be \
-reducible!"],
-  Editable->False]], "Print",
- CellChangeTimes->{
-  3.670921280066521*^9, {3.670921312577161*^9, 3.670921347392189*^9}, 
-   3.6709219747798557`*^9, 3.6709237432846394`*^9}],
-
-Cell[BoxData[
- InterpretationBox[
-  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "51", 
-   "\[InvisibleSpace]", "\<\" : The BFt graph (gauging 2) has bubbles but is \
-declared to not be reducible!\"\>"}],
-  SequenceForm[
-  "ii=", 51, 
-   " : The BFt graph (gauging 2) has bubbles but is declared to not be \
-reducible!"],
-  Editable->False]], "Print",
- CellChangeTimes->{
-  3.670921280066521*^9, {3.670921312577161*^9, 3.670921347392189*^9}, 
-   3.6709219747798557`*^9, 3.670923743492788*^9}],
+   3.6709219747798557`*^9, 3.6709237419986277`*^9, {3.671180615936412*^9, 
+   3.671180629570834*^9}, 3.671180782698709*^9, 3.6711850304537597`*^9, {
+   3.6711850990862103`*^9, 3.6711851082783737`*^9}, 3.6711856669733686`*^9, 
+   3.6711859597113695`*^9, 3.6711862008126955`*^9, 3.671186484200265*^9, 
+   3.671186566463196*^9, 3.671186623593872*^9, {3.6711869788579297`*^9, 
+   3.6711869903080463`*^9}, 3.6711870277372656`*^9, 3.6711872641079435`*^9, 
+   3.6711873781486855`*^9, 3.6711880817504306`*^9, 3.6711886778999863`*^9, {
+   3.6711887122521915`*^9, 3.671188750588504*^9}, 3.6711907947156873`*^9, {
+   3.671191181899227*^9, 3.671191196448194*^9}, {3.6711915130979447`*^9, 
+   3.6711915392909727`*^9}, 3.671191656028266*^9, 3.671191898341058*^9, 
+   3.6711920198553457`*^9, 3.6711921012663984`*^9, 3.6711921416563015`*^9, {
+   3.671192210625723*^9, 3.6711922566314707`*^9}, 3.6711924979179587`*^9, 
+   3.6711926030267153`*^9, {3.6711927301757603`*^9, 3.6711927545517435`*^9}, {
+   3.6711929549598074`*^9, 3.6711929609391327`*^9}, 3.6711930223429685`*^9, {
+   3.671193072964629*^9, 3.671193118208332*^9}, 3.671193956495117*^9, 
+   3.671194613115265*^9, 3.6711946964929276`*^9, 3.67119474502979*^9, 
+   3.671194919718176*^9, 3.6711950716066008`*^9, 3.671195165839884*^9}],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "60"}],
   SequenceForm["ii=", 60],
   Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
  CellChangeTimes->{
   3.670921280066521*^9, {3.670921312577161*^9, 3.670921347392189*^9}, 
-   3.6709219747798557`*^9, 3.6709237435613375`*^9}],
+   3.6709219747798557`*^9, 3.6709237419986277`*^9, {3.671180615936412*^9, 
+   3.671180629570834*^9}, 3.671180782698709*^9, 3.6711850304537597`*^9, {
+   3.6711850990862103`*^9, 3.6711851082783737`*^9}, 3.6711856669733686`*^9, 
+   3.6711859597113695`*^9, 3.6711862008126955`*^9, 3.671186484200265*^9, 
+   3.671186566463196*^9, 3.671186623593872*^9, {3.6711869788579297`*^9, 
+   3.6711869903080463`*^9}, 3.6711870277372656`*^9, 3.6711872641079435`*^9, 
+   3.6711873781486855`*^9, 3.6711880817504306`*^9, 3.6711886778999863`*^9, {
+   3.6711887122521915`*^9, 3.671188750588504*^9}, 3.6711907947156873`*^9, {
+   3.671191181899227*^9, 3.671191196448194*^9}, {3.6711915130979447`*^9, 
+   3.6711915392909727`*^9}, 3.671191656028266*^9, 3.671191898341058*^9, 
+   3.6711920198553457`*^9, 3.6711921012663984`*^9, 3.6711921416563015`*^9, {
+   3.671192210625723*^9, 3.6711922566314707`*^9}, 3.6711924979179587`*^9, 
+   3.6711926030267153`*^9, {3.6711927301757603`*^9, 3.6711927545517435`*^9}, {
+   3.6711929549598074`*^9, 3.6711929609391327`*^9}, 3.6711930223429685`*^9, {
+   3.671193072964629*^9, 3.671193118208332*^9}, 3.671193956495117*^9, 
+   3.671194613115265*^9, 3.6711946964929276`*^9, 3.67119474502979*^9, 
+   3.671194919718176*^9, 3.6711950768599586`*^9, 3.671195165839884*^9}],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "70"}],
   SequenceForm["ii=", 70],
   Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
  CellChangeTimes->{
   3.670921280066521*^9, {3.670921312577161*^9, 3.670921347392189*^9}, 
-   3.6709219747798557`*^9, 3.670923743779028*^9}],
-
-Cell[BoxData[
- InterpretationBox[
-  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "74", 
-   "\[InvisibleSpace]", "\<\" : The BFt graph (gauging 2) has bubbles but is \
-declared to not be reducible!\"\>"}],
-  SequenceForm[
-  "ii=", 74, 
-   " : The BFt graph (gauging 2) has bubbles but is declared to not be \
-reducible!"],
-  Editable->False]], "Print",
- CellChangeTimes->{
-  3.670921280066521*^9, {3.670921312577161*^9, 3.670921347392189*^9}, 
-   3.6709219747798557`*^9, 3.670923743841015*^9}],
+   3.6709219747798557`*^9, 3.6709237419986277`*^9, {3.671180615936412*^9, 
+   3.671180629570834*^9}, 3.671180782698709*^9, 3.6711850304537597`*^9, {
+   3.6711850990862103`*^9, 3.6711851082783737`*^9}, 3.6711856669733686`*^9, 
+   3.6711859597113695`*^9, 3.6711862008126955`*^9, 3.671186484200265*^9, 
+   3.671186566463196*^9, 3.671186623593872*^9, {3.6711869788579297`*^9, 
+   3.6711869903080463`*^9}, 3.6711870277372656`*^9, 3.6711872641079435`*^9, 
+   3.6711873781486855`*^9, 3.6711880817504306`*^9, 3.6711886778999863`*^9, {
+   3.6711887122521915`*^9, 3.671188750588504*^9}, 3.6711907947156873`*^9, {
+   3.671191181899227*^9, 3.671191196448194*^9}, {3.6711915130979447`*^9, 
+   3.6711915392909727`*^9}, 3.671191656028266*^9, 3.671191898341058*^9, 
+   3.6711920198553457`*^9, 3.6711921012663984`*^9, 3.6711921416563015`*^9, {
+   3.671192210625723*^9, 3.6711922566314707`*^9}, 3.6711924979179587`*^9, 
+   3.6711926030267153`*^9, {3.6711927301757603`*^9, 3.6711927545517435`*^9}, {
+   3.6711929549598074`*^9, 3.6711929609391327`*^9}, 3.6711930223429685`*^9, {
+   3.671193072964629*^9, 3.671193118208332*^9}, 3.671193956495117*^9, 
+   3.671194613115265*^9, 3.6711946964929276`*^9, 3.67119474502979*^9, 
+   3.671194919718176*^9, 3.6711950800503845`*^9, 3.671195165839884*^9}],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "80"}],
   SequenceForm["ii=", 80],
   Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
  CellChangeTimes->{
   3.670921280066521*^9, {3.670921312577161*^9, 3.670921347392189*^9}, 
-   3.6709219747798557`*^9, 3.670923744112235*^9}],
-
-Cell[BoxData[
- InterpretationBox[
-  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "80", 
-   "\[InvisibleSpace]", "\<\" : The BFt graph (gauging 2) has bubbles but is \
-declared to not be reducible!\"\>"}],
-  SequenceForm[
-  "ii=", 80, 
-   " : The BFt graph (gauging 2) has bubbles but is declared to not be \
-reducible!"],
-  Editable->False]], "Print",
- CellChangeTimes->{
-  3.670921280066521*^9, {3.670921312577161*^9, 3.670921347392189*^9}, 
-   3.6709219747798557`*^9, 3.6709237442523603`*^9}],
+   3.6709219747798557`*^9, 3.6709237419986277`*^9, {3.671180615936412*^9, 
+   3.671180629570834*^9}, 3.671180782698709*^9, 3.6711850304537597`*^9, {
+   3.6711850990862103`*^9, 3.6711851082783737`*^9}, 3.6711856669733686`*^9, 
+   3.6711859597113695`*^9, 3.6711862008126955`*^9, 3.671186484200265*^9, 
+   3.671186566463196*^9, 3.671186623593872*^9, {3.6711869788579297`*^9, 
+   3.6711869903080463`*^9}, 3.6711870277372656`*^9, 3.6711872641079435`*^9, 
+   3.6711873781486855`*^9, 3.6711880817504306`*^9, 3.6711886778999863`*^9, {
+   3.6711887122521915`*^9, 3.671188750588504*^9}, 3.6711907947156873`*^9, {
+   3.671191181899227*^9, 3.671191196448194*^9}, {3.6711915130979447`*^9, 
+   3.6711915392909727`*^9}, 3.671191656028266*^9, 3.671191898341058*^9, 
+   3.6711920198553457`*^9, 3.6711921012663984`*^9, 3.6711921416563015`*^9, {
+   3.671192210625723*^9, 3.6711922566314707`*^9}, 3.6711924979179587`*^9, 
+   3.6711926030267153`*^9, {3.6711927301757603`*^9, 3.6711927545517435`*^9}, {
+   3.6711929549598074`*^9, 3.6711929609391327`*^9}, 3.6711930223429685`*^9, {
+   3.671193072964629*^9, 3.671193118208332*^9}, 3.671193956495117*^9, 
+   3.671194613115265*^9, 3.6711946964929276`*^9, 3.67119474502979*^9, 
+   3.671194919718176*^9, 3.6711950828002095`*^9, 3.671195165839884*^9}],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "90"}],
   SequenceForm["ii=", 90],
   Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
  CellChangeTimes->{
   3.670921280066521*^9, {3.670921312577161*^9, 3.670921347392189*^9}, 
-   3.6709219747798557`*^9, 3.670923744273374*^9}],
+   3.6709219747798557`*^9, 3.6709237419986277`*^9, {3.671180615936412*^9, 
+   3.671180629570834*^9}, 3.671180782698709*^9, 3.6711850304537597`*^9, {
+   3.6711850990862103`*^9, 3.6711851082783737`*^9}, 3.6711856669733686`*^9, 
+   3.6711859597113695`*^9, 3.6711862008126955`*^9, 3.671186484200265*^9, 
+   3.671186566463196*^9, 3.671186623593872*^9, {3.6711869788579297`*^9, 
+   3.6711869903080463`*^9}, 3.6711870277372656`*^9, 3.6711872641079435`*^9, 
+   3.6711873781486855`*^9, 3.6711880817504306`*^9, 3.6711886778999863`*^9, {
+   3.6711887122521915`*^9, 3.671188750588504*^9}, 3.6711907947156873`*^9, {
+   3.671191181899227*^9, 3.671191196448194*^9}, {3.6711915130979447`*^9, 
+   3.6711915392909727`*^9}, 3.671191656028266*^9, 3.671191898341058*^9, 
+   3.6711920198553457`*^9, 3.6711921012663984`*^9, 3.6711921416563015`*^9, {
+   3.671192210625723*^9, 3.6711922566314707`*^9}, 3.6711924979179587`*^9, 
+   3.6711926030267153`*^9, {3.6711927301757603`*^9, 3.6711927545517435`*^9}, {
+   3.6711929549598074`*^9, 3.6711929609391327`*^9}, 3.6711930223429685`*^9, {
+   3.671193072964629*^9, 3.671193118208332*^9}, 3.671193956495117*^9, 
+   3.671194613115265*^9, 3.6711946964929276`*^9, 3.67119474502979*^9, 
+   3.671194919718176*^9, 3.6711950845089808`*^9, 3.671195165839884*^9}],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "100"}],
   SequenceForm["ii=", 100],
   Editable->False]], "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
  CellChangeTimes->{
   3.670921280066521*^9, {3.670921312577161*^9, 3.670921347392189*^9}, 
-   3.6709219747798557`*^9, 3.6709237444625273`*^9}],
-
-Cell[BoxData[
- InterpretationBox[
-  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "101", 
-   "\[InvisibleSpace]", "\<\" : The BFt graph (gauging 2) has bubbles but is \
-declared to not be reducible!\"\>"}],
-  SequenceForm[
-  "ii=", 101, 
-   " : The BFt graph (gauging 2) has bubbles but is declared to not be \
-reducible!"],
-  Editable->False]], "Print",
- CellChangeTimes->{
-  3.670921280066521*^9, {3.670921312577161*^9, 3.670921347392189*^9}, 
-   3.6709219747798557`*^9, 3.6709237447288313`*^9}],
-
-Cell[BoxData[
- InterpretationBox[
-  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "101", 
-   "\[InvisibleSpace]", "\<\" : The BFt graph (gauging 1) has bubbles but is \
-declared to not be reducible!\"\>"}],
-  SequenceForm[
-  "ii=", 101, 
-   " : The BFt graph (gauging 1) has bubbles but is declared to not be \
-reducible!"],
-  Editable->False]], "Print",
- CellChangeTimes->{
-  3.670921280066521*^9, {3.670921312577161*^9, 3.670921347392189*^9}, 
-   3.6709219747798557`*^9, 3.6709237447643685`*^9}],
-
-Cell[BoxData[
- InterpretationBox[
-  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "104", 
-   "\[InvisibleSpace]", "\<\" : The BFt graph (gauging 2) has bubbles but is \
-declared to not be reducible!\"\>"}],
-  SequenceForm[
-  "ii=", 104, 
-   " : The BFt graph (gauging 2) has bubbles but is declared to not be \
-reducible!"],
-  Editable->False]], "Print",
- CellChangeTimes->{
-  3.670921280066521*^9, {3.670921312577161*^9, 3.670921347392189*^9}, 
-   3.6709219747798557`*^9, 3.670923744862994*^9}],
-
-Cell[BoxData[
- InterpretationBox[
-  RowBox[{"\<\"ii=\"\>", "\[InvisibleSpace]", "104", 
-   "\[InvisibleSpace]", "\<\" : The BFt graph (gauging 1) has bubbles but is \
-declared to not be reducible!\"\>"}],
-  SequenceForm[
-  "ii=", 104, 
-   " : The BFt graph (gauging 1) has bubbles but is declared to not be \
-reducible!"],
-  Editable->False]], "Print",
- CellChangeTimes->{
-  3.670921280066521*^9, {3.670921312577161*^9, 3.670921347392189*^9}, 
-   3.6709219747798557`*^9, 3.6709237448960166`*^9}]
+   3.6709219747798557`*^9, 3.6709237419986277`*^9, {3.671180615936412*^9, 
+   3.671180629570834*^9}, 3.671180782698709*^9, 3.6711850304537597`*^9, {
+   3.6711850990862103`*^9, 3.6711851082783737`*^9}, 3.6711856669733686`*^9, 
+   3.6711859597113695`*^9, 3.6711862008126955`*^9, 3.671186484200265*^9, 
+   3.671186566463196*^9, 3.671186623593872*^9, {3.6711869788579297`*^9, 
+   3.6711869903080463`*^9}, 3.6711870277372656`*^9, 3.6711872641079435`*^9, 
+   3.6711873781486855`*^9, 3.6711880817504306`*^9, 3.6711886778999863`*^9, {
+   3.6711887122521915`*^9, 3.671188750588504*^9}, 3.6711907947156873`*^9, {
+   3.671191181899227*^9, 3.671191196448194*^9}, {3.6711915130979447`*^9, 
+   3.6711915392909727`*^9}, 3.671191656028266*^9, 3.671191898341058*^9, 
+   3.6711920198553457`*^9, 3.6711921012663984`*^9, 3.6711921416563015`*^9, {
+   3.671192210625723*^9, 3.6711922566314707`*^9}, 3.6711924979179587`*^9, 
+   3.6711926030267153`*^9, {3.6711927301757603`*^9, 3.6711927545517435`*^9}, {
+   3.6711929549598074`*^9, 3.6711929609391327`*^9}, 3.6711930223429685`*^9, {
+   3.671193072964629*^9, 3.671193118208332*^9}, 3.671193956495117*^9, 
+   3.671194613115265*^9, 3.6711946964929276`*^9, 3.67119474502979*^9, 
+   3.671194919718176*^9, 3.671195086947771*^9, 3.671195165839884*^9}]
 }, Open  ]],
 
 Cell[BoxData[""], "Input",
@@ -67813,32 +68127,30 @@ Cell[2636096, 61649, 94, 1, 25, "Input"],
 Cell[CellGroupData[{
 Cell[2636215, 61654, 448, 9, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[2636666, 61665, 10608, 231, 1095, "Input",
+Cell[2636666, 61665, 24115, 518, 2215, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2660784, 62185, 1561, 24, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2662348, 62211, 1561, 24, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2663912, 62237, 1559, 24, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2665474, 62263, 1561, 24, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2667038, 62289, 1561, 24, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2668602, 62315, 1561, 24, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2670166, 62341, 1561, 24, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2671730, 62367, 1561, 24, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2673294, 62393, 1561, 24, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2674858, 62419, 1561, 24, 23, "Print",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Open  ]],
-Cell[CellGroupData[{
-Cell[2647311, 61901, 287, 7, 23, "Print"],
-Cell[2647601, 61910, 285, 7, 23, "Print"],
-Cell[2647889, 61919, 287, 7, 23, "Print"],
-Cell[2648179, 61928, 287, 7, 23, "Print"],
-Cell[2648469, 61937, 493, 12, 23, "Print"],
-Cell[2648965, 61951, 493, 12, 23, "Print"],
-Cell[2649461, 61965, 285, 7, 23, "Print"],
-Cell[2649749, 61974, 493, 12, 23, "Print"],
-Cell[2650245, 61988, 491, 12, 23, "Print"],
-Cell[2650739, 62002, 287, 7, 23, "Print"],
-Cell[2651029, 62011, 285, 7, 23, "Print"],
-Cell[2651317, 62020, 491, 12, 23, "Print"],
-Cell[2651811, 62034, 285, 7, 23, "Print"],
-Cell[2652099, 62043, 493, 12, 23, "Print"],
-Cell[2652595, 62057, 285, 7, 23, "Print"],
-Cell[2652883, 62066, 289, 7, 23, "Print"],
-Cell[2653175, 62075, 495, 12, 23, "Print"],
-Cell[2653673, 62089, 495, 12, 23, "Print"],
-Cell[2654171, 62103, 493, 12, 23, "Print"],
-Cell[2654667, 62117, 495, 12, 23, "Print"]
-}, Open  ]],
-Cell[2655177, 62132, 94, 1, 31, "Input"]
+Cell[2676434, 62446, 94, 1, 31, "Input"]
 }
 ]
 *)

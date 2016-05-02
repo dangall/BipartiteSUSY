@@ -279,10 +279,10 @@ If[edgesBFTformQ[topleft,topright,bottomleft,bottomright],
 kasteleyn=joinupKasteleyn[topleft,topright,bottomleft,bottomright];
 (*First check the rows of the Kasteleyn matrix corresponding to internal white nodes*)
 tocheck=kasteleyn[[Range[Length[topleft]]]];
-rowsOK=Map[(#[[1]]-#[[2]])===ConstantArray[0,Length[#[[1]]]]&,Map[Sort,Map[Transpose,Map[{#[[1]],#[[2]]}&,Map[Variables,tocheck],{2}]],{2}]];
+rowsOK=Map[(#[[1]]-#[[2]])===ConstantArray[0,Length[#[[1]]]]&,Map[Sort,Map[Transpose,DeleteCases[Map[{#[[1]],#[[2]]}&,Map[Variables,tocheck],{2}],{}]],{2}]];
 (*Now check the columns of the Kasteleyn matrix corresponding to internal black nodes*)
 tocheck=Transpose[kasteleyn[[All,Range[Dimensions[topleft][[2]]]]]];
-columnsOK=Map[(#[[1]]-#[[2]])===ConstantArray[0,Length[#[[1]]]]&,Map[Sort,Map[Transpose,Map[{#[[1]],#[[2]]}&,Map[Variables,tocheck],{2}]],{2}]];
+columnsOK=Map[(#[[1]]-#[[2]])===ConstantArray[0,Length[#[[1]]]]&,Map[Sort,Map[Transpose,DeleteCases[Map[{#[[1]],#[[2]]}&,Map[Variables,tocheck],{2}],{}]],{2}]];
 consistencyviolation={Flatten[Position[rowsOK,False]],Flatten[Position[columnsOK,False]]};
 ,consistencyviolation=Null;
 ];
@@ -1080,18 +1080,24 @@ doubleedges=findDoubles[newtopleft,newtopright,newbottomleft,newbottomright];
 {newtopleft,newtopright,newbottomleft,newbottomright}
 ];
 
-bubblesQ[topleft_,topright_,bottomleft_,bottomright_,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{aretherebubbles},
+bubblesQ[topleft_,topright_,bottomleft_,bottomright_,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{intfacelabels,allvars,aretherebubbles,onenumber,secondnumber,thirdnumber,anynumber,firstedge,secondedge},
 If[BFTgraph&&gauging==1,
-aretherebubbles=MemberQ[joinupKasteleyn[topleft,topright,bottomleft,bottomright],{___,_[onenumber_,secondnumber_]+_[secondnumber_,thirdnumber_]+___,___}];
+(*bubbles not only have the index structure _[onenumber_,secondnumber_]+_[secondnumber_,thirdnumber_], but also secondnumber must be an internal face, and there must in total only be two variables in the Kasteleyn with this index*)
+intfacelabels=internalFaceLabels[topleft,topright,bottomleft,bottomright];
+allvars=Variables[joinupKasteleyn[topleft,topright,bottomleft,bottomright]];
+aretherebubbles=MemberQ[joinupKasteleyn[topleft,topright,bottomleft,bottomright],{___,_[onenumber_,secondnumber_]+_[secondnumber_,thirdnumber_]+___,___}/;MemberQ[intfacelabels,secondnumber]&&Count[allvars,_[anynumber_,secondnumber]|_[secondnumber,anynumber_]]===2];
 ,aretherebubbles=MemberQ[joinupKasteleyn[topleft,topright,bottomleft,bottomright],{___,firstedge_+secondedge_+___,___}];
 ];
 aretherebubbles
 ];
 
-removeBubbles[topleft_,topright_,bottomleft_,bottomright_,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{newtopleft,newtopright,newbottomleft,newbottomright,findDoubles,temporarykasteleyn,doubleedges,replacement,positioninwhichtoreplace,jj,onenumber,thirdnumber,rowandcolumnindexsplit,firstedge},
+removeBubbles[topleft_,topright_,bottomleft_,bottomright_,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{intfacelabels,allvars,newtopleft,newtopright,newbottomleft,newbottomright,findDoubles,temporarykasteleyn,doubleedges,replacement,positioninwhichtoreplace,jj,onenumber,thirdnumber,anynumber,rowandcolumnindexsplit,firstedge},
 If[BFTgraph&&gauging==1,
 (*we have to remove bubbles while keeping the index structure of the edges intact*)
-{newtopleft,newtopright,newbottomleft,newbottomright}={topleft,topright,bottomleft,bottomright}//.{_[onenumber_,secondnumber_]+_[secondnumber_,thirdnumber_]->XX[onenumber,thirdnumber]};
+(*bubbles not only have the index structure _[onenumber_,secondnumber_]+_[secondnumber_,thirdnumber_], but also secondnumber must be an internal face, and there must in total only be two variables in the Kasteleyn with this index*)
+intfacelabels=internalFaceLabels[topleft,topright,bottomleft,bottomright];
+allvars=Variables[joinupKasteleyn[topleft,topright,bottomleft,bottomright]];
+{newtopleft,newtopright,newbottomleft,newbottomright}={topleft,topright,bottomleft,bottomright}//.{_[onenumber_,secondnumber_]+_[secondnumber_,thirdnumber_]/;(MemberQ[intfacelabels,secondnumber]&&Count[allvars,_[anynumber_,secondnumber]|_[secondnumber,anynumber_]]===2):>XX[onenumber,thirdnumber]};
 (*We might have created duplicate edge names after doing this. We'll now remove the duplicates*)
 findDoubles=Function[{tempkasteleyn},
 Block[{doubles},
@@ -1109,7 +1115,7 @@ temporarykasteleyn=ReplacePart[temporarykasteleyn,positioninwhichtoreplace[[jj]]
 doubleedges=findDoubles[temporarykasteleyn];
 ];
 (*Now the duplicates are removed in temporarykasteleyn. We have to now split up this matrix into the four blocks corresponding to the top-left, top-right, bottom-left and bottom-right parts of the Kasteleyn.*)
-rowandcolumnindexsplit=Map[PadRight[#,2,{{}}]&,Table[Partition[Map[Range[#]&,Dimensions[temporarykasteleyn]][[iii]],Dimensions[newtopleft][[iii]],Dimensions[newtopleft][[iii]],1,{}],{iii,2}]];
+rowandcolumnindexsplit=Map[PadRight[#,2,{{}}]&,MapThread[{#1,#2}&,{Map[Range[#]&,Dimensions[newtopleft]],Map[Range[#]&,Dimensions[temporarykasteleyn]-Dimensions[newtopleft]]+Dimensions[newtopleft]}]];
 {newtopleft,newtopright,newbottomleft,newbottomright}=Map[temporarykasteleyn[[Sequence@@#]]&,Tuples[rowandcolumnindexsplit]];
 ,(*if we have a scattering graph or a BFT under gauging 2, any two nodes connected by more than one edge count as forming a bubble. We'll thus only keep one of these edges.*)
 {newtopleft,newtopright,newbottomleft,newbottomright}={topleft,topright,bottomleft,bottomright}/.{firstedge_+secondedge_+___->firstedge};
