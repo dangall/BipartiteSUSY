@@ -65,11 +65,11 @@ reducibilityQ::usage="Returns True or False, depending on whether the graph is r
 reducibilityEdges::usage="Returns a list of edges which may be removed without affecting the moduli space (in the case of BFTs), or the Grassmannian in the case of scattering amplitudes."
 consistentEdgeRemoval::usage="Returns the full list of edges which should be consistently removed, given a choice of edge to be removed."
 survivingPerfectMatchings::usage="Gives you a list of which perfect-matching numbers survive after removing a given set of edges."
-reductionGraphBFT::usage="Returns a list where each element is a set of edges which may be removed from the graph without affecting the moduli space  (in the case of BFTs) under a certain guaging, or matroid polytope (in the case of scattering amplitudes)."
+reductionGraphBFT::usage="Returns a list where each element is a set of edges which may be removed from the graph without affecting the moduli space  (in the case of BFTs) under a certain gauging, or matroid polytope (in the case of scattering amplitudes)."
 reductionGraph::usage="Returns the sets of edges which may be removed without changing any of the physics. Is valid both for BFTs as well as planar and non-planar on-shell diagrams."
 nonPluckerPolesQ::usage="Tells you whether a reduced diagram has non-standard poles which are not simply products of Plucker coordinates."
 removableEdges::usage="Returns the list of removable edges. If checkneeded=True, it will also check if the starting graph is reduced or not."
-edgeOrderings::usage="Returns a list where each element is a consistent ordering of edges around a white or black node, i.e. where the edges are sequenced such that each subsequent edge's first index is equal to the previous edge's second index."
+(*edgeOrderings::usage="Returns a list where each element is a consistent ordering of edges around a white or black node, i.e. where the edges are sequenced such that each subsequent edge's first index is equal to the previous edge's second index."*)
 cyclicEdgeOrderings::usage="Retuns a list of edges where the edges have been ordered accoring to the cyclic order, i.e. i.e. where the edges are sequenced such that each subsequent edge's first index is equal to the previous edge's second index."
 (*nextStepBlackToWhite::usage="Returns the next edge in the zig-zag path and its position."*)
 (*nextStepWhiteToBlack::usage="Returns the next edge in the zig-zag path and its position."*)
@@ -115,6 +115,7 @@ removeBubbles::usage="Takes the Kasteleyn of a diagram and returns the four comp
 (*collapseBlackNodesInternalExternal::usage=""*)
 (*collapseWhiteNodesInternalExternal::usage=""*)
 collapseBivalentNodes::usage="Takes the Kasteleyn of a diagram and returns the four components of the Kasteleyn, where all bivalent nodes have been collapsed."
+collapseBivalentNodesFast::usage="Takes the Kasteleyn of a diagram and returns the four components of the Kasteleyn, where all bivalent nodes have been collapsed. This faster method doesn't properly deal with examples where there exist nodes connected with two edges to a bivalent node (or examples which become such scenarios while collapsing bivalent nodes), i.e. where there are rows (or columns) in the Kasteleyn of the form {0...,edge1+edge2,0...}. In these cases this function simply throws away these strange rows. This method is approximately 15-20% faster."
 simplifyGraph::usage="Removes bubbles and collapses bivalent nodes, until this is no longer possible."
 
 Begin["Private`"]
@@ -1239,7 +1240,7 @@ rowandcolumnindexsplit=Map[PadRight[#,2,{{}}]&,MapThread[{#1,#2}&,{Map[Range[#]&
 {newtopleft,newtopright,newbottomleft,newbottomright}
 ];
 
-collapseBlackNodesInternalInternal[inputtopleft_,inputtopright_,inputbottomleft_,inputbottomright_]:=Block[{outputtopleft,outputtopright,outputbottomleft,outputbottomright,kasteleyn,transposekasteleyn,bivalentblacknodes,somedge,anotheredge,todeletecolumns,tomergerows,newrows,tokeeprows,bottomrightrownum,bottomrightcolnum},
+collapseBlackNodesInternalInternalFast[inputtopleft_,inputtopright_,inputbottomleft_,inputbottomright_]:=Block[{outputtopleft,outputtopright,outputbottomleft,outputbottomright,kasteleyn,transposekasteleyn,bivalentblacknodes,somedge,anotheredge,todeletecolumns,tomergerows,newrows,tokeeprows,bottomrightrownum,bottomrightcolnum},
 (*We start by creating output matrices. If we have bivalent nodes we will manipulate these matrices to collapse these nodes.*)
 {outputtopleft,outputtopright,outputbottomleft,outputbottomright}={inputtopleft,inputtopright,inputbottomleft,inputbottomright};
 (*Bivalent black nodes that only connect with internal white nodes appear as columns in the Kasteleyn like this: {0,...,edge,0,...,another edge,0,...}, where the final zeros must be at least of the length of the bottom-left matrix.*)
@@ -1270,7 +1271,23 @@ outputbottomleft=kasteleyn[[-(bottomrightrownum);;,;;-(bottomrightcolnum+1)]];
 {outputtopleft,outputtopright,outputbottomleft,outputbottomright}
 ];
 
-collapseWhiteNodesInternalInternal[inputtopleft_,inputtopright_,inputbottomleft_,inputbottomright_]:=Block[{outputtopleft,outputtopright,outputbottomleft,outputbottomright,kasteleyn,transposekasteleyn,bivalentwhitenodes,somedge,anotheredge,todeleterows,tomergecolumns,newcolumns,tokeepcolumns,bottomrightrownum,bottomrightcolnum},
+collapseBlackNodesInternalInternal[inputtopleft_,inputtopright_,inputbottomleft_,inputbottomright_]:=Block[{transposekasteleyn,reducedkasteleyn,outputtopleft,outputtopright,outputbottomleft,outputbottomright,bottomrightrownum,bottomrightcolnum},
+{outputtopleft,outputtopright,outputbottomleft,outputbottomright}={inputtopleft,inputtopright,inputbottomleft,inputbottomright};
+If[Dimensions[Join[inputtopleft,inputbottomleft]][[2]]>0,
+transposekasteleyn=Transpose[joinupKasteleyn[inputtopleft,inputtopright,inputbottomleft,inputbottomright]];
+reducedkasteleyn=(transposekasteleyn//.{rowsbefore___,{firstzeros:0...,Except[0|somedge1_+anotheredge1_+___,firstedge_],secondzeros:0...,Except[0|somedge2_+anotheredge2_+___,secondedge_],thirdzeros:0...,Sequence@@ConstantArray[0,Length[inputbottomleft]]},rowsafter___}:>Join[{rowsbefore,rowsafter}[[All,Join[Range[Length[{firstzeros}]],Range[Length[{firstzeros}]+2,Length[{firstzeros,secondzeros}]+1],Range[Length[{firstzeros,secondzeros}]+3,Length[{firstzeros,secondzeros,thirdzeros}]+2]]]],Map[{Total[#]}&,{rowsbefore,rowsafter}[[All,{Length[{firstzeros}]+1,Length[{firstzeros,secondzeros}]+2}]]],{rowsbefore,rowsafter}[[All,Range[Length[{firstzeros,secondzeros,thirdzeros}]+3,Length[{rowsbefore,rowsafter}[[1]]]]]],2]);
+reducedkasteleyn=Transpose[reducedkasteleyn];
+bottomrightrownum=Length[inputbottomright];
+bottomrightcolnum=Dimensions[Join[inputtopright,inputbottomright]][[2]];
+outputtopleft=reducedkasteleyn[[;;-(bottomrightrownum+1),;;-(bottomrightcolnum+1)]];
+outputtopright=reducedkasteleyn[[;;-(bottomrightrownum+1),-(bottomrightcolnum);;]];
+outputbottomleft=reducedkasteleyn[[-(bottomrightrownum);;,;;-(bottomrightcolnum+1)]];
+outputbottomright=reducedkasteleyn[[-(bottomrightrownum);;,-(bottomrightcolnum);;]];
+];
+{outputtopleft,outputtopright,outputbottomleft,outputbottomright}
+];
+
+collapseWhiteNodesInternalInternalFast[inputtopleft_,inputtopright_,inputbottomleft_,inputbottomright_]:=Block[{outputtopleft,outputtopright,outputbottomleft,outputbottomright,kasteleyn,transposekasteleyn,bivalentwhitenodes,somedge,anotheredge,todeleterows,tomergecolumns,newcolumns,tokeepcolumns,bottomrightrownum,bottomrightcolnum},
 (*We start by creating output matrices. If we have bivalent nodes we will manipulate these matrices to collapse these nodes.*)
 {outputtopleft,outputtopright,outputbottomleft,outputbottomright}={inputtopleft,inputtopright,inputbottomleft,inputbottomright};
 (*Bivalent white nodes that only connect with internal black nodes appear as rows in the Kasteleyn like this: {0,...,edge,0,...,another edge,0,...}, where the final zeros must be at least of the length of the bottom-left matrix.*)
@@ -1297,6 +1314,21 @@ outputtopleft=kasteleyn[[;;-(bottomrightrownum+1),;;-(bottomrightcolnum+1)]];
 outputtopright=kasteleyn[[;;-(bottomrightrownum+1),-(bottomrightcolnum);;]];
 outputbottomleft=kasteleyn[[-(bottomrightrownum);;,;;-(bottomrightcolnum+1)]];
 ];
+];
+{outputtopleft,outputtopright,outputbottomleft,outputbottomright}
+];
+
+collapseWhiteNodesInternalInternal[inputtopleft_,inputtopright_,inputbottomleft_,inputbottomright_]:=Block[{kasteleyn,reducedkasteleyn,outputtopleft,outputtopright,outputbottomleft,outputbottomright,bottomrightrownum,bottomrightcolnum},
+{outputtopleft,outputtopright,outputbottomleft,outputbottomright}={inputtopleft,inputtopright,inputbottomleft,inputbottomright};
+If[Length[outputtopleft]>0||Length[outputtopright]>0,(*we have internal white nodes (which could potentially be bivalent)*)
+kasteleyn=joinupKasteleyn[inputtopleft,inputtopright,inputbottomleft,inputbottomright];
+reducedkasteleyn=(kasteleyn//.{rowsbefore___,{firstzeros:0...,Except[0|somedge1_+anotheredge1_+___,firstedge_],secondzeros:0...,Except[0|somedge2_+anotheredge2_+___,secondedge_],thirdzeros:0...,Sequence@@ConstantArray[0,Dimensions[inputtopright][[2]]]},rowsafter___}:>Join[{rowsbefore,rowsafter}[[All,Join[Range[Length[{firstzeros}]],Range[Length[{firstzeros}]+2,Length[{firstzeros,secondzeros}]+1],Range[Length[{firstzeros,secondzeros}]+3,Length[{firstzeros,secondzeros,thirdzeros}]+2]]]],Map[{Total[#]}&,{rowsbefore,rowsafter}[[All,{Length[{firstzeros}]+1,Length[{firstzeros,secondzeros}]+2}]]],{rowsbefore,rowsafter}[[All,Range[Length[{firstzeros,secondzeros,thirdzeros}]+3,Length[{rowsbefore,rowsafter}[[1]]]]]],2]);
+bottomrightrownum=Length[inputbottomright];
+bottomrightcolnum=Dimensions[Join[inputtopright,inputbottomright]][[2]];
+outputtopleft=reducedkasteleyn[[;;-(bottomrightrownum+1),;;-(bottomrightcolnum+1)]];
+outputtopright=reducedkasteleyn[[;;-(bottomrightrownum+1),-(bottomrightcolnum);;]];
+outputbottomleft=reducedkasteleyn[[-(bottomrightrownum);;,;;-(bottomrightcolnum+1)]];
+outputbottomright=reducedkasteleyn[[-(bottomrightrownum);;,-(bottomrightcolnum);;]];
 ];
 {outputtopleft,outputtopright,outputbottomleft,outputbottomright}
 ];
@@ -1353,6 +1385,22 @@ collapseBivalentNodes[topleft_,topright_,bottomleft_,bottomright_]:=Block[{previ
 While[{previoustopleft,previoustopright,previousbottomleft,previousbottomright}=!={newtopleft,newtopright,newbottomleft,newbottomright},
 {previoustopleft,previoustopright,previousbottomleft,previousbottomright}={newtopleft,newtopright,newbottomleft,newbottomright};
 {newtopleft,newtopright,newbottomleft,newbottomright}=collapseWhiteNodesInternalInternal[Sequence@@collapseBlackNodesInternalInternal[previoustopleft,previoustopright,previousbottomleft,previousbottomright]];
+];
+{newtopleft,newtopright,newbottomleft,newbottomright}=collapseWhiteNodesInternalExternal[Sequence@@collapseBlackNodesInternalExternal[previoustopleft,previoustopright,previousbottomleft,previousbottomright]];
+While[{previoustopleft,previoustopright,previousbottomleft,previousbottomright}=!={newtopleft,newtopright,newbottomleft,newbottomright},
+{previoustopleft,previoustopright,previousbottomleft,previousbottomright}={newtopleft,newtopright,newbottomleft,newbottomright};
+{newtopleft,newtopright,newbottomleft,newbottomright}=collapseWhiteNodesInternalExternal[Sequence@@collapseBlackNodesInternalExternal[previoustopleft,previoustopright,previousbottomleft,previousbottomright]];
+];
+{newtopleft,newtopright,newbottomleft,newbottomright}
+];
+
+collapseBivalentNodesFast[topleft_,topright_,bottomleft_,bottomright_]:=Block[{previoustopleft,previoustopright,previousbottomleft,previousbottomright,newtopleft,newtopright,newbottomleft,newbottomright},
+(*Need to do the replacements on repeat until the Kasteleyn stops changing. We'll start by collapsing bivalnt nodes that connect to two internal nodes.*)
+{previoustopleft,previoustopright,previousbottomleft,previousbottomright}={topleft,topright,bottomleft,bottomright};
+{newtopleft,newtopright,newbottomleft,newbottomright}=collapseWhiteNodesInternalInternalFast[Sequence@@collapseBlackNodesInternalInternalFast[previoustopleft,previoustopright,previousbottomleft,previousbottomright]];
+While[{previoustopleft,previoustopright,previousbottomleft,previousbottomright}=!={newtopleft,newtopright,newbottomleft,newbottomright},
+{previoustopleft,previoustopright,previousbottomleft,previousbottomright}={newtopleft,newtopright,newbottomleft,newbottomright};
+{newtopleft,newtopright,newbottomleft,newbottomright}=collapseWhiteNodesInternalInternalFast[Sequence@@collapseBlackNodesInternalInternalFast[previoustopleft,previoustopright,previousbottomleft,previousbottomright]];
 ];
 {newtopleft,newtopright,newbottomleft,newbottomright}=collapseWhiteNodesInternalExternal[Sequence@@collapseBlackNodesInternalExternal[previoustopleft,previoustopright,previousbottomleft,previousbottomright]];
 While[{previoustopleft,previoustopright,previousbottomleft,previousbottomright}=!={newtopleft,newtopright,newbottomleft,newbottomright},
