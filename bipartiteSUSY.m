@@ -48,15 +48,15 @@ lowNumberLoopsPMpos::usage="Returns the number of the perfect matching with lowe
 getOrderingExternalEdgesDefault::usage="Gives a choice of ordering of external edges, given in the form {X[i,j]\[Rule]1,X[k,l]\[Rule]2,...}. Only contains those edges which are present in the graph."
 getOrderingExternalNodesDefault::usage="Gives a choice of ordering of external nodes. Also contains external nodes with no external edge attached to it."
 getSourceEdges::usage="Returns a list of edges which are sources in the perfect orientation corresponding to a given reference perfect matching."
-findSinkEdges::usage="Returns a list of edges which are sinks in the perfect orientation corresponding to a given reference perfect matching."
-findSourceNodes::usage="Returns a list of nodes which are sources in the perfect orientation corresponding to a given reference perfect matching."
-findSinkNodes::usage="Returns a list of nodes which are sinks in the perfect orientation corresponding to a given reference perfect matching."
-externalEdgesNodeNumbers::usage="Takes a list of external edges and gives the Kasteleyn node numbers of the edges."
+getSinkEdges::usage="Returns a list of edges which are sinks in the perfect orientation corresponding to a given reference perfect matching."
+getSourceNodes::usage="Returns a list of nodes which are sources in the perfect orientation corresponding to a given reference perfect matching."
+getSinkNodes::usage="Returns a list of nodes which are sinks in the perfect orientation corresponding to a given reference perfect matching."
+getExternalEdgeNodeNumbers::usage="Takes a list of external edges and gives the Kasteleyn node numbers of the edges."
 connectivityMatrix::usage="Returns the connectivity matrix of the diagram, i.e. a matrix containing all paths between all nodes."
 traditionalConnectivityMatrix::usage="Returns the connectivity matrix of the diagram, computed using the method described in 1310.3820, which involves the inverse of a particular adjacency matrix."
 traditionalPathMatrix::usage="Gives the path matrix, i.e. the element of the Grassmannian before any signs are placed (which ensure manifest positivity of planar diagrams), by using the traditionalConnectivityMatrix method, which involves the inverse of a matrix."
 pathMatrix::usage="Gives the path matrix, i.e. the element of the Grassmannian before any signs are placed (which ensure manifest positivity of planar diagrams)."
-getLoopDenominator::usage="Returns the sum of loops contributing to terms in the denominator of terms in the path matrix. Is of the form (1-loops). The user may specify to have it in the form (1+loops)."
+loopDenominator::usage="Returns the sum of loops contributing to terms in the denominator of terms in the path matrix. Is of the form (1-loops). The user may specify to have it in the form (1+loops)."
 minorsAsPerfectMatchings::usage="Returns the minors of the pathmatrix, resembling Plucker coordinates of the Grassmannian, but without manifest-positivity signs."
 dimensionGrassmannian::usage="Returns the dimension of the Grassmannian, computed by looking at the tangent space of its minors."
 reducibilityBFTQ::usage="Gives the 'naive' reducibility of a graph, which is the same as the reducibility for a BFT, based on its moduli space. When gauging 2 is used, this is the same as reducibility for planar scattering diagrams."
@@ -76,8 +76,8 @@ cyclicEdgeOrderings::usage="Retuns a list of edges where the edges have been ord
 (*nextStepWhiteToBlackInternalZigzag::usage="Returns the next edge in the internal zig-zag path and its position."*)
 (*nextStepBlackToWhiteInternalZigzag::usage="Returns the next edge in the internal zig-zag path and its position."*)
 (*internalZigZagNumeratorDenominator::usage="Returns a list where the first element is a list of edges in the numerator of a zig-zag path, and the second element is a list of edges in the denominator of the zig-zag path. The zig-zag path starts from an edge."*)
-allZigZagNumeratorsDenominators::usage="Returns a list where each element corresponds to a zig-zag path. The information is given as a list of two elements, where the first element contains all variables in the numerator of the expression, and the second element contains the variables in the denominator. Assumes standard rules: turn left at white nodes and right at black nodes, and edges from white to black are in the numerator, and vice-versa."
-makeZigZags::usage="Returns a list of zig-zag paths. Edges in the numerator are directed from white to black nodes, edges in the denominator are directed from black to white nodes. The standard rule is to turn left at white nodes and right at black nodes; it's possible to choose the opposite option by setting the (optional) final argument to True."
+zigZagNumeratorsDenominators::usage="Returns a list where each element corresponds to a zig-zag path. The information is given as a list of two elements, where the first element contains all variables in the numerator of the expression, and the second element contains the variables in the denominator. Assumes standard rules: turn left at white nodes and right at black nodes, and edges from white to black are in the numerator, and vice-versa."
+zigZags::usage="Returns a list of zig-zag paths. Edges in the numerator are directed from white to black nodes, edges in the denominator are directed from black to white nodes. The standard rule is to turn left at white nodes and right at black nodes; it's possible to choose the opposite option by setting the (optional) final argument to True."
 selfIntersectingZigZagsQ::usage="Tells you whether the graph has self-intersecting zig-zag paths. Returns True or False."
 badDoubleCrossingZigZagPairs::usage="Returns a list of pairs of zig-zags that have 'bad double crossings'. Every element contains a pair of lists of edges representing two zig-zags that have a bad double crossing."
 badDoubleCrossingZigZagQ::usage="Tells you whether the graph has 'bad double crossings'."
@@ -93,18 +93,18 @@ independentPluckerRelations::usage="Returns a list with two elements: the first 
 (*rotateExternalVertices::usage="This function rotates external vertices when a cut goes parallelly over the external edge."*)
 (*makePlanarGraph::usage="Returns the vertex coordinates and edges (with their coordinates) of the graph drawn on genus zero, drawn ideally for the construction of unproblematic cuts between external boundaries."*)
 (*makeAutomaticBoundariesAndCuts::usage="This function returns a list of boundaries, corresponding to each external node, and cuts between these boundaries."*)
-getGrassmannian::usage="This function returns the correspdoning element of the Grassmannian with all signs placed correctly to ensure manifest positivity of minors in planar diagrams, including signs associated to the rotation numnber of paths in the diagram. It only works when the graph can be embedded on genus zero (though it may have any number of boundaries)."
+grassmannianMatrix::usage="This function returns the correspdoning element of the Grassmannian with all signs placed correctly to ensure manifest positivity of minors in planar diagrams, including signs associated to the rotation numnber of paths in the diagram. It only works when the graph can be embedded on genus zero (though it may have any number of boundaries)."
 pluckerCoordinates::usage="Returns the external ordering and the Plucker coordinates of the on-shell diagram. It is posisble to specify whether this function should place in all signs according to the boundary measurement, or whether the path matrix is sufficient."
-makeLoopVariablesBasis::usage="Returns a list of paths that form a basis with which it is possible to express any path in the graph. The output is of the form of two lists: the first one contains the internal faces, and if the optional input 'standardfacevariables' is False it also contains non-trivial cycles around surfaces with non-zero genus as well as products of external faces which circle around a boundary. The first list will generically be a linear combination of these paths. The second entry contains the remaining independent external faces, paths going between different boundaries, and if 'standardfacevariables' is True it also contains non-trivial cycles for non-zero genus."
+loopVariablesBasis::usage="Returns a list of paths that form a basis with which it is possible to express any path in the graph. The output is of the form of two lists: the first one contains the internal faces, and if the optional input 'standardfacevariables' is False it also contains non-trivial cycles around surfaces with non-zero genus as well as products of external faces which circle around a boundary. The first list will generically be a linear combination of these paths. The second entry contains the remaining independent external faces, paths going between different boundaries, and if 'standardfacevariables' is True it also contains non-trivial cycles for non-zero genus."
 moduliLoopVariablesBFT::usage="Returns a list of three items: the first is the master space, the second is the moduli space, and the third is the loop variable basis used to make these spaces."
-externalEdgeOrderingGrassmanian::usage="Returns the ordering of external edges chosen by default by getGrassmannian. Only contains those edges which are present in the Kasteleyn."
-externalNodeOrderingGrassmanian::usage="Returns the ordering of external nodes chosen by default by getGrassmannian."
-getStratification::usage="Returns a list of boundaries in the stratification. The elements are ordered by dimensionality, with the first element containing the top-dimensional boundaries and the last containing the zero-dimensional boundaries. The boundaries in each element are expressed as lists, each list containing move-equivalent configurations. The configurations are expressed as a list of edges which are present in the graph."
-getStratificationNumbers::usage="Returns the number of boundaries of each dimensionality, beginning with the highest dimension and ending in the number of zero-dimensional boundaries."
-getEulerNumber::usage="Gives the Euler number of the stratification of the graph."
-getFaceLattice::usage="Returns a list of boundaries of the matching polytope. The elements are ordered by dimensionality, with the first element containing the top-dimensional boundaries and the last containing the zero-dimensional boundaries. Each boundary is expressed as a list of edges which are present in the graph."
-getStratificationGraph::usage="Returns the graph containing the full stratification of the graph in question, with all the connectivity between the boundaries of various dimensionality. The best way to view it is to view it using the option GraphLayout\[Rule]\"LayeredDigraphEmbedding\" (the user must do this as a second step, with the graph that this function returns)."
-getFaceLatticeGraph::usage="Returns the graph containing the full face lattive of the graph in question, with all the connectivity between the boundaries of various dimensionality. The best way to view it is to view it using the option GraphLayout\[Rule]\"LayeredDigraphEmbedding\" (the user must do this as a second step, with the graph that this function returns)."
+getOrderingExternalEdgesGrassmannian::usage="Returns the ordering of external edges chosen by default by grassmannianMatrix. Only contains those edges which are present in the Kasteleyn."
+getOrderingExternalNodesGrassmannian::usage="Returns the ordering of external nodes chosen by default by grassmannianMatrix."
+stratificationBoundaries::usage="Returns a list of boundaries in the stratification. The elements are ordered by dimensionality, with the first element containing the top-dimensional boundaries and the last containing the zero-dimensional boundaries. The boundaries in each element are expressed as lists, each list containing move-equivalent configurations. The configurations are expressed as a list of edges which are present in the graph."
+stratificationNumbers::usage="Returns the number of boundaries of each dimensionality, beginning with the highest dimension and ending in the number of zero-dimensional boundaries."
+stratificationEulerNumber::usage="Gives the Euler number of the stratification of the graph."
+matchingPolytopeBoundaries::usage="Returns a list of boundaries of the matching polytope. The elements are ordered by dimensionality, with the first element containing the top-dimensional boundaries and the last containing the zero-dimensional boundaries. Each boundary is expressed as a list of edges which are present in the graph."
+stratificationGraph::usage="Returns the graph containing the full stratification of the graph in question, with all the connectivity between the boundaries of various dimensionality. The best way to view it is to view it using the option GraphLayout\[Rule]\"LayeredDigraphEmbedding\" (the user must do this as a second step, with the graph that this function returns)."
+matchingPolytopeBoundariesGraph::usage="Returns the graph containing the full face lattive of the graph in question, with all the connectivity between the boundaries of various dimensionality. The best way to view it is to view it using the option GraphLayout\[Rule]\"LayeredDigraphEmbedding\" (the user must do this as a second step, with the graph that this function returns)."
 nonTrivialPoles::usage="Returns a list containing possible relations among Plucker coordinates that do not follow from the Plucker relations."
 squareMove::usage="Gives the four components of the Kasteleyn matrix (the top-left, top-right, bottom-left, and bottom-right) after a square move performed on a user-specified choice of nodes. In the case of BFTs the user may choose to instead specify the face name to perform the square move on."
 (*XX::usage=""*)
@@ -433,8 +433,15 @@ perfmatchnumber=Position[Transpose[matroidpoly],multiplicitypolytope[[1]][[All,O
 perfmatchnumber
 ];
 
-reducibilityBFTQ[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{pmatrix,modulispace,fullspacetranspose,modulitranspose,fullspaceshort,reducibility},
-pmatrix=matchingPolytope[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph];
+reducibilityBFTQ[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{oktoproceed,pmatrix,modulispace,fullspacetranspose,modulitranspose,fullspaceshort,reducibility},
+oktoproceed=True;
+If[checkneeded,
+oktoproceed=getKasteleynCheckQ[topleft,topright,bottomleft,bottomright,BFTgraph];
+];
+If[oktoproceed,
+If[bubblesQ[topleft,topright,bottomleft,bottomright,BFTgraph,gauging]===True,(*if there are bubbles, the graph is definitely reducible*)
+reducibility=True;
+,pmatrix=matchingPolytope[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph];
 modulispace=moduliSpaceBFT[topleft,topright,bottomleft,bottomright,gauging,checkneeded,BFTgraph];
 If[pmatrix=!=Null&&modulispace=!=Null,
 If[Dimensions[pmatrix][[2]]==0&&Length[pmatrix]>0,
@@ -444,6 +451,9 @@ modulitranspose=Transpose[modulispace];
 (*Now we must multiply together those columns of the Pmatrix that project to the same coordinates in the moduli space*)
 fullspaceshort=Transpose[Map[Times@@fullspacetranspose[[Flatten[Position[modulitranspose,#]]]]&,DeleteDuplicates[modulitranspose]]];
 If[MemberQ[fullspaceshort,ConstantArray[0,Dimensions[fullspaceshort][[2]]]],reducibility=True;,reducibility=False;];
+];
+,reducibility=Null;
+];
 ];
 ,reducibility=Null;
 ];
@@ -637,7 +647,7 @@ alldenominatoredges=Append[alldenominatoredges,startingedge];
 {numeratoredges,denominatoredges}
 ];
 
-allZigZagNumeratorsDenominators[topleft_,topright_,bottomleft_,bottomright_]:=Module[{kasteleyn,bottomleftvars,toprightvars,blacktowhitematrix,whitetoblackmatrix,zigZagFromExternalWhiteNode,zigZagFromExternalBlackNode,bottomleftzigzags,toprightzigzags,allnumeratoredges,alldenominatoredges,internalzigzagedges,internalzigzags,internalzigzag,allzigzags},
+zigZagNumeratorsDenominators[topleft_,topright_,bottomleft_,bottomright_]:=Module[{kasteleyn,bottomleftvars,toprightvars,blacktowhitematrix,whitetoblackmatrix,zigZagFromExternalWhiteNode,zigZagFromExternalBlackNode,bottomleftzigzags,toprightzigzags,allnumeratoredges,alldenominatoredges,internalzigzagedges,internalzigzags,internalzigzag,allzigzags},
 kasteleyn=joinupKasteleyn[topleft,topright,bottomleft,bottomright];
 bottomleftvars=Variables[bottomleft];
 toprightvars=Variables[topright];
@@ -728,10 +738,10 @@ allzigzags=Join[bottomleftzigzags,toprightzigzags,internalzigzags];
 allzigzags
 ];
 
-makeZigZags[topleft_,topright_,bottomleft_,bottomright_,invertedrule_:False]:=Block[{graphOK,allzigzags,zigzagexpressions},
+zigZags[topleft_,topright_,bottomleft_,bottomright_,invertedrule_:False]:=Block[{graphOK,allzigzags,zigzagexpressions},
 graphOK=getKasteleynCheckQ[topleft,topright,bottomleft,bottomright,True];
 If[graphOK,
-allzigzags=allZigZagNumeratorsDenominators[topleft,topright,bottomleft,bottomright];
+allzigzags=zigZagNumeratorsDenominators[topleft,topright,bottomleft,bottomright];
 zigzagexpressions=Map[(Times@@#[[1]])/(Times@@#[[2]])&,allzigzags];
 (*If we want to turn right at white nodes and left at black nodes, all the zig-zags are inverted*)
 If[invertedrule,
@@ -746,7 +756,7 @@ zigzagexpressions
 selfIntersectingZigZagsQ[topleft_,topright_,bottomleft_,bottomright_]:=Block[{graphOK,allzigzags,selfintersectingzigzags,selfintersections},
 graphOK=getKasteleynCheckQ[topleft,topright,bottomleft,bottomright,True];
 If[graphOK,
-allzigzags=allZigZagNumeratorsDenominators[topleft,topright,bottomleft,bottomright];
+allzigzags=zigZagNumeratorsDenominators[topleft,topright,bottomleft,bottomright];
 (*If an edge is both in the numerator and the denominator, we have a self-intersection*)
 selfintersectingzigzags=Cases[allzigzags,zz_/;Length[Intersection[zz[[1]],zz[[2]]]]>0];
 If[Length[selfintersectingzigzags]=!=0,
@@ -787,7 +797,7 @@ list1=PadRight[list1,Length[numerator]+Length[list2]];
 ];If[(And@@Map[Equal@@#&,Partition[Drop[Drop[Flatten[Map[List@@#&,list1]],1],-1],2]])==False,Print["We somehow still messed up!"];];
 list1]
 ];
-allzigzags=allZigZagNumeratorsDenominators[topleft,topright,bottomleft,bottomright];
+allzigzags=zigZagNumeratorsDenominators[topleft,topright,bottomleft,bottomright];
 allzigzags=Map[threadJointheLists[#[[1]],#[[2]]]&,allzigzags];
 (*Now we have the chronological list of edes in each zig-zag. We need to now look at the pairwaise intersections between them to determine whether we have "bad double crossings"*)
 (*Since internal zig-zags are cyclic, we will write out two cycles of them, so that multiple intersections can be seen to occur chronologically correctly*)
@@ -819,7 +829,7 @@ return
 ];
 
 zigZagsAsPerfectMatchings[topleft_,topright_,bottomleft_,bottomright_,invertedrule_:False]:=Block[{zigzags,perfmatchings,perfmatchzigzags,ii,jj,perfmatchratio,positions,tobereplacedwith,replacementrule},
-zigzags=makeZigZags[topleft,topright,bottomleft,bottomright,invertedrule];
+zigzags=zigZags[topleft,topright,bottomleft,bottomright,invertedrule];
 If[zigzags=!=Null,
 perfmatchings=perfectMatchings[topleft,topright,bottomleft,bottomright,False,True];
 perfmatchzigzags=Table[{},{iii,Length[zigzags]}];
@@ -837,14 +847,14 @@ perfmatchzigzags=ReplacePart[perfmatchzigzags,replacementrule];
 perfmatchzigzags
 ];
 
-makeLoopVariablesBasis[topleft_,topright_,bottomleft_,bottomright_,standardfacevariables_:False]:=Module[{kasteleyn,alledges,externaledges,extnodenumbers,externaledgestonodenumbers,bpaths,adjacencymat,graph,bigkasteleyn,nameUndirectedEdges,bpathvectors,directedgraph,nameDirectedEdges,edgelist,internalpaths,internalpathvectors,facenames,facevariables,facevariablevectors,internalpos,internalfacevariables,internalfacevariablevectors,externalfacevariables,externalfacevariablevectors,accountedforvectors,newpathvectors,additionalpathvectors,tosolvefor,coef,coeflist,additionalpaths,loopvariablebasis},
+loopVariablesBasis[topleft_,topright_,bottomleft_,bottomright_,standardfacevariables_:False]:=Module[{kasteleyn,alledges,externaledges,extnodenumbers,externaledgestonodenumbers,bpaths,adjacencymat,graph,bigkasteleyn,nameUndirectedEdges,bpathvectors,directedgraph,nameDirectedEdges,edgelist,internalpaths,internalpathvectors,facenames,facevariables,facevariablevectors,internalpos,internalfacevariables,internalfacevariablevectors,externalfacevariables,externalfacevariablevectors,accountedforvectors,newpathvectors,additionalpathvectors,tosolvefor,coef,coeflist,additionalpaths,loopvariablebasis},
 (*We'll begin by making all possible paths between boundaries. Some of these will correspond to external faces (or combinations thereof), but some will be paths stretching between different boundaries*)
 kasteleyn=joinupKasteleyn[topleft,topright,bottomleft,bottomright];
 alledges=Variables[kasteleyn];
 (*We need to extract the external edges*)
 externaledges=Variables[Join[bottomleft,topright]];
 (*extnodenumbers=Flatten[Map[Cases[#[[1]],Alternatives@@Join[Range[Length[bottomleft]]+Length[topleft],Range[Dimensions[topright][[2]]]+Total[Dimensions[topleft]]+Length[bottomleft]]]&,Map[#[[{1,2}]]+{0,Length[kasteleyn]}&,Map[Position[kasteleyn,#]&,externaledges],{2}]]];*)
-extnodenumbers=Flatten[Map[externalEdgesNodeNumbers[topleft,topright,bottomleft,bottomright,{#}]&,externaledges]];
+extnodenumbers=Flatten[Map[getExternalEdgeNodeNumbers[topleft,topright,bottomleft,bottomright,{#}]&,externaledges]];
 externaledgestonodenumbers=MapThread[Rule,{externaledges,extnodenumbers}];
 bpaths=Subsets[externaledges,{2}];(*For now bpaths only contain the external edges. We'll now look for the shortest path between these edges, to complete the paths between boundaries*)
 adjacencymat=turnIntoAdjacencyMatrix[topleft,topright,bottomleft,bottomright];
@@ -932,8 +942,8 @@ referenceperfmatch=perfmatchings[[1]];
 If[loopvariablebasis===Null,
 (*make my own basis*)
 If[gauging==2,
-basispaths=makeLoopVariablesBasis[topleft,topright,bottomleft,bottomright];
-,basispaths=makeLoopVariablesBasis[topleft,topright,bottomleft,bottomright,True];
+basispaths=loopVariablesBasis[topleft,topright,bottomleft,bottomright];
+,basispaths=loopVariablesBasis[topleft,topright,bottomleft,bottomright,True];
 ];
 ,basispaths=loopvariablebasis;
 ];
@@ -975,8 +985,8 @@ modulispace={ConstantArray[0,Dimensions[masterspace][[2]]]};
 If[loopvariablebasis===Null,
 (*make my own basis*)
 If[gauging==2,
-basispaths=makeLoopVariablesBasis[topleft,topright,bottomleft,bottomright];
-,basispaths=makeLoopVariablesBasis[topleft,topright,bottomleft,bottomright,True];
+basispaths=loopVariablesBasis[topleft,topright,bottomleft,bottomright];
+,basispaths=loopVariablesBasis[topleft,topright,bottomleft,bottomright,True];
 ];
 ,basispaths=loopvariablebasis;
 ];
@@ -1478,28 +1488,28 @@ sourceedges=Union[Complement[DeleteCases[Flatten[bottomleft],0],referencevars],I
 sourceedges
 ];
 
-findSinkEdges[topright_,bottomleft_,referenceperfmatch_]:=Block[{perfmatchvars,sinkedges},
+getSinkEdges[topright_,bottomleft_,referenceperfmatch_]:=Block[{perfmatchvars,sinkedges},
 perfmatchvars=Variables[referenceperfmatch];
 (*Sinks are those variables in the bottomleft that are in referenceperfmatch, and those in topright which are not*)
 sinkedges=Union[Complement[DeleteCases[Flatten[topright],0],perfmatchvars],Intersection[DeleteCases[Flatten[bottomleft],0],perfmatchvars]];
 sinkedges
 ];
 
-findSourceNodes[topleft_,topright_,bottomleft_,bottomright_,referenceperfmatch_]:=Block[{referencevars,sourcenodes},
+getSourceNodes[topleft_,topright_,bottomleft_,bottomright_,referenceperfmatch_]:=Block[{referencevars,sourcenodes},
 referencevars=Variables[referenceperfmatch];
 (*Sources are those nodes in the bottomleft that do not have variables in referenceperfmatch, and those in topright which do*)
 sourcenodes=Union[Flatten[Position[Transpose[topright],{___,Alternatives@@referencevars,___}]]+Total[Dimensions[topleft]]+Length[bottomleft],Length[topleft]+Complement[Range[Length[bottomleft]],Flatten[Position[bottomleft,{___,Alternatives@@referencevars,___}]]]];
 sourcenodes
 ];
 
-findSinkNodes[topleft_,topright_,bottomleft_,bottomright_,referenceperfmatch_]:=Block[{referencevars,sinknodes},
+getSinkNodes[topleft_,topright_,bottomleft_,bottomright_,referenceperfmatch_]:=Block[{referencevars,sinknodes},
 referencevars=Variables[referenceperfmatch];
 (*Sinks are those nodes in the bottomleft that have variables in referenceperfmatch, and those in topright which are do not*)
 sinknodes=Union[Complement[Range[Dimensions[topright][[2]]],Flatten[Position[Transpose[topright],{___,Alternatives@@referencevars,___}]]]+Total[Dimensions[topleft]]+Length[bottomleft],Length[topleft]+Flatten[Position[bottomleft,{___,Alternatives@@referencevars,___}]]];
 sinknodes
 ];
 
-externalEdgesNodeNumbers[topleft_,topright_,bottomleft_,bottomright_,externaledgelist_]:=Union[Map[#[[1]]&,Position[bottomleft,Alternatives@@externaledgelist]+Length[topleft]],Map[#[[2]]&,Position[topright,Alternatives@@externaledgelist]+Total[Dimensions[topleft]]+Length[bottomleft]]];
+getExternalEdgeNodeNumbers[topleft_,topright_,bottomleft_,bottomright_,externaledgelist_]:=Union[Map[#[[1]]&,Position[bottomleft,Alternatives@@externaledgelist]+Length[topleft]],Map[#[[2]]&,Position[topright,Alternatives@@externaledgelist]+Total[Dimensions[topleft]]+Length[bottomleft]]];
 
 traditionalConnectivityMatrix[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null]:=traditionalConnectivityMatrix[topleft,topright,bottomleft,bottomright,referencematching]=traditionalConnectivityMatrix[topleft,topright,bottomleft,bottomright]=Block[{perfmatchings,referenceperfmatch,kasteleyn,perfmatchvars,kastnopm,kastinvertedpm,bigmatrix,size,connectivitymat},
 If[referencematching===Null,
@@ -1593,7 +1603,7 @@ referenceperfmatch=perfmatchings[[lowNumberLoopsPMpos[topleft,topright,bottomlef
 If[referenceperfmatch=!=0,
 bigpathmatrix=connectivityMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch];
 (*bigpathmatrix contains the connectivity between ALL pairs of nodes. We need to select those entries corresponding to sources goign to external nodes.*)
-externalrows=findSourceNodes[topleft,topright,bottomleft,bottomright,referenceperfmatch];
+externalrows=getSourceNodes[topleft,topright,bottomleft,bottomright,referenceperfmatch];
 externalcolumns=Join[Range[Length[topleft]+1,Length[topleft]+Length[bottomleft]],Range[Total[Dimensions[topleft]]+Length[bottomleft]+1,Total[Dimensions[topleft]]+Length[bottomleft]+Dimensions[topright][[2]]]];
 finalpathmatrix=Expand[Simplify[bigpathmatrix[[externalrows,externalcolumns]]]];
 (*The determinant of bigpathmatrix gives the loop factor in the paths between external nodes.*)
@@ -1617,7 +1627,7 @@ If[referenceperfmatch=!=0,
 kasteleyn=joinupKasteleyn[topleft,topright,bottomleft,bottomright];
 bigmatrix=turnIntoOrientedAdjacencyMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch,True];adjacencymat=bigmatrix/.Map[#->1&,Variables[kasteleyn]];
 graph=AdjacencyGraph[adjacencymat];
-sources=findSourceNodes[topleft,topright,bottomleft,bottomright,referenceperfmatch];
+sources=getSourceNodes[topleft,topright,bottomleft,bottomright,referenceperfmatch];
 allexternalnodes=getOrderingExternalNodesDefault[topleft,topright,bottomleft,bottomright];
 (*We'll now find all paths between source nodes and external nodes, expressed a lists of nodes traversed between the two endpoints*)
 finalpathmatrix=Table[FindPath[graph,sources[[iii]],allexternalnodes[[jjj]],Infinity,All],{iii,Length[sources]},{jjj,Length[allexternalnodes]}];
@@ -1662,8 +1672,8 @@ finalpathmatrix=Null;
 finalpathmatrix
 ];
 
-getLoopDenominator[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null,withsigns_:False]:=
-(*getLoopDenominator[topleft,topright,bottomleft,bottomright,referencematching]=getLoopDenominator[topleft,topright,bottomleft,bottomright]=*)Module[{perfmatchings,referenceperfmatch,kasteleyn,bigmatrix,adjacencymat,graph,turnIntoContributionNoLoops,cycles,loopnodes,extraloopnodes,jj,toadd,duplnode,loopcontributions,loopdenominator},
+loopDenominator[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null,withsigns_:False]:=
+(*loopDenominator[topleft,topright,bottomleft,bottomright,referencematching]=loopDenominator[topleft,topright,bottomleft,bottomright]=*)Module[{perfmatchings,referenceperfmatch,kasteleyn,bigmatrix,adjacencymat,graph,turnIntoContributionNoLoops,cycles,loopnodes,extraloopnodes,jj,toadd,duplnode,loopcontributions,loopdenominator},
 If[referencematching===Null,
 perfmatchings=perfectMatchings[topleft,topright,bottomleft,bottomright];
 If[perfmatchings=!={},
@@ -1721,7 +1731,7 @@ pathmat=pathMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch];
 If[pathmat==={},(*this happens for cases when we have no external nodes*)
 truemapminortoperfmatch={};
 ,minors=Minors[pathmat,Length[pathmat]][[1]];
-loopdenominator=Expand[referenceperfmatch getLoopDenominator[topleft,topright,bottomleft,bottomright,referenceperfmatch]];(*loopdenominator=Expand[referenceperfmatch/Expand[Simplify[Det[connectivityMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch]]]]];*)
+loopdenominator=Expand[referenceperfmatch loopDenominator[topleft,topright,bottomleft,bottomright,referenceperfmatch]];(*loopdenominator=Expand[referenceperfmatch/Expand[Simplify[Det[connectivityMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch]]]]];*)
 truemapminortoperfmatch=Expand[Simplify[minors loopdenominator]];
 ];
 ,truemapminortoperfmatch=Null;
@@ -1743,8 +1753,15 @@ tangentspacedim=MatrixRank[Table[D[minorexpressions[[iii]],minorvars[[jjj]]],{ii
 tangentspacedim
 ];
 
-reducibilityQ[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{edgesnaivereducibility,reducibility,pmatrix,numsources,numexternalnodes,maxpossibledimension,dimensionP,dimgrassmannian,dimafteredgeremoval,ii},(*First need to find out which columns are the same point in the moduli space*)
-edgesnaivereducibility=reducibilityBFTedges[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph,gauging];
+reducibilityQ[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{oktoproceed,edgesnaivereducibility,reducibility,pmatrix,numsources,numexternalnodes,maxpossibledimension,dimensionP,dimgrassmannian,dimafteredgeremoval,ii},(*First need to find out which columns are the same point in the moduli space*)
+oktoproceed=True;
+If[checkneeded,
+oktoproceed=getKasteleynCheckQ[topleft,topright,bottomleft,bottomright,BFTgraph];
+];
+If[oktoproceed,
+If[bubblesQ[topleft,topright,bottomleft,bottomright,BFTgraph,gauging]===True,(*if there are bubbles, the graph is definitely reducible*)
+reducibility=True;
+,edgesnaivereducibility=reducibilityBFTedges[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph,gauging];
 If[edgesnaivereducibility===Null,
 reducibility=Null;(*there was some problem with the Kasteleyn*)
 ,If[edgesnaivereducibility==={},
@@ -1757,7 +1774,7 @@ reducibility=True;
 pmatrix=matchingPolytope[topleft,topright,bottomleft,bottomright];
 If[Dimensions[pmatrix][[2]]==0&&Length[pmatrix]>0,
 reducibility=True;
-,numsources=Length[findSourceNodes[topleft,topright,bottomleft,bottomright,perfectMatchings[topleft,topright,bottomleft,bottomright][[1]]]];
+,numsources=Length[getSourceNodes[topleft,topright,bottomleft,bottomright,perfectMatchings[topleft,topright,bottomleft,bottomright][[1]]]];
 numexternalnodes=Length[bottomleft]+Length[Transpose[topright]];
 maxpossibledimension=numsources(numexternalnodes-numsources);
 dimensionP=dimensionPolytope[pmatrix];
@@ -1782,6 +1799,9 @@ Break[]
 ];
 ];
 ];
+];
+];
+,reducibility=Null;(*there was some problem with the Kasteleyn*)
 ];
 reducibility
 ];
@@ -2301,7 +2321,7 @@ boundarypaircuts=Null;
 {boundaries,boundarypaircuts}
 ];
 
-getGrassmannian[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null,externalordering_:Null,boundarylist_:Null,boundarycutreplacements_:Null]/;(externalordering===Null&&boundarylist===Null&&boundarycutreplacements===Null||externalordering=!=Null&&boundarylist=!=Null&&boundarycutreplacements=!=Null):=Module[{adjacencymat,graph,planar,perfmatchings,referenceperfmatch,pathmat,orderedpathmat,loopdenominator,looplist,loopreplacement,loop,loopsigns,grassmannianmatrix,sourcenodes,boundaries,boundarypaircuts,pathmatorder,neworder,newroworder,cutSequence,finalloopsignsmatrix,implementFinalLoops,globalsigns},
+grassmannianMatrix[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null,externalordering_:Null,boundarylist_:Null,boundarycutreplacements_:Null]/;(externalordering===Null&&boundarylist===Null&&boundarycutreplacements===Null||externalordering=!=Null&&boundarylist=!=Null&&boundarycutreplacements=!=Null):=Module[{adjacencymat,graph,planar,perfmatchings,referenceperfmatch,pathmat,orderedpathmat,loopdenominator,looplist,loopreplacement,loop,loopsigns,grassmannianmatrix,sourcenodes,boundaries,boundarypaircuts,pathmatorder,neworder,newroworder,cutSequence,finalloopsignsmatrix,implementFinalLoops,globalsigns},
 (*Let's first see if the graph can be embedded on genus zero*)
 adjacencymat=turnIntoAdjacencyMatrix[topleft,topright,bottomleft,bottomright];
 graph=AdjacencyGraph[adjacencymat];(*We have finished making the Mathematica graph!*)
@@ -2326,7 +2346,7 @@ grassmannianmatrix={};
 (*Now we will plug in the correct signs. We begin with those belonging to loops (excluding those loops formed by closing the path between multiple boundaries)*)
 (*First find the loops, if any*)
 (*loopdenominator=Expand[1/Expand[Simplify[Det[connectivityMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch]]]]];*)
-loopdenominator=getLoopDenominator[topleft,topright,bottomleft,bottomright,referenceperfmatch];
+loopdenominator=loopDenominator[topleft,topright,bottomleft,bottomright,referenceperfmatch];
 If[Head[loopdenominator]===Plus,
 (*we have multiple terms*)
 looplist=-DeleteCases[List@@loopdenominator,1];
@@ -2421,7 +2441,7 @@ referenceperfmatch=perfmatchings[[lowNumberLoopsPMpos[topleft,topright,bottomlef
 ];
 If[referenceperfmatch=!=0,
 If[withsigns,
-Cmatrix=getGrassmannian[topleft,topright,bottomleft,bottomright,referenceperfmatch];
+Cmatrix=grassmannianMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch];
 ,Cmatrix=pathMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch];
 ];
 If[Cmatrix==={},
@@ -2433,7 +2453,7 @@ minors={};
 minors
 ];
 
-externalEdgeOrderingGrassmanian[topleft_,topright_,bottomleft_,bottomright_]:=Block[{ordering,adjacencymat,graph,planar,externals,extnum,allperms,numberofperms,permutations,externaladjacencyseed,externaladjencyattempts,ii,testgraph,verticespos,edgepos,externalvertices,bigkasteleyn},
+getOrderingExternalEdgesGrassmannian[topleft_,topright_,bottomleft_,bottomright_]:=Block[{ordering,adjacencymat,graph,planar,externals,extnum,allperms,numberofperms,permutations,externaladjacencyseed,externaladjencyattempts,ii,testgraph,verticespos,edgepos,externalvertices,bigkasteleyn},
 adjacencymat=turnIntoAdjacencyMatrix[topleft,topright,bottomleft,bottomright];
 graph=AdjacencyGraph[adjacencymat];
 planar=False;
@@ -2484,7 +2504,7 @@ ordering=Null;
 ordering
 ];
 
-externalNodeOrderingGrassmanian[topleft_,topright_,bottomleft_,bottomright_]:=Block[{ordering,adjacencymat,graph,planar,externals,extnum,allperms,numberofperms,permutations,externaladjacencyseed,externaladjencyattempts,ii,testgraph,verticespos,edgepos,externalvertices},
+getOrderingExternalNodesGrassmannian[topleft_,topright_,bottomleft_,bottomright_]:=Block[{ordering,adjacencymat,graph,planar,externals,extnum,allperms,numberofperms,permutations,externaladjacencyseed,externaladjencyattempts,ii,testgraph,verticespos,edgepos,externalvertices},
 ordering=Join[Range[Length[topleft]+1,Length[topleft]+Length[bottomleft]],Range[Total[Dimensions[topleft]]+Length[bottomleft]+1,Total[Dimensions[topleft]]+Length[bottomleft]+Dimensions[topright][[2]]]];
 adjacencymat=turnIntoAdjacencyMatrix[topleft,topright,bottomleft,bottomright];
 graph=AdjacencyGraph[adjacencymat];
@@ -2533,7 +2553,7 @@ ordering=Null;
 ordering
 ];
 
-getStratification[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{checkOK,stratification,xlistandPmatrix,modulispace,startingplanarity,removable,topdim,varlist,makeDaughterGraphs,planarReducibility,tofixlevels,maxnonplanardimension,level,nonplanarpositions,planarboundaries,nonplanarboundaries,templevel,boundarykillededges,newplanarity,planarpositions,fix,identremovable,patternidentremovable,dim,locationofparents,thislevelspositions},
+stratificationBoundaries[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{checkOK,stratification,xlistandPmatrix,modulispace,startingplanarity,removable,topdim,varlist,makeDaughterGraphs,planarReducibility,tofixlevels,maxnonplanardimension,level,nonplanarpositions,planarboundaries,nonplanarboundaries,templevel,boundarykillededges,newplanarity,planarpositions,fix,identremovable,patternidentremovable,dim,locationofparents,thislevelspositions},
 checkOK=True;
 If[checkneeded==True,
 checkOK=getKasteleynCheckQ[topleft,topright,bottomleft,bottomright,BFTgraph];
@@ -2663,33 +2683,33 @@ stratification=Table[identremovable[iii],{iii,0,topdim}];
 stratification
 ];
 
-getStratificationNumbers[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{checkOK,stratification,stratificationnumbers},
+stratificationNumbers[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{checkOK,stratification,stratificationnumbers},
 checkOK=True;
 If[checkneeded==True,
 checkOK=getKasteleynCheckQ[topleft,topright,bottomleft,bottomright,BFTgraph];
 ];
 If[checkOK==True,
-stratification=getStratification[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph,gauging];
+stratification=stratificationBoundaries[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph,gauging];
 stratificationnumbers=Map[Length,stratification];
 ,stratificationnumbers=Null;
 ];
 stratificationnumbers
 ];
 
-getEulerNumber[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{checkOK,eulernumber,stratificationnumbers},
+stratificationEulerNumber[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{checkOK,eulernumber,stratificationnumbers},
 checkOK=True;
 If[checkneeded==True,
 checkOK=getKasteleynCheckQ[topleft,topright,bottomleft,bottomright,BFTgraph];
 ];
 If[checkOK==True,
-stratificationnumbers=getStratificationNumbers[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph,gauging];
+stratificationnumbers=stratificationNumbers[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph,gauging];
 eulernumber=Sum[Power[(-1),iii+1]stratificationnumbers[[-iii]],{iii,Length[stratificationnumbers]}];
 ,eulernumber=Null;
 ];
 eulernumber
 ];
 
-getFaceLattice[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False]:=Block[{checkOK,xlistandPmatrix,facelatticeboundaries,topdim,makeDaughterGraphs,level,facelattice},
+matchingPolytopeBoundaries[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False]:=Block[{checkOK,xlistandPmatrix,facelatticeboundaries,topdim,makeDaughterGraphs,level,facelattice},
 checkOK=True;
 If[checkneeded==True,
 checkOK=getKasteleynCheckQ[topleft,topright,bottomleft,bottomright,BFTgraph];
@@ -2725,7 +2745,7 @@ facelattice=Map[#[[All,1]]&,Table[facelatticeboundaries[iii],{iii,0,topdim}],{2}
 facelattice
 ];
 
-getStratificationGraph[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{checkOK,stratificationgraph,xlistandPmatrix,modulispace,startingplanarity,removable,topdim,varlist,makeDaughterGraphs,planarReducibility,tofixlevels,maxnonplanardimension,level,nonplanarpositions,templevel,boundarykillededges,newplanarity,planarpositions,planarboundaries,nonplanarboundaries,fix,identremovable,patternidentremovable,dim,locationofparents,thislevelspositions,identifiedboundaries,newlayer,alllayers,totalnumberofboundaries,tochangeposition,tokeeprowsandcolumns,adjacencymatrix},
+stratificationGraph[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{checkOK,stratificationgraph,xlistandPmatrix,modulispace,startingplanarity,removable,topdim,varlist,makeDaughterGraphs,planarReducibility,tofixlevels,maxnonplanardimension,level,nonplanarpositions,templevel,boundarykillededges,newplanarity,planarpositions,planarboundaries,nonplanarboundaries,fix,identremovable,patternidentremovable,dim,locationofparents,thislevelspositions,identifiedboundaries,newlayer,alllayers,totalnumberofboundaries,tochangeposition,tokeeprowsandcolumns,adjacencymatrix},
 checkOK=True;
 If[checkneeded==True,
 checkOK=getKasteleynCheckQ[topleft,topright,bottomleft,bottomright,BFTgraph];
@@ -2886,7 +2906,7 @@ stratificationgraph=AdjacencyGraph[adjacencymatrix];
 stratificationgraph
 ];
 
-getFaceLatticeGraph[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False]:=Block[{checkOK,xlistandPmatrix,facelatticeboundaries,topdim,makeDaughterGraphs,level,patternfacelatticeboundaries,locationofparents,newlayer,alllayers,totalnumberofboundaries,stratificationgraph},
+matchingPolytopeBoundariesGraph[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False]:=Block[{checkOK,xlistandPmatrix,facelatticeboundaries,topdim,makeDaughterGraphs,level,patternfacelatticeboundaries,locationofparents,newlayer,alllayers,totalnumberofboundaries,stratificationgraph},
 checkOK=True;
 If[checkneeded==True,
 checkOK=getKasteleynCheckQ[topleft,topright,bottomleft,bottomright,BFTgraph];

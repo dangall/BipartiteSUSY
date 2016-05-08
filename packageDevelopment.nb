@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[    991308,      24047]
-NotebookOptionsPosition[    980416,      23778]
-NotebookOutlinePosition[    980946,      23799]
-CellTagsIndexPosition[    980903,      23796]
+NotebookDataLength[   1006292,      24390]
+NotebookOptionsPosition[    995239,      24116]
+NotebookOutlinePosition[    995769,      24137]
+CellTagsIndexPosition[    995726,      24134]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -2453,11 +2453,349 @@ Cell[BoxData[
 Cell[BoxData[""], "Input",
  CellChangeTimes->{{3.670843284680751*^9, 3.6708432849160023`*^9}}],
 
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"{", 
+   RowBox[{"ha", ",", "hb", ",", "hc", ",", "hd"}], "}"}], "=", 
+  RowBox[{"squareMove", "[", 
+   RowBox[{"aa", ",", "bb", ",", "cc", ",", "dd", ",", "1", ",", "True"}], 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.6716921729221125`*^9, 3.671692231953721*^9}, {
+  3.6716932999806633`*^9, 3.6716933005864935`*^9}, {3.671693468379983*^9, 
+  3.6716934947925205`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"0", ",", "0", ",", 
+       RowBox[{"X", "[", 
+        RowBox[{"2", ",", "3"}], "]"}], ",", 
+       RowBox[{"XX", "[", 
+        RowBox[{"3", ",", "2"}], "]"}], ",", "0"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"0", ",", "0", ",", "0", ",", "0", ",", 
+       RowBox[{"XX", "[", 
+        RowBox[{"5", ",", "4"}], "]"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"0", ",", 
+       RowBox[{"X", "[", 
+        RowBox[{"2", ",", "5"}], "]"}], ",", 
+       RowBox[{"X", "[", 
+        RowBox[{"6", ",", "2"}], "]"}], ",", "0", ",", "0"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"XX", "[", 
+        RowBox[{"3", ",", "4"}], "]"}], ",", "0", ",", "0", ",", 
+       RowBox[{"X", "[", 
+        RowBox[{"1", ",", "3"}], "]"}], ",", 
+       RowBox[{"X", "[", 
+        RowBox[{"4", ",", "1"}], "]"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"0", ",", 
+       RowBox[{"XX", "[", 
+        RowBox[{"5", ",", "2"}], "]"}], ",", "0", ",", 
+       RowBox[{"X", "[", 
+        RowBox[{"2", ",", "1"}], "]"}], ",", 
+       RowBox[{"X", "[", 
+        RowBox[{"1", ",", "5"}], "]"}]}], "}"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"0", ",", "0"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"0", ",", 
+       RowBox[{"X", "[", 
+        RowBox[{"4", ",", "5"}], "]"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"X", "[", 
+        RowBox[{"5", ",", "6"}], "]"}], ",", "0"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"0", ",", "0"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"0", ",", "0"}], "}"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"0", ",", "0", ",", 
+       RowBox[{"X", "[", 
+        RowBox[{"3", ",", "6"}], "]"}], ",", "0", ",", "0"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"X", "[", 
+        RowBox[{"4", ",", "3"}], "]"}], ",", "0", ",", "0", ",", "0", ",", 
+       "0"}], "}"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"0", ",", "0"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"0", ",", "0"}], "}"}]}], "}"}]}], "}"}]], "Output",
+ CellChangeTimes->{{3.6716921789895177`*^9, 3.671692233154334*^9}, 
+   3.671693301233929*^9, {3.671693465339707*^9, 3.671693495371426*^9}}]
+}, Open  ]],
+
 Cell[BoxData[""], "Input",
  CellChangeTimes->{3.671543003116638*^9}],
 
 Cell[BoxData[""], "Input",
  CellChangeTimes->{{3.670065270274531*^9, 3.6700652703370347`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"reducibilityQOLD", "[", 
+     RowBox[{
+     "topleft_", ",", "topright_", ",", "bottomleft_", ",", "bottomright_", 
+      ",", 
+      RowBox[{"checkneeded_:", "False"}], ",", 
+      RowBox[{"BFTgraph_:", "False"}], ",", 
+      RowBox[{"gauging_:", "2"}]}], "]"}], "/;", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"gauging", "===", "1"}], "&&", 
+       RowBox[{"BFTgraph", "===", "True"}]}], "||", 
+      RowBox[{"gauging", "===", "2"}]}], ")"}]}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "oktoproceed", ",", "edgesnaivereducibility", ",", "reducibility", ",", 
+       "pmatrix", ",", "numsources", ",", "numexternalnodes", ",", 
+       "maxpossibledimension", ",", "dimensionP", ",", "dimgrassmannian", ",",
+        "dimafteredgeremoval", ",", "ii"}], "}"}], ",", 
+     RowBox[{"(*", 
+      RowBox[{
+      "First", " ", "need", " ", "to", " ", "find", " ", "out", " ", "which", 
+       " ", "columns", " ", "are", " ", "the", " ", "same", " ", "point", " ",
+        "in", " ", "the", " ", "moduli", " ", "space"}], "*)"}], 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"edgesnaivereducibility", "=", 
+       RowBox[{"reducibilityBFTedges", "[", 
+        RowBox[{
+        "topleft", ",", "topright", ",", "bottomleft", ",", "bottomright", 
+         ",", "checkneeded", ",", "BFTgraph", ",", "gauging"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"edgesnaivereducibility", "===", "Null"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"reducibility", "=", "Null"}], ";"}], 
+        RowBox[{"(*", 
+         RowBox[{
+         "there", " ", "was", " ", "some", " ", "problem", " ", "with", " ", 
+          "the", " ", "Kasteleyn"}], "*)"}], "\[IndentingNewLine]", ",", 
+        RowBox[{
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"edgesnaivereducibility", "===", 
+            RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+           RowBox[{"(*", 
+            RowBox[{
+             RowBox[{
+             "the", " ", "removal", " ", "of", " ", "any", " ", "edge", " ", 
+              "will", " ", "necessarily", " ", "change", " ", "the", " ", 
+              "matroid", " ", "polytope"}], ",", " ", 
+             RowBox[{
+             "and", " ", "so", " ", "the", " ", "graph", " ", "cannot", " ", 
+              "be", " ", "reducible"}]}], "*)"}], "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"reducibility", "=", "False"}], ";"}], 
+           "\[IndentingNewLine]", ",", 
+           RowBox[{
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{"BFTgraph", "||", 
+               RowBox[{"planarityQ", "[", 
+                RowBox[{
+                "topleft", ",", "topright", ",", "bottomleft", ",", 
+                 "bottomright"}], "]"}]}], ",", "\[IndentingNewLine]", 
+              RowBox[{"(*", 
+               RowBox[{
+                RowBox[{
+                "if", " ", "the", " ", "graph", " ", "is", " ", "planar"}], 
+                ",", " ", 
+                RowBox[{
+                "if", " ", "we", " ", "may", " ", "remove", " ", "edges", " ",
+                  "without", " ", "changing", " ", "the", " ", "matroid", " ",
+                  "polytope", " ", "it", " ", "means", " ", "that", " ", 
+                 "the", " ", "graph", " ", "is", " ", 
+                 RowBox[{"reducible", ".", " ", "Equally"}]}], ",", " ", 
+                RowBox[{
+                "this", " ", "is", " ", "the", " ", "definition", " ", "for", 
+                 " ", "a", " ", "BFT", " ", "graph", " ", "to", " ", "be", 
+                 " ", "reducible"}]}], "*)"}], "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"reducibility", "=", "True"}], ";"}], 
+              "\[IndentingNewLine]", ",", 
+              RowBox[{"(*", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"if", " ", "we", " ", "have", " ", "a", " ", "non"}],
+                  "-", 
+                 RowBox[{"planar", " ", "scattering", " ", "graph"}]}], ",", 
+                " ", 
+                RowBox[{
+                "we", " ", "need", " ", "to", " ", "do", " ", "things", " ", 
+                 RowBox[{"carefully", "."}]}]}], "*)"}], 
+              "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"pmatrix", "=", 
+                RowBox[{"matchingPolytope", "[", 
+                 RowBox[{
+                 "topleft", ",", "topright", ",", "bottomleft", ",", 
+                  "bottomright"}], "]"}]}], ";", "\[IndentingNewLine]", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"Dimensions", "[", "pmatrix", "]"}], "[", 
+                    RowBox[{"[", "2", "]"}], "]"}], "\[Equal]", "0"}], "&&", 
+                  RowBox[{
+                   RowBox[{"Length", "[", "pmatrix", "]"}], ">", "0"}]}], ",",
+                  "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"reducibility", "=", "True"}], ";"}], 
+                 "\[IndentingNewLine]", ",", 
+                 RowBox[{
+                  RowBox[{"numsources", "=", 
+                   RowBox[{"Length", "[", 
+                    RowBox[{"getSourceNodes", "[", 
+                    RowBox[{
+                    "topleft", ",", "topright", ",", "bottomleft", ",", 
+                    "bottomright", ",", 
+                    RowBox[{
+                    RowBox[{"perfectMatchings", "[", 
+                    RowBox[{
+                    "topleft", ",", "topright", ",", "bottomleft", ",", 
+                    "bottomright"}], "]"}], "[", 
+                    RowBox[{"[", "1", "]"}], "]"}]}], "]"}], "]"}]}], ";", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"numexternalnodes", "=", 
+                   RowBox[{
+                    RowBox[{"Length", "[", "bottomleft", "]"}], "+", 
+                    RowBox[{"Length", "[", 
+                    RowBox[{"Transpose", "[", "topright", "]"}], "]"}]}]}], 
+                  ";", "\[IndentingNewLine]", 
+                  RowBox[{"maxpossibledimension", "=", 
+                   RowBox[{"numsources", 
+                    RowBox[{"(", 
+                    RowBox[{"numexternalnodes", "-", "numsources"}], 
+                    ")"}]}]}], ";", "\[IndentingNewLine]", 
+                  RowBox[{"dimensionP", "=", 
+                   RowBox[{"dimensionPolytope", "[", "pmatrix", "]"}]}], ";", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"If", "[", 
+                   RowBox[{
+                    RowBox[{"dimensionP", ">", "maxpossibledimension"}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"reducibility", "=", "True"}], ";"}], 
+                    "\[IndentingNewLine]", ",", 
+                    RowBox[{
+                    RowBox[{"dimgrassmannian", "=", 
+                    RowBox[{"dimensionGrassmannian", "[", 
+                    RowBox[{
+                    "topleft", ",", "topright", ",", "bottomleft", ",", 
+                    "bottomright"}], "]"}]}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"dimensionP", ">", "dimgrassmannian"}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{
+                    "if", " ", "the", " ", "dimension", " ", "of", " ", "the",
+                     " ", "Grassmannian", " ", "is", " ", "less", " ", "than",
+                     " ", "that", " ", "from", " ", "a", " ", "naive", " ", 
+                    "counting", " ", "of", " ", "edges", " ", "and", " ", 
+                    "perfect", " ", "matchings"}], ",", " ", 
+                    RowBox[{
+                    "it", " ", "is", " ", "necessarily", " ", "possible", " ",
+                     "to", " ", "remove", " ", "edges", " ", "without", " ", 
+                    "affecting", " ", "the", " ", "Grassmannian"}]}], "*)"}], 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"reducibility", "=", "True"}], ";"}], 
+                    "\[IndentingNewLine]", ",", 
+                    RowBox[{
+                    RowBox[{"reducibility", "=", "False"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{
+                    "assume", " ", "the", " ", "graph", " ", "is", " ", "not",
+                     " ", "reducible", " ", "until", " ", "you", " ", "find", 
+                    " ", "an", " ", "edge", " ", "which"}], ",", " ", 
+                    RowBox[{"when", " ", "removed"}], ",", " ", 
+                    RowBox[{
+                    "does", " ", "not", " ", "reduce", " ", "the", " ", 
+                    "dimension"}]}], "*)"}], "\[IndentingNewLine]", 
+                    RowBox[{"For", "[", 
+                    RowBox[{
+                    RowBox[{"ii", "=", "1"}], ",", 
+                    RowBox[{"ii", "\[LessEqual]", 
+                    RowBox[{"Length", "[", "edgesnaivereducibility", "]"}]}], 
+                    ",", 
+                    RowBox[{"ii", "++"}], ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"dimafteredgeremoval", "=", 
+                    RowBox[{"dimensionGrassmannian", "[", 
+                    RowBox[{
+                    RowBox[{"topleft", "/.", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"edgesnaivereducibility", "[", 
+                    RowBox[{"[", "ii", "]"}], "]"}], "\[Rule]", "0"}], 
+                    "}"}]}], ",", 
+                    RowBox[{"topright", "/.", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"edgesnaivereducibility", "[", 
+                    RowBox[{"[", "ii", "]"}], "]"}], "\[Rule]", "0"}], 
+                    "}"}]}], ",", 
+                    RowBox[{"bottomleft", "/.", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"edgesnaivereducibility", "[", 
+                    RowBox[{"[", "ii", "]"}], "]"}], "\[Rule]", "0"}], 
+                    "}"}]}], ",", "bottomright"}], "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    "dimafteredgeremoval", "\[Equal]", "dimgrassmannian"}], 
+                    ",", "\[IndentingNewLine]", 
+                    RowBox[{"(*", 
+                    RowBox[{
+                    "we", " ", "have", " ", "found", " ", "an", " ", "edge", 
+                    " ", "which", " ", "may", " ", "be", " ", "removed", " ", 
+                    "without", " ", "decreasing", " ", "the", " ", 
+                    "dimension", " ", "of", " ", "the", " ", 
+                    RowBox[{"Grassmannian", "!"}]}], "*)"}], 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"reducibility", "=", "True"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"Break", "[", "]"}]}]}], "\[IndentingNewLine]", 
+                    "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";"}]}], 
+                    "\[IndentingNewLine]", "]"}], ";"}]}], 
+                   "\[IndentingNewLine]", "]"}], ";"}]}], 
+                "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", 
+             "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";"}]}], 
+       "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+      "reducibility"}]}], "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.6716922457442575`*^9, 3.671692271708007*^9}}],
 
 Cell[BoxData[""], "Input",
  CellChangeTimes->{{3.6715435378186426`*^9, 3.6715435379153757`*^9}}],
@@ -23914,139 +24252,144 @@ Cell[81289, 2421, 119, 2, 31, "Input"],
 Cell[81411, 2425, 838, 25, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
 Cell[82252, 2452, 94, 1, 31, "Input"],
-Cell[82349, 2455, 68, 1, 31, "Input"],
-Cell[82420, 2458, 94, 1, 31, "Input"],
-Cell[82517, 2461, 96, 1, 31, "Input"],
-Cell[82616, 2464, 96, 1, 31, "Input"],
-Cell[82715, 2467, 91, 1, 31, "Input"],
-Cell[82809, 2470, 92, 1, 31, "Input"],
-Cell[82904, 2473, 94, 1, 31, "Input"],
 Cell[CellGroupData[{
-Cell[83023, 2478, 1446, 29, 72, "Input",
+Cell[82371, 2457, 404, 9, 31, "Input"],
+Cell[82778, 2468, 2383, 71, 52, "Output"]
+}, Open  ]],
+Cell[85176, 2542, 68, 1, 31, "Input"],
+Cell[85247, 2545, 94, 1, 31, "Input"],
+Cell[85344, 2548, 11993, 249, 972, "Input"],
+Cell[97340, 2799, 96, 1, 31, "Input"],
+Cell[97439, 2802, 96, 1, 31, "Input"],
+Cell[97538, 2805, 91, 1, 31, "Input"],
+Cell[97632, 2808, 92, 1, 31, "Input"],
+Cell[97727, 2811, 94, 1, 31, "Input"],
+Cell[CellGroupData[{
+Cell[97846, 2816, 1446, 29, 72, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[84472, 2509, 30918, 717, 2292, "Input",
+Cell[99295, 2847, 30918, 717, 2292, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[115393, 3228, 815, 12, 23, "Print",
+Cell[130216, 3566, 815, 12, 23, "Print",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[116211, 3242, 850, 12, 23, "Print",
+Cell[131034, 3580, 850, 12, 23, "Print",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[117064, 3256, 828, 12, 23, "Print",
+Cell[131887, 3594, 828, 12, 23, "Print",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[117895, 3270, 817, 12, 23, "Print",
+Cell[132718, 3608, 817, 12, 23, "Print",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[118715, 3284, 848, 12, 23, "Print",
+Cell[133538, 3622, 848, 12, 23, "Print",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[119566, 3298, 828, 12, 23, "Print",
+Cell[134389, 3636, 828, 12, 23, "Print",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[120397, 3312, 1200, 40, 48, "Output",
+Cell[135220, 3650, 1200, 40, 48, "Output",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[121612, 3355, 119, 2, 25, "Input"],
+Cell[136435, 3693, 119, 2, 25, "Input"],
 Cell[CellGroupData[{
-Cell[121756, 3361, 300, 7, 31, "Input",
+Cell[136579, 3699, 300, 7, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[122059, 3370, 3203, 101, 92, "Input",
+Cell[136882, 3708, 3203, 101, 92, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[125265, 3473, 3046, 87, 92, "Input",
+Cell[140088, 3811, 3046, 87, 92, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[128314, 3562, 307, 7, 31, "Input",
+Cell[143137, 3900, 307, 7, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[128624, 3571, 173, 3, 31, "Input",
+Cell[143447, 3909, 173, 3, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[128800, 3576, 10572, 184, 412, "Output",
+Cell[143623, 3914, 10572, 184, 412, "Output",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[139375, 3762, 207, 4, 31, "Input",
+Cell[154198, 4100, 207, 4, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[139585, 3768, 3344, 59, 132, "Output",
+Cell[154408, 4106, 3344, 59, 132, "Output",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[142932, 3829, 265, 6, 31, "Input",
+Cell[157755, 4167, 265, 6, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[143200, 3837, 152, 2, 31, "Output",
+Cell[158023, 4175, 152, 2, 31, "Output",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[143355, 3841, 233, 5, 31, "Input",
+Cell[158178, 4179, 233, 5, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[143591, 3848, 147, 2, 31, "Output",
+Cell[158414, 4186, 147, 2, 31, "Output",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[143741, 3852, 275, 6, 31, "Input",
+Cell[158564, 4190, 275, 6, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[144019, 3860, 467, 9, 23, "Print",
+Cell[158842, 4198, 467, 9, 23, "Print",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[144489, 3871, 465, 9, 23, "Print",
+Cell[159312, 4209, 465, 9, 23, "Print",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[144957, 3882, 463, 9, 23, "Print",
+Cell[159780, 4220, 463, 9, 23, "Print",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[145423, 3893, 614, 16, 23, "Print",
+Cell[160246, 4231, 614, 16, 23, "Print",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[146040, 3911, 311, 8, 31, "Input",
+Cell[160863, 4249, 311, 8, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[146354, 3921, 686, 15, 23, "Print",
+Cell[161177, 4259, 686, 15, 23, "Print",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[147043, 3938, 290, 4, 23, "Print",
+Cell[161866, 4276, 290, 4, 23, "Print",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[147336, 3944, 274, 6, 31, "Input",
+Cell[162159, 4282, 274, 6, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[147613, 3952, 149, 2, 31, "Output",
+Cell[162436, 4290, 149, 2, 31, "Output",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[147765, 3956, 236, 5, 31, "Input",
+Cell[162588, 4294, 236, 5, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[148004, 3963, 147, 2, 31, "Output",
+Cell[162827, 4301, 147, 2, 31, "Output",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[148154, 3967, 17756, 389, 119, "Input",
+Cell[162977, 4305, 17756, 389, 119, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[165913, 4358, 174, 3, 31, "Output",
+Cell[180736, 4696, 174, 3, 31, "Output",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[166090, 4363, 231, 5, 31, "Input",
+Cell[180913, 4701, 231, 5, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[166324, 4370, 231, 5, 31, "Input",
+Cell[181147, 4708, 231, 5, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[166558, 4377, 596, 11, 21, "Message",
+Cell[181381, 4715, 596, 11, 21, "Message",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[167157, 4390, 583, 11, 21, "Message",
+Cell[181980, 4728, 583, 11, 21, "Message",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[167743, 4403, 4013, 91, 284, "Output",
+Cell[182566, 4741, 4013, 91, 284, "Output",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[171759, 4496, 1211, 28, 52, "Input",
+Cell[186582, 4834, 1211, 28, 52, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[172973, 4526, 4111, 70, 296, "Output",
+Cell[187796, 4864, 4111, 70, 296, "Output",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[177087, 4598, 1042, 28, 92, "Input",
+Cell[191910, 4936, 1042, 28, 92, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[178132, 4628, 319, 6, 23, "Print",
+Cell[192955, 4966, 319, 6, 23, "Print",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[178454, 4636, 320, 6, 23, "Print",
+Cell[193277, 4974, 320, 6, 23, "Print",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[178777, 4644, 320, 6, 23, "Print",
+Cell[193600, 4982, 320, 6, 23, "Print",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[179100, 4652, 319, 6, 23, "Print",
+Cell[193923, 4990, 319, 6, 23, "Print",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[179422, 4660, 319, 6, 23, "Print",
+Cell[194245, 4998, 319, 6, 23, "Print",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[179744, 4668, 319, 6, 23, "Print",
+Cell[194567, 5006, 319, 6, 23, "Print",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[180066, 4676, 319, 6, 23, "Print",
+Cell[194889, 5014, 319, 6, 23, "Print",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[180388, 4684, 320, 6, 23, "Print",
+Cell[195211, 5022, 320, 6, 23, "Print",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[180711, 4692, 318, 6, 23, "Print",
+Cell[195534, 5030, 318, 6, 23, "Print",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[181032, 4700, 320, 6, 23, "Print",
+Cell[195855, 5038, 320, 6, 23, "Print",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[181355, 4708, 645, 15, 52, "Input",
+Cell[196178, 5046, 645, 15, 52, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[182003, 4725, 242, 3, 31, "Output",
+Cell[196826, 5063, 242, 3, 31, "Output",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[182248, 4730, 6399, 101, 104, "Input",
+Cell[197071, 5068, 6399, 101, 104, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[188650, 4833, 324, 7, 31, "Input",
+Cell[203473, 5171, 324, 7, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[188977, 4842, 322, 6, 31, "Output",
+Cell[203800, 5180, 322, 6, 31, "Output",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[189314, 4851, 119, 2, 25, "Input"],
+Cell[204137, 5189, 119, 2, 25, "Input"],
 Cell[CellGroupData[{
-Cell[189458, 4857, 475, 6, 30, "Text",
+Cell[204281, 5195, 475, 6, 30, "Text",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[189936, 4865, 790464, 18910, 49702, "Input",
+Cell[204759, 5203, 790464, 18910, 49702, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]]
 }
