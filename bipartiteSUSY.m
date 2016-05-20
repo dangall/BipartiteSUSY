@@ -353,7 +353,7 @@ listofbsplinecurves]
 ];
 Panel[Grid[{
 {Grid[{
-{Row[{RadioButton[Dynamic[addremove],"Add"]," Add nodes  "}],Row[{RadioButton[Dynamic[addremove],"Remove"]," Remove nodes  "}],Row[{RadioButton[Dynamic[addremove],"Move"]," Move nodes  "}]},
+{Row[{RadioButton[Dynamic[addremove],"Add"]," Add nodes/lines  "}],Row[{RadioButton[Dynamic[addremove],"Remove"]," Remove nodes  "}],Row[{RadioButton[Dynamic[addremove],"Move"]," Move nodes  "}]},
 {Null,Null,Null},
 {Grid[{{" Node color: ","   Node type:   "},{RadioButtonBar[Dynamic[nodecolor],{"White","Black"},Appearance->"Vertical",Enabled->Dynamic[enablebuttons&&(addremove/.{"Add"->True,"Remove"->False,"Move"->False})]],RadioButtonBar[Dynamic[internalexternal],{"Internal","External"},Appearance->"Vertical",Enabled->Dynamic[enablebuttons&&(addremove/.{"Add"->True,"Remove"->False,"Move"->False})]]}}]}
 }(*,Frame\[Rule]All*),Spacings->{{Automatic,Automatic,Automatic,Automatic},{Automatic,0,0,Automatic}
@@ -371,8 +371,14 @@ pointcoordinatesandcolors={};
 temporarydottededge={};
 edges={};
 multiedges={};
-,ImageSize->Large],
-"haha"(*Toggler[Dynamic[edgebuttonlist],{Column[{}]\[Rule]"Remove edges:",Column[Map[Button[Sort[UndirectedEdge@@(#/.MapThread[#1\[Rule]#2&,{Join[Flatten[Position[pointcoordinatesandcolors,{_,"WI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"WE"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BE"}]]],Range[Length[pointcoordinatesandcolors]]}])],edges=Delete[edges,Position[edges,#][[1,1]]];,ImageSize\[Rule]Automatic]&,edges][[Ordering[Map[Sort,edges/.MapThread[#1\[Rule]#2&,{Join[Flatten[Position[pointcoordinatesandcolors,{_,"WI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"WE"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BE"}]]],Range[Length[pointcoordinatesandcolors]]}]]]]]]\[Rule]"Remove edges:"}]*)}
+,ImageSize->Large],"                             "
+(*Button["Remove edges:",
+If[areyoupressed==={"DialogBox"},
+edgebuttonlist=Dynamic[Column[Map[Button[Sort[UndirectedEdge@@(#/.MapThread[#1\[Rule]#2&,{Join[Flatten[Position[pointcoordinatesandcolors,{_,"WI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"WE"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BE"}]]],Range[Length[pointcoordinatesandcolors]]}])],edges=Delete[edges,Position[edges,#][[1,1]]];,ImageSize\[Rule]Automatic]&,edges][[Ordering[Map[Sort,edges/.MapThread[#1\[Rule]#2&,{Join[Flatten[Position[pointcoordinatesandcolors,{_,"WI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"WE"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BE"}]]],Range[Length[pointcoordinatesandcolors]]}]]]]]]];
+areyoupressed={"DialogBox","Pressed"};
+,edgebuttonlist=Column[{}];
+areyoupressed={"DialogBox"};
+];,Appearance\[Rule]Dynamic[areyoupressed]]*)(*Toggler[Dynamic[edgebuttonlist],{Column[{}]\[Rule]"Remove edges:",Column[Map[Button[Sort[UndirectedEdge@@(#/.MapThread[#1\[Rule]#2&,{Join[Flatten[Position[pointcoordinatesandcolors,{_,"WI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"WE"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BE"}]]],Range[Length[pointcoordinatesandcolors]]}])],edges=Delete[edges,Position[edges,#][[1,1]]];,ImageSize\[Rule]Automatic]&,edges][[Ordering[Map[Sort,edges/.MapThread[#1\[Rule]#2&,{Join[Flatten[Position[pointcoordinatesandcolors,{_,"WI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"WE"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BE"}]]],Range[Length[pointcoordinatesandcolors]]}]]]]]]\[Rule]"Remove edges:"}]*)}
 }(*,Frame\[Rule]All*)]},
 {Grid[{{EventHandler[Dynamic[Graphics[{Thickness[0.005],Line[Map[pointcoordinatesandcolors[[#,1]]&,Map[First,Cases[Tally[edges],{_,1}]]]](*These are only the edges that aren't bubbles*),Sequence@@multiedges,temporarydottededge,{Black,EdgeForm[{Thick,Black}],Map[Disk[#,0.035]&,Cases[pointcoordinatesandcolors,{_,"BI"}][[All,1]]]},{Black,EdgeForm[{Thick,Red}],Map[Disk[#,0.035]&,Cases[pointcoordinatesandcolors,{_,"BE"}][[All,1]]]},{White,EdgeForm[{Thick,Black}],Map[Disk[#,0.035]&,Cases[pointcoordinatesandcolors,{_,"WI"}][[All,1]]]},{White,EdgeForm[{Thick,Red}],Map[Disk[#,0.035]&,Cases[pointcoordinatesandcolors,{_,"WE"}][[All,1]]]},(nodenumberstext/.{True->Prepend[MapThread[Text[Style[#1,Medium],#2]&,{Sort[MapThread[{#1,#2}&,{Join[Flatten[Position[pointcoordinatesandcolors,{_,"WI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"WE"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BE"}]]],Map[ToString,Range[Length[pointcoordinatesandcolors]]]}]][[All,2]],Map[Function[{input},Block[{output},If[input<=-1.5,output=input+0.2;,If[input>=1.5,output=input-0.2;,output=input;];];output]][#]&,pointcoordinatesandcolors[[All,1]]+0.1,{2}]}],Blue],False->{}})},PlotRange->1.5,Frame->True,FrameTicks->None,ImageSize->{400,400},Background->White]],
 {"MouseClicked":> (
@@ -452,7 +458,13 @@ unclickedposition=Round[MousePosition["Graphics"],0.1]/.{z1_/;(z1>1.5)->1.5,z2_/
 pointcoordinatesandcolors=pointcoordinatesandcolors/.{oldposition->unclickedposition};
 ];
 )
-}],Pane[Dynamic[Column[Map[Button[Sort[UndirectedEdge@@(#/.MapThread[#1->#2&,{Join[Flatten[Position[pointcoordinatesandcolors,{_,"WI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"WE"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BE"}]]],Range[Length[pointcoordinatesandcolors]]}])],edges=Delete[edges,Position[edges,#][[1,1]]];,ImageSize->Automatic]&,edges][[Ordering[Map[Sort,edges/.MapThread[#1->#2&,{Join[Flatten[Position[pointcoordinatesandcolors,{_,"WI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"WE"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BE"}]]],Range[Length[pointcoordinatesandcolors]]}]]]]]]],ImageSize->{80,400},Scrollbars->{False,True},Alignment->{Left,Top}]}}(*,Frame\[Rule]All*)]},
+}],Grid[{{Button["Remove edges:",
+If[areyoupressed==={"DialogBox"},
+edgebuttonlist=Dynamic[Column[Map[Button[Sort[UndirectedEdge@@(#/.MapThread[#1->#2&,{Join[Flatten[Position[pointcoordinatesandcolors,{_,"WI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"WE"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BE"}]]],Range[Length[pointcoordinatesandcolors]]}])],edges=Delete[edges,Position[edges,#][[1,1]]];,ImageSize->Automatic]&,edges][[Ordering[Map[Sort,edges/.MapThread[#1->#2&,{Join[Flatten[Position[pointcoordinatesandcolors,{_,"WI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"WE"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BE"}]]],Range[Length[pointcoordinatesandcolors]]}]]]]]]];
+areyoupressed={"DialogBox","Pressed"};
+,edgebuttonlist=Column[{}];
+areyoupressed={"DialogBox"};
+];,Appearance->Dynamic[areyoupressed]]},{Pane[Dynamic[edgebuttonlist],ImageSize->{80,368},Scrollbars->{False,True},Alignment->{Left,Top}]}}]}}(*,Frame\[Rule]All*)]},
 {Row[{ActionMenu["Compute",
 {"Reducibility (True/False)":>(Print[reducibilityQ@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];),
 "Path Matrix":>(Print[pathMatrix@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];),
@@ -732,7 +744,7 @@ edgereductions=Map[consistentEdgeRemoval[topleft,topright,bottomleft,bottomright
 edgereductions
 ];
 
-edgeOrderings[edges_,currentedge_]:=Module[{orderings,ii},
+(*edgeOrderings[edges_,currentedge_]:=Module[{orderings,ii},
 (*Start with our current edge.*)
 orderings={Cases[edges,currentedge]};
 (*The next edge should have the structure _[currentedge[[2]],_]. There may however be multiple alternatives of this type, and not all of them are viable edge orderings that all match up. For for each alternative, try it out by adding this alternative onto {currentedge}. Ultimately we only want to keep those alternatives that match up.*)
@@ -741,6 +753,20 @@ For[ii=1,ii<Length[edges],ii++,
 orderings=MapThread[Sequence@@Function[{input1,input2},Map[Join[input1,{#}]&,input2]][#1,#2]&,{orderings,Map[Cases[Complement[edges,#],_[Last[#][[2]],_]]&,orderings]}];
 ];
 orderings=Map[RotateLeft,orderings];
+orderings
+];*)
+
+edgeOrderings[edges_,currentedge_]:=Module[{orderings,ii},
+(*Start with our current edge.*)
+(*orderings={Cases[edges,currentedge]};*)
+orderings={{edges[[1]]}};
+(*The next edge should have the structure _[currentedge[[2]],_]. There may however be multiple alternatives of this type, and not all of them are viable edge orderings that all match up. For for each alternative, try it out by adding this alternative onto {currentedge}. Ultimately we only want to keep those alternatives that match up.*)
+For[ii=1,ii<Length[edges],ii++,
+(*orderings contains a list of orderings. In each case, try and tag on another edge that makes sense. If there are none that make sense, this chain of edges wasn't a viable option for edge orderings, and this thread will get killed (because the MapThread function will take an empty list, and it will Map a Join function on each element of the empty list, which returns an empty list. "Sequence" then destroys it).*)
+orderings=MapThread[Sequence@@Function[{input1,input2},Map[Join[input1,{#}]&,input2]][#1,#2]&,{orderings,Map[Cases[Complement[edges,#],_[Last[#][[2]],_]]&,orderings]}];
+];
+(*orderings=Map[RotateLeft,orderings];*)
+orderings=Map[RotateLeft[#,Position[#,currentedge][[1,1]]]&,orderings];
 orderings
 ];
 
