@@ -475,7 +475,7 @@ areyoupressed={"DialogBox"};
 "Minors of Path Matrix \[LeftRightArrow] Perfect Matchings":>(Print[minorsAsPerfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];),
 "Planarity (True/False)":>(Print[planarityQ@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];),
 "Perfect Matchings":>(Print[perfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];)}
-,Method->"Queued"],Button["Raw data (Remove this buttom later)",Print[{pointcoordinatesandcolors,edges}];,ImageSize->Large]}]}
+,Method->"Queued"](*,Button["Raw data (Remove this buttom later)",Print[{pointcoordinatesandcolors,edges}];,ImageSize\[Rule]Large]*)}]}
 }(*,Frame\[Rule]All*),Spacings->{{Automatic,Automatic},{Automatic,0,0,Automatic,Automatic,Automatic}}],Background->LightBlue]
 ];
 
