@@ -105,7 +105,7 @@ stratificationEulerNumber::usage="Gives the Euler number of the stratification o
 matchingPolytopeBoundaries::usage="Returns a list of boundaries of the matching polytope. The elements are ordered by dimensionality, with the first element containing the top-dimensional boundaries and the last containing the zero-dimensional boundaries. Each boundary is expressed as a list of edges which are present in the graph."
 stratificationGraph::usage="Returns the graph containing the full stratification of the graph in question, with all the connectivity between the boundaries of various dimensionality. The best way to view it is to view it using the option GraphLayout\[Rule]\"LayeredDigraphEmbedding\" (the user must do this as a second step, with the graph that this function returns)."
 matchingPolytopeBoundariesGraph::usage="Returns the graph containing the full face lattive of the graph in question, with all the connectivity between the boundaries of various dimensionality. The best way to view it is to view it using the option GraphLayout\[Rule]\"LayeredDigraphEmbedding\" (the user must do this as a second step, with the graph that this function returns)."
-nonTrivialPoles::usage="Returns a list containing possible relations among Plucker coordinates that do not follow from the Plucker relations."
+(*nonTrivialPoles::usage="Returns a list containing possible relations among Plucker coordinates that do not follow from the Plucker relations."*)
 squareMove::usage="Gives the four components of the Kasteleyn matrix (the top-left, top-right, bottom-left, and bottom-right) after a square move performed on a user-specified choice of nodes. In the case of BFTs the user may choose to instead specify the face name to perform the square move on."
 (*XX::usage=""*)
 bubblesQ::usage="Tells whether there are bubbles in the diagram. The user may specify whether the diagram is a BFT under gauging 1 or not."
@@ -475,7 +475,7 @@ areyoupressed={"DialogBox"};
 "Minors of Path Matrix \[LeftRightArrow] Perfect Matchings":>(Print[minorsAsPerfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];),
 "Planarity (True/False)":>(Print[planarityQ@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];),
 "Perfect Matchings":>(Print[perfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];)}
-,Method->"Queued"](*,Button["Raw data (Remove this buttom later)",Print[{pointcoordinatesandcolors,edges}];,ImageSize\[Rule]Large]*)}]}
+,Method->"Queued"],"           ",Button["Print graph",Print[Graph[Range[Length[pointcoordinatesandcolors]],edges,VertexCoordinates->pointcoordinatesandcolors[[All,1]],VertexSize->Medium,VertexStyle->MapThread[Rule,{Range[Length[pointcoordinatesandcolors]],pointcoordinatesandcolors[[All,2]]/.{"WI"->White,"WE"->White,"BI"->Black,"BE"->Black}}],EdgeStyle->Directive[Black,Thick]]];](*,Button["Raw data (Remove this buttom later)",Print[{pointcoordinatesandcolors,edges}];,ImageSize\[Rule]Large]*)}]}
 }(*,Frame\[Rule]All*),Spacings->{{Automatic,Automatic},{Automatic,0,0,Automatic,Automatic,Automatic}}],Background->LightBlue]
 ];
 
