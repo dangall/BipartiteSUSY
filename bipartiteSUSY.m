@@ -455,7 +455,9 @@ temporarydottededge={};
 ];
 If[addremove==="Move",
 unclickedposition=Round[MousePosition["Graphics"],0.1]/.{z1_/;(z1>1.5)->1.5,z2_/;(z2<-1.5)->-1.5};
+If[Cases[pointcoordinatesandcolors,{unclickedposition,_}]==={},
 pointcoordinatesandcolors=pointcoordinatesandcolors/.{oldposition->unclickedposition};
+];
 ];
 )
 }],Grid[{{Button["Remove edges:",
