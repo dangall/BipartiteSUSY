@@ -2210,7 +2210,7 @@ removables
 matroidQ[inputmatroid_,checkneeded_:True]:=Block[{matroidcheck,matroidOK},
 matroidcheck=matroidViolationCheck[inputmatroid,checkneeded];
 If[matroidcheck=!=Null,
-matroidOK=matroidViolationCheck[inputmatroid,checkneeded]==={};
+matroidOK=(matroidcheck==={});
 ,matroidOK=Null;
 ];
 matroidOK
