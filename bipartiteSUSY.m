@@ -339,6 +339,12 @@ outputbottomleft={};
 ,outputbottomleft=Normal[SparseArray[bottomleftmatrixentries,{Length[inputpointcoordinatesandcolors],Length[inputpointcoordinatesandcolors]}]][[whiteexternals,blackinternals]];
 ];
 outputbottomright=ConstantArray[0,{Length[whiteexternals],Length[blackexternals]}];
+If[outputbottomleft==={}&&Length[outputbottomright]=!=0,
+outputbottomleft=ConstantArray[0,{Length[outputbottomright],Dimensions[outputtopleft][[2]]}];
+];
+If[Dimensions[outputtopright][[2]]==0&&Dimensions[outputbottomright][[2]]!=0,
+outputtopright=ConstantArray[0,{Length[outputtopleft],Dimensions[outputbottomright][[2]]}];
+];
 ,Print["The graph is not bipartite!"];
 {outputtopleft,outputtopright,outputbottomleft,outputbottomright}={Null,Null,Null,Null};
 ];
