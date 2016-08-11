@@ -47,6 +47,8 @@ moduliSpaceBFT::usage="Gives the moduli space of the BFT given by the Kasteleyn.
 lowNumberLoopsPMpos::usage="Returns the number of the perfect matching with lowest multiplicity, and hence the lowest number of loops in the corresponding perfect orientation."
 getOrderingExternalEdgesDefault::usage="Gives a choice of ordering of external edges, given in the form {X[i,j]\[Rule]1,X[k,l]\[Rule]2,...}. Only contains those edges which are present in the graph."
 getOrderingExternalNodesDefault::usage="Gives a choice of ordering of external nodes. Also contains external nodes with no external edge attached to it."
+getK::usage="Gives the number k in a \!\(\*SuperscriptBox[\(N\), \(k - 2\)]\)MHV on-shell diagram."
+getN::usage="Gives the number n of external particles of an on-shell diagram."
 getSourceEdges::usage="Returns a list of edges which are sources in the perfect orientation corresponding to a given reference perfect matching."
 getSinkEdges::usage="Returns a list of edges which are sinks in the perfect orientation corresponding to a given reference perfect matching."
 getSourceNodes::usage="Returns a list of nodes which are sources in the perfect orientation corresponding to a given reference perfect matching."
@@ -548,7 +550,9 @@ return
 (*General functions for bipartita analysis*)
 
 
-perfectMatchings[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False]:=perfectMatchings[topleft,topright,bottomleft,bottomright]=perfectMatchings[topleft,topright,bottomleft,bottomright,checkneeded]=perfectMatchings[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph]=Block[{checkOK,externalrows,externalcolumns,rowandcolumnnumbers,rowsmergedonleftandright,newtonpolynomial,perfectmatchigns,zz},
+perfectMatchings[topleft_,topright_,bottomleft_,bottomright_]:=perfectMatchings[topleft,topright,bottomleft,bottomright,False,False];
+perfectMatchings[topleft_,topright_,bottomleft_,bottomright_,checkneeded_]:=perfectMatchings[topleft,topright,bottomleft,bottomright,checkneeded,False];
+perfectMatchings[topleft_,topright_,bottomleft_,bottomright_,checkneeded_,BFTgraph_]:=perfectMatchings[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph]=Block[{checkOK,externalrows,externalcolumns,rowandcolumnnumbers,rowsmergedonleftandright,newtonpolynomial,perfectmatchigns,zz},
 checkOK=True;
 If[checkneeded==True,
 checkOK=getKasteleynCheckQ[topleft,topright,bottomleft,bottomright,BFTgraph];
@@ -573,7 +577,9 @@ perfectmatchigns={};
 perfectmatchigns
 ];
 
-matchingPolytope[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False]:=matchingPolytope[topleft,topright,bottomleft,bottomright]=matchingPolytope[topleft,topright,bottomleft,bottomright,checkneeded]=matchingPolytope[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph]=Block[{varlist,plist,pmatrix},
+matchingPolytope[topleft_,topright_,bottomleft_,bottomright_]:=matchingPolytope[topleft,topright,bottomleft,bottomright,False,False];
+matchingPolytope[topleft_,topright_,bottomleft_,bottomright_,checkneeded_]:=matchingPolytope[topleft,topright,bottomleft,bottomright,checkneeded,False];
+matchingPolytope[topleft_,topright_,bottomleft_,bottomright_,checkneeded_,BFTgraph_]:=matchingPolytope[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph]=Block[{varlist,plist,pmatrix},
 varlist=Variables[joinupKasteleyn[topleft,topright,bottomleft,bottomright]];
 plist=perfectMatchings[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph];
 If[plist=!=Null,
@@ -594,7 +600,9 @@ survivingcolums=Complement[Range[Dimensions[pmatrix][[2]]],Map[#[[2]]&,Position[
 survivingcolums
 ];
 
-matroidPolytope[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False]:=matroidPolytope[topleft,topright,bottomleft,bottomright]=matroidPolytope[topleft,topright,bottomleft,bottomright,checkneeded]=matroidPolytope[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph]=Block[{pmatrix,externaledges,externalrows,matroidpoly},
+matroidPolytope[topleft_,topright_,bottomleft_,bottomright_]:=matroidPolytope[topleft,topright,bottomleft,bottomright,False,False];
+matroidPolytope[topleft_,topright_,bottomleft_,bottomright_,checkneeded_]:=matroidPolytope[topleft,topright,bottomleft,bottomright,checkneeded,False];
+matroidPolytope[topleft_,topright_,bottomleft_,bottomright_,checkneeded_,BFTgraph_]:=matroidPolytope[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph]=Block[{pmatrix,externaledges,externalrows,matroidpoly},
 pmatrix=matchingPolytope[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph];
 If[pmatrix=!=Null,
 (*Only select those rows corresponding to external edges in the graph*)
@@ -609,7 +617,11 @@ matroidpoly={ConstantArray[0,Dimensions[pmatrix][[2]]]};
 matroidpoly
 ];
 
-moduliSpaceBFT[topleft_,topright_,bottomleft_,bottomright_,gauging_,checkneeded_:False,BFTgraph_:False]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{modulispace,matrixP,chargesFterm,gaugeCharge,edges,intfaces,gaugechargematrix,chargesDterm},
+moduliSpaceBFT[topleft_,topright_,bottomleft_,bottomright_,gauging_,checkneeded_:False,inputBFTgraph_:False]/;(gauging===1||gauging===2):=Block[{BFTgraph,modulispace,matrixP,chargesFterm,gaugeCharge,edges,intfaces,gaugechargematrix,chargesDterm},
+If[gauging==1,
+BFTgraph=True;
+,BFTgraph=inputBFTgraph;
+];
 If[gauging==2,
 modulispace=matroidPolytope[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph];
 ,If[gauging==1,
@@ -663,7 +675,11 @@ perfmatchnumber=Position[Transpose[matroidpoly],multiplicitypolytope[[1]][[All,O
 perfmatchnumber
 ];
 
-reducibilityBFTQ[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{oktoproceed,pmatrix,modulispace,fullspacetranspose,modulitranspose,fullspaceshort,reducibility},
+reducibilityBFTQ[topleft_,topright_,bottomleft_,bottomright_,gauging_:2,checkneeded_:False,inputBFTgraph_:False]/;(gauging===1||gauging===2):=Block[{BFTgraph,oktoproceed,pmatrix,modulispace,fullspacetranspose,modulitranspose,fullspaceshort,reducibility},
+If[gauging==1,
+BFTgraph=True;
+,BFTgraph=inputBFTgraph;
+];
 oktoproceed=True;
 If[checkneeded,
 oktoproceed=getKasteleynCheckQ[topleft,topright,bottomleft,bottomright,BFTgraph];
@@ -690,7 +706,11 @@ If[MemberQ[fullspaceshort,ConstantArray[0,Dimensions[fullspaceshort][[2]]]],redu
 reducibility
 ];
 
-reducibilityBFTedges[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{pmatrix,modulispace,fullspacetranspose,modulitranspose,fullspaceshort,problemlines,reducibilityedges},
+reducibilityBFTedges[topleft_,topright_,bottomleft_,bottomright_,gauging_:2,checkneeded_:False,inputBFTgraph_:False]/;(gauging===1||gauging===2):=Block[{BFTgraph,pmatrix,modulispace,fullspacetranspose,modulitranspose,fullspaceshort,problemlines,reducibilityedges},
+If[gauging==1,
+BFTgraph=True;
+,BFTgraph=inputBFTgraph;
+];
 pmatrix=matchingPolytope[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph];
 modulispace=moduliSpaceBFT[topleft,topright,bottomleft,bottomright,gauging,checkneeded,BFTgraph];
 If[pmatrix=!=Null&&modulispace=!=Null,
@@ -721,9 +741,13 @@ consistentedgelist=varlist[[Flatten[Position[reducedpmatrix,ConstantArray[0,Dime
 consistentedgelist
 ];
 
-reductionGraphBFT[topleft_,topright_,bottomleft_,bottomright_,gauging_,checkneeded_:False,BFTgraph_:False]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{edges,modulispace,numpointsmodulispace,comboremove,edgereductions,comboremovnextlevel,ii},
+reductionGraphBFT[topleft_,topright_,bottomleft_,bottomright_,gauging_,checkneeded_:False,inputBFTgraph_:False]/;(gauging===1||gauging===2):=Block[{BFTgraph,edges,modulispace,numpointsmodulispace,comboremove,edgereductions,comboremovnextlevel,ii},
+If[gauging==1,
+BFTgraph=True;
+,BFTgraph=inputBFTgraph;
+];
 (*First check which edges can be removed without affeting the moduli space*)
-edges=reducibilityBFTedges[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph,gauging];
+edges=reducibilityBFTedges[topleft,topright,bottomleft,bottomright,gauging,checkneeded,BFTgraph];
 If[edges=!=Null,
 (*We will want to find those sets of edges which, when removed, do not change the numnber of points in the moduli space*)
 modulispace=moduliSpaceBFT[topleft,topright,bottomleft,bottomright,gauging,False,BFTgraph];
@@ -1451,8 +1475,12 @@ doubleedges=findDoubles[newtopleft,newtopright,newbottomleft,newbottomright];
 {newtopleft,newtopright,newbottomleft,newbottomright}
 ];
 
-bubblesQ[topleft_,topright_,bottomleft_,bottomright_,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{intfacelabels,allvars,aretherebubbles,onenumber,secondnumber,thirdnumber,anynumber,firstedge,secondedge},
-If[BFTgraph&&gauging==1,
+bubblesQ[topleft_,topright_,bottomleft_,bottomright_,inputBFTgraph_:False,gauging_:2]/;(gauging===1||gauging===2):=Block[{BFTgraph,intfacelabels,allvars,aretherebubbles,onenumber,secondnumber,thirdnumber,anynumber,firstedge,secondedge},
+If[gauging==1,
+BFTgraph=True;
+,BFTgraph=inputBFTgraph;
+];
+If[gauging==1,
 (*bubbles not only have the index structure _[onenumber_,secondnumber_]+_[secondnumber_,thirdnumber_], but also secondnumber must be an internal face, and there must in total only be two variables in the Kasteleyn with this index*)
 intfacelabels=getInternalFaceLabels[topleft,topright,bottomleft,bottomright];
 allvars=Variables[joinupKasteleyn[topleft,topright,bottomleft,bottomright]];
@@ -1462,8 +1490,12 @@ aretherebubbles=MemberQ[joinupKasteleyn[topleft,topright,bottomleft,bottomright]
 aretherebubbles
 ];
 
-removeBubbles[topleft_,topright_,bottomleft_,bottomright_,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{intfacelabels,allvars,newtopleft,newtopright,newbottomleft,newbottomright,findDoubles,temporarykasteleyn,doubleedges,replacement,positioninwhichtoreplace,jj,onenumber,thirdnumber,anynumber,rowandcolumnindexsplit,firstedge},
-If[BFTgraph&&gauging==1,
+removeBubbles[topleft_,topright_,bottomleft_,bottomright_,inputBFTgraph_:False,gauging_:2]/;(gauging===1||gauging===2):=Block[{BFTgraph,intfacelabels,allvars,newtopleft,newtopright,newbottomleft,newbottomright,findDoubles,temporarykasteleyn,doubleedges,replacement,positioninwhichtoreplace,jj,onenumber,thirdnumber,anynumber,rowandcolumnindexsplit,firstedge},
+If[gauging==1,
+BFTgraph=True;
+,BFTgraph=inputBFTgraph;
+];
+If[gauging==1,
 (*we have to remove bubbles while keeping the index structure of the edges intact*)
 (*bubbles not only have the index structure _[onenumber_,secondnumber_]+_[secondnumber_,thirdnumber_], but also secondnumber must be an internal face, and there must in total only be two variables in the Kasteleyn with this index*)
 intfacelabels=getInternalFaceLabels[topleft,topright,bottomleft,bottomright];
@@ -1740,8 +1772,14 @@ doubleedges=findDoubles[newtopleft,newtopright,newbottomleft,newbottomright];
 (*Functions useful for scattering amplitudes*)
 
 
-planarityQ[topleft_,topright_,bottomleft_,bottomright_]:=
-planarityQ[topleft,topright,bottomleft,bottomright]=Block[{kasteleyn,oneskasteleyn,adjacencymat,graph,planar,externals,extnum,allperms,numberofperms,permutations,externaladjacencyseed,externaladjencyattempts,ii,testgraph},
+planarityQ[inputtopleft_,inputtopright_,inputbottomleft_,inputbottomright_]:=
+planarityQ[inputtopleft,inputtopright,inputbottomleft,inputbottomright,True];
+planarityQ[inputtopleft_,inputtopright_,inputbottomleft_,inputbottomright_,collapsebivalentnodes_]:=
+planarityQ[inputtopleft,inputtopright,inputbottomleft,inputbottomright,collapsebivalentnodes]=Block[{topleft,topright,bottomleft,bottomright,kasteleyn,oneskasteleyn,adjacencymat,graph,planar,externals,extnum,allperms,numberofperms,permutations,externaladjacencyseed,externaladjencyattempts,ii,testgraph},
+If[collapsebivalentnodes,
+{topleft,topright,bottomleft,bottomright}=collapseBivalentNodes[inputtopleft,inputtopright,inputbottomleft,inputbottomright];
+,{topleft,topright,bottomleft,bottomright}={inputtopleft,inputtopright,inputbottomleft,inputbottomright};
+];
 adjacencymat=turnIntoAdjacencyMatrix[topleft,topright,bottomleft,bottomright];
 graph=AdjacencyGraph[adjacencymat];(*We have finished making the Mathematica graph!*)
 (*If the graph can be embedded on genus zero, try and see if we can do so with only one boundary*)
@@ -1787,6 +1825,10 @@ ordering
 
 getOrderingExternalNodesDefault[topleft_,topright_,bottomleft_,bottomright_]:=Join[Range[Length[topleft]+1,Length[topleft]+Length[bottomleft]],Range[Total[Dimensions[topleft]]+Length[bottomleft]+1,Total[Dimensions[topleft]]+Length[bottomleft]+Dimensions[topright][[2]]]];
 
+getK[topleft_,topright_,bottomleft_,bottomright_]:=Total[(Map[Length[Variables[#]]&,Transpose[Join[topleft,bottomleft]]]-1)]+Length[topleft]-Length[Variables[topleft]]+Count[bottomleft,{0...}];
+
+getN[topleft_,topright_,bottomleft_,bottomright_]:=Length[bottomleft]+Dimensions[topright][[2]];
+
 getSourceEdges[topright_,bottomleft_,referenceperfmatch_]:=Block[{referencevars,sourceedges},
 referencevars=Variables[referenceperfmatch];
 (*Sources are those variables in the bottomleft that are not in referenceperfmatch, and those in topright which are*)
@@ -1817,7 +1859,8 @@ sinknodes
 
 getExternalEdgeNodeNumbers[topleft_,topright_,bottomleft_,bottomright_,externaledgelist_]:=Union[Map[#[[1]]&,Position[bottomleft,Alternatives@@externaledgelist]+Length[topleft]],Map[#[[2]]&,Position[topright,Alternatives@@externaledgelist]+Total[Dimensions[topleft]]+Length[bottomleft]]];
 
-traditionalConnectivityMatrix[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null]:=traditionalConnectivityMatrix[topleft,topright,bottomleft,bottomright,referencematching]=traditionalConnectivityMatrix[topleft,topright,bottomleft,bottomright]=Block[{perfmatchings,referenceperfmatch,kasteleyn,perfmatchvars,kastnopm,kastinvertedpm,bigmatrix,size,connectivitymat},
+traditionalConnectivityMatrix[topleft_,topright_,bottomleft_,bottomright_]:=traditionalConnectivityMatrix[topleft,topright,bottomleft,bottomright,Null];
+traditionalConnectivityMatrix[topleft_,topright_,bottomleft_,bottomright_,referencematching_]:=traditionalConnectivityMatrix[topleft,topright,bottomleft,bottomright,referencematching]=Block[{perfmatchings,referenceperfmatch,kasteleyn,perfmatchvars,kastnopm,kastinvertedpm,bigmatrix,size,connectivitymat},
 If[referencematching===Null,
 perfmatchings=perfectMatchings[topleft,topright,bottomleft,bottomright];
 If[perfmatchings=!={},
@@ -1841,7 +1884,8 @@ connectivitymat=IdentityMatrix[size];
 connectivitymat
 ];
 
-connectivityMatrix[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null]:=connectivityMatrix[topleft,topright,bottomleft,bottomright,referencematching]=connectivityMatrix[topleft,topright,bottomleft,bottomright]=Module[{perfmatchings,referenceperfmatch,kasteleyn,bigmatrix,adjacencymat,graph,connectivitymat,turnIntoContributionNoLoops,cycles,loopnodes,extraloopnodes,jj,toadd,duplnode,loopcontributions,cyclenodes,turnIntoContribution,size},
+connectivityMatrix[topleft_,topright_,bottomleft_,bottomright_]:=connectivityMatrix[topleft,topright,bottomleft,bottomright,Null];
+connectivityMatrix[topleft_,topright_,bottomleft_,bottomright_,referencematching_]:=connectivityMatrix[topleft,topright,bottomleft,bottomright,referencematching]=Module[{perfmatchings,referenceperfmatch,kasteleyn,bigmatrix,adjacencymat,graph,connectivitymat,turnIntoContributionNoLoops,cycles,loopnodes,extraloopnodes,jj,toadd,duplnode,loopcontributions,cyclenodes,turnIntoContribution,size},
 If[referencematching===Null,
 perfmatchings=perfectMatchings[topleft,topright,bottomleft,bottomright];
 If[perfmatchings=!={},
@@ -1896,8 +1940,9 @@ connectivitymat=IdentityMatrix[size];
 connectivitymat
 ];
 
-traditionalPathMatrix[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null]:=
-traditionalPathMatrix[topleft,topright,bottomleft,bottomright,referencematching]=traditionalPathMatrix[topleft,topright,bottomleft,bottomright]=Block[{perfmatchings,referenceperfmatch,bigpathmatrix,externalrows,externalcolumns,finalpathmatrix},
+traditionalPathMatrix[topleft_,topright_,bottomleft_,bottomright_]:=traditionalPathMatrix[topleft,topright,bottomleft,bottomright,Null];
+traditionalPathMatrix[topleft_,topright_,bottomleft_,bottomright_,referencematching_]:=
+traditionalPathMatrix[topleft,topright,bottomleft,bottomright,referencematching]=Block[{perfmatchings,referenceperfmatch,bigpathmatrix,externalrows,externalcolumns,finalpathmatrix},
 If[referencematching===Null,
 perfmatchings=perfectMatchings[topleft,topright,bottomleft,bottomright];
 If[perfmatchings=!={},
@@ -1919,8 +1964,9 @@ finalpathmatrix=Null;
 finalpathmatrix
 ];
 
-pathMatrix[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null]:=
-pathMatrix[topleft,topright,bottomleft,bottomright,referencematching]=pathMatrix[topleft,topright,bottomleft,bottomright]=Module[{perfmatchings,referenceperfmatch,kasteleyn,bigmatrix,adjacencymat,graph,sources,allexternalnodes,finalpathmatrix,turnIntoContributionNoLoops,cycles,loopnodes,extraloopnodes,jj,toadd,duplnode,loopcontributions,cyclenodes,turnIntoContribution},
+pathMatrix[topleft_,topright_,bottomleft_,bottomright_]:=pathMatrix[topleft,topright,bottomleft,bottomright,Null];
+pathMatrix[topleft_,topright_,bottomleft_,bottomright_,referencematching_]:=
+pathMatrix[topleft,topright,bottomleft,bottomright,referencematching]=Module[{perfmatchings,referenceperfmatch,kasteleyn,bigmatrix,adjacencymat,graph,sources,allexternalnodes,finalpathmatrix,turnIntoContributionNoLoops,cycles,loopnodes,extraloopnodes,jj,toadd,duplnode,loopcontributions,cyclenodes,turnIntoContribution},
 If[referencematching===Null,
 perfmatchings=perfectMatchings[topleft,topright,bottomleft,bottomright];
 If[perfmatchings=!={},
@@ -1979,7 +2025,7 @@ finalpathmatrix
 ];
 
 loopDenominator[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null,withsigns_:False]:=
-(*loopDenominator[topleft,topright,bottomleft,bottomright,referencematching]=loopDenominator[topleft,topright,bottomleft,bottomright]=*)Module[{perfmatchings,referenceperfmatch,kasteleyn,bigmatrix,adjacencymat,graph,turnIntoContributionNoLoops,cycles,loopnodes,extraloopnodes,jj,toadd,duplnode,loopcontributions,loopdenominator},
+Module[{perfmatchings,referenceperfmatch,kasteleyn,bigmatrix,adjacencymat,graph,turnIntoContributionNoLoops,cycles,loopnodes,extraloopnodes,jj,toadd,duplnode,loopcontributions,loopdenominator},
 If[referencematching===Null,
 perfmatchings=perfectMatchings[topleft,topright,bottomleft,bottomright];
 If[perfmatchings=!={},
@@ -2022,7 +2068,8 @@ loopdenominator=Null;
 loopdenominator
 ];
 
-minorsAsPerfectMatchings[topleft_,topright_,bottomleft_,bottomright_,referencematching_:Null]:=minorsAsPerfectMatchings[topleft,topright,bottomleft,bottomright]=minorsAsPerfectMatchings[topleft,topright,bottomleft,bottomright,referencematching]=Block[{perfmatchings,referenceperfmatch,pathmat,minors,loopdenominator,truemapminortoperfmatch},
+minorsAsPerfectMatchings[topleft_,topright_,bottomleft_,bottomright_]:=minorsAsPerfectMatchings[topleft,topright,bottomleft,bottomright,Null];
+minorsAsPerfectMatchings[topleft_,topright_,bottomleft_,bottomright_,referencematching_]:=minorsAsPerfectMatchings[topleft,topright,bottomleft,bottomright,referencematching]=Block[{perfmatchings,referenceperfmatch,pathmat,minors,loopdenominator,truemapminortoperfmatch},
 (*If we haven't selected a specific perfect matching, choose one with lowest possible multiplicity*)
 If[referencematching===Null,
 perfmatchings=perfectMatchings[topleft,topright,bottomleft,bottomright];
@@ -2059,7 +2106,12 @@ tangentspacedim=MatrixRank[Table[D[minorexpressions[[iii]],minorvars[[jjj]]],{ii
 tangentspacedim
 ];
 
-reducibilityQ[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{oktoproceed,edgesnaivereducibility,reducibility,pmatrix,numsources,numexternalnodes,maxpossibledimension,dimensionP,dimgrassmannian,dimafteredgeremoval,ii},(*First need to find out which columns are the same point in the moduli space*)
+reducibilityQ[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,inputBFTgraph_:False,gauging_:2]/;(gauging===1||gauging===2):=Block[{BFTgraph,oktoproceed,edgesnaivereducibility,reducibility,pmatrix,numsources,numexternalnodes,maxpossibledimension,dimensionP,dimgrassmannian,dimafteredgeremoval,ii},
+If[gauging==1,
+BFTgraph=True;
+,BFTgraph=inputBFTgraph;
+];
+(*First need to find out which columns are the same point in the moduli space*)
 oktoproceed=True;
 If[checkneeded,
 oktoproceed=getKasteleynCheckQ[topleft,topright,bottomleft,bottomright,BFTgraph];
@@ -2067,7 +2119,7 @@ oktoproceed=getKasteleynCheckQ[topleft,topright,bottomleft,bottomright,BFTgraph]
 If[oktoproceed,
 If[bubblesQ[topleft,topright,bottomleft,bottomright,BFTgraph,gauging]===True,(*if there are bubbles, the graph is definitely reducible*)
 reducibility=True;
-,edgesnaivereducibility=reducibilityBFTedges[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph,gauging];
+,edgesnaivereducibility=reducibilityBFTedges[topleft,topright,bottomleft,bottomright,gauging,checkneeded,BFTgraph];
 If[edgesnaivereducibility===Null,
 reducibility=Null;(*there was some problem with the Kasteleyn*)
 ,If[edgesnaivereducibility==={},
@@ -2112,8 +2164,13 @@ Break[]
 reducibility
 ];
 
-reducibilityEdges[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{edgesnaivereducibility,reducibilityedgelist,dimgrassmannian,dimafteredgeremoval,ii},(*First need to find out which columns are the same point in the moduli space*)
-edgesnaivereducibility=reducibilityBFTedges[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph,gauging];
+reducibilityEdges[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,inputBFTgraph_:False,gauging_:2]/;(gauging===1||gauging===2):=Block[{BFTgraph,edgesnaivereducibility,reducibilityedgelist,dimgrassmannian,dimafteredgeremoval,ii},
+If[gauging==1,
+BFTgraph=True;
+,BFTgraph=inputBFTgraph;
+];
+(*First need to find out which columns are the same point in the moduli space*)
+edgesnaivereducibility=reducibilityBFTedges[topleft,topright,bottomleft,bottomright,gauging,checkneeded,BFTgraph];
 If[edgesnaivereducibility===Null,
 reducibilityedgelist=Null;(*there was some problem with the Kasteleyn*)
 ,If[edgesnaivereducibility==={},
@@ -2132,7 +2189,11 @@ reducibilityedgelist=Cases[edgesnaivereducibility,zz_/;dimensionGrassmannian[top
 reducibilityedgelist
 ];
 
-reductionGraph[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{naivereductionedges,reductionedges,dimgrassmannian},
+reductionGraph[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,inputBFTgraph_:False,gauging_:2]/;(gauging===1||gauging===2):=Block[{BFTgraph,naivereductionedges,reductionedges,dimgrassmannian},
+If[gauging==1,
+BFTgraph=True;
+,BFTgraph=inputBFTgraph;
+];
 naivereductionedges=reductionGraphBFT[topleft,topright,bottomleft,bottomright,gauging,checkneeded,BFTgraph];
 If[naivereductionedges=!=Null,
 If[naivereductionedges==={},
@@ -2157,7 +2218,7 @@ fullreducibility=reducibilityQ[topleft,topright,bottomleft,bottomright,checkneed
 If[fullreducibility=!=Null,
 If[reducibilityQ[topleft,topright,bottomleft,bottomright,checkneeded]==False,
 (*If the graph is reduced but the naive reducibility tells you that it's possible to remove edges without killing any Plucker coordinates, it means that some poles are nonstandard poles, i.e. that they aren't simply products of Plucker coordinates*)
-nonstandardpoles=reducibilityBFTQ[topleft,topright,bottomleft,bottomright,checkneeded];
+nonstandardpoles=reducibilityBFTQ[topleft,topright,bottomleft,bottomright,2,checkneeded];
 ,Print["Need to start with a reduced graph."];
 nonstandardpoles=Null;
 ];
@@ -2166,7 +2227,11 @@ nonstandardpoles=Null;
 nonstandardpoles
 ];
 
-removableEdges[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{startingpointbad,removables,varlist,varstotryout,quickReducibility,fullpmatrix,dimpmatrix,fullmodulispace,survivingperfmatchings,survivingrows,reducibilities},
+removableEdges[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,inputBFTgraph_:False,gauging_:2]/;(gauging===1||gauging===2):=Block[{BFTgraph,startingpointbad,removables,varlist,varstotryout,quickReducibility,fullpmatrix,dimpmatrix,fullmodulispace,survivingperfmatchings,survivingrows,reducibilities},
+If[gauging==1,
+BFTgraph=True;
+,BFTgraph=inputBFTgraph;
+];
 startingpointbad=False;
 If[checkneeded,
 startingpointbad=reducibilityQ[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph,gauging];
@@ -2178,7 +2243,7 @@ removables=Null;
 ,(*We need to try to remove in turn each of the edges of the graph, and check whether the resulting graph is reducible*)
 varlist=Variables[joinupKasteleyn[topleft,topright,bottomleft,bottomright]];
 varstotryout=DeleteDuplicates[Map[consistentEdgeRemoval[topleft,topright,bottomleft,bottomright,{#},False,BFTgraph]&,varlist]];
-(*If we have a BFT graph, or a planar scattering graph, or a nonplanar scattering graph with no non-standard poles, we may use the moduli space / matroid polytope to determine reducibility.*)
+(*If we have a BFT graph, or a planar scattering graph, we may use the moduli space / matroid polytope to determine reducibility.*)
 If[BFTgraph||planarityQ[topleft,topright,bottomleft,bottomright],
 (*Create a function that can give the reducibility of a given P-matrix with its corresponding moduli space / matroid polytope*)
 quickReducibility=Function[{pmatrix,modulispace},
@@ -2859,7 +2924,11 @@ ordering=Null;
 ordering
 ];
 
-stratificationBoundaries[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{checkOK,stratification,xlistandPmatrix,modulispace,startingplanarity,removable,topdim,varlist,makeDaughterGraphs,planarReducibility,tofixlevels,maxnonplanardimension,level,nonplanarpositions,planarboundaries,nonplanarboundaries,templevel,boundarykillededges,newplanarity,planarpositions,fix,identremovable,patternidentremovable,dim,locationofparents,thislevelspositions},
+stratificationBoundaries[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,inputBFTgraph_:False,gauging_:2]/;(gauging===1||gauging===2):=Block[{BFTgraph,checkOK,stratification,xlistandPmatrix,modulispace,startingplanarity,removable,topdim,varlist,makeDaughterGraphs,planarReducibility,tofixlevels,maxnonplanardimension,level,nonplanarpositions,planarboundaries,nonplanarboundaries,templevel,boundarykillededges,newplanarity,planarpositions,fix,identremovable,patternidentremovable,dim,locationofparents,thislevelspositions},
+If[gauging==1,
+BFTgraph=True;
+,BFTgraph=inputBFTgraph;
+];
 checkOK=True;
 If[checkneeded==True,
 checkOK=getKasteleynCheckQ[topleft,topright,bottomleft,bottomright,BFTgraph];
@@ -2892,7 +2961,7 @@ daughters=Table[{DeleteCases[pmat[[All,Prepend[pmstokeep[[jjj]],1]]],Prepend[Con
 daughters
 ]
 ];
-(*After making allsubgraphs, we'll keep only those whose dimension has decreased by one. Furthermore, since we're unltimately only interested in reduced graphs, we'll remove those that are reducible. planarReducibility is able to take a planar case and tell you its reducibility very fast.*)
+(*After making allsubgraphs, we'll keep only those whose dimension has decreased by one. Furthermore, since we're ultimately only interested in reduced graphs, we'll remove those that are reducible. planarReducibility is able to take a planar case and tell you its reducibility very fast.*)
 planarReducibility=Function[{pmatrix,modulispace},
 Block[{pmatrixtranspose,modulitranspose,pmatrixshort,reducib},
 If[pmatrix==={},
@@ -2903,8 +2972,8 @@ pmatrixshort=Transpose[Map[Times@@pmatrixtranspose[[Flatten[Position[modulitrans
 If[MemberQ[pmatrixshort,ConstantArray[0,Dimensions[pmatrixshort][[2]]]],reducib=True;,reducib=False;];];
 reducib]
 ];
-(*Now we'll go through each level, starting from the top-dimensional one and working our way down, and first contruct the face lattice, and then remove those elements which are reducible.*)
-(*Sometimes a level only contains reducible boundaries. In these cases we'll eliminate the reducible examples in a second step*)
+(*Now we'll go through each level, starting from the top-dimensional one and working our way down, and first construct the face lattice, and then remove those elements which are reducible.*)
+(*Sometimes (when the starting graph is reducible) a level only contains reducible boundaries. In these cases we'll eliminate the reducible examples in a second step*)
 (*We'll start by assessing the reducibility of the starting point. If it's planar, we may use the fast way. Otherwise we'll need to use the dimension of the Grassmannian.*)
 If[BFTgraph||startingplanarity,
 If[planarReducibility[Drop[removable[0][[1,1]],None,{1}],removable[0][[1,2]]]===False,
@@ -2989,7 +3058,11 @@ stratification=Table[identremovable[iii],{iii,0,topdim}];
 stratification
 ];
 
-stratificationNumbers[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{checkOK,stratification,stratificationnumbers},
+stratificationNumbers[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,inputBFTgraph_:False,gauging_:2]/;(gauging===1||gauging===2):=Block[{BFTgraph,checkOK,stratification,stratificationnumbers},
+If[gauging==1,
+BFTgraph=True;
+,BFTgraph=inputBFTgraph;
+];
 checkOK=True;
 If[checkneeded==True,
 checkOK=getKasteleynCheckQ[topleft,topright,bottomleft,bottomright,BFTgraph];
@@ -3002,7 +3075,11 @@ stratificationnumbers=Map[Length,stratification];
 stratificationnumbers
 ];
 
-stratificationEulerNumber[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{checkOK,eulernumber,stratificationnumbers},
+stratificationEulerNumber[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,inputBFTgraph_:False,gauging_:2]/;(gauging===1||gauging===2):=Block[{BFTgraph,checkOK,eulernumber,stratificationnumbers},
+If[gauging==1,
+BFTgraph=True;
+,BFTgraph=inputBFTgraph;
+];
 checkOK=True;
 If[checkneeded==True,
 checkOK=getKasteleynCheckQ[topleft,topright,bottomleft,bottomright,BFTgraph];
@@ -3051,7 +3128,11 @@ facelattice=Map[#[[All,1]]&,Table[facelatticeboundaries[iii],{iii,0,topdim}],{2}
 facelattice
 ];
 
-stratificationGraph[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False,gauging_:2]/;(gauging===1&&BFTgraph===True||gauging===2):=Block[{checkOK,stratificationgraph,xlistandPmatrix,modulispace,startingplanarity,removable,topdim,varlist,makeDaughterGraphs,planarReducibility,tofixlevels,maxnonplanardimension,level,nonplanarpositions,templevel,boundarykillededges,newplanarity,planarpositions,planarboundaries,nonplanarboundaries,fix,identremovable,patternidentremovable,dim,locationofparents,thislevelspositions,identifiedboundaries,newlayer,alllayers,totalnumberofboundaries,tochangeposition,tokeeprowsandcolumns,adjacencymatrix},
+stratificationGraph[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,inputBFTgraph_:False,gauging_:2]/;(gauging===1||gauging===2):=Block[{BFTgraph,checkOK,stratificationgraph,xlistandPmatrix,modulispace,startingplanarity,removable,topdim,varlist,makeDaughterGraphs,planarReducibility,tofixlevels,maxnonplanardimension,level,nonplanarpositions,templevel,boundarykillededges,newplanarity,planarpositions,planarboundaries,nonplanarboundaries,fix,identremovable,patternidentremovable,dim,locationofparents,thislevelspositions,identifiedboundaries,newlayer,alllayers,totalnumberofboundaries,tochangeposition,tokeeprowsandcolumns,adjacencymatrix},
+If[gauging==1,
+BFTgraph=True;
+,BFTgraph=inputBFTgraph;
+];
 checkOK=True;
 If[checkneeded==True,
 checkOK=getKasteleynCheckQ[topleft,topright,bottomleft,bottomright,BFTgraph];
