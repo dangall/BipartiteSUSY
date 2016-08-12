@@ -484,6 +484,7 @@ areyoupressed={"DialogBox"};
 "Non-standard Poles (True/False)":>(Print[nonPluckerPolesQ@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];),
 "Minors of Path Matrix \[LeftRightArrow] Perfect Matchings":>(Print[minorsAsPerfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];),
 "Planarity (True/False)":>(Print[planarityQ@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];),
+"Helicity k":>(Print[getK@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];),
 "Perfect Matchings":>(Print[perfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];)}
 ,Method->"Queued"],"           ",Button["Print graph",Print[Graph[Range[Length[pointcoordinatesandcolors]],edges,VertexCoordinates->pointcoordinatesandcolors[[All,1]],VertexSize->Medium,VertexStyle->MapThread[Rule,{Range[Length[pointcoordinatesandcolors]],pointcoordinatesandcolors[[All,2]]/.{"WI"->White,"WE"->White,"BI"->Black,"BE"->Black}}],EdgeStyle->Directive[Black,Thick]]];](*,Button["Raw data (Remove this buttom later)",Print[{pointcoordinatesandcolors,edges}];,ImageSize\[Rule]Large]*)}]}
 }(*,Frame\[Rule]All*),Spacings->{{Automatic,Automatic},{Automatic,0,0,Automatic,Automatic,Automatic}}],Background->LightBlue]
@@ -1796,7 +1797,7 @@ permutations=Map[Append[#,extnum]&,allperms[[DeleteDuplicates[MapThread[Sort[{#1
 If[permutations[[1]]==={1,2},
 externaladjacencyseed={{0,1},{1,0}};
 ,If[permutations[[1]]==={1},
-externaladjacencyseed={1};
+externaladjacencyseed={{1}};
 ,externaladjacencyseed=Normal[AdjacencyMatrix[PathGraph[Prepend[permutations[[1]],extnum]]]];
 ];
 ];
@@ -2132,7 +2133,7 @@ reducibility=True;
 pmatrix=matchingPolytope[topleft,topright,bottomleft,bottomright];
 If[Dimensions[pmatrix][[2]]==0&&Length[pmatrix]>0,
 reducibility=True;
-,numsources=Length[getSourceNodes[topleft,topright,bottomleft,bottomright,perfectMatchings[topleft,topright,bottomleft,bottomright][[1]]]];
+,numsources=getK[topleft,topright,bottomleft,bottomright];
 numexternalnodes=Length[bottomleft]+Length[Transpose[topright]];
 maxpossibledimension=numsources(numexternalnodes-numsources);
 dimensionP=dimensionPolytope[pmatrix];
@@ -2434,7 +2435,7 @@ permutations=Map[Append[#,extnum]&,allperms[[DeleteDuplicates[MapThread[Sort[{#1
 If[permutations[[1]]==={1,2},
 externaladjacencyseed={{0,1},{1,0}};
 ,If[permutations[[1]]==={1},
-externaladjacencyseed={1};
+externaladjacencyseed={{1}};
 ,externaladjacencyseed=Normal[AdjacencyMatrix[PathGraph[Prepend[permutations[[1]],extnum]]]];
 ];
 ];
@@ -2844,7 +2845,7 @@ permutations=Map[Append[#,extnum]&,allperms[[DeleteDuplicates[MapThread[Sort[{#1
 If[permutations[[1]]==={1,2},
 externaladjacencyseed={{0,1},{1,0}};
 ,If[permutations[[1]]==={1},
-externaladjacencyseed={1};
+externaladjacencyseed={{1}};
 ,externaladjacencyseed=Normal[AdjacencyMatrix[PathGraph[Prepend[permutations[[1]],extnum]]]];
 ];
 ];
@@ -2895,7 +2896,7 @@ permutations=Map[Append[#,extnum]&,allperms[[DeleteDuplicates[MapThread[Sort[{#1
 If[permutations[[1]]==={1,2},
 externaladjacencyseed={{0,1},{1,0}};
 ,If[permutations[[1]]==={1},
-externaladjacencyseed={1};
+externaladjacencyseed={{1}};
 ,externaladjacencyseed=Normal[AdjacencyMatrix[PathGraph[Prepend[permutations[[1]],extnum]]]];
 ];
 ];
