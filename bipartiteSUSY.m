@@ -266,7 +266,7 @@ drawGraph[topleft_:{},topright_:{},bottomleft_:{},bottomright_:{}]/;(Head[toplef
 If[{topleft,topright,bottomleft,bottomright}=!={{},{},{},{}},
 graph=AdjacencyGraph[turnIntoAdjacencyMatrix[topleft,topright,bottomleft,bottomright]];
 userspecifiednodes=MapThread[{#1,#2}&,{GraphEmbedding[graph],Range[Length[GraphEmbedding[graph]]]}];
-nodenumbertotype=Join[Map[#->"WI"&,Range[Length[topleft]]],Map[#->"WE"&,Range[Length[topleft]+1,Length[topleft]+Length[bottomleft]]],Map[#->"BI"&,Range[Length[topleft]+Length[bottomleft]+1,Total[Dimensions[topleft]]+Length[bottomleft]]],Map[#->"BE"&,Range[Total[Dimensions[topleft]]+Length[bottomleft]+1,Total[Dimensions[topleft]]+Length[bottomleft]+Dimensions[topright][[2]]]]];
+nodenumbertotype=Join[Map[#->"WI"&,Range[Length[topleft]]],Map[#->"WE"&,Range[Length[topleft]+1,Length[topleft]+Length[bottomleft]]],Map[#->"BI"&,Range[Length[topleft]+Length[bottomleft]+1,Total[Dimensions[Join[topleft,bottomleft]]]]],Map[#->"BE"&,Range[Total[Dimensions[Join[topleft,bottomleft]]]+1,Total[Dimensions[Join[topleft,bottomleft]]]+Dimensions[Join[topright,bottomright]][[2]]]]];
 userspecifiednodes[[All,2]]=userspecifiednodes[[All,2]]/.nodenumbertotype;
 userspecifiededges=EdgeList[graph]/.UndirectedEdge->List;
 xaxisvalues=userspecifiednodes[[All,1,1]];
@@ -515,7 +515,7 @@ kasteleyn=joinupKasteleyn[topleft,topright,bottomleft,bottomright];
 tocheck=kasteleyn[[Range[Length[topleft]]]];
 rowsOK=Map[(#[[1]]-#[[2]])===ConstantArray[0,Length[#[[1]]]]&,Map[Sort,Map[Transpose,DeleteCases[Map[{#[[1]],#[[2]]}&,Map[Variables,tocheck],{2}],{}]],{2}]];
 (*Now check the columns of the Kasteleyn matrix corresponding to internal black nodes*)
-tocheck=Transpose[kasteleyn[[All,Range[Dimensions[topleft][[2]]]]]];
+tocheck=Transpose[kasteleyn[[All,Range[Dimensions[Join[topleft,bottomleft]][[2]]]]]];
 columnsOK=Map[(#[[1]]-#[[2]])===ConstantArray[0,Length[#[[1]]]]&,Map[Sort,Map[Transpose,DeleteCases[Map[{#[[1]],#[[2]]}&,Map[Variables,tocheck],{2}],{}]],{2}]];
 consistencyviolation={Flatten[Position[rowsOK,False]],Flatten[Position[columnsOK,False]]};
 ,consistencyviolation=Null;
@@ -559,11 +559,13 @@ If[checkneeded==True,
 checkOK=getKasteleynCheckQ[topleft,topright,bottomleft,bottomright,BFTgraph];
 ];
 If[checkOK==True,
-(*get all subsets of rows in bottomleft, and columns in topright*)
+If[Length[topleft]+Length[bottomleft]==0,
+perfectmatchigns={};
+,(*get all subsets of rows in bottomleft, and columns in topright*)
 externalrows=Subsets[Range[Length[bottomleft]]];
-externalcolumns=Subsets[Range[Length[Transpose[topright]]]];
+externalcolumns=Subsets[Range[Dimensions[Join[topright,bottomright]][[2]]]];
 (*Put these choices together, and only include those combinations that, when joined with topleft, leave a square matrix*)
-rowandcolumnnumbers=Cases[Tuples[{externalrows,externalcolumns}],z_/;Equal@@(Map[Length,z]+Dimensions[topleft])];
+rowandcolumnnumbers=Cases[Tuples[{externalrows,externalcolumns}],z_/;Equal@@(Map[Length,z]+{Length[topleft],Dimensions[Join[topleft,bottomleft]][[2]]})];
 (*For each case, merge topleft and the chosen rows of bottonleft. Also, merge the chosen columns of topright with the chosen columns and rows of bottomright.*)
 rowsmergedonleftandright=Map[{Join[topleft,bottomleft[[#[[1]]]]],Join[topright[[All,#[[2]]]],bottomright[[#[[1]],#[[2]]]]]}&,rowandcolumnnumbers];
 (*Now merge each case into a square matrix and compute its determinant. Then add up all the determinants.*)
@@ -572,6 +574,7 @@ newtonpolynomial=Total[Map[Det[Join[#[[1]],#[[2]],2]]&,rowsmergedonleftandright]
 perfectmatchigns=Sort[MonomialList[newtonpolynomial]/.{Times[-1,zz_]->Times[zz]}];
 If[perfectmatchigns==={0},(*in case there are no perfect matchings*)
 perfectmatchigns={};
+];
 ];
 ,perfectmatchigns=Null;
 ];
@@ -1519,7 +1522,7 @@ temporarykasteleyn=ReplacePart[temporarykasteleyn,positioninwhichtoreplace[[jj]]
 doubleedges=findDoubles[temporarykasteleyn];
 ];
 (*Now the duplicates are removed in temporarykasteleyn. We have to now split up this matrix into the four blocks corresponding to the top-left, top-right, bottom-left and bottom-right parts of the Kasteleyn.*)
-rowandcolumnindexsplit=Map[PadRight[#,2,{{}}]&,MapThread[{#1,#2}&,{Map[Range[#]&,Dimensions[newtopleft]],Map[Range[#]&,Dimensions[temporarykasteleyn]-Dimensions[newtopleft]]+Dimensions[newtopleft]}]];
+rowandcolumnindexsplit=Map[PadRight[#,2,{{}}]&,MapThread[{#1,#2}&,{Map[Range[#]&,{Length[newtopleft],Dimensions[Join[newtopleft,newbottomleft]][[2]]}],Map[Range[#]&,Dimensions[temporarykasteleyn]-{Length[newtopleft],Dimensions[Join[newtopleft,newbottomleft]][[2]]}]+{Length[newtopleft],Dimensions[Join[newtopleft,newbottomleft]][[2]]}}]];
 {newtopleft,newtopright,newbottomleft,newbottomright}=Map[temporarykasteleyn[[Sequence@@#]]&,Tuples[rowandcolumnindexsplit]];
 ,(*if we have a scattering graph or a BFT under gauging 2, any two nodes connected by more than one edge count as forming a bubble. We'll thus only keep one of these edges.*)
 {newtopleft,newtopright,newbottomleft,newbottomright}={topleft,topright,bottomleft,bottomright}/.{firstedge_+secondedge_+___->firstedge};
@@ -1609,7 +1612,7 @@ collapseWhiteNodesInternalInternal[inputtopleft_,inputtopright_,inputbottomleft_
 {outputtopleft,outputtopright,outputbottomleft,outputbottomright}={inputtopleft,inputtopright,inputbottomleft,inputbottomright};
 If[Length[outputtopleft]>0||Length[outputtopright]>0,(*we have internal white nodes (which could potentially be bivalent)*)
 kasteleyn=joinupKasteleyn[inputtopleft,inputtopright,inputbottomleft,inputbottomright];
-reducedkasteleyn=(kasteleyn//.{rowsbefore___,{firstzeros:0...,Except[0|somedge1_+anotheredge1_+___,firstedge_],secondzeros:0...,Except[0|somedge2_+anotheredge2_+___,secondedge_],thirdzeros:0...,Sequence@@ConstantArray[0,Dimensions[inputtopright][[2]]]},rowsafter___}:>Join[{rowsbefore,rowsafter}[[All,Join[Range[Length[{firstzeros}]],Range[Length[{firstzeros}]+2,Length[{firstzeros,secondzeros}]+1],Range[Length[{firstzeros,secondzeros}]+3,Length[{firstzeros,secondzeros,thirdzeros}]+2]]]],Map[{Total[#]}&,{rowsbefore,rowsafter}[[All,{Length[{firstzeros}]+1,Length[{firstzeros,secondzeros}]+2}]]],{rowsbefore,rowsafter}[[All,Range[Length[{firstzeros,secondzeros,thirdzeros}]+3,Length[{rowsbefore,rowsafter}[[1]]]]]],2]);
+reducedkasteleyn=(kasteleyn//.{rowsbefore___,{firstzeros:0...,Except[0|somedge1_+anotheredge1_+___,firstedge_],secondzeros:0...,Except[0|somedge2_+anotheredge2_+___,secondedge_],thirdzeros:0...,Sequence@@ConstantArray[0,Dimensions[Join[inputtopright,inputbottomright]][[2]]]},rowsafter___}:>Join[{rowsbefore,rowsafter}[[All,Join[Range[Length[{firstzeros}]],Range[Length[{firstzeros}]+2,Length[{firstzeros,secondzeros}]+1],Range[Length[{firstzeros,secondzeros}]+3,Length[{firstzeros,secondzeros,thirdzeros}]+2]]]],Map[{Total[#]}&,{rowsbefore,rowsafter}[[All,{Length[{firstzeros}]+1,Length[{firstzeros,secondzeros}]+2}]]],{rowsbefore,rowsafter}[[All,Range[Length[{firstzeros,secondzeros,thirdzeros}]+3,Length[{rowsbefore,rowsafter}[[1]]]]]],2]);
 bottomrightrownum=Length[inputbottomright];
 bottomrightcolnum=Dimensions[Join[inputtopright,inputbottomright]][[2]];
 outputtopleft=reducedkasteleyn[[;;-(bottomrightrownum+1),;;-(bottomrightcolnum+1)]];
@@ -1647,7 +1650,7 @@ collapseWhiteNodesInternalExternal[inputtopleft_,inputtopright_,inputbottomleft_
 {outputtopleft,outputtopright,outputbottomleft,outputbottomright}={inputtopleft,inputtopright,inputbottomleft,inputbottomright};
 If[Length[outputtopleft]>0||Length[outputtopright]>0,(*we have internal white nodes (which could potentially be bivalent)*)
 kasteleyn=joinupKasteleyn[inputtopleft,inputtopright,inputbottomleft,inputbottomright];
-bivalentwhitenodes=DeleteCases[Cases[kasteleyn,{0...,Except[0|somedge_+anotheredge_+___],0...,Except[0|somedge_+anotheredge_+___],0...}],{Sequence@@ConstantArray[0,Dimensions[inputtopleft][[2]]],Sequence@@ConstantArray[_,Dimensions[inputtopright][[2]]]}];
+bivalentwhitenodes=DeleteCases[Cases[kasteleyn,{0...,Except[0|somedge_+anotheredge_+___],0...,Except[0|somedge_+anotheredge_+___],0...}],{Sequence@@ConstantArray[0,Dimensions[Join[inputtopleft,inputbottomleft]][[2]]],Sequence@@ConstantArray[_,Dimensions[Join[inputtopright,inputbottomright]][[2]]]}];
 (*we found the bivalent nodes we're looking for. We now need to move these rows into the bottom-left part of the kasteleyn, and remove the columns associated to the external nodes we're throwing away.*)
 If[bivalentwhitenodes=!={},
 kasteleyn=Join[Cases[kasteleyn,Except[Alternatives@@bivalentwhitenodes]],bivalentwhitenodes];
@@ -1746,18 +1749,18 @@ positioninwhichtoreplace=Map[Position[joinupKasteleyn[newtopleft,newtopright,new
 For[jj=1,jj<=Length[replacement],jj++,
 If[positioninwhichtoreplace[[jj,1]]<=Length[newtopleft],
 (*we need to replace either newtopleft or newtopright*)
-If[positioninwhichtoreplace[[jj,2]]<=Dimensions[newtopleft][[2]],
+If[positioninwhichtoreplace[[jj,2]]<=Dimensions[Join[newtopleft,newbottomleft]][[2]],
 (*we need to replace newtopleft*)
 newtopleft=ReplacePart[newtopleft,positioninwhichtoreplace[[jj]]->replacement[[jj]]];
 ,(*we need to replace newtopright*)
-newtopright=ReplacePart[newtopright,(positioninwhichtoreplace[[jj]]-{0,Dimensions[newtopleft][[2]]})->replacement[[jj]]];
+newtopright=ReplacePart[newtopright,(positioninwhichtoreplace[[jj]]-{0,Dimensions[Join[newtopleft,newbottomleft]][[2]]})->replacement[[jj]]];
 ];
 ,(*we need to replace either newbottomleft or newbottomright*)
-If[positioninwhichtoreplace[[jj,2]]<=Dimensions[newtopleft][[2]],
+If[positioninwhichtoreplace[[jj,2]]<=Dimensions[Join[newtopleft,newbottomleft]][[2]],
 (*we need to replace newbottomleft*)
 newbottomleft=ReplacePart[newbottomleft,(positioninwhichtoreplace[[jj]]-{Length[newtopleft],0})->replacement[[jj]]];
 ,(*we need to replace newbottomright*)
-newbottomright=ReplacePart[newbottomright,(positioninwhichtoreplace[[jj]]-{Length[newtopleft],Dimensions[newtopleft][[2]]})->replacement[[jj]]];
+newbottomright=ReplacePart[newbottomright,(positioninwhichtoreplace[[jj]]-{Length[newtopleft],Dimensions[Join[newtopleft,newbottomleft]][[2]]})->replacement[[jj]]];
 ];
 ];
 ];
@@ -1786,7 +1789,7 @@ graph=AdjacencyGraph[adjacencymat];(*We have finished making the Mathematica gra
 (*If the graph can be embedded on genus zero, try and see if we can do so with only one boundary*)
 planar=False;(*assume the graph is non-planar until proven otherwise*)
 If[PlanarGraphQ[graph],
-externals=Join[Range[Length[topleft]+1,Length[topleft]+Length[bottomleft]],Range[Total[Dimensions[topleft]]+Length[bottomleft]+1,Total[Dimensions[topleft]]+Length[bottomleft]+Dimensions[topright][[2]]]];(*These are the node numbers corresponding to external nodes*)
+externals=Join[Range[Length[topleft]+1,Length[topleft]+Length[bottomleft]],Range[Total[Dimensions[Join[topleft,bottomleft]]]+1,Total[Dimensions[Join[topleft,bottomleft]]]+Dimensions[Join[topright,bottomright]][[2]]]];(*These are the node numbers corresponding to external nodes*)
 extnum=Length[externals];
 If[extnum>0,
 (*We will now try and form a single external boundary by connecting up all external nodes sequentially*)
@@ -1824,11 +1827,11 @@ ordering=Map[#[[1,1]]->#[[2]]&,DeleteCases[MapThread[Rule,{Map[Variables[bigkast
 ordering
 ];
 
-getOrderingExternalNodesDefault[topleft_,topright_,bottomleft_,bottomright_]:=Join[Range[Length[topleft]+1,Length[topleft]+Length[bottomleft]],Range[Total[Dimensions[topleft]]+Length[bottomleft]+1,Total[Dimensions[topleft]]+Length[bottomleft]+Dimensions[topright][[2]]]];
+getOrderingExternalNodesDefault[topleft_,topright_,bottomleft_,bottomright_]:=Join[Range[Length[topleft]+1,Length[topleft]+Length[bottomleft]],Range[Total[Dimensions[Join[topleft,bottomleft]]]+1,Total[Dimensions[Join[topleft,bottomleft]]]+Dimensions[Join[topright,bottomright]][[2]]]];
 
 getK[topleft_,topright_,bottomleft_,bottomright_]:=Total[(Map[Length[Variables[#]]&,Transpose[Join[topleft,bottomleft]]]-1)]+Length[topleft]-Length[Variables[topleft]]+Count[bottomleft,{0...}];
 
-getN[topleft_,topright_,bottomleft_,bottomright_]:=Length[bottomleft]+Dimensions[topright][[2]];
+getN[topleft_,topright_,bottomleft_,bottomright_]:=Length[bottomleft]+Dimensions[Join[topright,bottomright]][[2]];
 
 getSourceEdges[topright_,bottomleft_,referenceperfmatch_]:=Block[{referencevars,sourceedges},
 referencevars=Variables[referenceperfmatch];
@@ -1847,18 +1850,18 @@ sinkedges
 getSourceNodes[topleft_,topright_,bottomleft_,bottomright_,referenceperfmatch_]:=Block[{referencevars,sourcenodes},
 referencevars=Variables[referenceperfmatch];
 (*Sources are those nodes in the bottomleft that do not have variables in referenceperfmatch, and those in topright which do*)
-sourcenodes=Union[Flatten[Position[Transpose[topright],{___,Alternatives@@referencevars,___}]]+Total[Dimensions[topleft]]+Length[bottomleft],Length[topleft]+Complement[Range[Length[bottomleft]],Flatten[Position[bottomleft,{___,Alternatives@@referencevars,___}]]]];
+sourcenodes=Union[Flatten[Position[Transpose[topright],{___,Alternatives@@referencevars,___}]]+Total[Dimensions[Join[topleft,bottomleft]]],Length[topleft]+Complement[Range[Length[bottomleft]],Flatten[Position[bottomleft,{___,Alternatives@@referencevars,___}]]]];
 sourcenodes
 ];
 
 getSinkNodes[topleft_,topright_,bottomleft_,bottomright_,referenceperfmatch_]:=Block[{referencevars,sinknodes},
 referencevars=Variables[referenceperfmatch];
 (*Sinks are those nodes in the bottomleft that have variables in referenceperfmatch, and those in topright which are do not*)
-sinknodes=Union[Complement[Range[Dimensions[topright][[2]]],Flatten[Position[Transpose[topright],{___,Alternatives@@referencevars,___}]]]+Total[Dimensions[topleft]]+Length[bottomleft],Length[topleft]+Flatten[Position[bottomleft,{___,Alternatives@@referencevars,___}]]];
+sinknodes=Union[Complement[Range[Dimensions[Join[topright,bottomright]][[2]]],Flatten[Position[Transpose[topright],{___,Alternatives@@referencevars,___}]]]+Total[Dimensions[Join[topleft,bottomleft]]],Length[topleft]+Flatten[Position[bottomleft,{___,Alternatives@@referencevars,___}]]];
 sinknodes
 ];
 
-getExternalEdgeNodeNumbers[topleft_,topright_,bottomleft_,bottomright_,externaledgelist_]:=Union[Map[#[[1]]&,Position[bottomleft,Alternatives@@externaledgelist]+Length[topleft]],Map[#[[2]]&,Position[topright,Alternatives@@externaledgelist]+Total[Dimensions[topleft]]+Length[bottomleft]]];
+getExternalEdgeNodeNumbers[topleft_,topright_,bottomleft_,bottomright_,externaledgelist_]:=Union[Map[#[[1]]&,Position[bottomleft,Alternatives@@externaledgelist]+Length[topleft]],Map[#[[2]]&,Position[topright,Alternatives@@externaledgelist]+Total[Dimensions[Join[topleft,bottomleft]]]]];
 
 traditionalConnectivityMatrix[topleft_,topright_,bottomleft_,bottomright_]:=traditionalConnectivityMatrix[topleft,topright,bottomleft,bottomright,Null];
 traditionalConnectivityMatrix[topleft_,topright_,bottomleft_,bottomright_,referencematching_]:=traditionalConnectivityMatrix[topleft,topright,bottomleft,bottomright,referencematching]=Block[{perfmatchings,referenceperfmatch,kasteleyn,perfmatchvars,kastnopm,kastinvertedpm,bigmatrix,size,connectivitymat},
@@ -1956,7 +1959,7 @@ If[referenceperfmatch=!=0,
 bigpathmatrix=connectivityMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch];
 (*bigpathmatrix contains the connectivity between ALL pairs of nodes. We need to select those entries corresponding to sources goign to external nodes.*)
 externalrows=getSourceNodes[topleft,topright,bottomleft,bottomright,referenceperfmatch];
-externalcolumns=Join[Range[Length[topleft]+1,Length[topleft]+Length[bottomleft]],Range[Total[Dimensions[topleft]]+Length[bottomleft]+1,Total[Dimensions[topleft]]+Length[bottomleft]+Dimensions[topright][[2]]]];
+externalcolumns=Join[Range[Length[topleft]+1,Length[topleft]+Length[bottomleft]],Range[Total[Dimensions[Join[topleft,bottomleft]]]+1,Total[Dimensions[Join[topleft,bottomleft]]]+Dimensions[Join[topright,bottomright]][[2]]]];
 finalpathmatrix=Expand[Simplify[bigpathmatrix[[externalrows,externalcolumns]]]];
 (*The determinant of bigpathmatrix gives the loop factor in the paths between external nodes.*)
 ,Print["This graph has no perfect matchings"];
@@ -2425,7 +2428,7 @@ planar=False;
 If[externalordering===Null,
 (*If we haven't specified an external ordering, make a cyclic ordering when planar. If not planar, pick a default ordering based on the Kasteleyn*)
 (*Let's see if we can find a planar cyclic ordering*)
-externals=Join[Range[Length[topleft]+1,Length[topleft]+Length[bottomleft]],Range[Total[Dimensions[topleft]]+Length[bottomleft]+1,Total[Dimensions[topleft]]+Length[bottomleft]+Dimensions[topright][[2]]]];(*These are the node numbers corresponding to external nodes*)
+externals=Join[Range[Length[topleft]+1,Length[topleft]+Length[bottomleft]],Range[Total[Dimensions[Join[topleft,bottomleft]]]+1,Total[Dimensions[Join[topleft,bottomleft]]]+Dimensions[Join[topright,bottomright]][[2]]]];(*These are the node numbers corresponding to external nodes*)
 extnum=Length[externals];
 (*We will now try and form a single external boundary by connecting up all external nodes sequentially*)
 allperms=Permutations[Range[extnum-1]];
@@ -2568,7 +2571,7 @@ verticespos=MapThread[{#1,#2}&,{Range[Length[GraphEmbedding[planargraph]]],Graph
 edgepos=Map[{{verticespos[[#[[1]],2]],verticespos[[#[[2]],2]]},#}&,EdgeList[planargraph]];
 edgepos=DeleteDuplicates[edgepos];(*in case there are bubbles*)
 (*Now decrease the length of all external edges by about 14%, since PlanarEmbedding tries to put everything as collinear as possible, which is problematic when we make cuts*)
-externalnodenumbers=Join[Range[Length[bottomleft]]+Length[topleft],Range[Dimensions[topright][[2]]]+Total[Dimensions[topleft]]+Length[bottomleft]];
+externalnodenumbers=Join[Range[Length[bottomleft]]+Length[topleft],Range[Dimensions[Join[topright,bottomright]][[2]]]+Total[Dimensions[Join[topleft,bottomleft]]]];
 verticestocoords=Map[Rule@@#&,verticespos];
 externalvertices=externalnodenumbers/.verticestocoords;
 externaledges=Cases[edgepos,{___,UndirectedEdge[Alternatives@@externalnodenumbers,_]}|{___,UndirectedEdge[_,Alternatives@@externalnodenumbers]}];
@@ -2594,7 +2597,7 @@ If[PlanarGraphQ[graph],
 {verticespos,edgepos}=makePlanarGraph[graph,topleft,topright,bottomleft,bottomright];
 (*Now we have the vertices and edges for a good embedding with no edge crossings*)
 (*Each external vertex will be seen as having its own tiny boundary attached to it. We'll order the nodes according to the cuts. To avoid the cuts crossing each other, we'll start from an external node far out and spiral in: this determines the order of externalvertices*)
-externalnodenumbers=Join[Range[Length[bottomleft]]+Length[topleft],Range[Dimensions[topright][[2]]]+Total[Dimensions[topleft]]+Length[bottomleft]];
+externalnodenumbers=Join[Range[Length[bottomleft]]+Length[topleft],Range[Dimensions[Join[topright,bottomright]][[2]]]+Total[Dimensions[Join[topleft,bottomleft]]]];
 externalvertices=Map[#[[2]]&,Cases[verticespos,{Alternatives@@externalnodenumbers,___}]];
 externalvertices=spiralInList[externalvertices];
 (*We may now form the tiny boundaries around each external node, and have them in the right order*)
@@ -2832,7 +2835,7 @@ planar=False;
 If[PlanarGraphQ[graph],(*the graph can be embedded on genus zero, but may still be non-planar*)
 (*Make a cyclic ordering when planar. If not planar, pick a default ordering based on the Kasteleyn*)
 (*Let's see if we can find a planar cyclic ordering*)
-externals=Join[Range[Length[topleft]+1,Length[topleft]+Length[bottomleft]],Range[Total[Dimensions[topleft]]+Length[bottomleft]+1,Total[Dimensions[topleft]]+Length[bottomleft]+Dimensions[topright][[2]]]];(*These are the node numbers corresponding to external nodes*)
+externals=Join[Range[Length[topleft]+1,Length[topleft]+Length[bottomleft]],Range[Total[Dimensions[Join[topleft,bottomleft]]]+1,Total[Dimensions[Join[topleft,bottomleft]]]+Dimensions[Join[topright,bottomright]][[2]]]];(*These are the node numbers corresponding to external nodes*)
 ordering=(*Flatten[DeleteCases[Join[bottomleft,Transpose[topright]],0,{2}]]*)externals;
 If[externals==={},
 ordering={};
@@ -2877,14 +2880,14 @@ ordering
 ];
 
 getOrderingExternalNodesGrassmannian[topleft_,topright_,bottomleft_,bottomright_]:=Block[{ordering,adjacencymat,graph,planar,externals,extnum,allperms,numberofperms,permutations,externaladjacencyseed,externaladjencyattempts,ii,testgraph,verticespos,edgepos,externalvertices},
-ordering=Join[Range[Length[topleft]+1,Length[topleft]+Length[bottomleft]],Range[Total[Dimensions[topleft]]+Length[bottomleft]+1,Total[Dimensions[topleft]]+Length[bottomleft]+Dimensions[topright][[2]]]];
+ordering=Join[Range[Length[topleft]+1,Length[topleft]+Length[bottomleft]],Range[Total[Dimensions[Join[topleft,bottomleft]]]+1,Total[Dimensions[Join[topleft,bottomleft]]]+Dimensions[Join[topright,bottomright]][[2]]]];
 adjacencymat=turnIntoAdjacencyMatrix[topleft,topright,bottomleft,bottomright];
 graph=AdjacencyGraph[adjacencymat];
 planar=False;
 If[PlanarGraphQ[graph],(*the graph can be embedded on genus zero, but may still be non-planar*)
 (*Make a cyclic ordering when planar. If not planar, pick a default ordering based on the Kasteleyn*)
 (*Let's see if we can find a planar cyclic ordering*)
-externals=Join[Range[Length[topleft]+1,Length[topleft]+Length[bottomleft]],Range[Total[Dimensions[topleft]]+Length[bottomleft]+1,Total[Dimensions[topleft]]+Length[bottomleft]+Dimensions[topright][[2]]]];(*These are the node numbers corresponding to external nodes*)
+externals=Join[Range[Length[topleft]+1,Length[topleft]+Length[bottomleft]],Range[Total[Dimensions[Join[topleft,bottomleft]]]+1,Total[Dimensions[Join[topleft,bottomleft]]]+Dimensions[Join[topright,bottomright]][[2]]]];(*These are the node numbers corresponding to external nodes*)
 If[externals==={},
 ordering={};
 ,extnum=Length[externals];

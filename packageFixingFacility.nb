@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[    413279,      11457]
-NotebookOptionsPosition[    412671,      11433]
-NotebookOutlinePosition[    413033,      11449]
-CellTagsIndexPosition[    412990,      11446]
+NotebookDataLength[    471659,      12886]
+NotebookOptionsPosition[    469163,      12804]
+NotebookOutlinePosition[    469504,      12819]
+CellTagsIndexPosition[    469461,      12816]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -11429,9 +11429,1379 @@ Cell[BoxData[
    3.679983528125965*^9}, 3.6799835782422647`*^9, 3.679983947511752*^9, 
    3.679984064442216*^9, {3.679984550529803*^9, 3.6799845919896135`*^9}, {
    3.6799846228677177`*^9, 3.6799847162831755`*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"drawGraph", "[", "]"}]], "Input",
+ CellChangeTimes->{{3.680845074902872*^9, 3.680845076516466*^9}}],
+
+Cell[BoxData[
+ DynamicModuleBox[{Private`nodecolor$$ = "Black", Private`internalexternal$$ =
+   "Internal", 
+  Private`pointcoordinatesandcolors$$ = {{{-0.4, 0.4}, "BI"}, {{-0.4, -0.4}, 
+    "WI"}, {{0.2, -0.4}, "BI"}, {{0.2, 0.4}, "WI"}, {{-0.6000000000000001, 
+    0.6000000000000001}, "WE"}, {{0.5, 0.6000000000000001}, "BE"}, {{
+    0.4, -0.7000000000000001}, 
+    "WE"}, {{-0.6000000000000001, -0.7000000000000001}, "BE"}}, 
+  Private`temporarydottededge$$ = {}, Private`edges$$ = {{1, 2}, {2, 3}, {3, 
+  4}, {1, 4}, {1, 5}, {4, 6}, {3, 7}, {2, 8}}, 
+  Private`clickedposition$$ = {-0.6000000000000001, -0.7000000000000001}, 
+  Private`unclickedposition$$ = {-0.6000000000000001, -0.7000000000000001}, 
+  Private`addremove$$ = "Add", 
+  Private`draggedposition$$ = {-0.6000000000000001, -0.7000000000000001}, 
+  Private`nodeinfo$$ = {{-0.5, 0.5}, "BE"}, Private`nodenumber$$ = {8}, 
+  Private`introprinted$$ = 1, Private`multiedges$$ = {}, 
+  Private`makeBsplineCurves$$ = 
+  Function[{Private`endpoint1, Private`endpoint2, Private`multiplicity}, 
+   Block[{
+    Private`transverseendpoint1, Private`transverseendpoint2, 
+     Private`listofbsplinecurves}, Private`transverseendpoint1 = Normalize[
+         Cross[Private`endpoint2 - Private`endpoint1]]/
+       3 + (Private`endpoint1 + Private`endpoint2)/2; 
+    Private`transverseendpoint2 = -Normalize[
+         Cross[Private`endpoint2 - Private`endpoint1]]/
+       3 + (Private`endpoint1 + Private`endpoint2)/2; 
+    Private`listofbsplinecurves = Map[BSplineCurve[
+        Join[{Private`endpoint1}, {
+         Private`transverseendpoint1 + (Private`transverseendpoint2 - 
+            Private`transverseendpoint1) #}, {Private`endpoint2}]]& , 
+       Range[0, 1, 1/(Private`multiplicity - 1)]]; 
+    Private`listofbsplinecurves]], Private`makeKasteleynComponents$$ = 
+  Function[{Private`inputpointcoordinatesandcolors, Private`inputedges}, 
+   Block[{
+    Private`graphOK, Private`whiteinternals, Private`whiteexternals, 
+     Private`blackinternals, Private`blackexternals, 
+     Private`variablestochoosefrom, Private`intwhitetointblackedges, 
+     Private`intwhitetoextblackedges, Private`extwhitetointblackedges, 
+     Private`topleftmatrixentries, Private`toprightmatrixentries, 
+     Private`bottomleftmatrixentries, Private`outputtopleft, 
+     Private`outputtopright, Private`outputbottomleft, 
+     Private`outputbottomright}, Private`graphOK = BipartiteGraphQ[
+       Graph[
+        Range[
+         Length[Private`inputpointcoordinatesandcolors]], 
+        Private`inputedges]]; 
+    If[Private`graphOK, Private`whiteinternals = Flatten[
+         Position[Private`inputpointcoordinatesandcolors, {
+           Blank[], "WI"}]]; Private`whiteexternals = Flatten[
+         Position[Private`inputpointcoordinatesandcolors, {
+           Blank[], "WE"}]]; Private`blackinternals = Flatten[
+         Position[Private`inputpointcoordinatesandcolors, {
+           Blank[], "BI"}]]; Private`blackexternals = Flatten[
+         Position[Private`inputpointcoordinatesandcolors, {
+           Blank[], "BE"}]]; Private`variablestochoosefrom = Table[
+         bipartiteSUSY`Z[Private`iii], {Private`iii, 
+          Length[Private`inputedges]}]; 
+      Private`intwhitetointblackedges = Cases[Private`inputedges, {
+          Apply[Alternatives, Private`whiteinternals], 
+          Apply[Alternatives, Private`blackinternals]}]; 
+      Private`topleftmatrixentries = Map[Part[#, 1, 1] -> Total[
+           Part[#, 2]]& , 
+         Map[Transpose[#]& , 
+          GatherBy[
+           MapThread[{#, #2}& , {Private`intwhitetointblackedges, 
+             Part[Private`variablestochoosefrom, 
+              Range[
+               Length[Private`intwhitetointblackedges]]]}], First]]]; 
+      Private`variablestochoosefrom = Part[Private`variablestochoosefrom, 
+         Span[Length[Private`intwhitetointblackedges] + 1, All]]; 
+      Private`intwhitetointblackedges = Map[Part[#, {2, 1}]& , 
+         Cases[Private`inputedges, {
+           Apply[Alternatives, Private`blackinternals], 
+           Apply[Alternatives, Private`whiteinternals]}]]; 
+      Private`topleftmatrixentries = Join[Private`topleftmatrixentries, 
+         Map[Part[#, 1, 1] -> Total[
+            Part[#, 2]]& , 
+          Map[Transpose[#]& , 
+           GatherBy[
+            MapThread[{#, #2}& , {Private`intwhitetointblackedges, 
+              Part[Private`variablestochoosefrom, 
+               Range[
+                Length[Private`intwhitetointblackedges]]]}], First]]]]; 
+      Private`variablestochoosefrom = Part[Private`variablestochoosefrom, 
+         Span[Length[Private`intwhitetointblackedges] + 1, All]]; 
+      If[Private`topleftmatrixentries === {}, Private`outputtopleft = {}; 
+        Null, Private`outputtopleft = Part[
+           Normal[
+            SparseArray[Private`topleftmatrixentries, {
+              Length[Private`inputpointcoordinatesandcolors], 
+              Length[Private`inputpointcoordinatesandcolors]}]], 
+           Private`whiteinternals, Private`blackinternals]; Null]; 
+      Private`intwhitetoextblackedges = Cases[Private`inputedges, {
+          Apply[Alternatives, Private`whiteinternals], 
+          Apply[Alternatives, Private`blackexternals]}]; 
+      Private`toprightmatrixentries = Map[Part[#, 1, 1] -> Total[
+           Part[#, 2]]& , 
+         Map[Transpose[#]& , 
+          GatherBy[
+           MapThread[{#, #2}& , {Private`intwhitetoextblackedges, 
+             Part[Private`variablestochoosefrom, 
+              Range[
+               Length[Private`intwhitetoextblackedges]]]}], First]]]; 
+      Private`variablestochoosefrom = Part[Private`variablestochoosefrom, 
+         Span[Length[Private`intwhitetoextblackedges] + 1, All]]; 
+      Private`intwhitetoextblackedges = Map[Part[#, {2, 1}]& , 
+         Cases[Private`inputedges, {
+           Apply[Alternatives, Private`blackexternals], 
+           Apply[Alternatives, Private`whiteinternals]}]]; 
+      Private`toprightmatrixentries = Join[Private`toprightmatrixentries, 
+         Map[Part[#, 1, 1] -> Total[
+            Part[#, 2]]& , 
+          Map[Transpose[#]& , 
+           GatherBy[
+            MapThread[{#, #2}& , {Private`intwhitetoextblackedges, 
+              Part[Private`variablestochoosefrom, 
+               Range[
+                Length[Private`intwhitetoextblackedges]]]}], First]]]]; 
+      Private`variablestochoosefrom = Part[Private`variablestochoosefrom, 
+         Span[Length[Private`intwhitetoextblackedges] + 1, All]]; 
+      If[Private`toprightmatrixentries === {}, 
+        Private`outputtopright = ConstantArray[{}, 
+           Length[Private`outputtopleft]]; Null, Private`outputtopright = Part[
+           Normal[
+            SparseArray[Private`toprightmatrixentries, {
+              Length[Private`inputpointcoordinatesandcolors], 
+              Length[Private`inputpointcoordinatesandcolors]}]], 
+           Private`whiteinternals, Private`blackexternals]; Null]; 
+      Private`extwhitetointblackedges = Cases[Private`inputedges, {
+          Apply[Alternatives, Private`whiteexternals], 
+          Apply[Alternatives, Private`blackinternals]}]; 
+      Private`bottomleftmatrixentries = Map[Part[#, 1, 1] -> Total[
+           Part[#, 2]]& , 
+         Map[Transpose[#]& , 
+          GatherBy[
+           MapThread[{#, #2}& , {Private`extwhitetointblackedges, 
+             Part[Private`variablestochoosefrom, 
+              Range[
+               Length[Private`extwhitetointblackedges]]]}], First]]]; 
+      Private`variablestochoosefrom = Part[Private`variablestochoosefrom, 
+         Span[Length[Private`extwhitetointblackedges] + 1, All]]; 
+      Private`extwhitetointblackedges = Map[Part[#, {2, 1}]& , 
+         Cases[Private`inputedges, {
+           Apply[Alternatives, Private`blackinternals], 
+           Apply[Alternatives, Private`whiteexternals]}]]; 
+      Private`bottomleftmatrixentries = Join[Private`bottomleftmatrixentries, 
+         Map[Part[#, 1, 1] -> Total[
+            Part[#, 2]]& , 
+          Map[Transpose[#]& , 
+           GatherBy[
+            MapThread[{#, #2}& , {Private`extwhitetointblackedges, 
+              Part[Private`variablestochoosefrom, 
+               Range[
+                Length[Private`extwhitetointblackedges]]]}], First]]]]; 
+      Private`variablestochoosefrom = Part[Private`variablestochoosefrom, 
+         Span[Length[Private`extwhitetointblackedges] + 1, All]]; 
+      If[Private`bottomleftmatrixentries === {}, 
+        Private`outputbottomleft = {}; Null, Private`outputbottomleft = Part[
+           Normal[
+            SparseArray[Private`bottomleftmatrixentries, {
+              Length[Private`inputpointcoordinatesandcolors], 
+              Length[Private`inputpointcoordinatesandcolors]}]], 
+           Private`whiteexternals, Private`blackinternals]; Null]; 
+      Private`outputbottomright = ConstantArray[0, {
+          Length[Private`whiteexternals], 
+          Length[Private`blackexternals]}]; If[
+        And[
+        Private`outputbottomleft === {}, Length[Private`outputbottomright] =!= 
+         0], Private`outputbottomleft = ConstantArray[0, {
+            Length[Private`outputbottomright], 
+            Part[
+             Dimensions[Private`outputtopleft], 2]}]; Null]; If[
+        And[Part[
+           Dimensions[Private`outputtopright], 2] == 0, Part[
+           Dimensions[Private`outputbottomright], 2] != 0], 
+        Private`outputtopright = ConstantArray[0, {
+            Length[Private`outputtopleft], 
+            Part[
+             Dimensions[Private`outputbottomright], 2]}]; Null]; Null, 
+      Print["The graph is not bipartite!"]; {
+        Private`outputtopleft, Private`outputtopright, 
+         Private`outputbottomleft, Private`outputbottomright} = {
+        Null, Null, Null, Null}; Null]; {
+     Private`outputtopleft, Private`outputtopright, Private`outputbottomleft, 
+      Private`outputbottomright}]], Private`newposition$$, 
+  Private`oldposition$$, Private`nodenumberstext$$ = False, Private`graph$$, 
+  Private`userspecifiednodes$$, Private`nodenumbertotype$$, 
+  Private`userspecifiededges$$, Private`xaxisvalues$$, Private`yaxisvalues$$, 
+  Private`xscaling$$, Private`xshift$$, Private`yscaling$$, Private`yshift$$, 
+  Private`duplicatedcoordinates$$, Private`freeslots$$, 
+  Private`enablebuttons$$ = True, Private`edgebuttonlist$$ = Column[{}], 
+  Private`areyoupressed$$ = {"DialogBox"}}, 
+  PanelBox[
+   TagBox[GridBox[{
+      {
+       TagBox[GridBox[{
+          {
+           TemplateBox[{RadioButtonBox[
+              Dynamic[Private`addremove$$], {"Add"}],"\" Add nodes/lines  \""},
+            "RowDefault"], 
+           TemplateBox[{RadioButtonBox[
+              Dynamic[Private`addremove$$], {"Remove"}],"\" Remove nodes  \""},
+            "RowDefault"], 
+           TemplateBox[{RadioButtonBox[
+              Dynamic[Private`addremove$$], {"Move"}],"\" Move nodes  \""},
+            "RowDefault"]},
+          {"", "", ""},
+          {
+           TagBox[GridBox[{
+              {"\<\" Node color: \"\>", "\<\"   Node type:   \"\>"},
+              {
+               InterpretationBox[
+                StyleBox[GridBox[{
+                   {GridBox[{
+                    {
+                    RadioButtonBox[Dynamic[Private`nodecolor$$], {"White"},
+                    DefaultBaseStyle->"RadioButtonBar",
+                    Enabled->Dynamic[
+                    And[Private`enablebuttons$$, 
+                    ReplaceAll[
+                    Private`addremove$$, {
+                    "Add" -> True, "Remove" -> False, "Move" -> False}]]]], 
+                    StyleBox["\<\"White\"\>", "RadioButtonBarLabel",
+                    StripOnInput->False]}
+                    },
+                    AutoDelete->False,
+                    
+                    GridBoxItemSize->{
+                    "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+                    GridBoxSpacings->{"Columns" -> {
+                    Offset[0.27999999999999997`], {
+                    Offset[0.21]}, 
+                    Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, 
+                    "Rows" -> {
+                    Offset[0.2], {
+                    Offset[0.4]}, 
+                    Offset[0.2]}, "RowsIndexed" -> {}}]},
+                   {GridBox[{
+                    {
+                    RadioButtonBox[Dynamic[Private`nodecolor$$], {"Black"},
+                    DefaultBaseStyle->"RadioButtonBar",
+                    Enabled->Dynamic[
+                    And[Private`enablebuttons$$, 
+                    ReplaceAll[
+                    Private`addremove$$, {
+                    "Add" -> True, "Remove" -> False, "Move" -> False}]]]], 
+                    StyleBox["\<\"Black\"\>", "RadioButtonBarLabel",
+                    StripOnInput->False]}
+                    },
+                    AutoDelete->False,
+                    
+                    GridBoxItemSize->{
+                    "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+                    GridBoxSpacings->{"Columns" -> {
+                    Offset[0.27999999999999997`], {
+                    Offset[0.21]}, 
+                    Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, 
+                    "Rows" -> {
+                    Offset[0.2], {
+                    Offset[0.4]}, 
+                    Offset[0.2]}, "RowsIndexed" -> {}}]}
+                  },
+                  
+                  GridBoxAlignment->{
+                   "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, 
+                    "Rows" -> {{Baseline}}, "RowsIndexed" -> {}}], "Deploy"],
+                RadioButtonBar[
+                 Dynamic[Private`nodecolor$$], {"White", "Black"}, Appearance -> 
+                 "Vertical", Enabled -> Dynamic[
+                   And[Private`enablebuttons$$, 
+                    ReplaceAll[
+                    Private`addremove$$, {
+                    "Add" -> True, "Remove" -> False, "Move" -> False}]]]]], 
+               InterpretationBox[
+                StyleBox[GridBox[{
+                   {GridBox[{
+                    {
+                    
+                    RadioButtonBox[Dynamic[Private`internalexternal$$], {
+                    "Internal"},
+                    DefaultBaseStyle->"RadioButtonBar",
+                    Enabled->Dynamic[
+                    And[Private`enablebuttons$$, 
+                    ReplaceAll[
+                    Private`addremove$$, {
+                    "Add" -> True, "Remove" -> False, "Move" -> False}]]]], 
+                    StyleBox["\<\"Internal\"\>", "RadioButtonBarLabel",
+                    StripOnInput->False]}
+                    },
+                    AutoDelete->False,
+                    
+                    GridBoxItemSize->{
+                    "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+                    GridBoxSpacings->{"Columns" -> {
+                    Offset[0.27999999999999997`], {
+                    Offset[0.21]}, 
+                    Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, 
+                    "Rows" -> {
+                    Offset[0.2], {
+                    Offset[0.4]}, 
+                    Offset[0.2]}, "RowsIndexed" -> {}}]},
+                   {GridBox[{
+                    {
+                    
+                    RadioButtonBox[Dynamic[Private`internalexternal$$], {
+                    "External"},
+                    DefaultBaseStyle->"RadioButtonBar",
+                    Enabled->Dynamic[
+                    And[Private`enablebuttons$$, 
+                    ReplaceAll[
+                    Private`addremove$$, {
+                    "Add" -> True, "Remove" -> False, "Move" -> False}]]]], 
+                    StyleBox["\<\"External\"\>", "RadioButtonBarLabel",
+                    StripOnInput->False]}
+                    },
+                    AutoDelete->False,
+                    GridBoxItemSize->{
+                    "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+                    GridBoxSpacings->{"Columns" -> {
+                    Offset[0.27999999999999997`], {
+                    Offset[0.21]}, 
+                    Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, 
+                    "Rows" -> {
+                    Offset[0.2], {
+                    Offset[0.4]}, 
+                    Offset[0.2]}, "RowsIndexed" -> {}}]}
+                  },
+                  
+                  GridBoxAlignment->{
+                   "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, 
+                    "Rows" -> {{Baseline}}, "RowsIndexed" -> {}}], "Deploy"],
+                RadioButtonBar[
+                 Dynamic[Private`internalexternal$$], {
+                 "Internal", "External"}, Appearance -> "Vertical", Enabled -> 
+                 Dynamic[
+                   And[Private`enablebuttons$$, 
+                    ReplaceAll[
+                    Private`addremove$$, {
+                    "Add" -> True, "Remove" -> False, "Move" -> False}]]]]]}
+             },
+             AutoDelete->False,
+             
+             GridBoxItemSize->{
+              "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+            "Grid"], "", ""}
+         },
+         AutoDelete->False,
+         GridBoxItemSize->{
+          "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+         GridBoxSpacings->{
+          "Columns" -> {Automatic, Automatic, Automatic, Automatic}, 
+           "Rows" -> {Automatic, 0, 0, Automatic}}],
+        "Grid"]},
+      {""},
+      {
+       TagBox[GridBox[{
+          {
+           ButtonBox["\<\"Print Kasteleyn components\"\>",
+            Appearance->Automatic,
+            
+            ButtonFunction:>(
+             If[Private`introprinted$$ == 0, 
+               Print["The Kasteleyn components are: {\"top-left\",\"top-right\
+\",\"bottom-left\",\"bottom-right\"}"]; Private`introprinted$$ = 1; Null]; 
+             Print[
+               Private`makeKasteleynComponents$$[
+               Private`pointcoordinatesandcolors$$, Private`edges$$]]; Null),
+            Evaluator->Automatic,
+            ImageSize->Large,
+            Method->"Preemptive"], 
+           TemplateBox[{"\"Display node numbers: \"",CheckboxBox[
+              Dynamic[Private`nodenumberstext$$]]},
+            "RowDefault"], "\<\"         \"\>", 
+           ButtonBox["\<\"Clear all\"\>",
+            Appearance->Automatic,
+            
+            ButtonFunction:>(Private`pointcoordinatesandcolors$$ = {}; 
+             Private`temporarydottededge$$ = {}; Private`edges$$ = {}; 
+             Private`multiedges$$ = {}; Null),
+            Evaluator->Automatic,
+            ImageSize->Large,
+            Method->"Preemptive"], "\<\"                             \"\>"}
+         },
+         AutoDelete->False,
+         GridBoxItemSize->{
+          "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+        "Grid"]},
+      {
+       TagBox[GridBox[{
+          {
+           TagBox[
+            DynamicBox[ToBoxes[
+              Graphics[{
+                Thickness[0.005], 
+                Line[
+                 Map[Part[Private`pointcoordinatesandcolors$$, #, 1]& , 
+                  Map[First, 
+                   Cases[
+                    Tally[Private`edges$$], {
+                    Blank[], 1}]]]], 
+                Apply[Sequence, Private`multiedges$$], 
+                Private`temporarydottededge$$, {Black, 
+                 EdgeForm[{Thick, Black}], 
+                 Map[Disk[#, 0.035]& , 
+                  Part[
+                   Cases[Private`pointcoordinatesandcolors$$, {
+                    Blank[], "BI"}], All, 1]]}, {Black, 
+                 EdgeForm[{Thick, Red}], 
+                 Map[Disk[#, 0.035]& , 
+                  Part[
+                   Cases[Private`pointcoordinatesandcolors$$, {
+                    Blank[], "BE"}], All, 1]]}, {White, 
+                 EdgeForm[{Thick, Black}], 
+                 Map[Disk[#, 0.035]& , 
+                  Part[
+                   Cases[Private`pointcoordinatesandcolors$$, {
+                    Blank[], "WI"}], All, 1]]}, {White, 
+                 EdgeForm[{Thick, Red}], 
+                 Map[Disk[#, 0.035]& , 
+                  Part[
+                   Cases[Private`pointcoordinatesandcolors$$, {
+                    Blank[], "WE"}], All, 1]]}, 
+                ReplaceAll[Private`nodenumberstext$$, {True -> Prepend[
+                    MapThread[Text[
+                    Style[#, Medium], #2]& , {
+                    Part[
+                    Sort[
+                    MapThread[{#, #2}& , {
+                    Join[
+                    Flatten[
+                    Position[Private`pointcoordinatesandcolors$$, {
+                    Blank[], "WI"}]], 
+                    Flatten[
+                    Position[Private`pointcoordinatesandcolors$$, {
+                    Blank[], "WE"}]], 
+                    Flatten[
+                    Position[Private`pointcoordinatesandcolors$$, {
+                    Blank[], "BI"}]], 
+                    Flatten[
+                    Position[Private`pointcoordinatesandcolors$$, {
+                    Blank[], "BE"}]]], 
+                    Map[ToString, 
+                    Range[
+                    Length[Private`pointcoordinatesandcolors$$]]]}]], All, 2], 
+                    Map[Function[{Private`input}, 
+                    
+                    Block[{Private`output}, 
+                    If[Private`input <= -1.5, 
+                    Private`output = Private`input + 0.2; Null, 
+                    If[Private`input >= 1.5, 
+                    Private`output = Private`input - 0.2; Null, 
+                    Private`output = Private`input; Null]; Null]; 
+                    Private`output]][#]& , 
+                    Part[Private`pointcoordinatesandcolors$$, All, 1] + 0.1, {
+                    2}]}], Blue], False -> {}}]}, PlotRange -> 1.5, Frame -> 
+               True, FrameTicks -> None, ImageSize -> {400, 400}, Background -> 
+               White], StandardForm],
+             ImageSizeCache->{400., {198., 202.}}],
+            
+            EventHandlerTag[{
+             "MouseClicked" :> (Private`clickedposition$$ = Round[
+                  MousePosition["Graphics"], 0.1]; 
+               If[Private`addremove$$ === "Remove", 
+                 Private`nodenumber$$ = Flatten[
+                    Position[
+                    Private`pointcoordinatesandcolors$$, {
+                    Private`clickedposition$$, 
+                    Blank[]}]]; 
+                 If[Private`nodenumber$$ =!= {}, 
+                   Private`pointcoordinatesandcolors$$ = 
+                    Delete[Private`pointcoordinatesandcolors$$, 
+                    Part[Private`nodenumber$$, 1]]; 
+                   Private`edges$$ = ReplaceAll[
+                    DeleteCases[Private`edges$$, 
+                    Alternatives[{
+                    Part[Private`nodenumber$$, 1], 
+                    Blank[]}, {
+                    Blank[], 
+                    Part[Private`nodenumber$$, 1]}]], {Condition[
+                    Pattern[Private`zz$, 
+                    Blank[]], Private`zz$ > Part[Private`nodenumber$$, 1]] :> 
+                    Private`zz$ - 1}]; Private`multiedges$$ = Cases[
+                    Tally[Private`edges$$], 
+                    Except[{
+                    Blank[], 1}]]; 
+                   If[Private`multiedges$$ =!= {}, 
+                    Private`multiedges$$ = 
+                    Map[Apply[Private`makeBsplineCurves$$, #]& , 
+                    MapAt[Apply[Sequence, 
+                    Part[Private`pointcoordinatesandcolors$$, #, 1]]& , 
+                    Private`multiedges$$, {All, 1}]]; Null]; Null]; Null]; 
+               Null), {"MouseClicked", 2} :> (
+               Private`clickedposition$$ = Round[
+                  MousePosition["Graphics"], 0.1]; 
+               If[Private`addremove$$ === "Add", 
+                 Private`nodenumber$$ = Flatten[
+                    Position[
+                    Private`pointcoordinatesandcolors$$, {
+                    Private`clickedposition$$, 
+                    Blank[]}]]; 
+                 If[Private`nodenumber$$ =!= {}, 
+                   Part[Private`pointcoordinatesandcolors$$, 
+                    Part[Private`nodenumber$$, 1], 2] = ReplaceAll[
+                    Part[Private`pointcoordinatesandcolors$$, 
+                    Part[Private`nodenumber$$, 1], 2], {
+                    "WI" -> "WE", "WE" -> "WI", "BI" -> "BE", "BE" -> "BI"}]; 
+                   Null]; Null]; Null), 
+              "MouseDown" :> (
+               If[Private`addremove$$ === "Add", 
+                 Private`clickedposition$$ = Round[
+                    MousePosition["Graphics"], 0.1]; If[
+                   FreeQ[
+                   Private`pointcoordinatesandcolors$$, {
+                    Private`clickedposition$$, 
+                    Blank[]}], 
+                   Private`pointcoordinatesandcolors$$ = 
+                    Append[Private`pointcoordinatesandcolors$$, {
+                    Private`clickedposition$$, 
+                    StringJoin[
+                    StringTake[Private`nodecolor$$, 1], 
+                    StringTake[Private`internalexternal$$, 1]]}]; Null]; 
+                 Null]; If[
+                Private`addremove$$ === "Move", Private`oldposition$$ = Round[
+                    MousePosition["Graphics"], 0.1]; Null]; Null), 
+              "MouseDragged" :> (Private`enablebuttons$$ = False; 
+               If[Private`addremove$$ === "Add", 
+                 Private`draggedposition$$ = ReplaceAll[
+                    Round[
+                    MousePosition["Graphics"], 0.1], {Condition[
+                    Pattern[Private`z1, 
+                    Blank[]], Private`z1 > 1.5] -> 1.5, Condition[
+                    Pattern[Private`z2, 
+                    Blank[]], Private`z2 < -1.5] -> -1.5}]; 
+                 Private`temporarydottededge$$ = {Gray, Dashed, 
+                    
+                    Line[{Private`clickedposition$$, 
+                    Private`draggedposition$$}]}; Null]; 
+               If[Private`addremove$$ === "Move", 
+                 Private`newposition$$ = ReplaceAll[
+                    Round[
+                    MousePosition["Graphics"], 0.1], {Condition[
+                    Pattern[Private`z1, 
+                    Blank[]], Private`z1 > 1.5] -> 1.5, Condition[
+                    Pattern[Private`z2, 
+                    Blank[]], Private`z2 < -1.5] -> -1.5}]; 
+                 If[Cases[
+                    Private`pointcoordinatesandcolors$$, {
+                    Private`newposition$$, 
+                    Blank[]}] === {}, 
+                   Private`pointcoordinatesandcolors$$ = 
+                    ReplaceAll[
+                    Private`pointcoordinatesandcolors$$, {
+                    Private`oldposition$$ -> Private`newposition$$}]; 
+                   Private`multiedges$$ = Cases[
+                    Tally[Private`edges$$], 
+                    Except[{
+                    Blank[], 1}]]; 
+                   If[Private`multiedges$$ =!= {}, 
+                    Private`multiedges$$ = 
+                    Map[Apply[Private`makeBsplineCurves$$, #]& , 
+                    MapAt[Apply[Sequence, 
+                    Part[Private`pointcoordinatesandcolors$$, #, 1]]& , 
+                    Private`multiedges$$, {All, 1}]]; Null]; 
+                   Private`oldposition$$ = Private`newposition$$; Null]; 
+                 Null]; Null), 
+              "MouseUp" :> (Private`enablebuttons$$ = True; 
+               If[Private`addremove$$ === "Add", 
+                 Private`unclickedposition$$ = ReplaceAll[
+                    Round[
+                    MousePosition["Graphics"], 0.1], {Condition[
+                    Pattern[Private`z1, 
+                    Blank[]], Private`z1 > 1.5] -> 1.5, Condition[
+                    Pattern[Private`z2, 
+                    Blank[]], Private`z2 < -1.5] -> -1.5}]; If[
+                   FreeQ[
+                   Private`pointcoordinatesandcolors$$, {
+                    Private`unclickedposition$$, 
+                    Blank[]}], 
+                   Private`pointcoordinatesandcolors$$ = 
+                    Append[Private`pointcoordinatesandcolors$$, {
+                    Private`unclickedposition$$, 
+                    StringJoin[
+                    ReplaceAll[
+                    StringTake[
+                    Part[
+                    Cases[
+                    Private`pointcoordinatesandcolors$$, {
+                    Private`clickedposition$$, 
+                    Blank[]}], 1, 2], 1], {"B" -> "W", "W" -> "B"}], 
+                    StringTake[Private`internalexternal$$, 1]]}]; Null]; 
+                 If[Private`unclickedposition$$ =!= Private`clickedposition$$,
+                    Private`edges$$ = Append[Private`edges$$, 
+                    Flatten[
+                    Position[Private`pointcoordinatesandcolors$$, 
+                    Alternatives[{Private`clickedposition$$, 
+                    Blank[]}, {Private`unclickedposition$$, 
+                    Blank[]}]]]]; Private`multiedges$$ = Cases[
+                    Tally[Private`edges$$], 
+                    Except[{
+                    Blank[], 1}]]; 
+                   If[Private`multiedges$$ =!= {}, 
+                    Private`multiedges$$ = 
+                    Map[Apply[Private`makeBsplineCurves$$, #]& , 
+                    MapAt[Apply[Sequence, 
+                    Part[Private`pointcoordinatesandcolors$$, #, 1]]& , 
+                    Private`multiedges$$, {All, 1}]]; Null]; Null, If[
+                    Or[Part[
+                    Last[Private`pointcoordinatesandcolors$$], 1] =!= 
+                    Private`clickedposition$$, 
+                    MemberQ[Private`edges$$, 
+                    Alternatives[{
+                    Blank[], 
+                    Length[Private`pointcoordinatesandcolors$$]}, {
+                    Length[Private`pointcoordinatesandcolors$$], 
+                    Blank[]}]]], Private`nodeinfo$$ = Part[
+                    Cases[
+                    Private`pointcoordinatesandcolors$$, {
+                    Private`clickedposition$$, 
+                    Blank[]}], 1]; 
+                    Private`pointcoordinatesandcolors$$ = 
+                    ReplacePart[Private`pointcoordinatesandcolors$$, Part[
+                    Position[
+                    Private`pointcoordinatesandcolors$$, Private`nodeinfo$$], 
+                    1, 1] -> {Private`clickedposition$$, 
+                    StringJoin[
+                    ReplaceAll[
+                    StringTake[
+                    Part[Private`nodeinfo$$, 2], {1}], {
+                    "B" -> "W", "W" -> "B"}], 
+                    StringTake[
+                    Part[Private`nodeinfo$$, 2], {2}]]}]; Null]; Null]; 
+                 Private`temporarydottededge$$ = {}; Null]; 
+               If[Private`addremove$$ === "Move", 
+                 Private`unclickedposition$$ = ReplaceAll[
+                    Round[
+                    MousePosition["Graphics"], 0.1], {Condition[
+                    Pattern[Private`z1, 
+                    Blank[]], Private`z1 > 1.5] -> 1.5, Condition[
+                    Pattern[Private`z2, 
+                    Blank[]], Private`z2 < -1.5] -> -1.5}]; 
+                 If[Cases[
+                    Private`pointcoordinatesandcolors$$, {
+                    Private`unclickedposition$$, 
+                    Blank[]}] === {}, 
+                   Private`pointcoordinatesandcolors$$ = 
+                    ReplaceAll[
+                    Private`pointcoordinatesandcolors$$, {
+                    Private`oldposition$$ -> Private`unclickedposition$$}]; 
+                   Null]; Null]; Null), Method -> "Preemptive", 
+              PassEventsDown -> Automatic, PassEventsUp -> True}]], 
+           TagBox[GridBox[{
+              {
+               ButtonBox["\<\"Remove edges:\"\>",
+                Appearance->Dynamic[Private`areyoupressed$$],
+                
+                ButtonFunction:>(
+                 If[Private`areyoupressed$$ === {"DialogBox"}, 
+                   Private`edgebuttonlist$$ = Dynamic[
+                    Column[
+                    Part[
+                    Map[Button[
+                    Sort[
+                    Apply[UndirectedEdge, 
+                    ReplaceAll[#, 
+                    MapThread[# -> #2& , {
+                    Join[
+                    Flatten[
+                    Position[Private`pointcoordinatesandcolors$$, {
+                    Blank[], "WI"}]], 
+                    Flatten[
+                    Position[Private`pointcoordinatesandcolors$$, {
+                    Blank[], "WE"}]], 
+                    Flatten[
+                    Position[Private`pointcoordinatesandcolors$$, {
+                    Blank[], "BI"}]], 
+                    Flatten[
+                    Position[Private`pointcoordinatesandcolors$$, {
+                    Blank[], "BE"}]]], 
+                    Range[
+                    Length[Private`pointcoordinatesandcolors$$]]}]]]], 
+                    Private`edges$$ = Delete[Private`edges$$, 
+                    Part[
+                    Position[Private`edges$$, #], 1, 1]]; 
+                    Private`multiedges$$ = Cases[
+                    Tally[Private`edges$$], 
+                    Except[{
+                    Blank[], 1}]]; 
+                    If[Private`multiedges$$ =!= {}, 
+                    Private`multiedges$$ = 
+                    Map[Apply[Private`makeBsplineCurves$$, #]& , 
+                    MapAt[Apply[Sequence, 
+                    Part[Private`pointcoordinatesandcolors$$, #, 1]]& , 
+                    Private`multiedges$$, {All, 1}]]; Null]; Null, ImageSize -> 
+                    Automatic]& , Private`edges$$], 
+                    Ordering[
+                    Map[Sort, 
+                    ReplaceAll[Private`edges$$, 
+                    MapThread[# -> #2& , {
+                    Join[
+                    Flatten[
+                    Position[Private`pointcoordinatesandcolors$$, {
+                    Blank[], "WI"}]], 
+                    Flatten[
+                    Position[Private`pointcoordinatesandcolors$$, {
+                    Blank[], "WE"}]], 
+                    Flatten[
+                    Position[Private`pointcoordinatesandcolors$$, {
+                    Blank[], "BI"}]], 
+                    Flatten[
+                    Position[Private`pointcoordinatesandcolors$$, {
+                    Blank[], "BE"}]]], 
+                    Range[
+                    Length[Private`pointcoordinatesandcolors$$]]}]]]]]]]; 
+                   Private`areyoupressed$$ = {"DialogBox", "Pressed"}; Null, 
+                   Private`edgebuttonlist$$ = Column[{}]; 
+                   Private`areyoupressed$$ = {"DialogBox"}; Null]; Null),
+                Evaluator->Automatic,
+                Method->"Preemptive"]},
+              {
+               PaneBox[
+                DynamicBox[ToBoxes[Private`edgebuttonlist$$, StandardForm],
+                 ImageSizeCache->{4., {2.5, 9.5}}],
+                Alignment->{Left, Top},
+                ImageSize->{80, 368},
+                Scrollbars->{False, True}]}
+             },
+             AutoDelete->False,
+             
+             GridBoxItemSize->{
+              "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+            "Grid"]}
+         },
+         AutoDelete->False,
+         GridBoxItemSize->{
+          "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+        "Grid"]},
+      {
+       TemplateBox[{
+        ActionMenuBox[
+         "\"Compute\"", {"\"Reducibility (True/False)\"" :> (Print[
+              Apply[bipartiteSUSY`reducibilityQ, 
+               Private`makeKasteleynComponents$$[
+               Private`pointcoordinatesandcolors$$, Private`edges$$]]]; Null),
+            "\"Path Matrix\"" :> (Print[
+              Apply[bipartiteSUSY`pathMatrix, 
+               Private`makeKasteleynComponents$$[
+               Private`pointcoordinatesandcolors$$, Private`edges$$]]]; Null),
+            "\"Dimension of Grassmannian\"" :> (Print[
+              Apply[bipartiteSUSY`dimensionGrassmannian, 
+               Private`makeKasteleynComponents$$[
+               Private`pointcoordinatesandcolors$$, Private`edges$$]]]; Null),
+            "\"Stratification: Number of boundaries\"" :> (Print[
+              Apply[bipartiteSUSY`stratificationNumbers, 
+               Private`makeKasteleynComponents$$[
+               Private`pointcoordinatesandcolors$$, Private`edges$$]]]; Null),
+            "\"Stratification: Euler number\"" :> (Print[
+              Apply[bipartiteSUSY`stratificationEulerNumber, 
+               Private`makeKasteleynComponents$$[
+               Private`pointcoordinatesandcolors$$, Private`edges$$]]]; Null),
+            "\"Non-standard Poles (True/False)\"" :> (Print[
+              Apply[bipartiteSUSY`nonPluckerPolesQ, 
+               Private`makeKasteleynComponents$$[
+               Private`pointcoordinatesandcolors$$, Private`edges$$]]]; Null),
+            "\"Minors of Path Matrix \[LeftRightArrow] Perfect Matchings\"" :> \
+(Print[
+              Apply[bipartiteSUSY`minorsAsPerfectMatchings, 
+               Private`makeKasteleynComponents$$[
+               Private`pointcoordinatesandcolors$$, Private`edges$$]]]; Null),
+            "\"Planarity (True/False)\"" :> (Print[
+              Apply[bipartiteSUSY`planarityQ, 
+               Private`makeKasteleynComponents$$[
+               Private`pointcoordinatesandcolors$$, Private`edges$$]]]; Null),
+            "\"Helicity k\"" :> (Print[
+              Apply[bipartiteSUSY`getK, 
+               Private`makeKasteleynComponents$$[
+               Private`pointcoordinatesandcolors$$, Private`edges$$]]]; Null),
+            "\"Perfect Matchings\"" :> (Print[
+              Apply[bipartiteSUSY`perfectMatchings, 
+               Private`makeKasteleynComponents$$[
+               Private`pointcoordinatesandcolors$$, Private`edges$$]]]; 
+            Null)}, Method -> "Queued"],"\"           \"",ButtonBox[
+         "\"Print graph\"", ButtonFunction :> (Print[
+             Graph[
+              Range[
+               Length[Private`pointcoordinatesandcolors$$]], Private`edges$$, 
+              VertexCoordinates -> 
+              Part[Private`pointcoordinatesandcolors$$, All, 1], VertexSize -> 
+              Medium, VertexStyle -> MapThread[Rule, {
+                 Range[
+                  Length[Private`pointcoordinatesandcolors$$]], 
+                 ReplaceAll[
+                  Part[Private`pointcoordinatesandcolors$$, All, 2], {
+                  "WI" -> White, "WE" -> White, "BI" -> Black, "BE" -> 
+                   Black}]}], EdgeStyle -> Directive[Black, Thick]]]; Null), 
+          Appearance -> Automatic, Evaluator -> Automatic, Method -> 
+          "Preemptive"]},
+        "RowDefault"]}
+     },
+     AutoDelete->False,
+     GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+     GridBoxSpacings->{
+      "Columns" -> {Automatic, Automatic}, 
+       "Rows" -> {Automatic, 0, 0, Automatic, Automatic, Automatic}}],
+    "Grid"],
+   Background->RGBColor[0.87, 0.94, 1]],
+  DynamicModuleValues:>{}]], "Output",
+ CellChangeTimes->{3.68084507695794*^9}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["\<\"The Kasteleyn components are: \
+{\\\"top-left\\\",\\\"top-right\\\",\\\"bottom-left\\\",\\\"bottom-right\\\"}\
+\"\>"], "Print",
+ CellChangeTimes->{3.6808450868328476`*^9}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", "}"}], ",", 
+   RowBox[{"{", "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"Z", "[", "1", "]"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"Z", "[", "2", "]"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"Z", "[", "3", "]"}], "}"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", "}"}], ",", 
+     RowBox[{"{", "}"}], ",", 
+     RowBox[{"{", "}"}]}], "}"}]}], "}"}]], "Print",
+ CellChangeTimes->{3.680845087078983*^9}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"Z", "[", "1", "]"}], ",", 
+      RowBox[{"Z", "[", "2", "]"}], ",", 
+      RowBox[{"Z", "[", "3", "]"}]}], "}"}], "}"}], ",", 
+   RowBox[{"{", "}"}], ",", 
+   RowBox[{"{", "}"}]}], "}"}]], "Print",
+ CellChangeTimes->{3.680845099701394*^9}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"Z", "[", "1", "]"}], ",", 
+      RowBox[{"Z", "[", "2", "]"}], ",", 
+      RowBox[{"Z", "[", "3", "]"}]}], "}"}], "}"}], ",", 
+   RowBox[{"{", "}"}], ",", 
+   RowBox[{"{", "}"}]}], "}"}]], "Print",
+ CellChangeTimes->{3.6808451962298794`*^9}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", "}"}], ",", 
+   RowBox[{"{", "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"Z", "[", "1", "]"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"Z", "[", "2", "]"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"Z", "[", "3", "]"}], "}"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", "}"}], ",", 
+     RowBox[{"{", "}"}], ",", 
+     RowBox[{"{", "}"}]}], "}"}]}], "}"}]], "Print",
+ CellChangeTimes->{3.6808456899096804`*^9}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"Z", "[", "2", "]"}], ",", 
+       RowBox[{"Z", "[", "1", "]"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"Z", "[", "4", "]"}], ",", 
+       RowBox[{"Z", "[", "3", "]"}]}], "}"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", "}"}], ",", 
+     RowBox[{"{", "}"}]}], "}"}], ",", 
+   RowBox[{"{", "}"}], ",", 
+   RowBox[{"{", "}"}]}], "}"}]], "Print",
+ CellChangeTimes->{3.680845701199897*^9}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"Z", "[", "2", "]"}], ",", 
+       RowBox[{"Z", "[", "1", "]"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"Z", "[", "4", "]"}], ",", 
+       RowBox[{"Z", "[", "3", "]"}]}], "}"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", "}"}], ",", 
+     RowBox[{"{", "}"}]}], "}"}], ",", 
+   RowBox[{"{", "}"}], ",", 
+   RowBox[{"{", "}"}]}], "}"}]], "Print",
+ CellChangeTimes->{3.6808493188145075`*^9}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"Z", "[", "2", "]"}], ",", 
+       RowBox[{"Z", "[", "1", "]"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"Z", "[", "4", "]"}], ",", 
+       RowBox[{"Z", "[", "3", "]"}]}], "}"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"0", ",", 
+       RowBox[{"Z", "[", "6", "]"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"Z", "[", "5", "]"}], ",", "0"}], "}"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"Z", "[", "7", "]"}], ",", "0"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"0", ",", 
+       RowBox[{"Z", "[", "8", "]"}]}], "}"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"0", ",", "0"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"0", ",", "0"}], "}"}]}], "}"}]}], "}"}]], "Print",
+ CellChangeTimes->{3.6808504534904165`*^9}]
+}, Open  ]]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{"This", " ", "is", " ", "G", 
+    RowBox[{"(", 
+     RowBox[{"1", ",", "3"}], ")"}]}], "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"a", "=", 
+     RowBox[{"{", "}"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"b", "=", 
+     RowBox[{"{", "}"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"c", "=", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"X", "[", 
+         RowBox[{"1", ",", "2"}], "]"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"X", "[", 
+         RowBox[{"2", ",", "3"}], "]"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"X", "[", 
+         RowBox[{"3", ",", "1"}], "]"}], "}"}]}], "}"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"d", "=", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", "}"}], ",", 
+       RowBox[{"{", "}"}], ",", 
+       RowBox[{"{", "}"}]}], "}"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "topleft", ",", "topright", ",", "bottomleft", ",", "bottomright"}], 
+      "}"}], "=", 
+     RowBox[{"{", 
+      RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}]}], 
+    ";"}]}]}]], "Input",
+ CellChangeTimes->{{3.6808452077743344`*^9, 3.6808452911455193`*^9}, {
+  3.6808500861027136`*^9, 3.6808500940900254`*^9}, {3.680850308809677*^9, 
+  3.6808503231263447`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"getNumberExternalFaces", "[", 
+  RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}]], "Input",
+ CellChangeTimes->{{3.6808453089848733`*^9, 3.6808453136760845`*^9}}],
+
+Cell[BoxData["3"], "Output",
+ CellChangeTimes->{3.6808453139573793`*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"joinupKasteleyn", "[", 
+  RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}]], "Input",
+ CellChangeTimes->{{3.6808479675961776`*^9, 3.680847969252776*^9}, {
+  3.6808479997234755`*^9, 3.6808480005672703`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"X", "[", 
+     RowBox[{"1", ",", "2"}], "]"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"X", "[", 
+     RowBox[{"2", ",", "3"}], "]"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"X", "[", 
+     RowBox[{"3", ",", "1"}], "]"}], "}"}]}], "}"}]], "Output",
+ CellChangeTimes->{3.680847969714926*^9, 3.680848001145671*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"getKasteleynConsistencyViolation", "[", 
+  RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}]], "Input",
+ CellChangeTimes->{{3.680845734064762*^9, 3.6808457364962783`*^9}, {
+  3.6808479186621017`*^9, 3.680847925813328*^9}, {3.680848007313773*^9, 
+  3.6808480079792137`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", "}"}], ",", 
+   RowBox[{"{", "}"}]}], "}"}]], "Output",
+ CellChangeTimes->{3.6808480082917085`*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Transpose", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"X", "[", 
+       RowBox[{"1", ",", "2"}], "]"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"X", "[", 
+       RowBox[{"2", ",", "3"}], "]"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"X", "[", 
+       RowBox[{"3", ",", "1"}], "]"}], "}"}]}], "}"}], "[", 
+   RowBox[{"[", 
+    RowBox[{"All", ",", 
+     RowBox[{"Range", "[", 
+      RowBox[{
+       RowBox[{"Dimensions", "[", 
+        RowBox[{"Join", "[", 
+         RowBox[{"a", ",", "c"}], "]"}], "]"}], "[", 
+       RowBox[{"[", "2", "]"}], "]"}], "]"}]}], "]"}], "]"}], "]"}]], "Input",
+ CellChangeTimes->{{3.6808479756173325`*^9, 3.680847983862139*^9}, {
+  3.6808480285301957`*^9, 3.6808480371924047`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"{", 
+   RowBox[{
+    RowBox[{"X", "[", 
+     RowBox[{"1", ",", "2"}], "]"}], ",", 
+    RowBox[{"X", "[", 
+     RowBox[{"2", ",", "3"}], "]"}], ",", 
+    RowBox[{"X", "[", 
+     RowBox[{"3", ",", "1"}], "]"}]}], "}"}], "}"}]], "Output",
+ CellChangeTimes->{3.6808480373955197`*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"matroidPolytope", "@@", 
+  RowBox[{"{", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"Z", "[", "2", "]"}], ",", 
+        RowBox[{"Z", "[", "1", "]"}]}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"Z", "[", "4", "]"}], ",", 
+        RowBox[{"Z", "[", "3", "]"}]}], "}"}]}], "}"}], ",", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"{", "}"}], ",", 
+      RowBox[{"{", "}"}]}], "}"}], ",", 
+    RowBox[{"{", "}"}], ",", 
+    RowBox[{"{", "}"}]}], "}"}]}]], "Input",
+ CellChangeTimes->{{3.68084932692988*^9, 3.680849328845996*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"{", 
+   RowBox[{"0", ",", "0"}], "}"}], "}"}]], "Output",
+ CellChangeTimes->{3.680849329189759*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"moduliSpaceBFT", "[", 
+  RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", "1"}], "]"}]], "Input",
+ CellChangeTimes->{{3.6808498065310535`*^9, 3.6808498115180492`*^9}, {
+  3.680849841672803*^9, 3.6808498509903345`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"NullSpace", "::", "matrix"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"Argument \[NoBreak]\\!\\({}\\)\[NoBreak] at position \
+\[NoBreak]\\!\\(1\\)\[NoBreak] is not a non-empty rectangular matrix. \
+\\!\\(\\*ButtonBox[\\\"\[RightSkeleton]\\\", ButtonStyle->\\\"Link\\\", \
+ButtonFrame->None, ButtonData:>\\\"paclet:ref/message/General/matrix\\\", \
+ButtonNote -> \\\"NullSpace::matrix\\\"]\\)\"\>"}]], "Message", "MSG",
+ CellChangeTimes->{3.6808498514278374`*^9, 3.6808503360180006`*^9}],
+
+Cell[BoxData[
+ RowBox[{"NullSpace", "[", 
+  RowBox[{"{", "}"}], "]"}]], "Output",
+ CellChangeTimes->{
+  3.6808498160153275`*^9, {3.6808498488338656`*^9, 3.6808498514278374`*^9}, 
+   3.6808503360180006`*^9}]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{"Map", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Times", "@@", 
+     RowBox[{"fullspacetranspose", "[", 
+      RowBox[{"[", 
+       RowBox[{"Flatten", "[", 
+        RowBox[{"Position", "[", 
+         RowBox[{"modulitranspose", ",", "#"}], "]"}], "]"}], "]"}], "]"}]}], 
+    "&"}], ",", 
+   RowBox[{"DeleteDuplicates", "[", "modulitranspose", "]"}]}], 
+  "]"}]], "Input"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"a", "=", 
+   RowBox[{"{", 
+    RowBox[{"{", 
+     RowBox[{"X", "[", 
+      RowBox[{"1", ",", "1"}], "]"}], "}"}], "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"b", "=", 
+   RowBox[{"{", 
+    RowBox[{"{", "}"}], "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"c", "=", 
+   RowBox[{"{", "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"d", "=", 
+   RowBox[{"{", "}"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.680850106618243*^9, 3.6808501267254286`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"moduliSpaceBFT", "[", 
+  RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", "1"}], "]"}]], "Input",
+ CellChangeTimes->{{3.680850133888467*^9, 3.680850155299042*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"{", "1", "}"}], "}"}]], "Output",
+ CellChangeTimes->{{3.680850134623061*^9, 3.6808501599320145`*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"checkneeded", "=", "False"}]], "Input",
+ CellChangeTimes->{{3.6808503906085873`*^9, 3.680850391296124*^9}}],
+
+Cell[BoxData["False"], "Output",
+ CellChangeTimes->{3.680850391624443*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"matrixP", "=", 
+   RowBox[{"matchingPolytope", "[", 
+    RowBox[{
+    "topleft", ",", "topright", ",", "bottomleft", ",", "bottomright", ",", 
+     "checkneeded", ",", "True"}], "]"}]}], ";", "\[IndentingNewLine]", 
+  RowBox[{"If", "[", 
+   RowBox[{
+    RowBox[{"matrixP", "=!=", "Null"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{
+         RowBox[{"Dimensions", "[", "matrixP", "]"}], "[", 
+         RowBox[{"[", "2", "]"}], "]"}], ">", "0"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"chargesFterm", "=", 
+         RowBox[{"NullSpace", "[", "matrixP", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"gaugeCharge", "=", 
+         RowBox[{"Function", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"edge", ",", "column"}], "}"}], ",", 
+           RowBox[{"Block", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"output", "=", "0"}], "}"}], ",", 
+             RowBox[{
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"edge", "[", 
+                  RowBox[{"[", "1", "]"}], "]"}], "\[Equal]", "column"}], ",", 
+                RowBox[{
+                 RowBox[{"output", "=", 
+                  RowBox[{"output", "+", "1"}]}], ";"}]}], "]"}], ";", 
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"edge", "[", 
+                  RowBox[{"[", "2", "]"}], "]"}], "\[Equal]", "column"}], ",", 
+                RowBox[{
+                 RowBox[{"output", "=", 
+                  RowBox[{"output", "-", "1"}]}], ";"}]}], "]"}], ";", 
+              "output"}]}], "]"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"edges", "=", 
+         RowBox[{"Variables", "[", 
+          RowBox[{"joinupKasteleyn", "[", 
+           RowBox[{
+           "topleft", ",", "topright", ",", "bottomleft", ",", 
+            "bottomright"}], "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"intfaces", "=", 
+         RowBox[{"getInternalFaceLabels", "[", 
+          RowBox[{
+          "topleft", ",", "topright", ",", "bottomleft", ",", "bottomright"}],
+           "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"intfaces", "=!=", 
+           RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"gaugechargematrix", "=", 
+            RowBox[{"Table", "[", 
+             RowBox[{
+              RowBox[{"gaugeCharge", "[", 
+               RowBox[{
+                RowBox[{"edges", "[", 
+                 RowBox[{"[", "iii", "]"}], "]"}], ",", 
+                RowBox[{"intfaces", "[", 
+                 RowBox[{"[", "jjj", "]"}], "]"}]}], "]"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"iii", ",", 
+                RowBox[{"Length", "[", "edges", "]"}]}], "}"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"jjj", ",", 
+                RowBox[{"Length", "[", "intfaces", "]"}]}], "}"}]}], "]"}]}], 
+           ";", "\[IndentingNewLine]", 
+           RowBox[{"chargesDterm", "=", 
+            RowBox[{"Transpose", "[", 
+             RowBox[{"LinearSolve", "[", 
+              RowBox[{"matrixP", ",", "gaugechargematrix"}], "]"}], "]"}]}], 
+           ";"}], "\[IndentingNewLine]", ",", 
+          RowBox[{
+           RowBox[{"chargesDterm", "=", 
+            RowBox[{"{", "}"}]}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"modulispace", "=", 
+         RowBox[{"NullSpace", "[", 
+          RowBox[{"Join", "[", 
+           RowBox[{"chargesFterm", ",", "chargesDterm"}], "]"}], "]"}]}], 
+        ";"}], "\[IndentingNewLine]", ",", 
+       RowBox[{
+        RowBox[{"modulispace", "=", 
+         RowBox[{"{", 
+          RowBox[{"{", "}"}], "}"}]}], ";"}]}], "\[IndentingNewLine]", "]"}], 
+     ";"}], "\[IndentingNewLine]", ",", 
+    RowBox[{
+     RowBox[{"modulispace", "=", "Null"}], ";"}]}], "\[IndentingNewLine]", 
+   "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.6808503449308248`*^9, 3.680850346893113*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"NullSpace", "::", "matrix"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"Argument \[NoBreak]\\!\\({}\\)\[NoBreak] at position \
+\[NoBreak]\\!\\(1\\)\[NoBreak] is not a non-empty rectangular matrix. \
+\\!\\(\\*ButtonBox[\\\"\[RightSkeleton]\\\", ButtonStyle->\\\"Link\\\", \
+ButtonFrame->None, ButtonData:>\\\"paclet:ref/message/General/matrix\\\", \
+ButtonNote -> \\\"NullSpace::matrix\\\"]\\)\"\>"}]], "Message", "MSG",
+ CellChangeTimes->{3.680850326644612*^9, 3.680850393399801*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"NullSpace", "[", 
+  RowBox[{"NullSpace", "[", "matrixP", "]"}], "]"}]], "Input",
+ CellChangeTimes->{{3.6808504010455403`*^9, 3.68085040349001*^9}, {
+  3.6808505370252743`*^9, 3.6808505401754208`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"NullSpace", "::", "matrix"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"Argument \[NoBreak]\\!\\({}\\)\[NoBreak] at position \
+\[NoBreak]\\!\\(1\\)\[NoBreak] is not a non-empty rectangular matrix. \
+\\!\\(\\*ButtonBox[\\\"\[RightSkeleton]\\\", ButtonStyle->\\\"Link\\\", \
+ButtonFrame->None, ButtonData:>\\\"paclet:ref/message/General/matrix\\\", \
+ButtonNote -> \\\"NullSpace::matrix\\\"]\\)\"\>"}]], "Message", "MSG",
+ CellChangeTimes->{3.6808505405035667`*^9}],
+
+Cell[BoxData[
+ RowBox[{"NullSpace", "[", 
+  RowBox[{"{", "}"}], "]"}]], "Output",
+ CellChangeTimes->{{3.680850396159107*^9, 3.680850403661873*^9}, 
+   3.6808505405035667`*^9}]
 }, Open  ]]
 },
-Evaluator->"Local2",
 WindowSize->{1362, 685},
 WindowMargins->{{Automatic, -4}, {Automatic, 0}},
 FrontEndVersion->"10.2 for Microsoft Windows (64-bit) (July 7, 2015)",
@@ -11458,6 +12828,65 @@ Cell[1744, 57, 376374, 10727, 20848, "Input",
 Cell[CellGroupData[{
 Cell[378155, 10789, 18959, 278, 310, "Input"],
 Cell[397117, 11069, 15538, 361, 207, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[412692, 11435, 123, 2, 31, "Input"],
+Cell[412818, 11439, 39026, 806, 593, "Output"],
+Cell[CellGroupData[{
+Cell[451869, 12249, 189, 3, 23, "Print"],
+Cell[452061, 12254, 527, 18, 23, "Print"],
+Cell[452591, 12274, 372, 12, 23, "Print"],
+Cell[452966, 12288, 374, 12, 23, "Print"],
+Cell[453343, 12302, 529, 18, 23, "Print"],
+Cell[453875, 12322, 550, 19, 23, "Print"],
+Cell[454428, 12343, 552, 19, 23, "Print"],
+Cell[454983, 12364, 1020, 35, 23, "Print"]
+}, Open  ]]
+}, Open  ]],
+Cell[456030, 12403, 1419, 45, 132, "Input"],
+Cell[CellGroupData[{
+Cell[457474, 12452, 188, 3, 31, "Input"],
+Cell[457665, 12457, 72, 1, 31, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[457774, 12463, 232, 4, 31, "Input"],
+Cell[458009, 12469, 387, 12, 31, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[458433, 12486, 298, 5, 31, "Input"],
+Cell[458734, 12493, 155, 5, 31, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[458926, 12503, 783, 23, 31, "Input"],
+Cell[459712, 12528, 319, 10, 31, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[460068, 12543, 628, 20, 31, "Input"],
+Cell[460699, 12565, 139, 4, 31, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[460875, 12574, 241, 4, 31, "Input"],
+Cell[461119, 12580, 540, 10, 21, "Message"],
+Cell[461662, 12592, 206, 5, 31, "Output"]
+}, Open  ]],
+Cell[461883, 12600, 393, 12, 31, "Input"],
+Cell[462279, 12614, 533, 18, 92, "Input"],
+Cell[CellGroupData[{
+Cell[462837, 12636, 186, 3, 31, "Input"],
+Cell[463026, 12641, 141, 3, 31, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[463204, 12649, 131, 2, 31, "Input"],
+Cell[463338, 12653, 74, 1, 31, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[463449, 12659, 4201, 103, 372, "Input"],
+Cell[467653, 12764, 536, 10, 21, "Message"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[468226, 12779, 224, 4, 31, "Input"],
+Cell[468453, 12785, 516, 10, 21, "Message"],
+Cell[468972, 12797, 175, 4, 31, "Output"]
 }, Open  ]]
 }
 ]
