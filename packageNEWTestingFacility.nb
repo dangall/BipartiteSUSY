@@ -1,0 +1,909 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 10.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     36410,        900]
+NotebookOptionsPosition[     35020,        856]
+NotebookOutlinePosition[     35362,        871]
+CellTagsIndexPosition[     35319,        868]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"SetDirectory", "[", 
+   RowBox[{"NotebookDirectory", "[", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"<<", "bipartiteSUSY.m"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"CloseKernels", "[", "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"LaunchKernels", "[", "4", "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ParallelNeeds", "[", "\"\<bipartiteSUSY`\>\"", "]"}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.6616922986967053`*^9, 3.661692334211833*^9}, 
+   3.6645297915320587`*^9, {3.664542240753628*^9, 3.6645422474264593`*^9}, {
+   3.680934704229562*^9, 3.6809347533650007`*^9}, {3.6809543362698655`*^9, 
+   3.6809543363842587`*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"allbft1kasteleyns", "=", 
+   RowBox[{"<<", "allbft1kasteleyns"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"allbft2kasteleyns", "=", 
+   RowBox[{"<<", "allbft2kasteleyns"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"allscatteringkasteleyns", "=", 
+   RowBox[{"<<", "allscatteringkasteleyns"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"annoyingsmallexamples", "=", 
+   RowBox[{"<<", "annoyingsmallexamples"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.680936749950627*^9, 3.6809367529289207`*^9}, {
+  3.6809494277220397`*^9, 3.6809494359161243`*^9}, {3.6809502871251383`*^9, 
+  3.6809503204036846`*^9}}],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.6809580188155656`*^9, 3.6809580190545444`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{"Here", " ", "we", " ", "check", " ", "getNumberFaces"}], ",", " ",
+    "getNumberExternalFaces", ",", " ", "getNumberInternalFaces", ",", " ", 
+   "getInternalFaceLabels", ",", " ", "getExternalFaceLabels", ",", " ", 
+   "getFaceLabels"}], "*)"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{3.6809580264274635`*^9}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"bft1TestFaces", "[", 
+    RowBox[{"{", 
+     RowBox[{"aa_", ",", "bb_", ",", "cc_", ",", "dd_"}], "}"}], "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"(*", 
+      RowBox[{
+       RowBox[{
+       "When", " ", "we", " ", "count", " ", "faces", " ", "we", " ", "need", 
+        " ", "to", " ", "remove", " ", "those", " ", "edges", " ", "which", 
+        " ", 
+        RowBox[{"don", "'"}], "t", " ", "participate", " ", "in", " ", "any", 
+        " ", "perfect", " ", "matchings"}], ",", " ", 
+       RowBox[{
+       "in", " ", "case", " ", "they", " ", "happen", " ", "to", " ", "form", 
+        " ", "an", " ", "extra", " ", "face"}]}], "*)"}], 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], "=", 
+       RowBox[{"higgsEdgesBFT", "[", 
+        RowBox[{"aa", ",", "bb", ",", "cc", ",", "dd", ",", 
+         RowBox[{"consistentEdgeRemoval", "[", 
+          RowBox[{"aa", ",", "bb", ",", "cc", ",", "dd", ",", 
+           RowBox[{"{", "}"}]}], "]"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Variables", "[", 
+          RowBox[{"{", 
+           RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], "]"}], "=!=", 
+         RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{"getNumberFaces", "[", 
+              RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "=!=", 
+             RowBox[{
+              RowBox[{"getNumberInternalFaces", "[", 
+               RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "+", 
+              RowBox[{"getNumberExternalFaces", "[", 
+               RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}]}]}], "||", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"perfectMatchings", "[", 
+                RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], 
+               "\[NotEqual]", 
+               RowBox[{"{", "}"}]}], "&&", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"getNumberFaces", "[", 
+                 RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "-", 
+                "1"}], ">", 
+               RowBox[{"dimensionPolytope", "[", 
+                RowBox[{"matchingPolytope", "[", 
+                 RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], 
+                "]"}]}]}], ")"}]}], ",", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"Print", "[", 
+             RowBox[{"\"\<kast=\>\"", ",", 
+              RowBox[{"{", 
+               RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+              "\"\< : There's a problem with counting faces!\>\""}], "]"}], 
+            ";", "\[IndentingNewLine]", 
+            RowBox[{"Print", "[", 
+             RowBox[{"\"\<and {aa,bb,cc,dd}=\>\"", ",", 
+              RowBox[{"{", 
+               RowBox[{"aa", ",", "bb", ",", "cc", ",", "dd"}], "}"}]}], 
+             "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Sort", "[", 
+             RowBox[{"getFaceLabels", "[", 
+              RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "]"}], "=!=", 
+            RowBox[{"Sort", "[", 
+             RowBox[{"Join", "[", 
+              RowBox[{
+               RowBox[{"getInternalFaceLabels", "[", 
+                RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], ",", 
+               RowBox[{"getExternalFaceLabels", "[", 
+                RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}]}], "]"}], 
+             "]"}]}], ",", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"Print", "[", 
+             RowBox[{"\"\<kast=\>\"", ",", 
+              RowBox[{"{", 
+               RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+              "\"\< : There's a problem with the face labels! The internal \
+and external face lables do not togehter form all face labels\>\""}], "]"}], 
+            ";", "\[IndentingNewLine]", 
+            RowBox[{"Print", "[", 
+             RowBox[{"\"\<and {aa,bb,cc,dd}=\>\"", ",", 
+              RowBox[{"{", 
+               RowBox[{"aa", ",", "bb", ",", "cc", ",", "dd"}], "}"}]}], 
+             "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";"}]}], 
+       "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"DistributeDefinitions", "[", "bft1TestFaces", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ParallelMap", "[", 
+   RowBox[{"bft1TestFaces", ",", "allbft1kasteleyns"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ParallelMap", "[", 
+   RowBox[{"bft1TestFaces", ",", 
+    RowBox[{"Cases", "[", 
+     RowBox[{"annoyingsmallexamples", ",", 
+      RowBox[{"zz_", "/;", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"perfectMatchings", "@@", "zz"}], ")"}], "\[NotEqual]", 
+        RowBox[{"{", "}"}]}]}]}], "]"}]}], "]"}], ";"}]}], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.6809368673042316`*^9, 3.6809369642578907`*^9}, {
+   3.6809373036755733`*^9, 3.680937320393875*^9}, {3.68094945328999*^9, 
+   3.6809494551585407`*^9}, {3.680949567555023*^9, 3.6809496049332643`*^9}, {
+   3.680949641164015*^9, 3.680949650602211*^9}, {3.6809500858928022`*^9, 
+   3.6809500860894055`*^9}, {3.680953204512086*^9, 3.680953281020768*^9}, 
+   3.680953323091693*^9, 3.6809533619719105`*^9, {3.6809536983983207`*^9, 
+   3.680953723634925*^9}, {3.6809537973310194`*^9, 3.6809538183646946`*^9}, {
+   3.6809538527826324`*^9, 3.6809538572553144`*^9}, 3.6809580264274635`*^9}]
+}, Closed]],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.6809538659790955`*^9, 3.680953866166606*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{
+   "Here", " ", "we", " ", "check", " ", "turnIntoWeightedAdjacencyMatrix"}], 
+   ",", " ", "turnIntoAdjacencyMatrix", ",", " ", "turnIntoGraph"}], 
+  "*)"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{3.6809580374065695`*^9}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"allTestAdjacencyMatricesAndGraph", "[", 
+    RowBox[{"{", 
+     RowBox[{"a_", ",", "b_", ",", "c_", ",", "d_"}], "}"}], "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"graphwithedges", ",", "graphnoedges"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{
+          RowBox[{"WeightedGraphQ", "[", 
+           RowBox[{"WeightedAdjacencyGraph", "[", 
+            RowBox[{"turnIntoWeightedAdjacencyMatrix", "[", 
+             RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "]"}], "]"}],
+           "\[Equal]", "False"}], "||", 
+         RowBox[{
+          RowBox[{"GraphQ", "[", 
+           RowBox[{"AdjacencyGraph", "[", 
+            RowBox[{
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"turnIntoWeightedAdjacencyMatrix", "[", 
+                RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "/.", 
+               RowBox[{"Map", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"#", "\[Rule]", "1"}], "&"}], ",", 
+                 RowBox[{"Variables", "[", 
+                  RowBox[{"Join", "[", 
+                   RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], 
+                  "]"}]}], "]"}]}], ")"}], "/.", 
+             RowBox[{"{", 
+              RowBox[{"\[Infinity]", "\[Rule]", "0"}], "}"}]}], "]"}], "]"}], 
+          "\[Equal]", "False"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<kast=\>\"", ",", 
+           RowBox[{"{", 
+            RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+           "\"\< : There's a problem with the Weighted adjacency matrix! It \
+does not form a valid weighted graph\>\""}], "]"}], ";"}]}], 
+       "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Dimensions", "[", 
+          RowBox[{"turnIntoWeightedAdjacencyMatrix", "[", 
+           RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "]"}], "=!=", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"Total", "[", 
+            RowBox[{"Dimensions", "[", 
+             RowBox[{"joinupKasteleyn", "[", 
+              RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "]"}], 
+            "]"}], ",", 
+           RowBox[{"Total", "[", 
+            RowBox[{"Dimensions", "[", 
+             RowBox[{"joinupKasteleyn", "[", 
+              RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "]"}], 
+            "]"}]}], "}"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<kast=\>\"", ",", 
+           RowBox[{"{", 
+            RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+           "\"\< : There's a problem with the Weighted adjacency matrix! Its \
+size is wrong\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"GraphQ", "[", 
+          RowBox[{"AdjacencyGraph", "[", 
+           RowBox[{"turnIntoAdjacencyMatrix", "[", 
+            RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "]"}], "]"}], 
+         "\[Equal]", "False"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<kast=\>\"", ",", 
+           RowBox[{"{", 
+            RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+           "\"\< : There's a problem with the normal adjacency matrix! It \
+does not form a valid graph\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", 
+       "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Dimensions", "[", 
+          RowBox[{"turnIntoAdjacencyMatrix", "[", 
+           RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "]"}], "=!=", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"Total", "[", 
+            RowBox[{"Dimensions", "[", 
+             RowBox[{"joinupKasteleyn", "[", 
+              RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "]"}], 
+            "]"}], ",", 
+           RowBox[{"Total", "[", 
+            RowBox[{"Dimensions", "[", 
+             RowBox[{"joinupKasteleyn", "[", 
+              RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "]"}], 
+            "]"}]}], "}"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<kast=\>\"", ",", 
+           RowBox[{"{", 
+            RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+           "\"\< : There's a problem with the normal adjacency matrix! Its \
+size is wrong\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"turnIntoWeightedAdjacencyMatrix", "[", 
+              RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "/.", 
+             RowBox[{"Map", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"#", "\[Rule]", "1"}], "&"}], ",", 
+               RowBox[{"Variables", "[", 
+                RowBox[{"Join", "[", 
+                 RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "]"}]}], 
+              "]"}]}], ")"}], "/.", 
+           RowBox[{"{", 
+            RowBox[{"\[Infinity]", "\[Rule]", "0"}], "}"}]}], ")"}], "=!=", 
+         RowBox[{"turnIntoAdjacencyMatrix", "[", 
+          RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}]}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<kast=\>\"", ",", 
+           RowBox[{"{", 
+            RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+           "\"\< : There's a problem with the adjacency matrices! \
+turnIntoWeightedAdjacencyMatrix doesn't correspond to turnIntoAdjacencyMatrix\
+\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"graphwithedges", "=", 
+       RowBox[{"turnIntoGraph", "[", 
+        RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"graphnoedges", "=", 
+       RowBox[{"turnIntoGraph", "[", 
+        RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", "False"}], "]"}]}], 
+      ";", "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{
+          RowBox[{"GraphQ", "[", "graphwithedges", "]"}], "\[Equal]", 
+          "False"}], "||", 
+         RowBox[{
+          RowBox[{"GraphQ", "[", "graphnoedges", "]"}], "\[Equal]", 
+          "False"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<kast=\>\"", ",", 
+           RowBox[{"{", 
+            RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+           "\"\< : There's a problem with turnIntoGraph! It doesn't produce a \
+valid graph\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";"}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+  "DistributeDefinitions", "[", "allTestAdjacencyMatricesAndGraph", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ParallelMap", "[", 
+   RowBox[{"allTestAdjacencyMatricesAndGraph", ",", "allbft1kasteleyns"}], 
+   "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ParallelMap", "[", 
+   RowBox[{"allTestAdjacencyMatricesAndGraph", ",", "allbft2kasteleyns"}], 
+   "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ParallelMap", "[", 
+   RowBox[{
+   "allTestAdjacencyMatricesAndGraph", ",", "allscatteringkasteleyns"}], 
+   "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ParallelMap", "[", 
+   RowBox[{"allTestAdjacencyMatricesAndGraph", ",", 
+    RowBox[{"Cases", "[", 
+     RowBox[{"annoyingsmallexamples", ",", 
+      RowBox[{"zz_", "/;", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"perfectMatchings", "@@", "zz"}], ")"}], "\[NotEqual]", 
+        RowBox[{"{", "}"}]}]}]}], "]"}]}], "]"}], ";"}]}], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.6809501524175406`*^9, 3.6809502773276024`*^9}, {
+   3.680953890358967*^9, 3.6809538935656924`*^9}, {3.680954262356439*^9, 
+   3.6809542746316233`*^9}, 3.6809580374065695`*^9}]
+}, Closed]],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.6809547750940943`*^9, 3.6809547751724873`*^9}, {
+  3.6809548811659465`*^9, 3.6809548817128515`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{"Here", " ", "we", " ", "check", " ", "getDuplicateEdges"}], ",", 
+   " ", "getEdgesBFTformQ"}], "*)"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{3.68095806299942*^9}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"allTestChecksKasteleyn", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"a_", ",", "b_", ",", "c_", ",", "d_"}], "}"}], ",", 
+     "bftlabeling_"}], "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"messuprule", ",", "duplicatingrule"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"(", 
+           RowBox[{"getEdgesBFTformQ", "@@", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], "/.", 
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"edge_", "?", 
+                  RowBox[{"(", 
+                   RowBox[{
+                    RowBox[{"#", "=!=", "List"}], " ", "&"}], ")"}]}], "[", 
+                 RowBox[{"ind1_", ",", "ind2_"}], "]"}], "\[RuleDelayed]", 
+                SubscriptBox["edge", 
+                 RowBox[{"ind1", ",", "ind2"}]]}], "}"}]}], ")"}]}], ")"}], 
+          ")"}], "||", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"bftlabeling", "\[Equal]", "False"}], "&&", 
+           RowBox[{"getEdgesBFTformQ", "[", 
+            RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}]}], ")"}]}], 
+        ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<kast=\>\"", ",", 
+           RowBox[{"{", 
+            RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+           "\"\< : There's a problem with getEdgesBFTformQ! It doesn't \
+complain even when all the edges are \!\(\*SubscriptBox[\(X\), \(i, j\)]\) \
+rather than X[i,j]\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"messuprule", "=", 
+       RowBox[{
+        RowBox[{"Last", "[", 
+         RowBox[{"Variables", "[", 
+          RowBox[{"Join", "[", 
+           RowBox[{"a", ",", "b", ",", "c"}], "]"}], "]"}], "]"}], "\[Rule]", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"Last", "[", 
+           RowBox[{"Variables", "[", 
+            RowBox[{"Join", "[", 
+             RowBox[{"a", ",", "b", ",", "c"}], "]"}], "]"}], "]"}], "/.", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"edge_", "?", 
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"#", "=!=", "List"}], " ", "&"}], ")"}]}], "[", 
+             RowBox[{"ind1_", ",", "ind2_"}], "]"}], "\[RuleDelayed]", 
+            SubscriptBox["edge", 
+             RowBox[{"ind1", ",", "ind2"}]]}], "}"}]}], ")"}]}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"bftlabeling", "&&", 
+         RowBox[{"(", 
+          RowBox[{"getEdgesBFTformQ", "[", 
+           RowBox[{
+            RowBox[{"a", "/.", "messuprule"}], ",", 
+            RowBox[{"b", "/.", "messuprule"}], ",", 
+            RowBox[{"c", "/.", "messuprule"}], ",", 
+            RowBox[{"d", "/.", "messuprule"}]}], "]"}], ")"}]}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<kast=\>\"", ",", 
+           RowBox[{"{", 
+            RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+           "\"\< : There's a problem with getEdgesBFTformQ! It doesn't \
+complain even when an edge is \!\(\*SubscriptBox[\(X\), \(i, j\)]\) rather \
+than X[i,j]\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"bftlabeling", "&&", 
+         RowBox[{
+          RowBox[{"getEdgesBFTformQ", "[", 
+           RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "\[Equal]", 
+          "False"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<kast=\>\"", ",", 
+           RowBox[{"{", 
+            RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+           "\"\< : There's a problem with getEdgesBFTformQ! It complains even \
+though all the edges are of the form X[i,j]\>\""}], "]"}], ";"}]}], 
+       "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"getDuplicateEdges", "[", 
+          RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "=!=", 
+         RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<kast=\>\"", ",", 
+           RowBox[{"{", 
+            RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+           "\"\< : There's a problem with getDuplicateEdges! It claims we \
+have duplicate edges in this Kastelen\>\""}], "]"}], ";"}]}], 
+       "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"duplicatingrule", "=", 
+       RowBox[{
+        RowBox[{"First", "[", 
+         RowBox[{"Join", "[", 
+          RowBox[{
+           RowBox[{"Variables", "[", "b", "]"}], ",", 
+           RowBox[{"Variables", "[", "c", "]"}], ",", 
+           RowBox[{"Variables", "[", "a", "]"}]}], "]"}], "]"}], "\[Rule]", 
+        RowBox[{"Last", "[", 
+         RowBox[{"Join", "[", 
+          RowBox[{
+           RowBox[{"Variables", "[", "b", "]"}], ",", 
+           RowBox[{"Variables", "[", "c", "]"}], ",", 
+           RowBox[{"Variables", "[", "a", "]"}]}], "]"}], "]"}]}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{
+          RowBox[{"getDuplicateEdges", "[", 
+           RowBox[{
+            RowBox[{"a", "/.", "duplicatingrule"}], ",", 
+            RowBox[{"b", "/.", "duplicatingrule"}], ",", 
+            RowBox[{"c", "/.", "duplicatingrule"}], ",", 
+            RowBox[{"d", "/.", "duplicatingrule"}]}], "]"}], "=!=", 
+          RowBox[{"{", 
+           RowBox[{"Last", "[", 
+            RowBox[{"Join", "[", 
+             RowBox[{
+              RowBox[{"Variables", "[", "b", "]"}], ",", 
+              RowBox[{"Variables", "[", "c", "]"}], ",", 
+              RowBox[{"Variables", "[", "a", "]"}]}], "]"}], "]"}], "}"}]}], "&&", 
+         RowBox[{
+          RowBox[{"Length", "[", 
+           RowBox[{"Variables", "[", 
+            RowBox[{"{", 
+             RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], "]"}], "]"}],
+           ">", "1"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<kast=\>\"", ",", 
+           RowBox[{"{", 
+            RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+           "\"\< : There's a problem with getDuplicateEdges! It doesn't spot \
+a duplicated edge\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"duplicatingrule", "=", 
+       RowBox[{
+        RowBox[{"First", "[", 
+         RowBox[{"Join", "[", 
+          RowBox[{
+           RowBox[{"Variables", "[", "b", "]"}], ",", 
+           RowBox[{"Variables", "[", "c", "]"}], ",", 
+           RowBox[{"Variables", "[", "a", "]"}]}], "]"}], "]"}], "\[Rule]", 
+        RowBox[{"Last", "[", 
+         RowBox[{"Join", "[", 
+          RowBox[{
+           RowBox[{"Variables", "[", "b", "]"}], ",", 
+           RowBox[{"Variables", "[", "a", "]"}], ",", 
+           RowBox[{"Variables", "[", "c", "]"}]}], "]"}], "]"}]}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{
+          RowBox[{"getDuplicateEdges", "[", 
+           RowBox[{
+            RowBox[{"a", "/.", "duplicatingrule"}], ",", 
+            RowBox[{"b", "/.", "duplicatingrule"}], ",", 
+            RowBox[{"c", "/.", "duplicatingrule"}], ",", 
+            RowBox[{"d", "/.", "duplicatingrule"}]}], "]"}], "=!=", 
+          RowBox[{"{", 
+           RowBox[{"Last", "[", 
+            RowBox[{"Join", "[", 
+             RowBox[{
+              RowBox[{"Variables", "[", "b", "]"}], ",", 
+              RowBox[{"Variables", "[", "a", "]"}], ",", 
+              RowBox[{"Variables", "[", "c", "]"}]}], "]"}], "]"}], "}"}]}], "&&", 
+         RowBox[{
+          RowBox[{"duplicatingrule", "[", 
+           RowBox[{"[", "1", "]"}], "]"}], "=!=", 
+          RowBox[{"duplicatingrule", "[", 
+           RowBox[{"[", "2", "]"}], "]"}]}], "&&", 
+         RowBox[{
+          RowBox[{"Length", "[", 
+           RowBox[{"Variables", "[", 
+            RowBox[{"{", 
+             RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], "]"}], "]"}],
+           ">", "1"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<kast=\>\"", ",", 
+           RowBox[{"{", 
+            RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+           "\"\< : There's a problem with getDuplicateEdges! It doesn't spot \
+a duplicated edge\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"bftlabeling", "&&", 
+         RowBox[{
+          RowBox[{"getKasteleynConsistencyViolation", "[", 
+           RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "=!=", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"{", "}"}], ",", 
+            RowBox[{"{", "}"}]}], "}"}]}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<kast=\>\"", ",", 
+           RowBox[{"{", 
+            RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+           "\"\< : There's a problem with getKasteleynConsistencyViolation! \
+It's finding problems where there are none, by claimimng some rows or columns \
+don't have the right cyclic structure\>\""}], "]"}], ";"}]}], 
+       "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"bftlabeling", "&&", 
+         RowBox[{
+          RowBox[{"DeleteCases", "[", 
+           RowBox[{
+            RowBox[{"Variables", "[", "a", "]"}], ",", 
+            RowBox[{"zz_", "/;", 
+             RowBox[{
+              RowBox[{"zz", "[", 
+               RowBox[{"[", "1", "]"}], "]"}], "\[Equal]", 
+              RowBox[{"zz", "[", 
+               RowBox[{"[", "2", "]"}], "]"}]}]}]}], "]"}], "=!=", 
+          RowBox[{"{", "}"}]}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"messuprule", "=", 
+          RowBox[{
+           RowBox[{"First", "[", 
+            RowBox[{"DeleteCases", "[", 
+             RowBox[{
+              RowBox[{"Variables", "[", "a", "]"}], ",", 
+              RowBox[{"zz_", "/;", 
+               RowBox[{
+                RowBox[{"zz", "[", 
+                 RowBox[{"[", "1", "]"}], "]"}], "\[Equal]", 
+                RowBox[{"zz", "[", 
+                 RowBox[{"[", "2", "]"}], "]"}]}]}]}], "]"}], "]"}], 
+           "\[Rule]", 
+           RowBox[{
+            RowBox[{"First", "[", 
+             RowBox[{"DeleteCases", "[", 
+              RowBox[{
+               RowBox[{"Variables", "[", "a", "]"}], ",", 
+               RowBox[{"zz_", "/;", 
+                RowBox[{
+                 RowBox[{"zz", "[", 
+                  RowBox[{"[", "1", "]"}], "]"}], "\[Equal]", 
+                 RowBox[{"zz", "[", 
+                  RowBox[{"[", "2", "]"}], "]"}]}]}]}], "]"}], "]"}], "[", 
+            RowBox[{"[", 
+             RowBox[{"{", 
+              RowBox[{"2", ",", "1"}], "}"}], "]"}], "]"}]}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Total", "[", 
+             RowBox[{"Map", "[", 
+              RowBox[{"Length", ",", 
+               RowBox[{"getKasteleynConsistencyViolation", "[", 
+                RowBox[{
+                 RowBox[{"a", "/.", "messuprule"}], ",", 
+                 RowBox[{"b", "/.", "messuprule"}], ",", 
+                 RowBox[{"c", "/.", "messuprule"}], ",", 
+                 RowBox[{"d", "/.", "messuprule"}]}], "]"}]}], "]"}], "]"}], 
+            "\[LessEqual]", "1"}], ",", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"Print", "[", 
+             RowBox[{"\"\<kast=\>\"", ",", 
+              RowBox[{"{", 
+               RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+              "\"\< : There's a problem with \
+getKasteleynConsistencyViolation! It's finding problems where there are none, \
+by claimimng some rows or columns don't have the right cyclic \
+structure\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";"}]}], 
+       "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"getKasteleynCheckQ", "[", 
+          RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", "False"}], "]"}], 
+         "\[Equal]", "False"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<kast=\>\"", ",", 
+           RowBox[{"{", 
+            RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+           "\"\< : There's a problem with getKasteleynCheckQ! It claims there \
+are duplicate edges in the Kasteleyn\>\""}], "]"}], ";"}]}], 
+       "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"bftlabeling", "===", "True"}], "&&", 
+         RowBox[{
+          RowBox[{"getKasteleynCheckQ", "[", 
+           RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", "True"}], "]"}], 
+          "\[Equal]", "False"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<kast=\>\"", ",", 
+           RowBox[{"{", 
+            RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+           "\"\< : There's a problem with getKasteleynCheckQ! It claims \
+there's something wrong with the Kasteleyn\>\""}], "]"}], ";"}]}], 
+       "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"DistributeDefinitions", "[", "allTestChecksKasteleyn", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ParallelMap", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"allTestChecksKasteleyn", "[", 
+      RowBox[{"#", ",", "True"}], "]"}], "&"}], ",", "allbft1kasteleyns"}], 
+   "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ParallelMap", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"allTestChecksKasteleyn", "[", 
+      RowBox[{"#", ",", "Null"}], "]"}], "&"}], ",", "allbft2kasteleyns"}], 
+   "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ParallelMap", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"allTestChecksKasteleyn", "[", 
+      RowBox[{"#", ",", "False"}], "]"}], "&"}], ",", 
+    "allscatteringkasteleyns"}], "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ParallelMap", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"allTestChecksKasteleyn", "[", 
+      RowBox[{"#", ",", "True"}], "]"}], "&"}], ",", 
+    RowBox[{"Cases", "[", 
+     RowBox[{"annoyingsmallexamples", ",", 
+      RowBox[{"zz_", "/;", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"perfectMatchings", "@@", "zz"}], ")"}], "\[NotEqual]", 
+        RowBox[{"{", "}"}]}]}]}], "]"}]}], "]"}], ";"}]}], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.6809548359029303`*^9, 3.6809548771314993`*^9}, 
+   3.6809549575141845`*^9, {3.6809550018475513`*^9, 3.680955016054621*^9}, {
+   3.680955089907172*^9, 3.6809552826635556`*^9}, {3.6809553521551037`*^9, 
+   3.680955424583268*^9}, {3.680955469919272*^9, 3.6809555127457175`*^9}, {
+   3.6809563095784492`*^9, 3.680956390645215*^9}, {3.6809564545788746`*^9, 
+   3.6809565398682613`*^9}, {3.680956594376968*^9, 3.680956631869005*^9}, {
+   3.6809566953540554`*^9, 3.6809567201604347`*^9}, {3.6809567777217293`*^9, 
+   3.6809567850952597`*^9}, {3.680956815128813*^9, 3.680956835314481*^9}, {
+   3.6809568750363607`*^9, 3.6809568752554026`*^9}, {3.6809569281548967`*^9, 
+   3.6809569470629773`*^9}, {3.680956983738322*^9, 3.6809570063447423`*^9}, {
+   3.6809570615978966`*^9, 3.6809570812467613`*^9}, {3.6809571757589655`*^9, 
+   3.6809572965056458`*^9}, {3.680957341166053*^9, 3.68095735222294*^9}, {
+   3.680957393324005*^9, 3.6809574700091496`*^9}, 3.68095806299942*^9}]
+}, Closed]],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.680958051477315*^9, 3.6809580516023474`*^9}}],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.680958053346465*^9, 3.680958053377736*^9}}],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.6809580539715047`*^9, 3.680958054002776*^9}}],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.680958054424649*^9, 3.680958054471553*^9}}],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.6809580548468485`*^9, 3.680958054893749*^9}}],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.6809580552781534`*^9, 3.680958055309431*^9}}],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.6809580556844263`*^9, 3.680958055700055*^9}}],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.6809580560906982`*^9, 3.6809580561376004`*^9}}],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.680958056496975*^9, 3.680958056512599*^9}}]
+},
+WindowSize->{1366, 685},
+WindowMargins->{{-8, Automatic}, {Automatic, -8}},
+FrontEndVersion->"10.2 for Microsoft Windows (64-bit) (July 7, 2015)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 711, 16, 112, "Input"],
+Cell[1272, 38, 675, 15, 92, "Input"],
+Cell[1950, 55, 96, 1, 31, "Input"],
+Cell[CellGroupData[{
+Cell[2071, 60, 407, 8, 52, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2481, 70, 5987, 134, 372, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}]
+}, Closed]],
+Cell[8483, 207, 94, 1, 25, "Input"],
+Cell[CellGroupData[{
+Cell[8602, 212, 318, 8, 31, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[8923, 222, 8465, 202, 612, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}]
+}, Closed]],
+Cell[17403, 427, 149, 2, 25, "Input"],
+Cell[CellGroupData[{
+Cell[17577, 433, 260, 6, 31, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[17840, 441, 16295, 385, 1004, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}]
+}, Closed]],
+Cell[34150, 829, 94, 1, 25, "Input"],
+Cell[34247, 832, 92, 1, 31, "Input"],
+Cell[34342, 835, 94, 1, 31, "Input"],
+Cell[34439, 838, 92, 1, 31, "Input"],
+Cell[34534, 841, 94, 1, 31, "Input"],
+Cell[34631, 844, 94, 1, 31, "Input"],
+Cell[34728, 847, 94, 1, 31, "Input"],
+Cell[34825, 850, 96, 1, 31, "Input"],
+Cell[34924, 853, 92, 1, 31, "Input"]
+}
+]
+*)
+
+(* End of internal cache information *)

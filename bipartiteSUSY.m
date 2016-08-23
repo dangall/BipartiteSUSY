@@ -152,7 +152,7 @@ externalnf=Length[facelist];
 externalnf=Null;
 ];
 (*If there are external nodes with no edges attached to them, assume they are all in the same face, and declare this face to be external*)
-If[externalnf===0&&(Length[bottomleft]+Length[Transpose[topright]])>0,
+If[externalnf===0&&(Length[bottomleft]+Dimensions[Join[topright,bottomright]][[2]])>0,
 externalnf=1;
 ];
 externalnf
@@ -180,7 +180,7 @@ facelist=Union[Flatten[List@@@varlist]];
 facelist=Null;
 ];
 (*If there are external nodes with no edges attached to them, assume they are all in the same face, and declare this face to be external*)
-If[facelist==={}&&(Length[bottomleft]+Length[Transpose[topright]])>0,
+If[facelist==={}&&(Length[bottomleft]+Dimensions[Join[topright,bottomright]][[2]])>0,
 facelist={Last[Union[Flatten[List@@@Variables[joinupKasteleyn[topleft,topright,bottomleft,bottomright]]]]]};
 ];
 facelist
@@ -271,9 +271,15 @@ userspecifiednodes[[All,2]]=userspecifiednodes[[All,2]]/.nodenumbertotype;
 userspecifiededges=EdgeList[graph]/.UndirectedEdge->List;
 xaxisvalues=userspecifiednodes[[All,1,1]];
 yaxisvalues=userspecifiednodes[[All,1,2]];
-xscaling=2.6/(Max[xaxisvalues]-Min[xaxisvalues]);
+If[Chop[(Max[xaxisvalues]-Min[xaxisvalues])]==0,
+xscaling=1;
+,xscaling=2.6/(Max[xaxisvalues]-Min[xaxisvalues]);
+];
 xshift=(Max[xaxisvalues]+Min[xaxisvalues])/2;
-yscaling=2.6/(Max[yaxisvalues]-Min[yaxisvalues]);
+If[Chop[(Max[yaxisvalues]-Min[yaxisvalues])]==0,
+yscaling=1;
+,yscaling=2.6/(Max[yaxisvalues]-Min[yaxisvalues]);
+];
 yshift=(Max[yaxisvalues]+Min[yaxisvalues])/2;
 userspecifiednodes[[All,1,1]]=Map[Round[#,0.1]&,(userspecifiednodes[[All,1,1]]-xshift)xscaling];
 userspecifiednodes[[All,1,2]]=Map[Round[#,0.1]&,(userspecifiednodes[[All,1,2]]-yshift)yscaling];
@@ -317,7 +323,7 @@ intwhitetointblackedges=Map[#[[{2,1}]]&,Cases[inputedges,{Alternatives@@blackint
 topleftmatrixentries=Join[topleftmatrixentries,Map[#[[1,1]]->Total[#[[2]]]&,Map[Transpose[#]&,GatherBy[MapThread[{#1,#2}&,{intwhitetointblackedges,variablestochoosefrom[[Range[Length[intwhitetointblackedges]]]]}],First]]]];
 variablestochoosefrom=variablestochoosefrom[[Length[intwhitetointblackedges]+1;;]];
 If[topleftmatrixentries==={},
-outputtopleft={};
+outputtopleft=ConstantArray[0,{Length[whiteinternals],Length[blackinternals]}];
 ,outputtopleft=Normal[SparseArray[topleftmatrixentries,{Length[inputpointcoordinatesandcolors],Length[inputpointcoordinatesandcolors]}]][[whiteinternals,blackinternals]];
 ];
 intwhitetoextblackedges=Cases[inputedges,{Alternatives@@whiteinternals,Alternatives@@blackexternals}];
@@ -327,7 +333,7 @@ intwhitetoextblackedges=Map[#[[{2,1}]]&,Cases[inputedges,{Alternatives@@blackext
 toprightmatrixentries=Join[toprightmatrixentries,Map[#[[1,1]]->Total[#[[2]]]&,Map[Transpose[#]&,GatherBy[MapThread[{#1,#2}&,{intwhitetoextblackedges,variablestochoosefrom[[Range[Length[intwhitetoextblackedges]]]]}],First]]]];
 variablestochoosefrom=variablestochoosefrom[[Length[intwhitetoextblackedges]+1;;]];
 If[toprightmatrixentries==={},
-outputtopright=ConstantArray[{},Length[outputtopleft]];
+outputtopright=ConstantArray[0,{Length[whiteinternals],Length[blackexternals]}];
 ,outputtopright=Normal[SparseArray[toprightmatrixentries,{Length[inputpointcoordinatesandcolors],Length[inputpointcoordinatesandcolors]}]][[whiteinternals,blackexternals]];
 ];
 extwhitetointblackedges=Cases[inputedges,{Alternatives@@whiteexternals,Alternatives@@blackinternals}];
@@ -337,16 +343,16 @@ extwhitetointblackedges=Map[#[[{2,1}]]&,Cases[inputedges,{Alternatives@@blackint
 bottomleftmatrixentries=Join[bottomleftmatrixentries,Map[#[[1,1]]->Total[#[[2]]]&,Map[Transpose[#]&,GatherBy[MapThread[{#1,#2}&,{extwhitetointblackedges,variablestochoosefrom[[Range[Length[extwhitetointblackedges]]]]}],First]]]];
 variablestochoosefrom=variablestochoosefrom[[Length[extwhitetointblackedges]+1;;]];
 If[bottomleftmatrixentries==={},
-outputbottomleft={};
+outputbottomleft=ConstantArray[0,{Length[whiteexternals],Length[blackinternals]}];
 ,outputbottomleft=Normal[SparseArray[bottomleftmatrixentries,{Length[inputpointcoordinatesandcolors],Length[inputpointcoordinatesandcolors]}]][[whiteexternals,blackinternals]];
 ];
 outputbottomright=ConstantArray[0,{Length[whiteexternals],Length[blackexternals]}];
-If[outputbottomleft==={}&&Length[outputbottomright]=!=0,
+(*If[outputbottomleft==={}&&Length[outputbottomright]=!=0,
 outputbottomleft=ConstantArray[0,{Length[outputbottomright],Dimensions[outputtopleft][[2]]}];
 ];
-If[Dimensions[outputtopright][[2]]==0&&Dimensions[outputbottomright][[2]]!=0,
+If[Dimensions[outputtopright][[2]]\[Equal]0&&Dimensions[outputbottomright][[2]]\[NotEqual]0,
 outputtopright=ConstantArray[0,{Length[outputtopleft],Dimensions[outputbottomright][[2]]}];
-];
+];*)
 ,Print["The graph is not bipartite!"];
 {outputtopleft,outputtopright,outputbottomleft,outputbottomright}={Null,Null,Null,Null};
 ];
@@ -476,15 +482,15 @@ areyoupressed={"DialogBox","Pressed"};
 areyoupressed={"DialogBox"};
 ];,Appearance->Dynamic[areyoupressed]]},{Pane[Dynamic[edgebuttonlist],ImageSize->{80,368},Scrollbars->{False,True},Alignment->{Left,Top}]}}]}}(*,Frame\[Rule]All*)]},
 {Row[{ActionMenu["Compute",
-{"Reducibility (True/False)":>(Print[reducibilityQ@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];),
-"Path Matrix":>(Print[pathMatrix@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];),
-"Dimension of Grassmannian":>(Print[dimensionGrassmannian@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];),
-"Stratification: Number of boundaries":>(Print[stratificationNumbers@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];),
-"Stratification: Euler number":>(Print[stratificationEulerNumber@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];),
-"Non-standard Poles (True/False)":>(Print[nonPluckerPolesQ@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];),
-"Minors of Path Matrix \[LeftRightArrow] Perfect Matchings":>(Print[minorsAsPerfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];),
-"Planarity (True/False)":>(Print[planarityQ@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];),
-"Helicity k":>(Print[getK@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];),
+{"Reducibility (True/False)":>(If[perfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]=!= {},Print[reducibilityQ@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];,Print["This graph has no perfect matchings!"];];),
+"Path Matrix":>(If[perfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]=!= {},Print[pathMatrix@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];,Print["This graph has no perfect matchings!"];];),
+"Dimension of Grassmannian":>(If[perfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]=!= {},Print[dimensionGrassmannian@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];,Print["This graph has no perfect matchings!"];];),
+"Stratification: Number of boundaries":>(If[perfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]=!= {},Print[stratificationNumbers@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];,Print["This graph has no perfect matchings!"];];),
+"Stratification: Euler number":>(If[perfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]=!= {},Print[stratificationEulerNumber@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];,Print["This graph has no perfect matchings!"];];),
+"Non-standard Poles (True/False)":>(If[perfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]=!= {},Print[nonPluckerPolesQ@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];,Print["This graph has no perfect matchings!"];];),
+"Minors of Path Matrix \[LeftRightArrow] Perfect Matchings":>(If[perfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]=!= {},Print[minorsAsPerfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];,Print["This graph has no perfect matchings!"];];),
+"Planarity (True/False)":>(If[perfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]=!= {},Print[planarityQ@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];,Print["This graph has no perfect matchings!"];];),
+"Helicity k":>(If[perfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]=!= {},Print[getK@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];,Print["This graph has no perfect matchings!"];];),
 "Perfect Matchings":>(Print[perfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];)}
 ,Method->"Queued"],"           ",Button["Print graph",Print[Graph[Range[Length[pointcoordinatesandcolors]],edges,VertexCoordinates->pointcoordinatesandcolors[[All,1]],VertexSize->Medium,VertexStyle->MapThread[Rule,{Range[Length[pointcoordinatesandcolors]],pointcoordinatesandcolors[[All,2]]/.{"WI"->White,"WE"->White,"BI"->Black,"BE"->Black}}],EdgeStyle->Directive[Black,Thick]]];](*,Button["Raw data (Remove this buttom later)",Print[{pointcoordinatesandcolors,edges}];,ImageSize\[Rule]Large]*)}]}
 }(*,Frame\[Rule]All*),Spacings->{{Automatic,Automatic},{Automatic,0,0,Automatic,Automatic,Automatic}}],Background->LightBlue]
@@ -569,6 +575,7 @@ rowandcolumnnumbers=Cases[Tuples[{externalrows,externalcolumns}],z_/;Equal@@(Map
 (*For each case, merge topleft and the chosen rows of bottonleft. Also, merge the chosen columns of topright with the chosen columns and rows of bottomright.*)
 rowsmergedonleftandright=Map[{Join[topleft,bottomleft[[#[[1]]]]],Join[topright[[All,#[[2]]]],bottomright[[#[[1]],#[[2]]]]]}&,rowandcolumnnumbers];
 (*Now merge each case into a square matrix and compute its determinant. Then add up all the determinants.*)
+rowsmergedonleftandright=DeleteCases[rowsmergedonleftandright,{{},{}}];
 newtonpolynomial=Total[Map[Det[Join[#[[1]],#[[2]],2]]&,rowsmergedonleftandright]];
 (*Tidy up the signs, since perfect matchings are positive*)
 perfectmatchigns=Sort[MonomialList[newtonpolynomial]/.{Times[-1,zz_]->Times[zz]}];
@@ -634,6 +641,9 @@ matrixP=matchingPolytope[topleft,topright,bottomleft,bottomright,checkneeded,Tru
 If[matrixP=!=Null,
 If[Dimensions[matrixP][[2]]>0,
 chargesFterm=NullSpace[matrixP];
+If[chargesFterm==={},
+chargesFterm=ConstantArray[0,{1,Dimensions[matrixP][[2]]}];
+];
 gaugeCharge=Function[{edge,column},Block[{output=0},If[edge[[1]]==column,output=output+1;];If[edge[[2]]==column,output=output-1;];output]];
 edges=Variables[joinupKasteleyn[topleft,topright,bottomleft,bottomright]];
 intfaces=getInternalFaceLabels[topleft,topright,bottomleft,bottomright];
@@ -643,6 +653,9 @@ chargesDterm=Transpose[LinearSolve[matrixP,gaugechargematrix]];
 ,chargesDterm={};
 ];
 modulispace=NullSpace[Join[chargesFterm,chargesDterm]];
+If[modulispace==={},
+modulispace={ConstantArray[0,Dimensions[matrixP][[2]]]};
+];
 ,modulispace={{}};
 ];
 ,modulispace=Null;
@@ -666,9 +679,13 @@ dimension
 ];
 
 turnIntoPolytope[mat_]:=Block[{columnsandmultiplicity,polytope,multiplicity},
-columnsandmultiplicity=Tally[Transpose[mat]];
+If[mat==={},
+polytope={};
+multiplicity={};
+,columnsandmultiplicity=Tally[Transpose[mat]];
 polytope=Transpose[Map[#[[1]]&,columnsandmultiplicity]];
 multiplicity=Map[#[[2]]&,columnsandmultiplicity];
+];
 {polytope,multiplicity}
 ];
 
@@ -1203,7 +1220,7 @@ loopvariablebasis=Join[{internalfacevariables},{Join[externalfacevariables,addit
 loopvariablebasis
 ];
 
-moduliLoopVariablesBFT[topleft_,topright_,bottomleft_,bottomright_,gauging_,referencematching_:Null,loopvariablebasis_:Null]/;(gauging===1||gauging===2):=Block[{perfmatchings,referenceperfmatch,basispaths,basis,kasteleyn,allvariables,perfmatchingvectors,basisvectors,tosolvefor,coef,coeflist,perfmatchingsasloops,masterspace,modulispace,internalfacenames,internalfacevariables,internalfacevariablevectors,internalfacesasbasispaths,vectorMod},
+moduliLoopVariablesBFT[topleft_,topright_,bottomleft_,bottomright_,gauging_,referencematching_:Null,loopvariablebasis_:Null]/;(gauging===1||gauging===2):=Block[{perfmatchings,referenceperfmatch,basispaths,basis,kasteleyn,allvariables,perfmatchingvectors,basisvectors,tosolvefor,coef,coeflist,perfmatchingsasloops,masterspace,modulispace,internalfacenames,internalfacevariables,internalfacevariablevectors,internalfacesasbasispaths,vectorMod,modspacetranspose},
 If[getEdgesBFTformQ[topleft,topright,bottomleft,bottomright],
 perfmatchings=perfectMatchings[topleft,topright,bottomleft,bottomright];
 If[perfmatchings=!={},
@@ -1232,6 +1249,9 @@ tosolvefor=Total[Table[coef[iii]basisvectors[[iii]],{iii,Length[basisvectors]}]]
 perfmatchingsasloops=Map[#[[2]]&,Map[Solve[tosolvefor==#,coeflist][[1]]&,perfmatchingvectors],{2}];
 (*We now have the expression of each perfect matching in terms of the loop basis*)
 masterspace=Transpose[perfmatchingsasloops];
+If[masterspace==={},
+masterspace=ConstantArray[0,{1,Length[perfmatchings]}];
+];
 (*We need to gauge away all internal faces, and if we use gauging 2 also all internal loops. This corresponds to the first rows of the masterspace*)
 If[loopvariablebasis===Null,
 (*if I made my own basis, I arranged it such that the first entry is what we'll be gauging away. Otherwise, we'll need to find what to gauge away by hand*)
@@ -1248,7 +1268,11 @@ internalfacesasbasispaths=Map[#[[2]]&,Map[Solve[tosolvefor==#,coeflist][[1]]&,in
 vectorMod=Function[{vector,modoutbyvectors},
 Total[Map[Projection[vector,#]&,NullSpace[modoutbyvectors]]]
 ];
-modulispace=Transpose[Map[vectorMod[#,internalfacesasbasispaths]&,perfmatchingsasloops]];
+modspacetranspose=Map[vectorMod[#,internalfacesasbasispaths]&,perfmatchingsasloops];
+If[Length[Dimensions[modspacetranspose]]<2,
+modulispace=ConstantArray[0,{1,Length[perfmatchings]}];
+,modulispace=Transpose[Map[vectorMod[#,internalfacesasbasispaths]&,perfmatchingsasloops]];
+];
 ];
 If[modulispace==={},
 modulispace={ConstantArray[0,Dimensions[masterspace][[2]]]};
@@ -1850,14 +1874,14 @@ sinkedges
 getSourceNodes[topleft_,topright_,bottomleft_,bottomright_,referenceperfmatch_]:=Block[{referencevars,sourcenodes},
 referencevars=Variables[referenceperfmatch];
 (*Sources are those nodes in the bottomleft that do not have variables in referenceperfmatch, and those in topright which do*)
-sourcenodes=Union[Flatten[Position[Transpose[topright],{___,Alternatives@@referencevars,___}]]+Total[Dimensions[Join[topleft,bottomleft]]],Length[topleft]+Complement[Range[Length[bottomleft]],Flatten[Position[bottomleft,{___,Alternatives@@referencevars,___}]]]];
+sourcenodes=Union[Flatten[Position[Transpose[Join[topright,bottomright]],{___,Alternatives@@referencevars,___}]]+Total[Dimensions[Join[topleft,bottomleft]]],Length[topleft]+Complement[Range[Length[bottomleft]],Flatten[Position[bottomleft,{___,Alternatives@@referencevars,___}]]]];
 sourcenodes
 ];
 
 getSinkNodes[topleft_,topright_,bottomleft_,bottomright_,referenceperfmatch_]:=Block[{referencevars,sinknodes},
 referencevars=Variables[referenceperfmatch];
 (*Sinks are those nodes in the bottomleft that have variables in referenceperfmatch, and those in topright which are do not*)
-sinknodes=Union[Complement[Range[Dimensions[Join[topright,bottomright]][[2]]],Flatten[Position[Transpose[topright],{___,Alternatives@@referencevars,___}]]]+Total[Dimensions[Join[topleft,bottomleft]]],Length[topleft]+Flatten[Position[bottomleft,{___,Alternatives@@referencevars,___}]]];
+sinknodes=Union[Complement[Range[Dimensions[Join[topright,bottomright]][[2]]],Flatten[Position[Transpose[Join[topright,bottomright]],{___,Alternatives@@referencevars,___}]]]+Total[Dimensions[Join[topleft,bottomleft]]],Length[topleft]+Flatten[Position[bottomleft,{___,Alternatives@@referencevars,___}]]];
 sinknodes
 ];
 
@@ -2137,7 +2161,7 @@ pmatrix=matchingPolytope[topleft,topright,bottomleft,bottomright];
 If[Dimensions[pmatrix][[2]]==0&&Length[pmatrix]>0,
 reducibility=True;
 ,numsources=getK[topleft,topright,bottomleft,bottomright];
-numexternalnodes=Length[bottomleft]+Length[Transpose[topright]];
+numexternalnodes=Length[bottomleft]+Dimensions[Join[topright,bottomright]][[2]];
 maxpossibledimension=numsources(numexternalnodes-numsources);
 dimensionP=dimensionPolytope[pmatrix];
 If[dimensionP>maxpossibledimension,
