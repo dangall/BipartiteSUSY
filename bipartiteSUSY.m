@@ -482,7 +482,7 @@ areyoupressed={"DialogBox","Pressed"};
 areyoupressed={"DialogBox"};
 ];,Appearance->Dynamic[areyoupressed]]},{Pane[Dynamic[edgebuttonlist],ImageSize->{80,368},Scrollbars->{False,True},Alignment->{Left,Top}]}}]}}(*,Frame\[Rule]All*)]},
 {Row[{ActionMenu["Compute",
-{"Reducibility (True/False)":>(If[perfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]=!= {},Print[reducibilityQ@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];,Print["This graph has no perfect matchings!"];];),
+{"Are you reducible? (True/False)":>(If[perfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]=!= {},Print[reducibilityQ@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];,Print["This graph has no perfect matchings!"];];),
 "Path Matrix":>(If[perfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]=!= {},Print[pathMatrix@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];,Print["This graph has no perfect matchings!"];];),
 "Dimension of Grassmannian":>(If[perfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]=!= {},Print[dimensionGrassmannian@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];,Print["This graph has no perfect matchings!"];];),
 "Stratification: Number of boundaries":>(If[perfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]=!= {},Print[stratificationNumbers@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];,Print["This graph has no perfect matchings!"];];),
