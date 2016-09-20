@@ -133,7 +133,7 @@ joinupKasteleyn[topleft_,topright_,bottomleft_,bottomright_]:=joinupKasteleyn[to
 getNumberFaces[topleft_,topright_,bottomleft_,bottomright_]:=Block[{varlist,facelist,nf},
 varlist=Variables[Join[topleft,topright,bottomleft,bottomright]];
 (*If all variables are in the required format X[i,j], go ahead and count faces*)
-If[Cases[varlist,_[_,_]]==varlist,
+If[Cases[varlist,_[_Integer,_Integer]]==varlist,
 facelist=Union[Flatten[List@@@varlist]];
 nf=Length[facelist];
 ,Print["Error! The edges must all have the form X[i,j] (where X may be any letter/letters)."];
@@ -145,7 +145,7 @@ nf
 getNumberExternalFaces[topleft_,topright_,bottomleft_,bottomright_]:=Block[{varlist,facelist,externalnf},
 varlist=Variables[Join[topright,bottomleft]];
 (*If all variables are in the required format X[i,j], go ahead and count faces*)
-If[Cases[varlist,_[_,_]]==varlist,
+If[Cases[varlist,_[_Integer,_Integer]]==varlist,
 facelist=Union[Flatten[List@@@varlist]];
 externalnf=Length[facelist];
 ,Print["Error! The edges must all have the form X[i,j] (where X may be any letter/letters)."];
@@ -163,7 +163,7 @@ getNumberInternalFaces[topleft_,topright_,bottomleft_,bottomright_]:=getNumberFa
 getFaceLabels[topleft_,topright_,bottomleft_,bottomright_]:=Block[{varlist,facelist,nf},
 varlist=Variables[Join[topleft,topright,bottomleft,bottomright]];
 (*If all variables are in the required format X[i,j], go ahead and count faces*)
-If[Cases[varlist,_[_,_]]==varlist,
+If[Cases[varlist,_[_Integer,_Integer]]==varlist,
 facelist=Union[Flatten[List@@@varlist]];
 ,Print["Error! The edges must all have the form X[i,j] (where X may be any letter/letters)."];
 facelist=Null;
@@ -174,7 +174,7 @@ facelist
 getExternalFaceLabels[topleft_,topright_,bottomleft_,bottomright_]:=Block[{varlist,facelist,externalnf},
 varlist=Variables[Join[topright,bottomleft]];
 (*If all variables are in the required format X[i,j], go ahead and count faces*)
-If[Cases[varlist,_[_,_]]==varlist,
+If[Cases[varlist,_[_Integer,_Integer]]==varlist,
 facelist=Union[Flatten[List@@@varlist]];
 ,Print["Error! The edges must all have the form X[i,j] (where X may be any letter/letters)."];
 facelist=Null;
@@ -538,7 +538,7 @@ If[badedges=!={},
 return=False;
 Print["Check Kasteleyn: edges ",badedges," appear incorrectly."];
 ,If[BFTgraph,(*if there are no obvious mistakes, do more checks if we have a BFT graph*)
-If[getEdgesBFTformQ[topleft,topright,bottomleft,bottomright],(*if the edges have the correct structure _[_,_] check for index mistakes*)
+If[getEdgesBFTformQ[topleft,topright,bottomleft,bottomright],(*if the edges have the correct structure _[_Integer,_Integer] check for index mistakes*)
 indexmistakes=getKasteleynConsistencyViolation[topleft,topright,bottomleft,bottomright];
 If[indexmistakes=!={{},{}},(*if we have index mistakes, point them out*)
 return=False;
@@ -1410,14 +1410,14 @@ possiblefouredges=DeleteCases[Tuples[Map[Variables[topleft[[Sequence@@#]]]&,Tupl
 (*if we have a BFT graph, we can only choose four edges that all have the same face label*)
 If[BFTgraph,
 (*we will need to set to zero the four edges that form the square face*)
-edgestosettozero=Cases[possiblefouredges,{_[___,thefacenumber_,___],_[___,thefacenumber_,___],_[___,thefacenumber_,___],_[___,thefacenumber_,___]}][[1]];
+edgestosettozero=Cases[possiblefouredges,{_[___,thefacenumber_Integer,___],_[___,thefacenumber_Integer,___],_[___,thefacenumber_Integer,___],_[___,thefacenumber_Integer,___]}][[1]];
 facenum=(Intersection@@Map[List@@#&,edgestosettozero])[[1]];
 positions=Position[topleft,Alternatives@@edgestosettozero];
 ,edgestosettozero=possiblefouredges[[1]];
 ];
 ,(*the user specified a face number*)
 facenum=fournodesorfacenum;
-positions=Position[topleft,_[facenum,_]|_[_,facenum]];
+positions=Position[topleft,_[facenum,_Integer]|_[_Integer,facenum]];
 rows=Union[Map[#[[1]]&,positions]];
 columns=Union[Map[#[[2]]&,positions]];
 rows=PadRight[rows,2,rows[[1]]];
@@ -1434,25 +1434,25 @@ If[Length[rowset]==2,
 If[Length[columnset]==2,
 edge4by4=newtopleft[[rowset,columnset]]/.Map[#->0&,Complement[Variables[newtopleft[[rowset,columnset]]],edgestosettozero]];
 ,edge4by4=Map[Variables,newtopleft[[rowset,columnset]]/.Map[#->0&,Complement[Variables[newtopleft[[rowset,columnset]]],edgestosettozero]]];
-edge4by4=edge4by4/.{{{firstedge_[facenum,otherlabel1_],secondedge_},{thirdedge_[facenum,otherlabel2_],fourthedge_}}:>{{firstedge[facenum,otherlabel1],secondedge},{fourthedge,thirdedge[facenum,otherlabel2]}},{{firstedge_[otherlabel1_,facenum],secondedge_},{thirdedge_[otherlabel2_,facenum],fourthedge_}}:>{{firstedge[otherlabel1,facenum],secondedge},{fourthedge,thirdedge[otherlabel2,facenum]}}};
+edge4by4=edge4by4/.{{{firstedge_[facenum,otherlabel1_Integer],secondedge_},{thirdedge_[facenum,otherlabel2_Integer],fourthedge_}}:>{{firstedge[facenum,otherlabel1],secondedge},{fourthedge,thirdedge[facenum,otherlabel2]}},{{firstedge_[otherlabel1_Integer,facenum],secondedge_},{thirdedge_[otherlabel2_Integer,facenum],fourthedge_}}:>{{firstedge[otherlabel1,facenum],secondedge},{fourthedge,thirdedge[otherlabel2,facenum]}}};
 ];
 ,If[Length[columnset]==2,
 edge4by4=Map[Variables,Transpose[newtopleft[[rowset,columnset]]]/.Map[#->0&,Complement[Variables[newtopleft[[rowset,columnset]]],edgestosettozero]]];
-edge4by4=Transpose[edge4by4/.{{{firstedge_[facenum,otherlabel1_],secondedge_},{thirdedge_[facenum,otherlabel2_],fourthedge_}}:>{{firstedge[facenum,otherlabel1],secondedge},{fourthedge,thirdedge[facenum,otherlabel2]}},{{firstedge_[otherlabel1_,facenum],secondedge_},{thirdedge_[otherlabel2_,facenum],fourthedge_}}:>{{firstedge[otherlabel1,facenum],secondedge},{fourthedge,thirdedge[otherlabel2,facenum]}}}];
+edge4by4=Transpose[edge4by4/.{{{firstedge_[facenum,otherlabel1_Integer],secondedge_},{thirdedge_[facenum,otherlabel2_Integer],fourthedge_}}:>{{firstedge[facenum,otherlabel1],secondedge},{fourthedge,thirdedge[facenum,otherlabel2]}},{{firstedge_[otherlabel1_Integer,facenum],secondedge_},{thirdedge_[otherlabel2_Integer,facenum],fourthedge_}}:>{{firstedge[otherlabel1,facenum],secondedge},{fourthedge,thirdedge[otherlabel2,facenum]}}}];
 ,edge4by4=Partition[edgestosettozero,2];
-edge4by4=edge4by4/.{{{firstedge_[facenum,otherlabel1_],secondedge_[facenum,otherlabel2_]},{thirdedge_,fourthedge_}}:>{{firstedge[facenum,otherlabel1],fourthedge},{thirdedge,secondedge[facenum,otherlabel2]}},{{firstedge_[otherlabel1_,facenum],secondedge_[otherlabel2_,facenum]},{thirdedge_,fourthedge_}}:>{{firstedge[otherlabel1,facenum],fourthedge},{thirdedge,secondedge[otherlabel2,facenum]}},{{firstedge_[facenum,otherlabel1_],secondedge_},{thirdedge_[facenum,otherlabel2_],fourthedge_}}:>{{firstedge[facenum,otherlabel1],secondedge},{fourthedge,thirdedge[facenum,otherlabel2]}},{{firstedge_[otherlabel1_,facenum],secondedge_},{thirdedge_[otherlabel2_,facenum],fourthedge_}}:>{{firstedge[otherlabel1,facenum],secondedge},{fourthedge,thirdedge[otherlabel2,facenum]}}};
+edge4by4=edge4by4/.{{{firstedge_[facenum,otherlabel1_Integer],secondedge_[facenum,otherlabel2_Integer]},{thirdedge_,fourthedge_}}:>{{firstedge[facenum,otherlabel1],fourthedge},{thirdedge,secondedge[facenum,otherlabel2]}},{{firstedge_[otherlabel1_Integer,facenum],secondedge_[otherlabel2_Integer,facenum]},{thirdedge_,fourthedge_}}:>{{firstedge[otherlabel1,facenum],fourthedge},{thirdedge,secondedge[otherlabel2,facenum]}},{{firstedge_[facenum,otherlabel1_Integer],secondedge_},{thirdedge_[facenum,otherlabel2_Integer],fourthedge_}}:>{{firstedge[facenum,otherlabel1],secondedge},{fourthedge,thirdedge[facenum,otherlabel2]}},{{firstedge_[otherlabel1_Integer,facenum],secondedge_},{thirdedge_[otherlabel2_Integer,facenum],fourthedge_}}:>{{firstedge[otherlabel1,facenum],secondedge},{fourthedge,thirdedge[otherlabel2,facenum]}}};
 ];
 ];
 (*Finally we'll add the connectivity between the new white nodes and the new black nodes*)
-final4by4=Transpose[Map[#/.{head_[iij_,jjk_]:>head[jjk,iij]}&,edge4by4,{2}]];
+final4by4=Transpose[Map[#/.{head_[iij_Integer,jjk_Integer]:>head[jjk,iij]}&,edge4by4,{2}]];
 newtopleft[[rowset,columnset]]=newtopleft[[rowset,columnset]]/.Map[#->0&,edgestosettozero];
 (*Now we'll add two new rows and two new columns, representing the four new nodes that appear when doing a square move*)
 whitenodestoadd=Table[0,{iii,2},{jjj,Dimensions[newtopleft][[2]]}];
 blacknodestoadd=Table[{0,0},Length[newtopleft]];
 For[ii=1,ii<=2,ii++,
-newedgeW=edge4by4[[All,{ii}]]/.{{{_[facenum,iij_]},{_[jjk_,facenum]}}:>bipartiteSUSY`XX[jjk,iij],{{_[iij_,facenum]},{_[facenum,jjk_]}}:>bipartiteSUSY`XX[iij,jjk]};
+newedgeW=edge4by4[[All,{ii}]]/.{{{_[facenum,iij_Integer]},{_[jjk_Integer,facenum]}}:>bipartiteSUSY`XX[jjk,iij],{{_[iij_Integer,facenum]},{_[facenum,jjk_Integer]}}:>bipartiteSUSY`XX[iij,jjk]};
 whitenodestoadd[[ii,columns[[ii]]]]=newedgeW;
-newedgeB=edge4by4[[{ii}]]/.{{{_[facenum,iij_],_[jjk_,facenum]}}:>bipartiteSUSY`XX[jjk,iij],{{_[iij_,facenum],_[facenum,jjk_]}}:>bipartiteSUSY`XX[iij,jjk]};
+newedgeB=edge4by4[[{ii}]]/.{{{_[facenum,iij_Integer],_[jjk_Integer,facenum]}}:>bipartiteSUSY`XX[jjk,iij],{{_[iij_Integer,facenum],_[facenum,jjk_Integer]}}:>bipartiteSUSY`XX[iij,jjk]};
 blacknodestoadd[[rows[[ii]],ii]]=newedgeB;
 ];
 ,(*Since BFTgraph=False we don't have to work so hard with the index structures, i.e. final4by4 is much easier to make.*)
@@ -1478,6 +1478,8 @@ newbottomleft={};
 newtopright=Join[topright,Table[0,{iii,2},{jjj,Dimensions[topright][[2]]}]];
 newbottomright=bottomright;
 (*Now we're finished. In the event that we created a duplicate edge, we'll rename it by tagging an X onto its Head until it's no longer a duplicate*)
+(*Sometimes it's possible to have edges with multiplicity, e.g. 2 X[i,j], because of our renaming. We'll begin by renaming these to X[i,j]+XX[i,j].*)
+{newtopleft,newtopright,newbottomleft,newbottomright}={newtopleft,newtopright,newbottomleft,newbottomright}//.{Times[mult_Integer,edgename_]:>(edgename+Total[Map[Symbol[StringJoin[SymbolName[Head[edgename]],#]]@@edgename&,Table[StringPadRight["",ii,"X"],{ii,1,mult-1}]]])};
 (*This function makes a list of edges that appear twice*)
 findDoubles=Function[{aa,bb,cc,dd},
 Block[{tempkasteleyn,doubles},
@@ -1488,9 +1490,9 @@ doubles]
 doubleedges=findDoubles[newtopleft,newtopright,newbottomleft,newbottomright];
 While[doubleedges=!={},
 replacement=Map[(Symbol[StringJoin[SymbolName[Head[#]],"X"]]@@#)&,doubleedges];
-positioninwhichtoreplace=Map[Position[newtopleft,#][[1]]&,doubleedges];
 For[jj=1,jj<=Length[replacement],jj++,
-newtopleft=ReplacePart[newtopleft,positioninwhichtoreplace[[jj]]->replacement[[jj]]];
+positioninwhichtoreplace=Position[newtopleft,doubleedges[[jj]]][[1]];
+newtopleft=ReplacePart[newtopleft,positioninwhichtoreplace->replacement[[jj]]]//.{Times[mult_Integer,edgename_]:>(edgename+Total[Map[Symbol[StringJoin[SymbolName[Head[edgename]],#]]@@edgename&,Table[StringPadRight["",ii,"X"],{ii,1,mult-1}]]])};
 ];
 doubleedges=findDoubles[newtopleft,newtopright,newbottomleft,newbottomright];
 ];
@@ -1512,7 +1514,7 @@ If[gauging==1,
 (*bubbles not only have the index structure _[onenumber_,secondnumber_]+_[secondnumber_,thirdnumber_], but also secondnumber must be an internal face, and there must in total only be two variables in the Kasteleyn with this index*)
 intfacelabels=getInternalFaceLabels[topleft,topright,bottomleft,bottomright];
 allvars=Variables[joinupKasteleyn[topleft,topright,bottomleft,bottomright]];
-aretherebubbles=MemberQ[joinupKasteleyn[topleft,topright,bottomleft,bottomright],{___,_[onenumber_,secondnumber_]+_[secondnumber_,thirdnumber_]+___,___}/;MemberQ[intfacelabels,secondnumber]&&Count[allvars,_[anynumber_,secondnumber]|_[secondnumber,anynumber_]]===2];
+aretherebubbles=MemberQ[joinupKasteleyn[topleft,topright,bottomleft,bottomright],{___,_[onenumber_Integer,secondnumber_Integer]+_[secondnumber_Integer,thirdnumber_Integer]+___,___}/;(MemberQ[intfacelabels,secondnumber]||Variables[{topright,bottomleft}]=={})&&Count[allvars,_[anynumber_Integer,secondnumber]|_[secondnumber,anynumber_Integer]]===2];
 ,aretherebubbles=MemberQ[joinupKasteleyn[topleft,topright,bottomleft,bottomright],{___,firstedge_+secondedge_+___,___}];
 ];
 aretherebubbles
@@ -1528,7 +1530,8 @@ If[gauging==1,
 (*bubbles not only have the index structure _[onenumber_,secondnumber_]+_[secondnumber_,thirdnumber_], but also secondnumber must be an internal face, and there must in total only be two variables in the Kasteleyn with this index*)
 intfacelabels=getInternalFaceLabels[topleft,topright,bottomleft,bottomright];
 allvars=Variables[joinupKasteleyn[topleft,topright,bottomleft,bottomright]];
-{newtopleft,newtopright,newbottomleft,newbottomright}={topleft,topright,bottomleft,bottomright}//.{_[onenumber_,secondnumber_]+_[secondnumber_,thirdnumber_]/;(MemberQ[intfacelabels,secondnumber]&&Count[allvars,_[anynumber_,secondnumber]|_[secondnumber,anynumber_]]===2):>XX[onenumber,thirdnumber]};
+{newtopleft,newtopright,newbottomleft,newbottomright}=({topleft,topright,bottomleft,bottomright}//.{_[onenumber_Integer,secondnumber_Integer]+_[secondnumber_Integer,thirdnumber_Integer]/;((MemberQ[intfacelabels,secondnumber]||Variables[{topright,bottomleft}]=={})&&Count[allvars,_[_Integer,secondnumber]|_[secondnumber,_Integer]]===2):>XX[onenumber,thirdnumber]});
+{newtopleft,newtopright,newbottomleft,newbottomright}={newtopleft,newtopright,newbottomleft,newbottomright}//.{Times[mult_Integer,edgename_]:>(edgename+Total[Map[Symbol[StringJoin[SymbolName[Head[edgename]],#]]@@edgename&,Table[StringPadRight["",ii,"X"],{ii,1,mult-1}]]])};
 (*We might have created duplicate edge names after doing this. We'll now remove the duplicates*)
 findDoubles=Function[{tempkasteleyn},
 Block[{doubles},
@@ -1539,9 +1542,9 @@ temporarykasteleyn=joinupKasteleyn[newtopleft,newtopright,newbottomleft,newbotto
 doubleedges=findDoubles[temporarykasteleyn];
 While[doubleedges=!={},
 replacement=Map[(Symbol[StringJoin[SymbolName[Head[#]],"X"]]@@#)&,doubleedges];
-positioninwhichtoreplace=Map[Position[temporarykasteleyn,#][[1]]&,doubleedges];
 For[jj=1,jj<=Length[replacement],jj++,
-temporarykasteleyn=ReplacePart[temporarykasteleyn,positioninwhichtoreplace[[jj]]->replacement[[jj]]];
+positioninwhichtoreplace=Position[temporarykasteleyn,doubleedges[[jj]]][[1]];
+temporarykasteleyn=ReplacePart[temporarykasteleyn,positioninwhichtoreplace->replacement[[jj]]]//.{Times[mult_Integer,edgename_]:>(edgename+Total[Map[Symbol[StringJoin[SymbolName[Head[edgename]],#]]@@edgename&,Table[StringPadRight["",ii,"X"],{ii,1,mult-1}]]])};
 ];
 doubleedges=findDoubles[temporarykasteleyn];
 ];
@@ -1759,6 +1762,8 @@ edgerenamingrule=newedgerenamingrule;
 newedgerenamingrule=Flatten[Map[renameDuplicateEdges,GatherBy[Map[{#,#/.edgerenamingrule}&,survivededges],#[[2]]&]]];
 ];
 {newtopleft,newtopright,newbottomleft}={newtopleft,newtopright,newbottomleft}/.edgerenamingrule;
+(*In the event that we created a 2 X[i,j], we'll rename these as X[i,j]+XX[i,j]*)
+{newtopleft,newtopright,newbottomleft}={newtopleft,newtopright,newbottomleft}//.{Times[mult_Integer,edgename_]:>(edgename+Total[Map[Symbol[StringJoin[SymbolName[Head[edgename]],#]]@@edgename&,Table[StringPadRight["",ii,"X"],{ii,1,mult-1}]]])};
 (*This function makes a list of edges that appear twice*)
 findDoubles=Function[{aa,bb,cc,dd},
 Block[{tempkasteleyn,doubles},
@@ -1769,22 +1774,22 @@ doubles]
 doubleedges=findDoubles[newtopleft,newtopright,newbottomleft,newbottomright];
 While[doubleedges=!={},
 replacement=Map[(Symbol[StringJoin[SymbolName[Head[#]],"X"]]@@#)&,doubleedges];
-positioninwhichtoreplace=Map[Position[joinupKasteleyn[newtopleft,newtopright,newbottomleft,newbottomright],#][[1]]&,doubleedges];
 For[jj=1,jj<=Length[replacement],jj++,
+positioninwhichtoreplace=Map[Position[joinupKasteleyn[newtopleft,newtopright,newbottomleft,newbottomright],#][[1]]&,doubleedges];
 If[positioninwhichtoreplace[[jj,1]]<=Length[newtopleft],
 (*we need to replace either newtopleft or newtopright*)
 If[positioninwhichtoreplace[[jj,2]]<=Dimensions[Join[newtopleft,newbottomleft]][[2]],
 (*we need to replace newtopleft*)
-newtopleft=ReplacePart[newtopleft,positioninwhichtoreplace[[jj]]->replacement[[jj]]];
+newtopleft=ReplacePart[newtopleft,positioninwhichtoreplace[[jj]]->replacement[[jj]]]//.{Times[mult_Integer,edgename_]:>(edgename+Total[Map[Symbol[StringJoin[SymbolName[Head[edgename]],#]]@@edgename&,Table[StringPadRight["",ii,"X"],{ii,1,mult-1}]]])};
 ,(*we need to replace newtopright*)
-newtopright=ReplacePart[newtopright,(positioninwhichtoreplace[[jj]]-{0,Dimensions[Join[newtopleft,newbottomleft]][[2]]})->replacement[[jj]]];
+newtopright=ReplacePart[newtopright,(positioninwhichtoreplace[[jj]]-{0,Dimensions[Join[newtopleft,newbottomleft]][[2]]})->replacement[[jj]]]//.{Times[mult_Integer,edgename_]:>(edgename+Total[Map[Symbol[StringJoin[SymbolName[Head[edgename]],#]]@@edgename&,Table[StringPadRight["",ii,"X"],{ii,1,mult-1}]]])};
 ];
 ,(*we need to replace either newbottomleft or newbottomright*)
 If[positioninwhichtoreplace[[jj,2]]<=Dimensions[Join[newtopleft,newbottomleft]][[2]],
 (*we need to replace newbottomleft*)
-newbottomleft=ReplacePart[newbottomleft,(positioninwhichtoreplace[[jj]]-{Length[newtopleft],0})->replacement[[jj]]];
+newbottomleft=ReplacePart[newbottomleft,(positioninwhichtoreplace[[jj]]-{Length[newtopleft],0})->replacement[[jj]]]//.{Times[mult_Integer,edgename_]:>(edgename+Total[Map[Symbol[StringJoin[SymbolName[Head[edgename]],#]]@@edgename&,Table[StringPadRight["",ii,"X"],{ii,1,mult-1}]]])};
 ,(*we need to replace newbottomright*)
-newbottomright=ReplacePart[newbottomright,(positioninwhichtoreplace[[jj]]-{Length[newtopleft],Dimensions[Join[newtopleft,newbottomleft]][[2]]})->replacement[[jj]]];
+newbottomright=ReplacePart[newbottomright,(positioninwhichtoreplace[[jj]]-{Length[newtopleft],Dimensions[Join[newtopleft,newbottomleft]][[2]]})->replacement[[jj]]]//.{Times[mult_Integer,edgename_]:>(edgename+Total[Map[Symbol[StringJoin[SymbolName[Head[edgename]],#]]@@edgename&,Table[StringPadRight["",ii,"X"],{ii,1,mult-1}]]])};
 ];
 ];
 ];
