@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[   1182951,      27933]
-NotebookOptionsPosition[   1175699,      27741]
-NotebookOutlinePosition[   1176209,      27761]
-CellTagsIndexPosition[   1176166,      27758]
+NotebookDataLength[   1212536,      28542]
+NotebookOptionsPosition[   1205576,      28358]
+NotebookOutlinePosition[   1206086,      28378]
+CellTagsIndexPosition[   1206043,      28375]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -2393,64 +2393,6 @@ Cell[BoxData[""], "Input",
   3.662284700602398*^9, 3.662458016607738*^9, {3.672574995631766*^9, 
    3.672574997116378*^9}}],
 
-Cell[BoxData[
- RowBox[{
-  RowBox[{"(*", 
-   RowBox[{
-   "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
-     "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
-     "===", "===", "===", "===", "===", "===", "===", "===", "===", "==="}], 
-   "*)"}], "\[IndentingNewLine]", 
-  RowBox[{"(*", 
-   RowBox[{
-   "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
-     "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
-     "===", "===", "===", "===", "===", "===", "===", "===", "===", "==="}], 
-   "*)"}], "\[IndentingNewLine]", 
-  RowBox[{"(*", 
-   RowBox[{
-   "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
-     "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
-     "===", "===", "===", "===", "===", "===", "===", "===", "===", "==="}], 
-   "*)"}], "\[IndentingNewLine]", 
-  RowBox[{"(*", 
-   RowBox[{
-    RowBox[{
-    "If", " ", "I", " ", "tell", " ", "the", " ", "kernel", " ", "to", " ", 
-     "find", " ", "the", " ", "removable", " ", "edges"}], ",", " ", 
-    RowBox[{
-    "then", " ", "mess", " ", "with", " ", "the", " ", "graph", " ", "before",
-      " ", "its", " ", "done"}], ",", " ", 
-    RowBox[{
-    "maybe", " ", "the", " ", "FrontEnd", " ", "will", " ", "try", " ", "and",
-      " ", "compute", " ", "the", " ", "remvable", " ", "edges", " ", "of", 
-     " ", "the", " ", "new", " ", 
-     RowBox[{"graph", "?", " ", "I"}], " ", "need", " ", "to", " ", "make", 
-     " ", "sure", " ", "that", " ", "the", " ", 
-     RowBox[{"If", "[", "]"}], " ", "statements", " ", "in", " ", "the", " ", 
-     "function", " ", "prevent", " ", "the", " ", "FrontEnd", " ", "from", 
-     " ", "doing", " ", 
-     RowBox[{"this", "."}]}]}], "*)"}], "\[IndentingNewLine]", 
-  RowBox[{"(*", 
-   RowBox[{
-   "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
-     "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
-     "===", "===", "===", "===", "===", "===", "===", "===", "===", "==="}], 
-   "*)"}], "\[IndentingNewLine]", 
-  RowBox[{"(*", 
-   RowBox[{
-   "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
-     "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
-     "===", "===", "===", "===", "===", "===", "===", "===", "===", "==="}], 
-   "*)"}], "\[IndentingNewLine]", 
-  RowBox[{"(*", 
-   RowBox[{
-   "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
-     "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
-     "===", "===", "===", "===", "===", "===", "===", "===", "===", "==="}], 
-   "*)"}]}]], "Input",
- CellChangeTimes->{{3.6836500393656464`*^9, 3.6836501269749174`*^9}}],
-
 Cell[CellGroupData[{
 
 Cell[BoxData[
@@ -4010,20 +3952,27 @@ Cell[BoxData[
      RowBox[{"drawLines", "[", 
       RowBox[{
       "inputpointcoordinatesandcolors_", ",", "inputedges_", ",", 
-       "inputmultiedges_", ",", "showarrows_"}], "]"}], ":=", 
+       "inputmultiedges_", ",", "showarrows_", ",", "edgenamesdisplayed_"}], 
+      "]"}], ":=", 
      RowBox[{"Block", "[", 
       RowBox[{
        RowBox[{"{", 
         RowBox[{
-        "kast", ",", "perfectmatchings", ",", "referenceperfmatchedges", ",", 
-         "positionsinthekasteleyn", ",", "turnKasteleynPositionsToEdges", ",",
-          "swappedeges", ",", "normaledges", ",", "straightedges", ",", 
+        "graphOK", ",", "kast", ",", "perfectmatchings", ",", 
+         "referenceperfmatchedges", ",", "positionsinthekasteleyn", ",", 
+         "turnKasteleynPositionsToEdges", ",", "swappedeges", ",", 
+         "normaledges", ",", "straightedges", ",", 
          "normalstraightdirectedlines", ",", "swappedstraightdirectedlines", 
          ",", "themultiedges", ",", "positionsthatneedswapping", ",", ",", 
          "outputgraphics"}], "}"}], ",", "\[IndentingNewLine]", 
        RowBox[{
+        RowBox[{"graphOK", "=", 
+         RowBox[{"graphBipartiteAndGoodExtNodesQ", "[", 
+          RowBox[{"inputpointcoordinatesandcolors", ",", "inputedges"}], 
+          "]"}]}], ";", "\[IndentingNewLine]", 
         RowBox[{"If", "[", 
-         RowBox[{"showarrows", ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"showarrows", "&&", "graphOK"}], ",", "\[IndentingNewLine]", 
           RowBox[{"(*", 
            RowBox[{
             RowBox[{
@@ -4421,23 +4370,45 @@ Cell[BoxData[
                     RowBox[{"3", ",", "2", ",", "1"}], "}"}]}], "]"}], 
                     "]"}]}], "&"}], ",", "positionsthatneedswapping"}], 
                   "]"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
-              RowBox[{"outputgraphics", "=", 
-               RowBox[{"{", 
+              RowBox[{"If", "[", 
+               RowBox[{"edgenamesdisplayed", ",", "\[IndentingNewLine]", 
                 RowBox[{
-                 RowBox[{"Arrowheads", "[", 
+                 RowBox[{"outputgraphics", "=", 
                   RowBox[{"{", 
-                   RowBox[{"{", 
-                    RowBox[{"0.04", ",", "0.6"}], "}"}], "}"}], "]"}], ",", 
-                 RowBox[{"Arrow", "[", 
-                  RowBox[{"Join", "[", 
                    RowBox[{
-                   "normalstraightdirectedlines", ",", 
+                    RowBox[{"Arrowheads", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"{", 
+                    RowBox[{"0.04", ",", "0.4"}], "}"}], "}"}], "]"}], ",", 
+                    RowBox[{"Arrow", "[", 
+                    RowBox[{"Join", "[", 
+                    RowBox[{
+                    "normalstraightdirectedlines", ",", 
                     "swappedstraightdirectedlines"}], "]"}], "]"}], ",", 
-                 RowBox[{"Sequence", "@@", 
-                  RowBox[{"Map", "[", 
-                   RowBox[{"Arrow", ",", "themultiedges", ",", 
+                    RowBox[{"Sequence", "@@", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{"Arrow", ",", "themultiedges", ",", 
                     RowBox[{"{", "2", "}"}]}], "]"}]}]}], "}"}]}], ";"}], 
-             "\[IndentingNewLine]", ",", 
+                "\[IndentingNewLine]", ",", 
+                RowBox[{
+                 RowBox[{"outputgraphics", "=", 
+                  RowBox[{"{", 
+                   RowBox[{
+                    RowBox[{"Arrowheads", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"{", 
+                    RowBox[{"0.04", ",", "0.6"}], "}"}], "}"}], "]"}], ",", 
+                    RowBox[{"Arrow", "[", 
+                    RowBox[{"Join", "[", 
+                    RowBox[{
+                    "normalstraightdirectedlines", ",", 
+                    "swappedstraightdirectedlines"}], "]"}], "]"}], ",", 
+                    RowBox[{"Sequence", "@@", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{"Arrow", ",", "themultiedges", ",", 
+                    RowBox[{"{", "2", "}"}]}], "]"}]}]}], "}"}]}], ";"}]}], 
+               "\[IndentingNewLine]", "]"}], ";"}], "\[IndentingNewLine]", 
+             ",", 
              RowBox[{
               RowBox[{"outputgraphics", "=", 
                RowBox[{"{", 
@@ -4486,11 +4457,909 @@ Cell[BoxData[
  CellGroupingRules->{GroupTogetherGrouping, 10000.},
  CellChangeTimes->{
   3.683954767985509*^9, {3.683955463462145*^9, 3.683955466174323*^9}, {
-   3.683956739383532*^9, 3.6839568277244854`*^9}}]
-}, Closed]],
+   3.683956739383532*^9, 3.6839568277244854`*^9}, {3.683978644972086*^9, 
+   3.683978645398144*^9}, {3.683978725850498*^9, 3.683978734700262*^9}, {
+   3.684053430844574*^9, 3.6840534953257294`*^9}, {3.6840542871377254`*^9, 
+   3.684054330610011*^9}, {3.6840544038959484`*^9, 3.684054409611498*^9}}],
 
-Cell[BoxData[""], "Input",
- CellChangeTimes->{{3.683891242387205*^9, 3.6838912425787487`*^9}}],
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"makeNodeNumbers", "[", 
+     RowBox[{"shownumbers_", ",", "inputpointcoordinatesandcolors_"}], "]"}], 
+    ":=", 
+    RowBox[{"Block", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "recenterPositions", ",", "nodenumbersasstrings", ",", 
+        "nodenumberpositions", ",", "nodenumbersgraphics"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"If", "[", 
+        RowBox[{"shownumbers", ",", "\[IndentingNewLine]", 
+         RowBox[{"(*", 
+          RowBox[{
+           RowBox[{
+           "This", " ", "function", " ", "makes", " ", "sure", " ", "that", 
+            " ", "if", " ", "the", " ", "position", " ", "of", " ", "the", 
+            " ", "node", " ", "number", " ", "ends", " ", "up", " ", 
+            "outside", " ", "the", " ", "drawing", " ", "box"}], ",", " ", 
+           RowBox[{
+           "it", " ", "will", " ", "be", " ", "moved", " ", "to", " ", "be", 
+            " ", "inside", " ", "the", " ", "box"}]}], "*)"}], 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"recenterPositions", "=", 
+           RowBox[{"Function", "[", 
+            RowBox[{
+             RowBox[{"{", "input", "}"}], ",", "\[IndentingNewLine]", 
+             RowBox[{"Block", "[", 
+              RowBox[{
+               RowBox[{"{", "output", "}"}], ",", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"If", "[", 
+                 RowBox[{
+                  RowBox[{"input", "\[LessEqual]", 
+                   RowBox[{"-", "1.5"}]}], ",", "\[IndentingNewLine]", 
+                  RowBox[{
+                   RowBox[{"output", "=", 
+                    RowBox[{"input", "+", "0.2"}]}], ";"}], 
+                  "\[IndentingNewLine]", ",", 
+                  RowBox[{
+                   RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"input", "\[GreaterEqual]", "1.5"}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"output", "=", 
+                    RowBox[{"input", "-", "0.2"}]}], ";"}], 
+                    "\[IndentingNewLine]", ",", 
+                    RowBox[{
+                    RowBox[{"output", "=", "input"}], ";"}]}], 
+                    "\[IndentingNewLine]", "]"}], ";"}]}], 
+                 "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+                "output"}]}], "]"}]}], "\[IndentingNewLine]", "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"(*", 
+           RowBox[{
+           "these", " ", "are", " ", "the", " ", "node", " ", "numbers", " ", 
+            "written", " ", "as", " ", "strings"}], "*)"}], 
+          "\[IndentingNewLine]", 
+          RowBox[{"nodenumbersasstrings", "=", 
+           RowBox[{
+            RowBox[{"Sort", "[", 
+             RowBox[{"MapThread", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{"#1", ",", "#2"}], "}"}], "&"}], ",", 
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{"Join", "[", 
+                  RowBox[{
+                   RowBox[{"Flatten", "[", 
+                    RowBox[{"Position", "[", 
+                    RowBox[{"inputpointcoordinatesandcolors", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"_", ",", "\"\<WI\>\""}], "}"}]}], "]"}], "]"}], 
+                   ",", 
+                   RowBox[{"Flatten", "[", 
+                    RowBox[{"Position", "[", 
+                    RowBox[{"inputpointcoordinatesandcolors", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"_", ",", "\"\<WE\>\""}], "}"}]}], "]"}], "]"}], 
+                   ",", 
+                   RowBox[{"Flatten", "[", 
+                    RowBox[{"Position", "[", 
+                    RowBox[{"inputpointcoordinatesandcolors", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"_", ",", "\"\<BI\>\""}], "}"}]}], "]"}], "]"}], 
+                   ",", 
+                   RowBox[{"Flatten", "[", 
+                    RowBox[{"Position", "[", 
+                    RowBox[{"inputpointcoordinatesandcolors", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"_", ",", "\"\<BE\>\""}], "}"}]}], "]"}], "]"}]}],
+                   "]"}], ",", 
+                 RowBox[{"Map", "[", 
+                  RowBox[{"ToString", ",", 
+                   RowBox[{"Range", "[", 
+                    RowBox[{
+                    "Length", "[", "inputpointcoordinatesandcolors", "]"}], 
+                    "]"}]}], "]"}]}], "}"}]}], "]"}], "]"}], "[", 
+            RowBox[{"[", 
+             RowBox[{"All", ",", "2"}], "]"}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"(*", 
+           RowBox[{
+            RowBox[{
+            "these", " ", "are", " ", "the", " ", "positions", " ", "of", " ",
+              "the", " ", "node", " ", 
+             RowBox[{"numbers", ".", " ", "If"}], " ", "they", " ", "fall", 
+             " ", "outside", " ", "the", " ", "drawing", " ", "box"}], ",", 
+            " ", 
+            RowBox[{
+            "we", " ", "move", " ", "them", " ", "back", " ", "into", " ", 
+             "the", " ", "box"}]}], "*)"}], "\[IndentingNewLine]", 
+          RowBox[{"nodenumberpositions", "=", 
+           RowBox[{"Map", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"recenterPositions", "[", "#", "]"}], "&"}], ",", 
+             RowBox[{
+              RowBox[{"inputpointcoordinatesandcolors", "[", 
+               RowBox[{"[", 
+                RowBox[{"All", ",", "1"}], "]"}], "]"}], "+", "0.1"}], ",", 
+             RowBox[{"{", "2", "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"nodenumbersgraphics", "=", 
+           RowBox[{"MapThread", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"Text", "[", 
+               RowBox[{
+                RowBox[{"Style", "[", 
+                 RowBox[{"#1", 
+                  RowBox[{"(*", 
+                   RowBox[{"number", " ", "to", " ", "write"}], "*)"}], ",", 
+                  "Medium", ",", 
+                  RowBox[{"FontColor", "\[Rule]", "Blue"}], ",", 
+                  RowBox[{"Background", "\[Rule]", 
+                   RowBox[{"RGBColor", "[", 
+                    RowBox[{"1", ",", "1", ",", "1", ",", "0.8"}], "]"}]}]}], 
+                 "]"}], ",", "#2"}], 
+               RowBox[{"(*", 
+                RowBox[{"position", " ", "of", " ", "text"}], "*)"}], "]"}], 
+              "&"}], ",", "\[IndentingNewLine]", 
+             RowBox[{"{", 
+              RowBox[{"nodenumbersasstrings", ",", "nodenumberpositions"}], 
+              "}"}]}], "]"}]}], ";"}], "\[IndentingNewLine]", ",", 
+         RowBox[{"(*", 
+          RowBox[{
+           RowBox[{
+           "if", " ", "it", " ", "is", " ", "set", " ", "to", " ", "False"}], 
+           ",", " ", 
+           RowBox[{"draw", " ", "nothing"}]}], "*)"}], "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"nodenumbersgraphics", "=", 
+           RowBox[{"{", "}"}]}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+       "\[IndentingNewLine]", "nodenumbersgraphics"}]}], 
+     "\[IndentingNewLine]", "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"makeExternalNumbers", "[", 
+    RowBox[{"showexternalnumbers_", ",", "inputpointcoordinatesandcolors_"}], 
+    "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "recenterPositions", ",", "nodenumbersasstrings", ",", 
+       "nodenumberpositions", ",", "nodenumbersgraphics"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{"showexternalnumbers", ",", "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+          RowBox[{
+          "This", " ", "function", " ", "makes", " ", "sure", " ", "that", 
+           " ", "if", " ", "the", " ", "position", " ", "of", " ", "the", " ",
+            "node", " ", "number", " ", "ends", " ", "up", " ", "outside", 
+           " ", "the", " ", "drawing", " ", "box"}], ",", " ", 
+          RowBox[{
+          "it", " ", "will", " ", "be", " ", "moved", " ", "to", " ", "be", 
+           " ", "inside", " ", "the", " ", "box"}]}], "*)"}], 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"recenterPositions", "=", 
+          RowBox[{"Function", "[", 
+           RowBox[{
+            RowBox[{"{", "input", "}"}], ",", "\[IndentingNewLine]", 
+            RowBox[{"Block", "[", 
+             RowBox[{
+              RowBox[{"{", "output", "}"}], ",", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"output", "=", "input"}], ";", "\[IndentingNewLine]", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"input", "[", 
+                   RowBox[{"[", "1", "]"}], "]"}], "\[LessEqual]", 
+                  RowBox[{"-", "1.5"}]}], ",", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"output", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], "=", 
+                   RowBox[{
+                    RowBox[{"input", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], "+", "0.16"}]}], ";"}], 
+                 "\[IndentingNewLine]", ",", 
+                 RowBox[{
+                  RowBox[{"If", "[", 
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{"input", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], "\[GreaterEqual]", 
+                    "1.5"}], ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"output", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], "=", 
+                    RowBox[{
+                    RowBox[{"input", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], "-", "0.16"}]}], ";"}]}], 
+                   "\[IndentingNewLine]", "]"}], ";"}]}], 
+                "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"input", "[", 
+                   RowBox[{"[", "2", "]"}], "]"}], "\[LessEqual]", 
+                  RowBox[{"-", "1.5"}]}], ",", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"output", "[", 
+                    RowBox[{"[", "2", "]"}], "]"}], "=", 
+                   RowBox[{
+                    RowBox[{"input", "[", 
+                    RowBox[{"[", "2", "]"}], "]"}], "+", "0.26"}]}], ";"}], 
+                 "\[IndentingNewLine]", ",", 
+                 RowBox[{
+                  RowBox[{"If", "[", 
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{"input", "[", 
+                    RowBox[{"[", "2", "]"}], "]"}], "\[GreaterEqual]", 
+                    "1.5"}], ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"output", "[", 
+                    RowBox[{"[", "2", "]"}], "]"}], "=", 
+                    RowBox[{
+                    RowBox[{"input", "[", 
+                    RowBox[{"[", "2", "]"}], "]"}], "-", "0.26"}]}], ";"}]}], 
+                   "\[IndentingNewLine]", "]"}], ";"}]}], 
+                "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+               "output"}]}], "]"}]}], "\[IndentingNewLine]", "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"(*", 
+          RowBox[{
+          "these", " ", "are", " ", "the", " ", "node", " ", "numbers", " ", 
+           "written", " ", "as", " ", "strings"}], "*)"}], 
+         "\[IndentingNewLine]", 
+         RowBox[{"nodenumbersasstrings", "=", 
+          RowBox[{
+           RowBox[{"Sort", "[", 
+            RowBox[{"MapThread", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"#1", ",", "#2"}], "}"}], "&"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"(*", 
+                RowBox[{
+                 RowBox[{
+                 "first", " ", "the", " ", "external", " ", "white", " ", 
+                  "nodes"}], ",", " ", 
+                 RowBox[{
+                 "then", " ", "the", " ", "external", " ", "black", " ", 
+                  RowBox[{"ones", ".", " ", "Their"}], " ", "order", " ", 
+                  "in", " ", "inputpointcoordinatesandcolors", " ", "is", " ",
+                   "the", " ", "same", " ", "as", " ", "in", " ", "the", " ", 
+                  "Kasteleyn", " ", 
+                  RowBox[{"(", 
+                   RowBox[{"for", " ", "each", " ", "color"}], ")"}]}]}], 
+                "*)"}], 
+               RowBox[{
+                RowBox[{"Join", "[", 
+                 RowBox[{
+                  RowBox[{"Flatten", "[", 
+                   RowBox[{"Position", "[", 
+                    RowBox[{"inputpointcoordinatesandcolors", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"_", ",", "\"\<WE\>\""}], "}"}]}], "]"}], "]"}], 
+                  ",", 
+                  RowBox[{"Flatten", "[", 
+                   RowBox[{"Position", "[", 
+                    RowBox[{"inputpointcoordinatesandcolors", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"_", ",", "\"\<BE\>\""}], "}"}]}], "]"}], "]"}]}],
+                  "]"}], ",", 
+                RowBox[{"Map", "[", 
+                 RowBox[{"ToString", ",", 
+                  RowBox[{"Range", "[", 
+                   RowBox[{"Length", "[", 
+                    RowBox[{"Cases", "[", 
+                    RowBox[{"inputpointcoordinatesandcolors", ",", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"_", ",", "\"\<WE\>\""}], "}"}], "|", 
+                    RowBox[{"{", 
+                    RowBox[{"_", ",", "\"\<BE\>\""}], "}"}]}]}], "]"}], "]"}],
+                    "]"}]}], "]"}]}], "}"}]}], "]"}], "]"}], "[", 
+           RowBox[{"[", 
+            RowBox[{"All", ",", "2"}], "]"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"(*", 
+          RowBox[{
+          "these", " ", "are", " ", "the", " ", "positions", " ", "of", " ", 
+           "the", " ", "node", " ", 
+           RowBox[{"numbers", ".", " ", "They"}], " ", "are", " ", "placed", 
+           " ", "to", " ", "always", " ", "be", " ", "inside", " ", "the", 
+           " ", "drawing", " ", "box", " ", "and", " ", "not", " ", 
+           "conflict", " ", "too", " ", "much", " ", "with", " ", 
+           "nodenumberstext"}], "*)"}], "\[IndentingNewLine]", 
+         RowBox[{"nodenumberpositions", "=", 
+          RowBox[{"Map", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"recenterPositions", "[", 
+              RowBox[{"#", "+", 
+               RowBox[{"{", 
+                RowBox[{"0", ",", "0.13"}], "}"}]}], "]"}], "&"}], ",", 
+            RowBox[{"inputpointcoordinatesandcolors", "[", 
+             RowBox[{"[", 
+              RowBox[{
+               RowBox[{"Flatten", "[", 
+                RowBox[{"Position", "[", 
+                 RowBox[{"inputpointcoordinatesandcolors", ",", 
+                  RowBox[{
+                   RowBox[{"{", 
+                    RowBox[{"_", ",", "\"\<WE\>\""}], "}"}], "|", 
+                   RowBox[{"{", 
+                    RowBox[{"_", ",", "\"\<BE\>\""}], "}"}]}]}], "]"}], "]"}],
+                ",", "1"}], "]"}], "]"}]}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"nodenumbersgraphics", "=", 
+          RowBox[{"Join", "[", 
+           RowBox[{
+            RowBox[{"{", "Thick", "}"}], ",", "\[IndentingNewLine]", 
+            RowBox[{"MapThread", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"Text", "[", 
+                RowBox[{
+                 RowBox[{"Style", "[", 
+                  RowBox[{"#1", 
+                   RowBox[{"(*", 
+                    RowBox[{"number", " ", "to", " ", "write"}], "*)"}], ",", 
+                   RowBox[{"FontColor", "\[Rule]", 
+                    RowBox[{"RGBColor", "[", 
+                    RowBox[{"0.424", ",", "0.616", ",", "0.169"}], "]"}]}], 
+                   ",", 
+                   RowBox[{"FontSize", "\[Rule]", "18"}], ",", 
+                   RowBox[{"FontWeight", "\[Rule]", "Bold"}], ",", 
+                   RowBox[{"Background", "\[Rule]", 
+                    RowBox[{"RGBColor", "[", 
+                    RowBox[{"1", ",", "1", ",", "1", ",", "0.8"}], "]"}]}]}], 
+                  "]"}], ",", "#2"}], 
+                RowBox[{"(*", 
+                 RowBox[{"position", " ", "of", " ", "text"}], "*)"}], "]"}], 
+               "&"}], ",", "\[IndentingNewLine]", 
+              RowBox[{"{", 
+               RowBox[{"nodenumbersasstrings", ",", "nodenumberpositions"}], 
+               "}"}]}], "]"}]}], "]"}]}], ";"}], "\[IndentingNewLine]", ",", 
+        RowBox[{"(*", 
+         RowBox[{
+          RowBox[{
+          "if", " ", "it", " ", "is", " ", "set", " ", "to", " ", "False"}], 
+          ",", " ", 
+          RowBox[{"draw", " ", "nothing"}]}], "*)"}], "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"nodenumbersgraphics", "=", 
+          RowBox[{"{", "}"}]}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+      "\[IndentingNewLine]", "nodenumbersgraphics"}]}], "\[IndentingNewLine]",
+     "]"}]}], ";"}]}], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.6839742281361303`*^9, 3.6839743533010955`*^9}, {
+   3.683974427945081*^9, 3.6839745388761806`*^9}, {3.683974569913556*^9, 
+   3.683974663472859*^9}, {3.683974693588111*^9, 3.683974720662695*^9}, {
+   3.6839748281133127`*^9, 3.6839750767969074`*^9}, {3.683975170519514*^9, 
+   3.6839752077490025`*^9}, {3.683975252038154*^9, 3.683975298769145*^9}, {
+   3.6839753362823935`*^9, 3.6839754508965626`*^9}, {3.683975538395685*^9, 
+   3.6839755426370783`*^9}, {3.6839756789555473`*^9, 
+   3.6839758111755066`*^9}, {3.683975890253559*^9, 3.6839759493209114`*^9}, {
+   3.683976049540003*^9, 3.683976093512851*^9}, {3.683976129699111*^9, 
+   3.6839761519122267`*^9}, {3.6839761868748455`*^9, 
+   3.6839763334198494`*^9}, {3.6839769254376163`*^9, 3.683976996157715*^9}, 
+   3.6839771310811033`*^9, {3.683977184118415*^9, 3.6839772030052543`*^9}, {
+   3.6839773013650756`*^9, 3.683977335741711*^9}, {3.683977368815024*^9, 
+   3.683977385217986*^9}, 3.683977520006825*^9, {3.683977862880831*^9, 
+   3.6839778684077797`*^9}, {3.683978150926197*^9, 3.6839783042155576`*^9}, 
+   3.684042324530038*^9, {3.6840456918070726`*^9, 3.684045706341731*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"checkinputKasteleyn", "[", 
+    RowBox[{
+    "topleft_", ",", "topright_", ",", "bottomleft_", ",", "bottomright_"}], 
+    "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", "areyouOK", "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"areyouOK", "=", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"And", "@@", 
+          RowBox[{"Map", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"Equal", "@@", "#"}], "&"}], ",", 
+            RowBox[{"Map", "[", 
+             RowBox[{"Length", ",", 
+              RowBox[{"{", 
+               RowBox[{
+               "topleft", ",", "topright", ",", "bottomleft", ",", 
+                "bottomright"}], "}"}], ",", 
+              RowBox[{"{", "2", "}"}]}], "]"}]}], "]"}]}], ")"}], "&&", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"Length", "[", "topleft", "]"}], "\[Equal]", 
+          RowBox[{"Length", "[", "topright", "]"}]}], ")"}], "&&", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"Length", "[", "bottomleft", "]"}], "\[Equal]", 
+          RowBox[{"Length", "[", "bottomright", "]"}]}], ")"}], "&&", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Length", "[", 
+            RowBox[{"Dimensions", "[", "topleft", "]"}], "]"}], "\[Equal]", 
+           "1"}], "||", 
+          RowBox[{
+           RowBox[{"Length", "[", 
+            RowBox[{"Dimensions", "[", "bottomleft", "]"}], "]"}], "\[Equal]",
+            "1"}], "||", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Dimensions", "[", "topleft", "]"}], "[", 
+            RowBox[{"[", "2", "]"}], "]"}], "\[Equal]", 
+           RowBox[{
+            RowBox[{"Dimensions", "[", "bottomleft", "]"}], "[", 
+            RowBox[{"[", "2", "]"}], "]"}]}]}], ")"}], "&&", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Length", "[", 
+            RowBox[{"Dimensions", "[", "topright", "]"}], "]"}], "\[Equal]", 
+           "1"}], "||", 
+          RowBox[{
+           RowBox[{"Length", "[", 
+            RowBox[{"Dimensions", "[", "bottomright", "]"}], "]"}], 
+           "\[Equal]", "1"}], "||", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Dimensions", "[", "topright", "]"}], "[", 
+            RowBox[{"[", "2", "]"}], "]"}], "\[Equal]", 
+           RowBox[{
+            RowBox[{"Dimensions", "[", "bottomright", "]"}], "[", 
+            RowBox[{"[", "2", "]"}], "]"}]}]}], ")"}], "&&", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"getDuplicateEdges", "[", 
+           RowBox[{
+           "topleft", ",", "topright", ",", "bottomleft", ",", 
+            "bottomright"}], "]"}], "\[Equal]", 
+          RowBox[{"{", "}"}]}], ")"}], "&&", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"Cases", "[", 
+           RowBox[{
+            RowBox[{"Cases", "[", 
+             RowBox[{
+              RowBox[{"Flatten", "[", 
+               RowBox[{"{", 
+                RowBox[{
+                "topleft", ",", "topright", ",", "bottomleft", ",", 
+                 "bottomright"}], "}"}], "]"}], ",", "_Integer"}], "]"}], ",", 
+            RowBox[{"Except", "[", "0", "]"}]}], "]"}], "\[Equal]", 
+          RowBox[{"{", "}"}]}], ")"}]}]}], ";", "\[IndentingNewLine]", 
+      "areyouOK"}]}], "]"}]}], ";"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.684042369859127*^9, 3.6840425760807557`*^9}, {
+   3.6840426338532867`*^9, 3.684042684508009*^9}, {3.6840427981184883`*^9, 
+   3.6840428194974546`*^9}, 3.684042890277626*^9, 3.6840433337551155`*^9, 
+   3.6840439128677454`*^9, {3.6840440442420115`*^9, 3.684044046475263*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{
+    "This", " ", "function", " ", "takes", " ", "the", " ", "outputted", " ", 
+     "Kasteleyn"}], ",", " ", 
+    RowBox[{
+    "given", " ", "by", " ", "the", " ", "function", " ", 
+     "makeKasteleynComponents"}], ",", " ", 
+    RowBox[{
+    "and", " ", "labels", " ", "the", " ", "edges", " ", "in", " ", "the", 
+     " ", "graph", " ", "with", " ", "the", " ", "corresponding", " ", 
+     RowBox[{"Z", "[", "i", "]"}], " ", 
+     RowBox[{"names", "."}]}]}], "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"drawEdgeNames", "[", 
+     RowBox[{
+     "inputpointcoordinatesandcolors_", ",", "inputedges_", ",", 
+      "showedges_"}], "]"}], ":=", 
+    RowBox[{"Block", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "graphOK", ",", "kast", ",", "edgenames", ",", 
+        "positionsinthekasteleyn", ",", "turnKasteleynPositionsToEdges", ",", 
+        "graphedges", ",", "replacetographposition", ",", "graphmultiedges", 
+        ",", "perfmatchings", ",", "referencematchingedges", ",", 
+        "labelpositions", ",", "outputgraphics"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"If", "[", 
+        RowBox[{"showedges", ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"graphOK", "=", 
+           RowBox[{"graphBipartiteAndGoodExtNodesQ", "[", 
+            RowBox[{"inputpointcoordinatesandcolors", ",", "inputedges"}], 
+            "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{"graphOK", ",", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"kast", "=", 
+              RowBox[{"makeKasteleynComponents", "[", 
+               RowBox[{"inputpointcoordinatesandcolors", ",", "inputedges"}], 
+               "]"}]}], ";", "\[IndentingNewLine]", 
+             RowBox[{"edgenames", "=", 
+              RowBox[{"Variables", "[", "kast", "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"(*", 
+              RowBox[{"Each", " ", 
+               RowBox[{"Z", "[", "i", "]"}], " ", "variables", " ", "will", 
+               " ", "now", " ", "be", " ", "translated", " ", "into", " ", 
+               "an", " ", "edge", " ", "name", " ", 
+               RowBox[{"{", 
+                RowBox[{"i", ",", "j"}], "}"}], " ", "in", " ", "the", " ", 
+               "graph"}], "*)"}], "\[IndentingNewLine]", 
+             RowBox[{"positionsinthekasteleyn", "=", 
+              RowBox[{"Map", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"Position", "[", 
+                   RowBox[{"kast", ",", "#"}], "]"}], "[", 
+                  RowBox[{"[", 
+                   RowBox[{"1", ",", 
+                    RowBox[{"Range", "[", "3", "]"}]}], "]"}], "]"}], "&"}], 
+                ",", "edgenames"}], "]"}]}], ";", "\[IndentingNewLine]", 
+             RowBox[{"turnKasteleynPositionsToEdges", "=", 
+              RowBox[{"Function", "[", 
+               RowBox[{
+                RowBox[{"{", "posinkast", "}"}], ",", "\[IndentingNewLine]", 
+                RowBox[{"Block", "[", 
+                 RowBox[{
+                  RowBox[{"{", 
+                   RowBox[{"relevantnodes", ",", "relevantedge"}], "}"}], ",",
+                   "\[IndentingNewLine]", 
+                  RowBox[{
+                   RowBox[{"relevantnodes", "=", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Flatten", "[", 
+                    RowBox[{"Position", "[", 
+                    RowBox[{"inputpointcoordinatesandcolors", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"_", ",", "#"}], "}"}]}], "]"}], "]"}], "&"}], 
+                    ",", 
+                    RowBox[{
+                    RowBox[{"posinkast", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], "/.", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"1", "\[Rule]", 
+                    RowBox[{"{", 
+                    RowBox[{"\"\<WI\>\"", ",", "\"\<BI\>\""}], "}"}]}], ",", 
+                    RowBox[{"2", "\[Rule]", 
+                    RowBox[{"{", 
+                    RowBox[{"\"\<WI\>\"", ",", "\"\<BE\>\""}], "}"}]}], ",", 
+                    RowBox[{"3", "\[Rule]", 
+                    RowBox[{"{", 
+                    RowBox[{"\"\<WE\>\"", ",", "\"\<BI\>\""}], "}"}]}], ",", 
+                    RowBox[{"4", "\[Rule]", 
+                    RowBox[{"{", 
+                    RowBox[{"\"\<WE\>\"", ",", "\"\<BE\>\""}], "}"}]}]}], 
+                    "}"}]}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+                   RowBox[{"relevantedge", "=", 
+                    RowBox[{"Sort", "[", 
+                    RowBox[{"MapThread", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"#1", "[", 
+                    RowBox[{"[", "#2", "]"}], "]"}], "&"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"relevantnodes", ",", 
+                    RowBox[{"posinkast", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"{", 
+                    RowBox[{"2", ",", "3"}], "}"}], "]"}], "]"}]}], "}"}]}], 
+                    "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+                   "relevantedge"}]}], "]"}]}], "\[IndentingNewLine]", 
+               "]"}]}], ";", "\[IndentingNewLine]", 
+             RowBox[{"graphedges", "=", 
+              RowBox[{"Map", "[", 
+               RowBox[{
+               "turnKasteleynPositionsToEdges", ",", 
+                "positionsinthekasteleyn"}], "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"(*", 
+              RowBox[{
+               RowBox[{
+               "Now", " ", "we", " ", "have", " ", "the", " ", "edge", " ", 
+                "names", " ", 
+                RowBox[{
+                 RowBox[{"{", 
+                  RowBox[{"i", ",", "j"}], "}"}], ".", " ", "We"}], " ", 
+                "will", " ", "turn", " ", "each", " ", "of", " ", "these", 
+                " ", "into", " ", "a", " ", "position"}], ",", " ", 
+               RowBox[{
+               "which", " ", "is", " ", "on", " ", "the", " ", "midway", " ", 
+                "point", " ", "of", " ", "the", " ", 
+                RowBox[{"edge", ".", " ", "We"}], " ", "will", " ", "use", 
+                " ", "ReplacePart", " ", "to", " ", "turn", " ", "each", " ", 
+                "position", " ", "in", " ", "graphedges", " ", "to", " ", 
+                "its", " ", "corrresponding", " ", "coordinate"}]}], "*)"}], 
+             "\[IndentingNewLine]", 
+             RowBox[{"(*", 
+              RowBox[{
+              "first", " ", "we", " ", "turn", " ", "the", " ", "single", " ",
+                "edges", " ", "into", " ", "their", " ", "graph", " ", 
+               "positions"}], "*)"}], "\[IndentingNewLine]", 
+             RowBox[{"replacetographposition", "=", 
+              RowBox[{"Map", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"Position", "[", 
+                    RowBox[{"graphedges", ",", "#"}], "]"}], "[", 
+                   RowBox[{"[", 
+                    RowBox[{"1", ",", "1"}], "]"}], "]"}], "\[Rule]", 
+                  RowBox[{"Mean", "[", 
+                   RowBox[{"inputpointcoordinatesandcolors", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"#", ",", "1"}], "]"}], "]"}], "]"}]}], "&"}], 
+                ",", 
+                RowBox[{
+                 RowBox[{"Cases", "[", 
+                  RowBox[{
+                   RowBox[{"Tally", "[", "graphedges", "]"}], ",", 
+                   RowBox[{"{", 
+                    RowBox[{"_", ",", "1"}], "}"}]}], "]"}], "[", 
+                 RowBox[{"[", 
+                  RowBox[{"All", ",", "1"}], "]"}], "]"}]}], "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"(*", 
+              RowBox[{
+              "Now", " ", "we", " ", "do", " ", "the", " ", "same", " ", 
+               "for", " ", "the", " ", "multiedges"}], "*)"}], 
+             "\[IndentingNewLine]", 
+             RowBox[{"graphmultiedges", "=", 
+              RowBox[{"Cases", "[", 
+               RowBox[{
+                RowBox[{"Tally", "[", "graphedges", "]"}], ",", 
+                RowBox[{"Except", "[", 
+                 RowBox[{"{", 
+                  RowBox[{"_", ",", "1"}], "}"}], "]"}]}], "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{"graphmultiedges", "=!=", 
+                RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"perfmatchings", "=", 
+                 RowBox[{"perfectMatchings", "[", 
+                  RowBox[{"Sequence", "@@", "kast"}], "]"}]}], ";", 
+                "\[IndentingNewLine]", 
+                RowBox[{"If", "[", 
+                 RowBox[{
+                  RowBox[{"perfmatchings", "\[NotEqual]", 
+                   RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+                  RowBox[{
+                   RowBox[{"referencematchingedges", "=", 
+                    RowBox[{"Variables", "[", 
+                    RowBox[{"perfmatchings", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"lowNumberLoopsPMpos", "[", 
+                    RowBox[{"Sequence", "@@", "kast"}], "]"}], "]"}], "]"}], 
+                    "]"}]}], ";"}], "\[IndentingNewLine]", ",", 
+                  RowBox[{
+                   RowBox[{"referencematchingedges", "=", 
+                    RowBox[{"{", "}"}]}], ";"}]}], "\[IndentingNewLine]", 
+                 "]"}], ";", "\[IndentingNewLine]", 
+                RowBox[{"(*", 
+                 RowBox[{
+                  RowBox[{
+                  "We", " ", "order", " ", "the", " ", "list", " ", "#1", " ",
+                    "such", " ", "that", " ", "edges", " ", "which", " ", 
+                   "appear", " ", "in", " ", "the", " ", "reference", " ", 
+                   "perfect", " ", "matching", " ", "come", " ", 
+                   RowBox[{"first", ".", " ", "This"}], " ", "is", " ", 
+                   "because", " ", "these", " ", "edges", " ", "will", " ", 
+                   "flow", " ", "the", " ", "opposite", " ", "way", " ", "in",
+                    " ", "bubbles"}], ",", " ", 
+                  RowBox[{
+                  "and", " ", "it", " ", "is", " ", "always", " ", "the", " ",
+                    "first", " ", "BSpline", " ", "that", " ", "is", " ", 
+                   "chosen", " ", "to", " ", "flow", " ", "the", " ", 
+                   "opposite", " ", "way"}]}], "*)"}], "\[IndentingNewLine]", 
+                RowBox[{"replacetographposition", "=", 
+                 RowBox[{"Join", "[", 
+                  RowBox[{"replacetographposition", ",", 
+                   RowBox[{"MapThread", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Sequence", "@@", 
+                    RowBox[{"MapThread", "[", 
+                    RowBox[{"Rule", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"#1", ",", "#2"}], "}"}]}], "]"}]}], "&"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Position", "[", 
+                    RowBox[{"edgenames", ",", "#"}], "]"}], "[", 
+                    RowBox[{"[", 
+                    RowBox[{"1", ",", "1"}], "]"}], "]"}], "&"}], ",", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Join", "[", 
+                    RowBox[{
+                    RowBox[{"Intersection", "[", 
+                    RowBox[{"referencematchingedges", ",", "#"}], "]"}], ",", 
+                    RowBox[{"Complement", "[", 
+                    RowBox[{"#", ",", 
+                    RowBox[{"Intersection", "[", 
+                    RowBox[{"referencematchingedges", ",", "#"}], "]"}]}], 
+                    "]"}]}], "]"}], "&"}], ",", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"edgenames", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"Flatten", "[", 
+                    RowBox[{"Position", "[", 
+                    RowBox[{"graphedges", ",", "#"}], "]"}], "]"}], "]"}], 
+                    "]"}], "&"}], ",", 
+                    RowBox[{"graphmultiedges", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"All", ",", "1"}], "]"}], "]"}]}], "]"}]}], "]"}],
+                     ",", 
+                    RowBox[{"{", "2", "}"}]}], "]"}], ",", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"BSplineFunction", "@@", "#"}], ")"}], "[", "0.5",
+                     "]"}], "&"}], ",", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"makeBsplineCurves", "@@", "#"}], "&"}], ",", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"MapAt", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"#", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], ",", 
+                    RowBox[{"StringTake", "[", 
+                    RowBox[{
+                    RowBox[{"#", "[", 
+                    RowBox[{"[", "2", "]"}], "]"}], ",", "1"}], "]"}]}], 
+                    "}"}], "&"}], ",", 
+                    RowBox[{"MapAt", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"inputpointcoordinatesandcolors", "[", 
+                    RowBox[{"[", "#", "]"}], "]"}], ")"}], "&"}], ",", 
+                    "graphmultiedges", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"All", ",", "1"}], "}"}]}], "]"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"All", ",", "1", ",", "All"}], "}"}]}], "]"}], "/.", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"coord1_List", ",", "\"\<B\>\""}], "}"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"coord2_List", ",", "\"\<W\>\""}], "}"}]}], "}"}],
+                     "\[RuleDelayed]", 
+                    RowBox[{"Sequence", "[", 
+                    RowBox[{"coord2", ",", "coord1"}], "]"}]}], ",", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"coord3_List", ",", "\"\<W\>\""}], "}"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"coord4_List", ",", "\"\<B\>\""}], "}"}]}], "}"}],
+                     "\[RuleDelayed]", 
+                    RowBox[{"Sequence", "[", 
+                    RowBox[{"coord3", ",", "coord4"}], "]"}]}]}], "}"}]}], 
+                    ")"}]}], "]"}], ",", 
+                    RowBox[{"{", "2", "}"}]}], "]"}]}], "}"}]}], "]"}]}], 
+                  "]"}]}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"labelpositions", "=", 
+              RowBox[{"ReplacePart", "[", 
+               RowBox[{"graphedges", ",", "replacetographposition"}], "]"}]}],
+              ";", "\[IndentingNewLine]", 
+             RowBox[{"(*", 
+              RowBox[{
+               RowBox[{
+               "Now", " ", "we", " ", "have", " ", "all", " ", "the", " ", 
+                "positions"}], ",", " ", 
+               RowBox[{
+               "and", " ", "are", " ", "ready", " ", "to", " ", "print", " ", 
+                "out", " ", "the", " ", "graphics", " ", "data", " ", "for", 
+                " ", "the", " ", "edge", " ", "labels"}]}], "*)"}], 
+             "\[IndentingNewLine]", 
+             RowBox[{"edgenames", "=", 
+              RowBox[{"Map", "[", 
+               RowBox[{"ToString", ",", "edgenames"}], "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"outputgraphics", "=", 
+              RowBox[{"MapThread", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"Text", "[", 
+                  RowBox[{
+                   RowBox[{"Style", "[", 
+                    RowBox[{"#1", 
+                    RowBox[{"(*", 
+                    RowBox[{"edge", " ", "name"}], "*)"}], ",", 
+                    RowBox[{"FontColor", "\[Rule]", 
+                    RowBox[{"RGBColor", "[", 
+                    RowBox[{"0.173", ",", "0.659", ",", "0.761"}], "]"}]}], 
+                    ",", "Medium", ",", 
+                    RowBox[{"Background", "\[Rule]", 
+                    RowBox[{"RGBColor", "[", 
+                    RowBox[{"1", ",", "1", ",", "1", ",", "0.8"}], "]"}]}]}], 
+                    "]"}], ",", "#2"}], 
+                  RowBox[{"(*", 
+                   RowBox[{"position", " ", "of", " ", "text"}], "*)"}], 
+                  "]"}], "&"}], ",", "\[IndentingNewLine]", 
+                RowBox[{"{", 
+                 RowBox[{"edgenames", ",", "labelpositions"}], "}"}]}], 
+               "]"}]}], ";"}], "\[IndentingNewLine]", ",", 
+            RowBox[{
+             RowBox[{"outputgraphics", "=", 
+              RowBox[{"{", "}"}]}], ";"}]}], "\[IndentingNewLine]", "]"}], 
+          ";"}], "\[IndentingNewLine]", ",", 
+         RowBox[{
+          RowBox[{"outputgraphics", "=", 
+           RowBox[{"{", "}"}]}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+       "\[IndentingNewLine]", "outputgraphics"}]}], "\[IndentingNewLine]", 
+     "]"}]}], ";"}]}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6840477653548284`*^9, {3.684047889558076*^9, 3.684048096442168*^9}, 
+   3.6840527640101075`*^9, 3.6840528756771564`*^9, {3.684058532280571*^9, 
+   3.684058641294882*^9}, {3.684059919622016*^9, 3.6840599437465982`*^9}}],
 
 Cell[BoxData[
  RowBox[{
@@ -4553,6 +5422,7 @@ Cell[BoxData[
        RowBox[{"externalnumberstext", "=", "False"}], ",", 
        RowBox[{"showremovableedges", "=", "False"}], ",", 
        RowBox[{"perfectorientation", "=", "False"}], ",", 
+       RowBox[{"edgenametext", "=", "False"}], ",", 
        RowBox[{"enablebuttons", "=", "True"}], ",", 
        RowBox[{"edgebuttonlist", "=", 
         RowBox[{"Column", "[", 
@@ -4619,7 +5489,12 @@ Cell[BoxData[
        RowBox[{
        "to", " ", "be", " ", "used", " ", "when", " ", "drawing", " ", 
         "removable", " ", 
-        RowBox[{"edges", "."}]}]}], "*)"}], "\[IndentingNewLine]", 
+        RowBox[{"edges", ".", " ", "If"}], " ", "showthearrows", " ", "is", 
+        " ", "True"}], ",", " ", 
+       RowBox[{
+       "it", " ", "will", " ", "also", " ", "draw", " ", "arrows", " ", 
+        "according", " ", "to", " ", "the", " ", "perfect", " ", 
+        "orientation"}]}], "*)"}], "\[IndentingNewLine]", 
      RowBox[{
       RowBox[{"drawRemovableLines", "=", 
        RowBox[{"Function", "[", 
@@ -4627,25 +5502,83 @@ Cell[BoxData[
          RowBox[{"{", 
           RowBox[{
           "inputremovabledges", ",", "newpointcoordinatesandcolors", ",", 
-           "showthearrows"}], "}"}], ",", "\[IndentingNewLine]", 
+           "newedges", ",", "showthearrows", ",", "showtheedgenames"}], "}"}],
+          ",", "\[IndentingNewLine]", 
          RowBox[{"Block", "[", 
           RowBox[{
            RowBox[{"{", 
             RowBox[{
-            "themultiedges", ",", "drawnlines", ",", "positiontodraw", ",", 
-             "objectstodraw", ",", "removablelines"}], "}"}], ",", 
-           "\[IndentingNewLine]", 
+            "newmultiedges", ",", "todrawmultiedges", ",", "drawnlines", ",", 
+             "positiontodraw", ",", "objectstodraw", ",", "removablelines"}], 
+            "}"}], ",", "\[IndentingNewLine]", 
            RowBox[{
             RowBox[{"If", "[", 
-             RowBox[{"(*", "showthearrows", "*)"}], 
-             RowBox[{"False", ",", "\[IndentingNewLine]", 
+             RowBox[{"showthearrows", ",", "\[IndentingNewLine]", 
               RowBox[{
+               RowBox[{"newmultiedges", "=", 
+                RowBox[{"Cases", "[", 
+                 RowBox[{
+                  RowBox[{"Tally", "[", "newedges", "]"}], ",", 
+                  RowBox[{"Except", "[", 
+                   RowBox[{"{", 
+                    RowBox[{"_", ",", "1"}], "}"}], "]"}]}], "]"}]}], ";", 
+               "\[IndentingNewLine]", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{"newmultiedges", "=!=", 
+                  RowBox[{"{", "}"}]}], ",", 
+                 RowBox[{"(*", 
+                  RowBox[{
+                  "we", " ", "have", " ", "multiple", " ", "edges", " ", 
+                   "going", " ", "between", " ", "the", " ", "same", " ", 
+                   "two", " ", "nodes"}], "*)"}], "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"newmultiedges", "=", 
+                   RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"makeBsplineCurves", "@@", "#"}], "&"}], ",", 
+                    RowBox[{"MapAt", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Sequence", "@@", 
+                    RowBox[{"(", 
+                    RowBox[{"newpointcoordinatesandcolors", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"#", ",", "1"}], "]"}], "]"}], ")"}]}], "&"}], 
+                    ",", "newmultiedges", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"All", ",", "1"}], "}"}]}], "]"}]}], "]"}]}], 
+                  ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+               "\[IndentingNewLine]", 
+               RowBox[{"(*", 
+                RowBox[{
+                 RowBox[{
+                 "instead", " ", "of", " ", "recalculating", " ", "the", " ", 
+                  "direction", " ", "of", " ", "the", " ", "arrows"}], ",", 
+                 " ", 
+                 RowBox[{
+                 "we", " ", "can", " ", "just", " ", "copy", " ", "that", " ",
+                   "made", " ", "from", " ", "drawLines"}]}], "*)"}], 
+               "\[IndentingNewLine]", 
                RowBox[{"drawnlines", "=", 
                 RowBox[{"drawLines", "[", 
                  RowBox[{
-                 "newpointcoordinatesandcolors", ",", "edges", ",", 
-                  "multiedges", ",", "showthearrows"}], "]"}]}], ";", 
-               "\[IndentingNewLine]", 
+                 "newpointcoordinatesandcolors", ",", "newedges", ",", 
+                  "newmultiedges", ",", "showthearrows", ",", 
+                  "edgenametext"}], "]"}]}], ";", "\[IndentingNewLine]", 
+               RowBox[{"(*", 
+                RowBox[{
+                 RowBox[{
+                 "Our", " ", "removable", " ", "edges", " ", "will", " ", 
+                  "be", " ", "drawn", " ", "somewhere", " ", "in", " ", 
+                  RowBox[{"drawlines", ".", " ", "We"}], " ", "list", " ", 
+                  "the", " ", "positions"}], ",", " ", 
+                 RowBox[{
+                 "so", " ", "as", " ", "to", " ", "fetch", " ", "the", " ", 
+                  "relevant", " ", "part", " ", "of", " ", "drawlines", " ", 
+                  "that", " ", "correspond", " ", "to", " ", "removable", " ", 
+                  RowBox[{"edges", "."}]}]}], "*)"}], "\[IndentingNewLine]", 
                RowBox[{"positiontodraw", "=", 
                 RowBox[{"Map", "[", 
                  RowBox[{
@@ -4691,18 +5624,35 @@ Cell[BoxData[
                     RowBox[{"Sequence", "@@", "#"}], "]"}], "]"}], "]"}], 
                    "&"}], ",", "positiontodraw"}], "]"}]}], ";", 
                "\[IndentingNewLine]", 
-               RowBox[{"removablelines", "=", 
-                RowBox[{"Sequence", "@@", 
-                 RowBox[{"{", 
-                  RowBox[{
-                   RowBox[{"Thickness", "[", "0.01", "]"}], ",", 
-                   RowBox[{"Arrowheads", "[", 
+               RowBox[{"If", "[", 
+                RowBox[{"showtheedgenames", ",", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"removablelines", "=", 
+                   RowBox[{"Sequence", "@@", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"Thickness", "[", "0.01", "]"}], ",", 
+                    RowBox[{"Arrowheads", "[", 
                     RowBox[{"{", 
                     RowBox[{"{", 
-                    RowBox[{"0.04", ",", "0.6"}], "}"}], "}"}], "]"}], ",", 
-                   "Orange", ",", 
-                   RowBox[{"Sequence", "@@", "objectstodraw"}]}], "}"}]}]}], 
-               ";"}], "\[IndentingNewLine]", ",", 
+                    RowBox[{"0.05", ",", "0.4"}], "}"}], "}"}], "]"}], ",", 
+                    "Orange", ",", 
+                    RowBox[{"Sequence", "@@", "objectstodraw"}]}], "}"}]}]}], 
+                  ";"}], "\[IndentingNewLine]", ",", 
+                 RowBox[{
+                  RowBox[{"removablelines", "=", 
+                   RowBox[{"Sequence", "@@", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"Thickness", "[", "0.01", "]"}], ",", 
+                    RowBox[{"Arrowheads", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"{", 
+                    RowBox[{"0.05", ",", "0.6"}], "}"}], "}"}], "]"}], ",", 
+                    "Orange", ",", 
+                    RowBox[{"Sequence", "@@", "objectstodraw"}]}], "}"}]}]}], 
+                  ";"}]}], "\[IndentingNewLine]", "]"}], ";"}], 
+              "\[IndentingNewLine]", ",", 
               RowBox[{"(*", 
                RowBox[{
                 RowBox[{
@@ -4711,7 +5661,7 @@ Cell[BoxData[
                 RowBox[{"and", " ", "then", " ", "the", " ", "normal", " ", 
                  RowBox[{"lines", "."}]}]}], "*)"}], "\[IndentingNewLine]", 
               RowBox[{
-               RowBox[{"themultiedges", "=", 
+               RowBox[{"todrawmultiedges", "=", 
                 RowBox[{"Cases", "[", 
                  RowBox[{
                   RowBox[{"Tally", "[", "inputremovabledges", "]"}], ",", 
@@ -4721,7 +5671,7 @@ Cell[BoxData[
                "\[IndentingNewLine]", 
                RowBox[{"If", "[", 
                 RowBox[{
-                 RowBox[{"themultiedges", "=!=", 
+                 RowBox[{"todrawmultiedges", "=!=", 
                   RowBox[{"{", "}"}]}], ",", 
                  RowBox[{"(*", 
                   RowBox[{
@@ -4729,7 +5679,7 @@ Cell[BoxData[
                    "going", " ", "between", " ", "the", " ", "same", " ", 
                    "two", " ", "nodes"}], "*)"}], "\[IndentingNewLine]", 
                  RowBox[{
-                  RowBox[{"themultiedges", "=", 
+                  RowBox[{"todrawmultiedges", "=", 
                    RowBox[{"Map", "[", 
                     RowBox[{
                     RowBox[{
@@ -4742,7 +5692,7 @@ Cell[BoxData[
                     RowBox[{"newpointcoordinatesandcolors", "[", 
                     RowBox[{"[", 
                     RowBox[{"#", ",", "1"}], "]"}], "]"}], ")"}]}], "&"}], 
-                    ",", "themultiedges", ",", 
+                    ",", "todrawmultiedges", ",", 
                     RowBox[{"{", 
                     RowBox[{"All", ",", "1"}], "}"}]}], "]"}]}], "]"}]}], 
                   ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
@@ -4768,8 +5718,8 @@ Cell[BoxData[
                     RowBox[{"{", 
                     RowBox[{"_", ",", "1"}], "}"}]}], "]"}]}], "]"}]}], "]"}],
                      "]"}], ",", 
-                   RowBox[{"Sequence", "@@", "themultiedges"}]}], "}"}]}]}], 
-               ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+                   RowBox[{"Sequence", "@@", "todrawmultiedges"}]}], 
+                  "}"}]}]}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
             "\[IndentingNewLine]", "removablelines"}]}], "]"}]}], 
         "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
       RowBox[{"(*", 
@@ -4831,8 +5781,8 @@ Cell[BoxData[
          RowBox[{"{", 
           RowBox[{
           "showtheedges", ",", "theedgelist", ",", 
-           "newpointcoordinatesandcolors", ",", "newedges", ",", 
-           "witharrows"}], "}"}], ",", "\[IndentingNewLine]", 
+           "newpointcoordinatesandcolors", ",", "newedges", ",", "witharrows",
+            ",", "withnamededges"}], "}"}], ",", "\[IndentingNewLine]", 
          RowBox[{"Block", "[", 
           RowBox[{
            RowBox[{"{", "returnededges", "}"}], ",", "\[IndentingNewLine]", 
@@ -4859,21 +5809,11 @@ Cell[BoxData[
                RowBox[{"returnededges", "=", 
                 RowBox[{"{", "}"}]}], ";"}]}], "\[IndentingNewLine]", "]"}], 
             ";", "\[IndentingNewLine]", 
-            RowBox[{"Print", "[", 
-             RowBox[{"\"\<Arguments:\>\"", ",", 
-              RowBox[{"{", 
-               RowBox[{
-               "returnededges", ",", "newpointcoordinatesandcolors", ",", 
-                "witharrows"}], "}"}]}], "]"}], ";", "\[IndentingNewLine]", 
-            RowBox[{"Print", "[", 
-             RowBox[{"\"\<Result:\>\"", ",", 
-              RowBox[{"drawRemovableLines", "[", 
-               RowBox[{
-               "returnededges", ",", "newpointcoordinatesandcolors", ",", 
-                "witharrows"}], "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
             RowBox[{"returnededges", "=", 
              RowBox[{"drawRemovableLines", "[", 
-              RowBox[{"returnededges", ",", "newpointcoordinatesandcolors"}], 
+              RowBox[{
+              "returnededges", ",", "newpointcoordinatesandcolors", ",", 
+               "newedges", ",", "witharrows", ",", "withnamededges"}], 
               "]"}]}], ";", "\[IndentingNewLine]", "returnededges"}]}], 
           "]"}]}], "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
       RowBox[{"(*", 
@@ -4915,67 +5855,81 @@ Cell[BoxData[
            RowBox[{"{", "}"}], ",", 
            RowBox[{"{", "}"}], ",", 
            RowBox[{"{", "}"}]}], "}"}]}], ",", "\[IndentingNewLine]", 
-        RowBox[{"(*", 
-         RowBox[{
-         "The", " ", "list", " ", "of", " ", "removable", " ", "edges", " ", 
-          "is", " ", "not", " ", "up", " ", "to", " ", "date", " ", 
-          RowBox[{"(", 
-           RowBox[{
-           "we", " ", "only", " ", "want", " ", "to", " ", "recompute", " ", 
-            "the", " ", "edges", " ", "when", " ", "removablesuptodate", " ", 
-            "is", " ", "False"}], ")"}]}], "*)"}], "\[IndentingNewLine]", 
         RowBox[{
-         RowBox[{"removablesuptodate", "=", "False"}], ";", 
-         "\[IndentingNewLine]", 
-         RowBox[{
-          RowBox[{"{", 
-           RowBox[{"pointcoordinatesandcolors", ",", "edges"}], "}"}], "=", 
-          RowBox[{"makeGraphDatafromKasteleyn", "[", 
-           RowBox[{
-           "topleft", ",", "topright", ",", "bottomleft", ",", 
-            "bottomright"}], "]"}]}], ";", "\[IndentingNewLine]", 
-         RowBox[{"(*", 
-          RowBox[{
-           RowBox[{
-           "When", " ", "we", " ", "have", " ", "multiple", " ", "edges"}], 
-           ",", " ", 
-           RowBox[{"we", " ", "should", " ", "draw", " ", "bubbles"}]}], 
-          "*)"}], "\[IndentingNewLine]", 
-         RowBox[{"multiedges", "=", 
-          RowBox[{"Cases", "[", 
-           RowBox[{
-            RowBox[{"Tally", "[", "edges", "]"}], ",", 
-            RowBox[{"Except", "[", 
-             RowBox[{"{", 
-              RowBox[{"_", ",", "1"}], "}"}], "]"}]}], "]"}]}], ";", 
-         "\[IndentingNewLine]", 
          RowBox[{"If", "[", 
           RowBox[{
-           RowBox[{"multiedges", "=!=", 
-            RowBox[{"{", "}"}]}], ",", 
+           RowBox[{"checkinputKasteleyn", "[", 
+            RowBox[{
+            "topleft", ",", "topright", ",", "bottomleft", ",", 
+             "bottomright"}], "]"}], ",", "\[IndentingNewLine]", 
            RowBox[{"(*", 
             RowBox[{
-            "we", " ", "have", " ", "multiple", " ", "edges", " ", "going", 
-             " ", "between", " ", "the", " ", "same", " ", "two", " ", 
-             "nodes"}], "*)"}], "\[IndentingNewLine]", 
-           RowBox[{
-            RowBox[{"multiedges", "=", 
-             RowBox[{"Map", "[", 
+            "The", " ", "list", " ", "of", " ", "removable", " ", "edges", 
+             " ", "is", " ", "not", " ", "up", " ", "to", " ", "date", " ", 
+             RowBox[{"(", 
               RowBox[{
+              "we", " ", "only", " ", "want", " ", "to", " ", "recompute", 
+               " ", "the", " ", "edges", " ", "when", " ", 
+               "removablesuptodate", " ", "is", " ", "False"}], ")"}]}], 
+            "*)"}], "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"removablesuptodate", "=", "False"}], ";", 
+            "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"pointcoordinatesandcolors", ",", "edges"}], "}"}], "=", 
+             RowBox[{"makeGraphDatafromKasteleyn", "[", 
+              RowBox[{
+              "topleft", ",", "topright", ",", "bottomleft", ",", 
+               "bottomright"}], "]"}]}], ";", "\[IndentingNewLine]", 
+            RowBox[{"(*", 
+             RowBox[{
+              RowBox[{
+              "When", " ", "we", " ", "have", " ", "multiple", " ", "edges"}],
+               ",", " ", 
+              RowBox[{"we", " ", "should", " ", "draw", " ", "bubbles"}]}], 
+             "*)"}], "\[IndentingNewLine]", 
+            RowBox[{"multiedges", "=", 
+             RowBox[{"Cases", "[", 
+              RowBox[{
+               RowBox[{"Tally", "[", "edges", "]"}], ",", 
+               RowBox[{"Except", "[", 
+                RowBox[{"{", 
+                 RowBox[{"_", ",", "1"}], "}"}], "]"}]}], "]"}]}], ";", 
+            "\[IndentingNewLine]", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{"multiedges", "=!=", 
+               RowBox[{"{", "}"}]}], ",", 
+              RowBox[{"(*", 
                RowBox[{
-                RowBox[{"makeBsplineCurves", "@@", "#"}], "&"}], ",", 
-               RowBox[{"MapAt", "[", 
-                RowBox[{
+               "we", " ", "have", " ", "multiple", " ", "edges", " ", "going",
+                 " ", "between", " ", "the", " ", "same", " ", "two", " ", 
+                "nodes"}], "*)"}], "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"multiedges", "=", 
+                RowBox[{"Map", "[", 
                  RowBox[{
-                  RowBox[{"Sequence", "@@", 
-                   RowBox[{"(", 
+                  RowBox[{
+                   RowBox[{"makeBsplineCurves", "@@", "#"}], "&"}], ",", 
+                  RowBox[{"MapAt", "[", 
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{"Sequence", "@@", 
+                    RowBox[{"(", 
                     RowBox[{"pointcoordinatesandcolors", "[", 
                     RowBox[{"[", 
                     RowBox[{"#", ",", "1"}], "]"}], "]"}], ")"}]}], "&"}], 
-                 ",", "multiedges", ",", 
-                 RowBox[{"{", 
-                  RowBox[{"All", ",", "1"}], "}"}]}], "]"}]}], "]"}]}], 
-            ";"}]}], "\[IndentingNewLine]", "]"}], ";"}]}], 
+                    ",", "multiedges", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"All", ",", "1"}], "}"}]}], "]"}]}], "]"}]}], 
+               ";"}]}], "\[IndentingNewLine]", "]"}], ";"}], 
+           "\[IndentingNewLine]", ",", 
+           RowBox[{
+            RowBox[{
+            "Print", "[", 
+             "\"\<The Kasteleyn in the input is not valid - please \
+check.\>\"", "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";"}]}], 
        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
       RowBox[{"(*", 
        RowBox[{
@@ -5251,7 +6205,7 @@ Cell[BoxData[
                    RowBox[{"ImageSize", "\[Rule]", "Large"}]}], "]"}], ",", 
                  "\[IndentingNewLine]", 
                  "\"\<                                                        \
-  \>\"", ",", "\[IndentingNewLine]", 
+                                  \>\"", ",", "\[IndentingNewLine]", 
                  RowBox[{"Button", "[", 
                   RowBox[{"\"\<Clear all\>\"", ",", "\[IndentingNewLine]", 
                    RowBox[{
@@ -5262,9 +6216,22 @@ Cell[BoxData[
                     RowBox[{"edges", "=", 
                     RowBox[{"{", "}"}]}], ";", "\[IndentingNewLine]", 
                     RowBox[{"multiedges", "=", 
+                    RowBox[{"{", "}"}]}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"removableedges", "=", 
+                    RowBox[{"{", "}"}]}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"removablesuptodate", "=", "True"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"temppointcoordinatesandcolors", "=", 
+                    RowBox[{"{", "}"}]}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"temporarydottededge", "=", 
+                    RowBox[{"{", "}"}]}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"tempnormaledges", "=", 
+                    RowBox[{"{", "}"}]}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"tempremovableedges", "=", 
+                    RowBox[{"{", "}"}]}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"tempmultiedges", "=", 
                     RowBox[{"{", "}"}]}], ";"}], "\[IndentingNewLine]", ",", 
-                   RowBox[{"ImageSize", "\[Rule]", "Large"}]}], "]"}], ",", 
-                 "\"\<                             \>\""}], 
+                   RowBox[{"ImageSize", "\[Rule]", "Large"}]}], "]"}]}], 
                 "\[IndentingNewLine]", "}"}], "\[IndentingNewLine]", "}"}], 
               "]"}], "}"}], ",", "\[IndentingNewLine]", 
             RowBox[{"(*", "Row4", "*)"}], "\[IndentingNewLine]", 
@@ -5412,9 +6379,16 @@ retick the checkbox.\>\"", "]"}], ";",
                     RowBox[{"showremovableedges", "=", "True"}], ";"}]}], 
                     "]"}], ";"}], ")"}]}], "}"}], "\[IndentingNewLine]", ",", 
                     RowBox[{"Method", "\[Rule]", "\"\<Queued\>\""}]}], 
-                    "]"}]}], "}"}], "]"}], ",", "\[IndentingNewLine]", 
-                   "\"\<                                    \>\""}], "}"}], 
-                 ",", "\[IndentingNewLine]", 
+                    "]"}]}], "}"}], "]"}], ",", "\"\<  \>\"", ",", 
+                   "\"\<Display names of     \>\""}], 
+                  RowBox[{"(*", 
+                   RowBox[{
+                   ",", "\[IndentingNewLine]", 
+                    "\"\<                                    \>\"", ","}], 
+                   "*)"}], 
+                  RowBox[{"(*", 
+                   RowBox[{",", "\"\<  \>\""}], "*)"}], "}"}], ",", 
+                 "\[IndentingNewLine]", 
                  RowBox[{"{", 
                   RowBox[{
                    RowBox[{"Row", "[", 
@@ -5428,7 +6402,13 @@ retick the checkbox.\>\"", "]"}], ";",
                     RowBox[{"\"\<Draw default perfect orientation: \>\"", ",", 
                     RowBox[{"Checkbox", "[", 
                     RowBox[{"Dynamic", "[", "perfectorientation", "]"}], 
-                    "]"}]}], "}"}], "]"}]}], "}"}]}], "}"}], ",", 
+                    "]"}]}], "}"}], "]"}], ",", "\"\<  \>\"", ",", 
+                   RowBox[{"Row", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"\"\<Kasteleyn edges:  \>\"", ",", 
+                    RowBox[{"Checkbox", "[", 
+                    RowBox[{"Dynamic", "[", "edgenametext", "]"}], "]"}]}], 
+                    "}"}], "]"}]}], "}"}]}], "}"}], ",", 
                RowBox[{"Alignment", "\[Rule]", "Right"}]}], "]"}], "}"}], ",",
              "\[IndentingNewLine]", 
             RowBox[{"(*", "Row5", "*)"}], "\[IndentingNewLine]", 
@@ -5559,8 +6539,8 @@ retick the checkbox.\>\"", "]"}], ";",
                     RowBox[{"drawLines", "[", 
                     RowBox[{
                     "pointcoordinatesandcolors", ",", "edges", ",", 
-                    "multiedges", ",", "perfectorientation"}], "]"}]}], ",", 
-                    "\[IndentingNewLine]", 
+                    "multiedges", ",", "perfectorientation", ",", 
+                    "edgenametext"}], "]"}]}], ",", "\[IndentingNewLine]", 
                     RowBox[{"(*", 
                     RowBox[{
                     "draw", " ", "removable", " ", "edges", " ", "if", " ", 
@@ -5574,7 +6554,8 @@ retick the checkbox.\>\"", "]"}], ";",
                     RowBox[{
                     "showremovableedges", ",", "removableedges", ",", 
                     "pointcoordinatesandcolors", ",", "edges", ",", 
-                    "perfectorientation"}], "]"}], ",", "\[IndentingNewLine]", 
+                    "perfectorientation", ",", "edgenametext"}], "]"}], ",", 
+                    "\[IndentingNewLine]", 
                     RowBox[{"(*", 
                     RowBox[{
                     "draw", " ", "dotted", " ", "edge", " ", "as", " ", "you",
@@ -5670,138 +6651,10 @@ retick the checkbox.\>\"", "]"}], ";",
                     RowBox[{
                     "if", " ", "nodenumberstext", " ", "is", " ", "set", " ", 
                     "to", " ", "True"}]}], "*)"}], "\[IndentingNewLine]", 
-                    RowBox[{"(", 
-                    RowBox[{"nodenumberstext", "/.", 
-                    RowBox[{"{", 
+                    RowBox[{"makeNodeNumbers", "[", 
                     RowBox[{
-                    RowBox[{"True", "\[Rule]", 
-                    RowBox[{"Prepend", "[", 
-                    RowBox[{
-                    RowBox[{"MapThread", "[", 
-                    RowBox[{
-                    RowBox[{
-                    RowBox[{"Text", "[", 
-                    RowBox[{
-                    RowBox[{"Style", "[", 
-                    RowBox[{"#1", 
-                    RowBox[{"(*", 
-                    RowBox[{"number", " ", "to", " ", "write"}], "*)"}], ",", 
-                    "Medium"}], "]"}], ",", "#2"}], 
-                    RowBox[{"(*", 
-                    RowBox[{"position", " ", "of", " ", "text"}], "*)"}], 
-                    "]"}], "&"}], ",", "\[IndentingNewLine]", 
-                    RowBox[{"{", 
-                    RowBox[{"(*", 
-                    RowBox[{
-                    "these", " ", "are", " ", "the", " ", "node", " ", 
-                    "numbers", " ", "written", " ", "as", " ", "strings"}], 
-                    "*)"}], "\[IndentingNewLine]", 
-                    RowBox[{
-                    RowBox[{
-                    RowBox[{"Sort", "[", 
-                    RowBox[{"MapThread", "[", 
-                    RowBox[{
-                    RowBox[{
-                    RowBox[{"{", 
-                    RowBox[{"#1", ",", "#2"}], "}"}], "&"}], ",", 
-                    RowBox[{"{", 
-                    RowBox[{
-                    RowBox[{"Join", "[", 
-                    RowBox[{
-                    RowBox[{"Flatten", "[", 
-                    RowBox[{"Position", "[", 
-                    RowBox[{"pointcoordinatesandcolors", ",", 
-                    RowBox[{"{", 
-                    RowBox[{"_", ",", "\"\<WI\>\""}], "}"}]}], "]"}], "]"}], 
-                    ",", 
-                    RowBox[{"Flatten", "[", 
-                    RowBox[{"Position", "[", 
-                    RowBox[{"pointcoordinatesandcolors", ",", 
-                    RowBox[{"{", 
-                    RowBox[{"_", ",", "\"\<WE\>\""}], "}"}]}], "]"}], "]"}], 
-                    ",", 
-                    RowBox[{"Flatten", "[", 
-                    RowBox[{"Position", "[", 
-                    RowBox[{"pointcoordinatesandcolors", ",", 
-                    RowBox[{"{", 
-                    RowBox[{"_", ",", "\"\<BI\>\""}], "}"}]}], "]"}], "]"}], 
-                    ",", 
-                    RowBox[{"Flatten", "[", 
-                    RowBox[{"Position", "[", 
-                    RowBox[{"pointcoordinatesandcolors", ",", 
-                    RowBox[{"{", 
-                    RowBox[{"_", ",", "\"\<BE\>\""}], "}"}]}], "]"}], "]"}]}],
-                     "]"}], ",", 
-                    RowBox[{"Map", "[", 
-                    RowBox[{"ToString", ",", 
-                    RowBox[{"Range", "[", 
-                    RowBox[{"Length", "[", "pointcoordinatesandcolors", "]"}],
-                     "]"}]}], "]"}]}], "}"}]}], "]"}], "]"}], "[", 
-                    RowBox[{"[", 
-                    RowBox[{"All", ",", "2"}], "]"}], "]"}], ",", 
-                    "\[IndentingNewLine]", 
-                    RowBox[{"(*", 
-                    RowBox[{
-                    RowBox[{
-                    "these", " ", "are", " ", "the", " ", "positions", " ", 
-                    "of", " ", "the", " ", "node", " ", 
-                    RowBox[{"numbers", ".", " ", "If"}], " ", "they", " ", 
-                    "fall", " ", "outside", " ", "the", " ", "drawing", " ", 
-                    "box"}], ",", " ", 
-                    RowBox[{
-                    "we", " ", "move", " ", "them", " ", "back", " ", "into", 
-                    " ", "the", " ", "box"}]}], "*)"}], "\[IndentingNewLine]", 
-                    RowBox[{"Map", "[", 
-                    RowBox[{
-                    RowBox[{
-                    RowBox[{
-                    RowBox[{"Function", "[", 
-                    RowBox[{
-                    RowBox[{"{", "input", "}"}], ",", 
-                    RowBox[{"Block", "[", 
-                    RowBox[{
-                    RowBox[{"{", "output", "}"}], ",", 
-                    RowBox[{
-                    RowBox[{"If", "[", 
-                    RowBox[{
-                    RowBox[{"input", "\[LessEqual]", 
-                    RowBox[{"-", "1.5"}]}], ",", 
-                    RowBox[{
-                    RowBox[{"output", "=", 
-                    RowBox[{"input", "+", "0.2"}]}], ";"}], ",", 
-                    RowBox[{
-                    RowBox[{"If", "[", 
-                    RowBox[{
-                    RowBox[{"input", "\[GreaterEqual]", "1.5"}], ",", 
-                    RowBox[{
-                    RowBox[{"output", "=", 
-                    RowBox[{"input", "-", "0.2"}]}], ";"}], ",", 
-                    RowBox[{
-                    RowBox[{"output", "=", "input"}], ";"}]}], "]"}], ";"}]}],
-                     "]"}], ";", "output"}]}], "]"}]}], "]"}], "[", "#", 
-                    "]"}], "&"}], ",", 
-                    RowBox[{
-                    RowBox[{"pointcoordinatesandcolors", "[", 
-                    RowBox[{"[", 
-                    RowBox[{"All", ",", "1"}], "]"}], "]"}], "+", "0.1"}], 
-                    ",", 
-                    RowBox[{"{", "2", "}"}]}], "]"}]}], "\[IndentingNewLine]",
-                     "}"}]}], "]"}], "\[IndentingNewLine]", ",", "Blue"}], 
-                    RowBox[{"(*", 
-                    RowBox[{
-                    "all", " ", "the", " ", "nodes", " ", "are", " ", 
-                    "colored", " ", "blue"}], "*)"}], "]"}]}], ",", 
-                    "\[IndentingNewLine]", 
-                    RowBox[{"(*", 
-                    RowBox[{
-                    RowBox[{
-                    "if", " ", "nodenumberstext", " ", "is", " ", "set", " ", 
-                    "to", " ", "False"}], ",", " ", 
-                    RowBox[{"draw", " ", "nothing"}]}], "*)"}], 
-                    "\[IndentingNewLine]", 
-                    RowBox[{"False", "\[Rule]", 
-                    RowBox[{"{", "}"}]}]}], "}"}]}], ")"}], ",", 
-                    "\[IndentingNewLine]", 
+                    "nodenumberstext", ",", "pointcoordinatesandcolors"}], 
+                    "]"}], ",", "\[IndentingNewLine]", 
                     RowBox[{"(*", 
                     RowBox[{
                     RowBox[{
@@ -5811,202 +6664,21 @@ retick the checkbox.\>\"", "]"}], ";",
                     RowBox[{
                     "if", " ", "externalnumberstext", " ", "is", " ", "set", 
                     " ", "to", " ", "True"}]}], "*)"}], "\[IndentingNewLine]", 
-                    RowBox[{"externalnumberstext", "/.", 
-                    RowBox[{"{", 
+                    RowBox[{"makeExternalNumbers", "[", 
                     RowBox[{
-                    RowBox[{"True", "\[Rule]", 
-                    RowBox[{"Join", "[", 
-                    RowBox[{
-                    RowBox[{"{", "Thick", "}"}], ",", "\[IndentingNewLine]", 
-                    RowBox[{"MapThread", "[", 
-                    RowBox[{
-                    RowBox[{
-                    RowBox[{"Text", "[", 
-                    RowBox[{
-                    RowBox[{"Style", "[", 
-                    RowBox[{"#1", 
+                    "externalnumberstext", ",", "pointcoordinatesandcolors"}],
+                     "]"}], ",", "\[IndentingNewLine]", 
                     RowBox[{"(*", 
-                    RowBox[{"number", " ", "to", " ", "write"}], "*)"}], ",", 
-                    RowBox[{"FontColor", "\[Rule]", 
-                    RowBox[{"RGBColor", "[", 
-                    RowBox[{"0.424", ",", "0.616", ",", "0.169"}], "]"}]}], 
+                    RowBox[{
+                    "draw", " ", "the", " ", "edge", " ", "names", " ", 
+                    "appearing", " ", "in", " ", "the", " ", "outputted", " ",
+                     "Kasteleyn", " ", "on", " ", "top", " ", "of", " ", 
+                    "the", " ", "edges"}], "*)"}], "\[IndentingNewLine]", 
+                    RowBox[{"drawEdgeNames", "[", 
+                    RowBox[{
+                    "pointcoordinatesandcolors", ",", "edges", ",", 
+                    "edgenametext"}], "]"}]}], "\[IndentingNewLine]", "}"}], 
                     ",", 
-                    RowBox[{"FontSize", "\[Rule]", "18"}], ",", 
-                    RowBox[{"FontWeight", "\[Rule]", "Bold"}]}], "]"}], ",", 
-                    "#2"}], 
-                    RowBox[{"(*", 
-                    RowBox[{"position", " ", "of", " ", "text"}], "*)"}], 
-                    "]"}], "&"}], ",", "\[IndentingNewLine]", 
-                    RowBox[{"{", 
-                    RowBox[{"(*", 
-                    RowBox[{
-                    "these", " ", "are", " ", "the", " ", "node", " ", 
-                    "numbers", " ", "written", " ", "as", " ", "strings"}], 
-                    "*)"}], "\[IndentingNewLine]", 
-                    RowBox[{
-                    RowBox[{
-                    RowBox[{"Sort", "[", 
-                    RowBox[{"MapThread", "[", 
-                    RowBox[{
-                    RowBox[{
-                    RowBox[{"{", 
-                    RowBox[{"#1", ",", "#2"}], "}"}], "&"}], ",", 
-                    RowBox[{"{", 
-                    RowBox[{"(*", 
-                    RowBox[{
-                    RowBox[{
-                    "first", " ", "the", " ", "external", " ", "white", " ", 
-                    "nodes"}], ",", " ", 
-                    RowBox[{
-                    "then", " ", "the", " ", "external", " ", "black", " ", 
-                    RowBox[{"ones", ".", " ", "Their"}], " ", "order", " ", 
-                    "in", " ", "pointcoordinatesandcolors", " ", "is", " ", 
-                    "the", " ", "same", " ", "as", " ", "in", " ", "the", " ",
-                     "Kasteleyn", " ", 
-                    RowBox[{"(", 
-                    RowBox[{"for", " ", "each", " ", "color"}], ")"}]}]}], 
-                    "*)"}], 
-                    RowBox[{
-                    RowBox[{"Join", "[", 
-                    RowBox[{
-                    RowBox[{"Flatten", "[", 
-                    RowBox[{"Position", "[", 
-                    RowBox[{"pointcoordinatesandcolors", ",", 
-                    RowBox[{"{", 
-                    RowBox[{"_", ",", "\"\<WE\>\""}], "}"}]}], "]"}], "]"}], 
-                    ",", 
-                    RowBox[{"Flatten", "[", 
-                    RowBox[{"Position", "[", 
-                    RowBox[{"pointcoordinatesandcolors", ",", 
-                    RowBox[{"{", 
-                    RowBox[{"_", ",", "\"\<BE\>\""}], "}"}]}], "]"}], "]"}]}],
-                     "]"}], ",", 
-                    RowBox[{"Map", "[", 
-                    RowBox[{"ToString", ",", 
-                    RowBox[{"Range", "[", 
-                    RowBox[{"Length", "[", 
-                    RowBox[{"Cases", "[", 
-                    RowBox[{"pointcoordinatesandcolors", ",", 
-                    RowBox[{
-                    RowBox[{"{", 
-                    RowBox[{"_", ",", "\"\<WE\>\""}], "}"}], "|", 
-                    RowBox[{"{", 
-                    RowBox[{"_", ",", "\"\<BE\>\""}], "}"}]}]}], "]"}], "]"}],
-                     "]"}]}], "]"}]}], "}"}]}], "]"}], "]"}], "[", 
-                    RowBox[{"[", 
-                    RowBox[{"All", ",", "2"}], "]"}], "]"}], ",", 
-                    "\[IndentingNewLine]", 
-                    RowBox[{"(*", 
-                    RowBox[{
-                    "these", " ", "are", " ", "the", " ", "positions", " ", 
-                    "of", " ", "the", " ", "node", " ", 
-                    RowBox[{"numbers", ".", " ", "They"}], " ", "are", " ", 
-                    "placed", " ", "to", " ", "always", " ", "be", " ", 
-                    "inside", " ", "the", " ", "drawing", " ", "box", " ", 
-                    "and", " ", "not", " ", "conflict", " ", "too", " ", 
-                    "much", " ", "with", " ", "nodenumberstext"}], "*)"}], 
-                    "\[IndentingNewLine]", 
-                    RowBox[{"Map", "[", 
-                    RowBox[{
-                    RowBox[{
-                    RowBox[{
-                    RowBox[{"Function", "[", 
-                    RowBox[{
-                    RowBox[{"{", "input", "}"}], ",", 
-                    RowBox[{"Block", "[", 
-                    RowBox[{
-                    RowBox[{"{", "output", "}"}], ",", 
-                    RowBox[{
-                    RowBox[{"output", "=", "input"}], ";", 
-                    RowBox[{"If", "[", 
-                    RowBox[{
-                    RowBox[{
-                    RowBox[{"input", "[", 
-                    RowBox[{"[", "1", "]"}], "]"}], "\[LessEqual]", 
-                    RowBox[{"-", "1.5"}]}], ",", 
-                    RowBox[{
-                    RowBox[{
-                    RowBox[{"output", "[", 
-                    RowBox[{"[", "1", "]"}], "]"}], "=", 
-                    RowBox[{
-                    RowBox[{"input", "[", 
-                    RowBox[{"[", "1", "]"}], "]"}], "+", "0.16"}]}], ";"}], 
-                    ",", 
-                    RowBox[{
-                    RowBox[{"If", "[", 
-                    RowBox[{
-                    RowBox[{
-                    RowBox[{"input", "[", 
-                    RowBox[{"[", "1", "]"}], "]"}], "\[GreaterEqual]", 
-                    "1.5"}], ",", 
-                    RowBox[{
-                    RowBox[{
-                    RowBox[{"output", "[", 
-                    RowBox[{"[", "1", "]"}], "]"}], "=", 
-                    RowBox[{
-                    RowBox[{"input", "[", 
-                    RowBox[{"[", "1", "]"}], "]"}], "-", "0.16"}]}], ";"}]}], 
-                    "]"}], ";"}]}], "]"}], ";", 
-                    RowBox[{"If", "[", 
-                    RowBox[{
-                    RowBox[{
-                    RowBox[{"input", "[", 
-                    RowBox[{"[", "2", "]"}], "]"}], "\[LessEqual]", 
-                    RowBox[{"-", "1.5"}]}], ",", 
-                    RowBox[{
-                    RowBox[{
-                    RowBox[{"output", "[", 
-                    RowBox[{"[", "2", "]"}], "]"}], "=", 
-                    RowBox[{
-                    RowBox[{"input", "[", 
-                    RowBox[{"[", "2", "]"}], "]"}], "+", "0.26"}]}], ";"}], 
-                    ",", 
-                    RowBox[{
-                    RowBox[{"If", "[", 
-                    RowBox[{
-                    RowBox[{
-                    RowBox[{"input", "[", 
-                    RowBox[{"[", "2", "]"}], "]"}], "\[GreaterEqual]", 
-                    "1.5"}], ",", 
-                    RowBox[{
-                    RowBox[{
-                    RowBox[{"output", "[", 
-                    RowBox[{"[", "2", "]"}], "]"}], "=", 
-                    RowBox[{
-                    RowBox[{"input", "[", 
-                    RowBox[{"[", "2", "]"}], "]"}], "-", "0.26"}]}], ";"}]}], 
-                    "]"}], ";"}]}], "]"}], ";", "output"}]}], "]"}]}], "]"}], 
-                    "[", "#", "]"}], "&"}], ",", 
-                    RowBox[{"Map", "[", 
-                    RowBox[{
-                    RowBox[{
-                    RowBox[{"#", "+", 
-                    RowBox[{"{", 
-                    RowBox[{"0", ",", "0.13"}], "}"}]}], "&"}], ",", 
-                    RowBox[{"pointcoordinatesandcolors", "[", 
-                    RowBox[{"[", 
-                    RowBox[{
-                    RowBox[{"Flatten", "[", 
-                    RowBox[{"Position", "[", 
-                    RowBox[{"pointcoordinatesandcolors", ",", 
-                    RowBox[{
-                    RowBox[{"{", 
-                    RowBox[{"_", ",", "\"\<WE\>\""}], "}"}], "|", 
-                    RowBox[{"{", 
-                    RowBox[{"_", ",", "\"\<BE\>\""}], "}"}]}]}], "]"}], "]"}],
-                     ",", "1"}], "]"}], "]"}]}], "]"}]}], "]"}]}], 
-                    "\[IndentingNewLine]", "}"}]}], "]"}]}], "]"}]}], ",", 
-                    "\[IndentingNewLine]", 
-                    RowBox[{"(*", 
-                    RowBox[{
-                    RowBox[{
-                    "if", " ", "externalnumberstext", " ", "is", " ", "set", 
-                    " ", "to", " ", "False"}], ",", " ", 
-                    RowBox[{"draw", " ", "nothing"}]}], "*)"}], 
-                    "\[IndentingNewLine]", 
-                    RowBox[{"False", "\[Rule]", 
-                    RowBox[{"{", "}"}]}]}], "}"}]}]}], "}"}], ",", 
-                    "\[IndentingNewLine]", 
                     RowBox[{"(*", 
                     RowBox[{"finished", " ", 
                     RowBox[{"drawing", ".", " ", "Now"}], " ", "we", " ", 
@@ -6187,9 +6859,10 @@ retick the checkbox.\>\"", "]"}], ";",
                     RowBox[{"findRemovableEdges", "[", 
                     RowBox[{
                     "temppointcoordinatesandcolors", ",", "tempnormaledges"}],
-                     "]"}], ",", "temppointcoordinatesandcolors"}], "]"}], 
-                    "}"}], ",", "1", ",", "\"\<fail\>\""}], "]"}]}], ";", 
-                    "\[IndentingNewLine]", 
+                     "]"}], ",", "temppointcoordinatesandcolors", ",", 
+                    "tempnormaledges", ",", "perfectorientation", ",", 
+                    "edgenametext"}], "]"}], "}"}], ",", "1", ",", 
+                    "\"\<fail\>\""}], "]"}]}], ";", "\[IndentingNewLine]", 
                     RowBox[{"If", "[", 
                     RowBox[{
                     RowBox[{"madeit", "===", "\"\<fail\>\""}], ",", 
@@ -6331,7 +7004,8 @@ retick the checkbox.\>\"", "]"}], ";",
                     RowBox[{
                     RowBox[{"findRemovableEdges", "[", 
                     RowBox[{"temppointcoordinatesandcolors", ",", "edges"}], 
-                    "]"}], ",", "temppointcoordinatesandcolors"}], "]"}], 
+                    "]"}], ",", "temppointcoordinatesandcolors", ",", "edges",
+                     ",", "perfectorientation", ",", "edgenametext"}], "]"}], 
                     "}"}], ",", "1", ",", "\"\<fail\>\""}], "]"}]}], ";", 
                     "\[IndentingNewLine]", 
                     RowBox[{"If", "[", 
@@ -6651,8 +7325,9 @@ retick the checkbox.\>\"", "]"}], ";",
                     RowBox[{
                     "if", " ", "we", " ", "were", " ", "drawing", " ", "new", 
                     " ", "nodes", " ", "and", " ", "edges"}], ",", " ", 
-                    RowBox[{"and", " ", "we", " ", "released", " ", "the", 
-                    " ", "click", " ", "on", " ", "a", " ", "new", " ", 
+                    RowBox[{
+                    "and", " ", "we", " ", "released", " ", "the", " ", 
+                    "click", " ", "on", " ", "a", " ", "new", " ", 
                     "position"}], ",", " ", 
                     RowBox[{
                     "we", " ", "draw", " ", "a", " ", "node", " ", "of", " ", 
@@ -6703,9 +7378,8 @@ retick the checkbox.\>\"", "]"}], ";",
                     "if", " ", "we", " ", "released", " ", "on", " ", "a", 
                     " ", "position", " ", "different", " ", "to", " ", "the", 
                     " ", "starting", " ", "one"}], ",", " ", 
-                    RowBox[{
-                    "we", " ", "need", " ", "to", " ", "add", " ", "new", " ",
-                     "edges"}]}], "*)"}], "\[IndentingNewLine]", 
+                    RowBox[{"we", " ", "need", " ", "to", " ", "add", " ", 
+                    "new", " ", "edges"}]}], "*)"}], "\[IndentingNewLine]", 
                     RowBox[{"If", "[", 
                     RowBox[{
                     RowBox[{"unclickedposition", "=!=", "clickedposition"}], 
@@ -6868,9 +7542,10 @@ retick the checkbox.\>\"", "]"}], ";",
                     RowBox[{"findRemovableEdges", "[", 
                     RowBox[{
                     "temppointcoordinatesandcolors", ",", "tempnormaledges"}],
-                     "]"}], ",", "temppointcoordinatesandcolors"}], "]"}], 
-                    "}"}], ",", "1", ",", "\"\<fail\>\""}], "]"}]}], ";", 
-                    "\[IndentingNewLine]", 
+                     "]"}], ",", "temppointcoordinatesandcolors", ",", 
+                    "tempnormaledges", ",", "perfectorientation", ",", 
+                    "edgenametext"}], "]"}], "}"}], ",", "1", ",", 
+                    "\"\<fail\>\""}], "]"}]}], ";", "\[IndentingNewLine]", 
                     RowBox[{"If", "[", 
                     RowBox[{
                     RowBox[{"madeit", "===", "\"\<fail\>\""}], ",", 
@@ -7187,9 +7862,10 @@ retick the checkbox.\>\"", "]"}], ";",
                     RowBox[{"findRemovableEdges", "[", 
                     RowBox[{
                     "pointcoordinatesandcolors", ",", "tempnormaledges"}], 
-                    "]"}], ",", "pointcoordinatesandcolors"}], "]"}], "}"}], 
-                    ",", "1", ",", "\"\<fail\>\""}], "]"}]}], ";", 
-                    "\[IndentingNewLine]", 
+                    "]"}], ",", "pointcoordinatesandcolors", ",", 
+                    "tempnormaledges", ",", "perfectorientation", ",", 
+                    "edgenametext"}], "]"}], "}"}], ",", "1", ",", 
+                    "\"\<fail\>\""}], "]"}]}], ";", "\[IndentingNewLine]", 
                     RowBox[{"If", "[", 
                     RowBox[{
                     RowBox[{"madeit", "===", "\"\<fail\>\""}], ",", 
@@ -7605,7 +8281,7 @@ Matchings\>\"", "\[RuleDelayed]",
                 ",", "\[IndentingNewLine]", 
                 RowBox[{"(*", 
                  RowBox[{"Some", " ", "space"}], "*)"}], 
-                "\[IndentingNewLine]", "\"\<           \>\"", ",", 
+                "\[IndentingNewLine]", "\"\<                      \>\"", ",", 
                 "\[IndentingNewLine]", 
                 RowBox[{"(*", 
                  RowBox[{"\"\<Print graph\>\"", " ", "button"}], "*)"}], 
@@ -7646,16 +8322,19 @@ Matchings\>\"", "\[RuleDelayed]",
                     RowBox[{"EdgeStyle", "\[Rule]", 
                     RowBox[{"Directive", "[", 
                     RowBox[{"Black", ",", "Thick"}], "]"}]}]}], "]"}], "]"}], 
-                   ";"}]}], "]"}], ",", 
-                RowBox[{"Button", "[", 
-                 RowBox[{"\"\<Raw data (Remove this buttom later)\>\"", ",", 
-                  RowBox[{
-                   RowBox[{"Print", "[", 
+                   ";"}]}], "]"}]}], 
+               RowBox[{"(*", 
+                RowBox[{",", 
+                 RowBox[{"Button", "[", 
+                  RowBox[{"\"\<Raw data (Remove this buttom later)\>\"", ",", 
+                   RowBox[{
+                    RowBox[{"Print", "[", 
                     RowBox[{"{", 
                     RowBox[{"pointcoordinatesandcolors", ",", "edges"}], 
                     "}"}], "]"}], ";"}], ",", 
-                  RowBox[{"ImageSize", "\[Rule]", "Large"}]}], "]"}]}], "}"}],
-               "]"}], "}"}]}], "\[IndentingNewLine]", "}"}], ",", 
+                   RowBox[{"ImageSize", "\[Rule]", "Large"}]}], "]"}]}], 
+                "*)"}], "}"}], "]"}], "}"}]}], "\[IndentingNewLine]", "}"}], 
+          ",", 
           RowBox[{"Spacings", "\[Rule]", 
            RowBox[{"{", 
             RowBox[{
@@ -7795,7 +8474,33 @@ Matchings\>\"", "\[RuleDelayed]",
    3.6839610524503655`*^9}, {3.6839611119179187`*^9, 
    3.6839611545723305`*^9}, {3.6839612477557006`*^9, 3.683961265236085*^9}, {
    3.683961355847537*^9, 3.6839613614628944`*^9}, {3.6839614226356993`*^9, 
-   3.683961424122075*^9}, {3.6839615370413947`*^9, 3.6839615728496614`*^9}}],
+   3.683961424122075*^9}, {3.6839615370413947`*^9, 3.6839615728496614`*^9}, {
+   3.6839617560605555`*^9, 3.6839617860739956`*^9}, {3.68396183825005*^9, 
+   3.6839618675989385`*^9}, {3.6839619193148966`*^9, 3.683961955477395*^9}, {
+   3.6839619945400057`*^9, 3.6839620256676264`*^9}, {3.68396220579729*^9, 
+   3.683962212856289*^9}, {3.683962262056692*^9, 3.6839622767275224`*^9}, {
+   3.683962547070219*^9, 3.6839625702404594`*^9}, {3.68396264755726*^9, 
+   3.6839627128635216`*^9}, {3.6839627489094563`*^9, 
+   3.6839627823786864`*^9}, {3.6839628227727833`*^9, 
+   3.6839628803381476`*^9}, {3.6839629267616177`*^9, 
+   3.6839629398408575`*^9}, {3.683963321111005*^9, 3.6839634328394494`*^9}, {
+   3.683964042913079*^9, 3.683964043445182*^9}, {3.68396420982543*^9, 
+   3.6839642372289333`*^9}, {3.683964271724098*^9, 3.6839642963556595`*^9}, {
+   3.6839643987426014`*^9, 3.683964444383133*^9}, {3.683967501601244*^9, 
+   3.6839675265558505`*^9}, {3.683968053065133*^9, 3.6839680673182244`*^9}, {
+   3.6839681054872828`*^9, 3.6839681195459137`*^9}, {3.6839741930278263`*^9, 
+   3.6839741982282567`*^9}, {3.683975476068225*^9, 3.683975507759857*^9}, {
+   3.6840428414713707`*^9, 3.6840428723925085`*^9}, {3.684043167611868*^9, 
+   3.68404332181819*^9}, {3.6840477932061853`*^9, 3.684047871795741*^9}, {
+   3.684053515993537*^9, 3.684053516399808*^9}, {3.6840535835076437`*^9, 
+   3.6840535836170297`*^9}, {3.684053710179206*^9, 3.684053718598508*^9}, {
+   3.6840537491740685`*^9, 3.684053857471716*^9}, {3.6840539002861547`*^9, 
+   3.684053900551794*^9}, 3.684054437205125*^9, {3.684062764114877*^9, 
+   3.6840627667854595`*^9}, {3.6840628206621127`*^9, 3.684062857222072*^9}, {
+   3.684062918804096*^9, 3.684063028655879*^9}, {3.684063079057906*^9, 
+   3.68406318771358*^9}, {3.6840653821585083`*^9, 3.6840655554244556`*^9}, 
+   3.684065963764566*^9, {3.684066143279005*^9, 3.6840661681526437`*^9}}]
+}, Closed]],
 
 Cell[BoxData[""], "Input",
  PageWidth->WindowWidth,
@@ -7829,7 +8534,8 @@ Cell[BoxData[
  CellChangeTimes->{{3.6677179777970104`*^9, 3.6677179854575377`*^9}}],
 
 Cell[BoxData[""], "Input",
- CellChangeTimes->{{3.6731137365038757`*^9, 3.6731137365909405`*^9}}],
+ CellChangeTimes->{{3.6731137365038757`*^9, 3.6731137365909405`*^9}, {
+  3.6840662070558786`*^9, 3.6840662092950225`*^9}}],
 
 Cell[BoxData[""], "Input",
  CellChangeTimes->{{3.6799104349637427`*^9, 3.679910435041893*^9}}],
@@ -7840,95 +8546,6 @@ Cell[BoxData[""], "Input",
 Cell[BoxData[""], "Input",
  CellChangeTimes->{
   3.6799001780847073`*^9, {3.6799104299828587`*^9, 3.6799104307107882`*^9}}],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- RowBox[{"(*", 
-  RowBox[{"Graph", " ", "drawing", " ", "functionality"}], "*)"}]], "Input",
- CellGroupingRules->{GroupTogetherGrouping, 10000.},
- CellChangeTimes->{{3.673113702260688*^9, 3.673113730503109*^9}}],
-
-Cell[BoxData[
- RowBox[{"drawGraph", "[", 
-  RowBox[{"topleft", ",", "topright", ",", "bottomleft", ",", "bottomright"}],
-   "]"}]], "Input",
- CellGroupingRules->{GroupTogetherGrouping, 10000.},
- CellChangeTimes->{{3.672653846389453*^9, 3.6726538669421206`*^9}, {
-   3.672659818528775*^9, 3.6726598260680037`*^9}, 3.672660212682788*^9, {
-   3.6726662063284264`*^9, 3.6726662125409784`*^9}, 3.6731137305041094`*^9}],
-
-Cell[BoxData[
- RowBox[{"drawGraph", "[", "]"}]], "Input",
- CellGroupingRules->{GroupTogetherGrouping, 10000.},
- CellChangeTimes->{{3.672675351125464*^9, 3.672675352485235*^9}, 
-   3.6731137305041094`*^9}],
-
-Cell[BoxData[
- RowBox[{"(*", 
-  RowBox[{"The", " ", "opporunity", " ", "to", " ", "label", " ", "the", " ", 
-   RowBox[{"edges", ".", " ", "The"}], " ", "ability", " ", "to", " ", 
-   "specify", " ", 
-   RowBox[{"genus", "?", " ", "Automatic"}], " ", "edge", " ", "labeling", 
-   " ", "based", " ", "on", " ", 
-   RowBox[{"faces", "?"}]}], "*)"}]], "Input",
- CellGroupingRules->{GroupTogetherGrouping, 10000.},
- CellChangeTimes->{{3.6724004553212147`*^9, 3.6724004619677734`*^9}, 
-   3.6725731094411783`*^9, {3.6725731564418297`*^9, 3.6725732016038427`*^9}, {
-   3.6725742458161683`*^9, 3.6725742528864985`*^9}, {3.6725762906494007`*^9, 
-   3.672576290758791*^9}, {3.672576485407093*^9, 3.6725765370518913`*^9}, {
-   3.672632822798277*^9, 3.6726328236577654`*^9}, {3.6726371261614037`*^9, 
-   3.672637182444291*^9}, {3.67263732769158*^9, 3.672637345313511*^9}, {
-   3.672641142661168*^9, 3.6726411431824565`*^9}, {3.6726525914883547`*^9, 
-   3.672652591608753*^9}, {3.672896120589919*^9, 3.672896129729037*^9}, 
-   3.6731137305041094`*^9}],
-
-Cell[BoxData[
- RowBox[{"DynamicModule", "[", 
-  RowBox[{
-   RowBox[{"{", 
-    RowBox[{"pts", "=", 
-     RowBox[{"{", 
-      RowBox[{
-       RowBox[{"{", 
-        RowBox[{"0", ",", "0"}], "}"}], ",", 
-       RowBox[{"{", 
-        RowBox[{"1", ",", "1"}], "}"}], ",", 
-       RowBox[{"{", 
-        RowBox[{"2", ",", "0"}], "}"}], ",", 
-       RowBox[{"{", 
-        RowBox[{"3", ",", "2"}], "}"}]}], "}"}]}], "}"}], ",", 
-   RowBox[{"Column", "[", 
-    RowBox[{"{", 
-     RowBox[{
-      RowBox[{"LocatorPane", "[", 
-       RowBox[{
-        RowBox[{"Dynamic", "[", "pts", "]"}], ",", 
-        RowBox[{"Dynamic", "[", 
-         RowBox[{"Plot", "[", 
-          RowBox[{
-           RowBox[{"InterpolatingPolynomial", "[", 
-            RowBox[{"pts", ",", "x"}], "]"}], ",", 
-           RowBox[{"{", 
-            RowBox[{"x", ",", "0", ",", "3"}], "}"}], ",", 
-           RowBox[{"PlotRange", "\[Rule]", "3"}], ",", 
-           RowBox[{"ImageSize", "\[Rule]", "Medium"}]}], "]"}], "]"}]}], 
-       "]"}], ",", 
-      RowBox[{"Button", "[", 
-       RowBox[{"\"\<Save\>\"", ",", 
-        RowBox[{"With", "[", 
-         RowBox[{
-          RowBox[{"{", 
-           RowBox[{"p", "=", "pts"}], "}"}], ",", 
-          RowBox[{"CellPrint", "[", 
-           RowBox[{"ExpressionCell", "[", 
-            RowBox[{
-             RowBox[{"Defer", "[", 
-              RowBox[{"points", "=", "p"}], "]"}], ",", "\"\<Input\>\""}], 
-            "]"}], "]"}]}], "]"}]}], "]"}]}], "}"}], "]"}]}], "]"}]], "Input",
- CellGroupingRules->{GroupTogetherGrouping, 10000.},
- CellChangeTimes->{3.6731137305041094`*^9}]
-}, Closed]],
 
 Cell[BoxData[""], "Input",
  CellChangeTimes->{{3.670052766264258*^9, 3.6700527673982434`*^9}}],
@@ -27870,69 +28487,61 @@ Cell[77391, 2308, 2878, 78, 212, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10001.}]
 }, Closed]],
 Cell[80284, 2389, 168, 4, 25, "Input"],
-Cell[80455, 2395, 2804, 56, 192, "Input"],
 Cell[CellGroupData[{
-Cell[83284, 2455, 906, 26, 31, "Input",
+Cell[80477, 2397, 906, 26, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[84193, 2483, 4400, 107, 252, "Input",
+Cell[81386, 2425, 4400, 107, 252, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[88596, 2592, 33817, 734, 1792, "Input",
+Cell[85789, 2534, 33817, 734, 1792, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[122416, 3328, 18130, 423, 1152, "Input",
+Cell[119609, 3270, 18130, 423, 1132, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[140549, 3753, 8517, 179, 612, "Input",
+Cell[137742, 3695, 8517, 179, 612, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[149069, 3934, 25322, 554, 1252, "Input",
+Cell[146262, 3876, 26942, 586, 1352, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[173207, 4464, 18663, 407, 1392, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[191873, 4873, 3712, 93, 172, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[195588, 4968, 18441, 393, 1132, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[214032, 5363, 160287, 3138, 9032, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[174406, 4491, 94, 1, 25, "Input"],
-Cell[174503, 4494, 166493, 3303, 9152, "Input",
+Cell[374334, 8504, 119, 2, 25, "Input"],
+Cell[374456, 8508, 838, 25, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[340999, 7799, 119, 2, 31, "Input"],
-Cell[341121, 7803, 838, 25, 31, "Input",
- CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[341962, 7830, 96, 1, 31, "Input"],
-Cell[342061, 7833, 94, 1, 31, "Input"],
-Cell[342158, 7836, 91, 1, 31, "Input"],
-Cell[342252, 7839, 123, 2, 31, "Input"],
+Cell[375297, 8535, 149, 2, 31, "Input"],
+Cell[375449, 8539, 94, 1, 31, "Input"],
+Cell[375546, 8542, 91, 1, 31, "Input"],
+Cell[375640, 8545, 123, 2, 31, "Input"],
+Cell[375766, 8549, 94, 1, 31, "Input"],
 Cell[CellGroupData[{
-Cell[342400, 7845, 225, 4, 31, "Input",
+Cell[375885, 8554, 1446, 29, 72, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[342628, 7851, 413, 7, 31, "Input",
+Cell[377334, 8585, 30918, 717, 2312, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[343044, 7860, 204, 4, 31, "Input",
+Cell[408255, 9304, 815, 12, 23, "Print",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[343251, 7866, 1039, 17, 31, "Input",
+Cell[409073, 9318, 850, 12, 23, "Print",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[344293, 7885, 1581, 44, 72, "Input",
+Cell[409926, 9332, 828, 12, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[410757, 9346, 817, 12, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[411577, 9360, 848, 12, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[412428, 9374, 828, 12, 23, "Print",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[413259, 9388, 1200, 40, 48, "Output",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[345889, 7932, 94, 1, 25, "Input"],
+Cell[414474, 9431, 119, 2, 25, "Input"],
 Cell[CellGroupData[{
-Cell[346008, 7937, 1446, 29, 72, "Input",
+Cell[414618, 9437, 475, 6, 30, "Text",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[347457, 7968, 30918, 717, 2312, "Input",
- CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[378378, 8687, 815, 12, 23, "Print",
- CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[379196, 8701, 850, 12, 23, "Print",
- CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[380049, 8715, 828, 12, 23, "Print",
- CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[380880, 8729, 817, 12, 23, "Print",
- CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[381700, 8743, 848, 12, 23, "Print",
- CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[382551, 8757, 828, 12, 23, "Print",
- CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[383382, 8771, 1200, 40, 48, "Output",
- CellGroupingRules->{GroupTogetherGrouping, 10000.}]
-}, Closed]],
-Cell[384597, 8814, 119, 2, 25, "Input"],
-Cell[CellGroupData[{
-Cell[384741, 8820, 475, 6, 30, "Text",
- CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[385219, 8828, 790464, 18910, 49702, "Input",
+Cell[415096, 9445, 790464, 18910, 49702, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]]
 }
