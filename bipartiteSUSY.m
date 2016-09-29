@@ -261,22 +261,22 @@ finalgraph=Null;
 finalgraph
 ];
 
-drawGraph[topleft_:{},topright_:{},bottomleft_:{},bottomright_:{}]/;(Head[topleft]===List&&Head[topright]===List&&Head[bottomleft]===List&&Head[bottomright]===List):=DynamicModule[{nodecolor="White",internalexternal="Internal",pointcoordinatesandcolors={},temporarydottededge={},edges={},clickedposition,unclickedposition,addremove="Add",draggedposition,nodeinfo,nodenumber,introprinted=0,multiedges={},makeBsplineCurves,makeKasteleynComponents,newposition,oldposition,nodenumberstext=False,graph,userspecifiednodes,nodenumbertotype,userspecifiededges,xaxisvalues,yaxisvalues,xscaling,xshift,yscaling,yshift,duplicatedcoordinates,freeslots,enablebuttons=True,edgebuttonlist=Column[{}],areyoupressed={"DialogBox"}},
+(*drawGraph[topleft_:{},topright_:{},bottomleft_:{},bottomright_:{}]/;(Head[topleft]===List&&Head[topright]===List&&Head[bottomleft]===List&&Head[bottomright]===List):=DynamicModule[{nodecolor="White",internalexternal="Internal",pointcoordinatesandcolors={},temporarydottededge={},edges={},clickedposition,unclickedposition,addremove="Add",draggedposition,nodeinfo,nodenumber,introprinted=0,multiedges={},makeBsplineCurves,makeKasteleynComponents,newposition,oldposition,nodenumberstext=False,graph,userspecifiednodes,nodenumbertotype,userspecifiededges,xaxisvalues,yaxisvalues,xscaling,xshift,yscaling,yshift,duplicatedcoordinates,freeslots,enablebuttons=True,edgebuttonlist=Column[{}],areyoupressed={"DialogBox"}},
 (*We begin by checking the input: if the user specified a Kasteleyn, we should translate that Kasteleyn into the variables "pointcoordinatesandcolors" and "edges" which the graphing tool understands.*)
 If[{topleft,topright,bottomleft,bottomright}=!={{},{},{},{}},
 graph=AdjacencyGraph[turnIntoAdjacencyMatrix[topleft,topright,bottomleft,bottomright]];
 userspecifiednodes=MapThread[{#1,#2}&,{GraphEmbedding[graph],Range[Length[GraphEmbedding[graph]]]}];
-nodenumbertotype=Join[Map[#->"WI"&,Range[Length[topleft]]],Map[#->"WE"&,Range[Length[topleft]+1,Length[topleft]+Length[bottomleft]]],Map[#->"BI"&,Range[Length[topleft]+Length[bottomleft]+1,Total[Dimensions[Join[topleft,bottomleft]]]]],Map[#->"BE"&,Range[Total[Dimensions[Join[topleft,bottomleft]]]+1,Total[Dimensions[Join[topleft,bottomleft]]]+Dimensions[Join[topright,bottomright]][[2]]]]];
+nodenumbertotype=Join[Map[#\[Rule]"WI"&,Range[Length[topleft]]],Map[#\[Rule]"WE"&,Range[Length[topleft]+1,Length[topleft]+Length[bottomleft]]],Map[#\[Rule]"BI"&,Range[Length[topleft]+Length[bottomleft]+1,Total[Dimensions[Join[topleft,bottomleft]]]]],Map[#\[Rule]"BE"&,Range[Total[Dimensions[Join[topleft,bottomleft]]]+1,Total[Dimensions[Join[topleft,bottomleft]]]+Dimensions[Join[topright,bottomright]][[2]]]]];
 userspecifiednodes[[All,2]]=userspecifiednodes[[All,2]]/.nodenumbertotype;
-userspecifiededges=EdgeList[graph]/.UndirectedEdge->List;
+userspecifiededges=EdgeList[graph]/.UndirectedEdge\[Rule]List;
 xaxisvalues=userspecifiednodes[[All,1,1]];
 yaxisvalues=userspecifiednodes[[All,1,2]];
-If[Chop[(Max[xaxisvalues]-Min[xaxisvalues])]==0,
+If[Chop[(Max[xaxisvalues]-Min[xaxisvalues])]\[Equal]0,
 xscaling=1;
 ,xscaling=2.6/(Max[xaxisvalues]-Min[xaxisvalues]);
 ];
 xshift=(Max[xaxisvalues]+Min[xaxisvalues])/2;
-If[Chop[(Max[yaxisvalues]-Min[yaxisvalues])]==0,
+If[Chop[(Max[yaxisvalues]-Min[yaxisvalues])]\[Equal]0,
 yscaling=1;
 ,yscaling=2.6/(Max[yaxisvalues]-Min[yaxisvalues]);
 ];
@@ -290,7 +290,7 @@ multiedges=Cases[Tally[edges],Except[{_,1}]];
 If[multiedges=!={},(*we have multiple edges going between the same two nodes*)
 multiedges=Map[makeBsplineCurves@@#&,MapAt[Sequence@@(pointcoordinatesandcolors[[#,1]])&,multiedges,{All,1}]];
 ];
-,If[Total[Cases[Tally[userspecifiednodes[[All,1]]],Except[{_,1}]][[All,2]]]<=841,
+,If[Total[Cases[Tally[userspecifiednodes[[All,1]]],Except[{_,1}]][[All,2]]]\[LessEqual]841,
 While[DuplicateFreeQ[userspecifiednodes[[All,1]]]=!=True,
 duplicatedcoordinates=Cases[Tally[userspecifiednodes[[All,1]]],Except[{_,1}]][[All,1]];
 freeslots=Complement[Sequence@@@Table[{iii,jjj},{iii,-1.4,1.4,0.1},{jjj,-1.4,1.4,0.1}],userspecifiednodes[[All,1]]];
@@ -317,30 +317,30 @@ blackinternals=Flatten[Position[inputpointcoordinatesandcolors,{_,"BI"}]];
 blackexternals=Flatten[Position[inputpointcoordinatesandcolors,{_,"BE"}]];
 variablestochoosefrom=Table[bipartiteSUSY`Z[iii],{iii,Length[inputedges]}];
 intwhitetointblackedges=Cases[inputedges,{Alternatives@@whiteinternals,Alternatives@@blackinternals}];
-topleftmatrixentries=Map[#[[1,1]]->Total[#[[2]]]&,Map[Transpose[#]&,GatherBy[MapThread[{#1,#2}&,{intwhitetointblackedges,variablestochoosefrom[[Range[Length[intwhitetointblackedges]]]]}],First]]];
+topleftmatrixentries=Map[#[[1,1]]\[Rule]Total[#[[2]]]&,Map[Transpose[#]&,GatherBy[MapThread[{#1,#2}&,{intwhitetointblackedges,variablestochoosefrom[[Range[Length[intwhitetointblackedges]]]]}],First]]];
 variablestochoosefrom=variablestochoosefrom[[Length[intwhitetointblackedges]+1;;]];
 intwhitetointblackedges=Map[#[[{2,1}]]&,Cases[inputedges,{Alternatives@@blackinternals,Alternatives@@whiteinternals}]];
-topleftmatrixentries=Join[topleftmatrixentries,Map[#[[1,1]]->Total[#[[2]]]&,Map[Transpose[#]&,GatherBy[MapThread[{#1,#2}&,{intwhitetointblackedges,variablestochoosefrom[[Range[Length[intwhitetointblackedges]]]]}],First]]]];
+topleftmatrixentries=Join[topleftmatrixentries,Map[#[[1,1]]\[Rule]Total[#[[2]]]&,Map[Transpose[#]&,GatherBy[MapThread[{#1,#2}&,{intwhitetointblackedges,variablestochoosefrom[[Range[Length[intwhitetointblackedges]]]]}],First]]]];
 variablestochoosefrom=variablestochoosefrom[[Length[intwhitetointblackedges]+1;;]];
 If[topleftmatrixentries==={},
 outputtopleft=ConstantArray[0,{Length[whiteinternals],Length[blackinternals]}];
 ,outputtopleft=Normal[SparseArray[topleftmatrixentries,{Length[inputpointcoordinatesandcolors],Length[inputpointcoordinatesandcolors]}]][[whiteinternals,blackinternals]];
 ];
 intwhitetoextblackedges=Cases[inputedges,{Alternatives@@whiteinternals,Alternatives@@blackexternals}];
-toprightmatrixentries=Map[#[[1,1]]->Total[#[[2]]]&,Map[Transpose[#]&,GatherBy[MapThread[{#1,#2}&,{intwhitetoextblackedges,variablestochoosefrom[[Range[Length[intwhitetoextblackedges]]]]}],First]]];
+toprightmatrixentries=Map[#[[1,1]]\[Rule]Total[#[[2]]]&,Map[Transpose[#]&,GatherBy[MapThread[{#1,#2}&,{intwhitetoextblackedges,variablestochoosefrom[[Range[Length[intwhitetoextblackedges]]]]}],First]]];
 variablestochoosefrom=variablestochoosefrom[[Length[intwhitetoextblackedges]+1;;]];
 intwhitetoextblackedges=Map[#[[{2,1}]]&,Cases[inputedges,{Alternatives@@blackexternals,Alternatives@@whiteinternals}]];
-toprightmatrixentries=Join[toprightmatrixentries,Map[#[[1,1]]->Total[#[[2]]]&,Map[Transpose[#]&,GatherBy[MapThread[{#1,#2}&,{intwhitetoextblackedges,variablestochoosefrom[[Range[Length[intwhitetoextblackedges]]]]}],First]]]];
+toprightmatrixentries=Join[toprightmatrixentries,Map[#[[1,1]]\[Rule]Total[#[[2]]]&,Map[Transpose[#]&,GatherBy[MapThread[{#1,#2}&,{intwhitetoextblackedges,variablestochoosefrom[[Range[Length[intwhitetoextblackedges]]]]}],First]]]];
 variablestochoosefrom=variablestochoosefrom[[Length[intwhitetoextblackedges]+1;;]];
 If[toprightmatrixentries==={},
 outputtopright=ConstantArray[0,{Length[whiteinternals],Length[blackexternals]}];
 ,outputtopright=Normal[SparseArray[toprightmatrixentries,{Length[inputpointcoordinatesandcolors],Length[inputpointcoordinatesandcolors]}]][[whiteinternals,blackexternals]];
 ];
 extwhitetointblackedges=Cases[inputedges,{Alternatives@@whiteexternals,Alternatives@@blackinternals}];
-bottomleftmatrixentries=Map[#[[1,1]]->Total[#[[2]]]&,Map[Transpose[#]&,GatherBy[MapThread[{#1,#2}&,{extwhitetointblackedges,variablestochoosefrom[[Range[Length[extwhitetointblackedges]]]]}],First]]];
+bottomleftmatrixentries=Map[#[[1,1]]\[Rule]Total[#[[2]]]&,Map[Transpose[#]&,GatherBy[MapThread[{#1,#2}&,{extwhitetointblackedges,variablestochoosefrom[[Range[Length[extwhitetointblackedges]]]]}],First]]];
 variablestochoosefrom=variablestochoosefrom[[Length[extwhitetointblackedges]+1;;]];
 extwhitetointblackedges=Map[#[[{2,1}]]&,Cases[inputedges,{Alternatives@@blackinternals,Alternatives@@whiteexternals}]];
-bottomleftmatrixentries=Join[bottomleftmatrixentries,Map[#[[1,1]]->Total[#[[2]]]&,Map[Transpose[#]&,GatherBy[MapThread[{#1,#2}&,{extwhitetointblackedges,variablestochoosefrom[[Range[Length[extwhitetointblackedges]]]]}],First]]]];
+bottomleftmatrixentries=Join[bottomleftmatrixentries,Map[#[[1,1]]\[Rule]Total[#[[2]]]&,Map[Transpose[#]&,GatherBy[MapThread[{#1,#2}&,{extwhitetointblackedges,variablestochoosefrom[[Range[Length[extwhitetointblackedges]]]]}],First]]]];
 variablestochoosefrom=variablestochoosefrom[[Length[extwhitetointblackedges]+1;;]];
 If[bottomleftmatrixentries==={},
 outputbottomleft=ConstantArray[0,{Length[whiteexternals],Length[blackinternals]}];
@@ -369,15 +369,15 @@ Panel[Grid[{
 {Grid[{
 {Row[{RadioButton[Dynamic[addremove],"Add"]," Add nodes/lines  "}],Row[{RadioButton[Dynamic[addremove],"Remove"]," Remove nodes  "}],Row[{RadioButton[Dynamic[addremove],"Move"]," Move nodes  "}]},
 {Null,Null,Null},
-{Grid[{{" Node color: ","   Node type:   "},{RadioButtonBar[Dynamic[nodecolor],{"White","Black"},Appearance->"Vertical",Enabled->Dynamic[enablebuttons&&(addremove/.{"Add"->True,"Remove"->False,"Move"->False})]],RadioButtonBar[Dynamic[internalexternal],{"Internal","External"},Appearance->"Vertical",Enabled->Dynamic[enablebuttons&&(addremove/.{"Add"->True,"Remove"->False,"Move"->False})]]}}]}
-}(*,Frame\[Rule]All*),Spacings->{{Automatic,Automatic,Automatic,Automatic},{Automatic,0,0,Automatic}
+{Grid[{{" Node color: ","   Node type:   "},{RadioButtonBar[Dynamic[nodecolor],{"White","Black"},Appearance\[Rule]"Vertical",Enabled\[Rule]Dynamic[enablebuttons&&(addremove/.{"Add"\[Rule]True,"Remove"\[Rule]False,"Move"\[Rule]False})]],RadioButtonBar[Dynamic[internalexternal],{"Internal","External"},Appearance\[Rule]"Vertical",Enabled\[Rule]Dynamic[enablebuttons&&(addremove/.{"Add"\[Rule]True,"Remove"\[Rule]False,"Move"\[Rule]False})]]}}]}
+}(*,Frame\[Rule]All*),Spacings\[Rule]{{Automatic,Automatic,Automatic,Automatic},{Automatic,0,0,Automatic}
 }]},
 {},
 {Grid[{
 {Button["Print Kasteleyn components",
-If[introprinted==0,Print["The Kasteleyn components are: {\"top-left\",\"top-right\",\"bottom-left\",\"bottom-right\"}"];introprinted=1;];
+If[introprinted\[Equal]0,Print["The Kasteleyn components are: {\"top-left\",\"top-right\",\"bottom-left\",\"bottom-right\"}"];introprinted=1;];
 Print[makeKasteleynComponents[pointcoordinatesandcolors,edges]];
-,ImageSize->Large],
+,ImageSize\[Rule]Large],
 Row[{"Display node numbers: ",Checkbox[Dynamic[nodenumberstext]]}],
 "         ",
 Button["Clear all",
@@ -385,7 +385,7 @@ pointcoordinatesandcolors={};
 temporarydottededge={};
 edges={};
 multiedges={};
-,ImageSize->Large],"                             "
+,ImageSize\[Rule]Large],"                             "
 (*Button["Remove edges:",
 If[areyoupressed==={"DialogBox"},
 edgebuttonlist=Dynamic[Column[Map[Button[Sort[UndirectedEdge@@(#/.MapThread[#1\[Rule]#2&,{Join[Flatten[Position[pointcoordinatesandcolors,{_,"WI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"WE"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BE"}]]],Range[Length[pointcoordinatesandcolors]]}])],edges=Delete[edges,Position[edges,#][[1,1]]];,ImageSize\[Rule]Automatic]&,edges][[Ordering[Map[Sort,edges/.MapThread[#1\[Rule]#2&,{Join[Flatten[Position[pointcoordinatesandcolors,{_,"WI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"WE"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BE"}]]],Range[Length[pointcoordinatesandcolors]]}]]]]]]];
@@ -394,14 +394,14 @@ areyoupressed={"DialogBox","Pressed"};
 areyoupressed={"DialogBox"};
 ];,Appearance\[Rule]Dynamic[areyoupressed]]*)(*Toggler[Dynamic[edgebuttonlist],{Column[{}]\[Rule]"Remove edges:",Column[Map[Button[Sort[UndirectedEdge@@(#/.MapThread[#1\[Rule]#2&,{Join[Flatten[Position[pointcoordinatesandcolors,{_,"WI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"WE"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BE"}]]],Range[Length[pointcoordinatesandcolors]]}])],edges=Delete[edges,Position[edges,#][[1,1]]];,ImageSize\[Rule]Automatic]&,edges][[Ordering[Map[Sort,edges/.MapThread[#1\[Rule]#2&,{Join[Flatten[Position[pointcoordinatesandcolors,{_,"WI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"WE"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BE"}]]],Range[Length[pointcoordinatesandcolors]]}]]]]]]\[Rule]"Remove edges:"}]*)}
 }(*,Frame\[Rule]All*)]},
-{Grid[{{EventHandler[Dynamic[Graphics[{Thickness[0.005],Line[Map[pointcoordinatesandcolors[[#,1]]&,Map[First,Cases[Tally[edges],{_,1}]]]](*These are only the edges that aren't bubbles*),Sequence@@multiedges,temporarydottededge,{Black,EdgeForm[{Thick,Black}],Map[Disk[#,0.035]&,Cases[pointcoordinatesandcolors,{_,"BI"}][[All,1]]]},{Black,EdgeForm[{Thick,Red}],Map[Disk[#,0.035]&,Cases[pointcoordinatesandcolors,{_,"BE"}][[All,1]]]},{White,EdgeForm[{Thick,Black}],Map[Disk[#,0.035]&,Cases[pointcoordinatesandcolors,{_,"WI"}][[All,1]]]},{White,EdgeForm[{Thick,Red}],Map[Disk[#,0.035]&,Cases[pointcoordinatesandcolors,{_,"WE"}][[All,1]]]},(nodenumberstext/.{True->Prepend[MapThread[Text[Style[#1,Medium],#2]&,{Sort[MapThread[{#1,#2}&,{Join[Flatten[Position[pointcoordinatesandcolors,{_,"WI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"WE"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BE"}]]],Map[ToString,Range[Length[pointcoordinatesandcolors]]]}]][[All,2]],Map[Function[{input},Block[{output},If[input<=-1.5,output=input+0.2;,If[input>=1.5,output=input-0.2;,output=input;];];output]][#]&,pointcoordinatesandcolors[[All,1]]+0.1,{2}]}],Blue],False->{}})},PlotRange->1.5,Frame->True,FrameTicks->None,ImageSize->{400,400},Background->White]],
-{"MouseClicked":> (
+{Grid[{{EventHandler[Dynamic[Graphics[{Thickness[0.005],Line[Map[pointcoordinatesandcolors[[#,1]]&,Map[First,Cases[Tally[edges],{_,1}]]]](*These are only the edges that aren't bubbles*),Sequence@@multiedges,temporarydottededge,{Black,EdgeForm[{Thick,Black}],Map[Disk[#,0.035]&,Cases[pointcoordinatesandcolors,{_,"BI"}][[All,1]]]},{Black,EdgeForm[{Thick,Red}],Map[Disk[#,0.035]&,Cases[pointcoordinatesandcolors,{_,"BE"}][[All,1]]]},{White,EdgeForm[{Thick,Black}],Map[Disk[#,0.035]&,Cases[pointcoordinatesandcolors,{_,"WI"}][[All,1]]]},{White,EdgeForm[{Thick,Red}],Map[Disk[#,0.035]&,Cases[pointcoordinatesandcolors,{_,"WE"}][[All,1]]]},(nodenumberstext/.{True\[Rule]Prepend[MapThread[Text[Style[#1,Medium],#2]&,{Sort[MapThread[{#1,#2}&,{Join[Flatten[Position[pointcoordinatesandcolors,{_,"WI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"WE"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BE"}]]],Map[ToString,Range[Length[pointcoordinatesandcolors]]]}]][[All,2]],Map[Function[{input},Block[{output},If[input\[LessEqual]-1.5,output=input+0.2;,If[input\[GreaterEqual]1.5,output=input-0.2;,output=input;];];output]][#]&,pointcoordinatesandcolors[[All,1]]+0.1,{2}]}],Blue],False\[Rule]{}})},PlotRange\[Rule]1.5,Frame\[Rule]True,FrameTicks\[Rule]None,ImageSize\[Rule]{400,400},Background\[Rule]White]],
+{"MouseClicked"\[RuleDelayed] (
 clickedposition=Round[MousePosition["Graphics"],0.1];
 If[addremove==="Remove",
 nodenumber=Flatten[Position[pointcoordinatesandcolors,{clickedposition,_}]];
 If[nodenumber=!={},
 pointcoordinatesandcolors=Delete[pointcoordinatesandcolors,nodenumber[[1]]];
-edges=DeleteCases[edges,{nodenumber[[1]],_}|{_,nodenumber[[1]]}]/.{zz_/;(zz>nodenumber[[1]]):>zz-1};
+edges=DeleteCases[edges,{nodenumber[[1]],_}|{_,nodenumber[[1]]}]/.{zz_/;(zz>nodenumber[[1]])\[RuleDelayed]zz-1};
 multiedges=Cases[Tally[edges],Except[{_,1}]];
 If[multiedges=!={},(*we have multiple edges going between the same two nodes*)
 multiedges=Map[makeBsplineCurves@@#&,MapAt[Sequence@@(pointcoordinatesandcolors[[#,1]])&,multiedges,{All,1}]];
@@ -409,16 +409,16 @@ multiedges=Map[makeBsplineCurves@@#&,MapAt[Sequence@@(pointcoordinatesandcolors[
 ];
 ];
 )
-,{"MouseClicked",2}:>(
+,{"MouseClicked",2}\[RuleDelayed](
 clickedposition=Round[MousePosition["Graphics"],0.1];
 If[addremove==="Add",
 nodenumber=Flatten[Position[pointcoordinatesandcolors,{clickedposition,_}]];
 If[nodenumber=!={},
-pointcoordinatesandcolors[[nodenumber[[1]],2]]=pointcoordinatesandcolors[[nodenumber[[1]],2]]/.{"WI"->"WE","WE"->"WI","BI"->"BE","BE"->"BI"};
+pointcoordinatesandcolors[[nodenumber[[1]],2]]=pointcoordinatesandcolors[[nodenumber[[1]],2]]/.{"WI"\[Rule]"WE","WE"\[Rule]"WI","BI"\[Rule]"BE","BE"\[Rule]"BI"};
 ];
 ];
 )
-,"MouseDown":>(
+,"MouseDown"\[RuleDelayed](
 If[addremove==="Add",
 clickedposition=Round[MousePosition["Graphics"],0.1];
 If[FreeQ[pointcoordinatesandcolors,{clickedposition,_}],
@@ -429,14 +429,595 @@ If[addremove==="Move",
 oldposition=Round[MousePosition["Graphics"],0.1];
 ];
 )
-,"MouseDragged":>(
+,"MouseDragged"\[RuleDelayed](
 enablebuttons=False;
+If[addremove==="Add",
+draggedposition=Round[MousePosition["Graphics"],0.1]/.{z1_/;(z1>1.5)\[Rule]1.5,z2_/;(z2<-1.5)\[Rule]-1.5};
+temporarydottededge={Gray,Dashed,Line[{clickedposition,draggedposition}]};
+];
+If[addremove==="Move",
+newposition=Round[MousePosition["Graphics"],0.1]/.{z1_/;(z1>1.5)\[Rule]1.5,z2_/;(z2<-1.5)\[Rule]-1.5};
+If[Cases[pointcoordinatesandcolors,{newposition,_}]==={},
+pointcoordinatesandcolors=pointcoordinatesandcolors/.{oldposition\[Rule]newposition};
+multiedges=Cases[Tally[edges],Except[{_,1}]];
+If[multiedges=!={},(*we have multiple edges going between the same two nodes*)
+multiedges=Map[makeBsplineCurves@@#&,MapAt[Sequence@@(pointcoordinatesandcolors[[#,1]])&,multiedges,{All,1}]];
+];
+oldposition=newposition;
+];
+];
+),
+"MouseUp"\[RuleDelayed](
+enablebuttons=True;
+If[addremove==="Add",
+unclickedposition=Round[MousePosition["Graphics"],0.1]/.{z1_/;(z1>1.5)\[Rule]1.5,z2_/;(z2<-1.5)\[Rule]-1.5};
+If[FreeQ[pointcoordinatesandcolors,{unclickedposition,_}],
+pointcoordinatesandcolors=Append[pointcoordinatesandcolors,{unclickedposition,StringJoin[StringTake[Cases[pointcoordinatesandcolors,{clickedposition,_}][[1,2]],1]/.{"B"\[Rule]"W","W"\[Rule]"B"},StringTake[internalexternal,1]]}];
+];
+If[unclickedposition=!=clickedposition,
+edges=Append[edges,Flatten[Position[pointcoordinatesandcolors,{clickedposition,_}|{unclickedposition,_}]]];
+multiedges=Cases[Tally[edges],Except[{_,1}]];
+If[multiedges=!={},(*we have multiple edges going between the same two nodes*)
+multiedges=Map[makeBsplineCurves@@#&,MapAt[Sequence@@(pointcoordinatesandcolors[[#,1]])&,multiedges,{All,1}]];
+];
+,If[Last[pointcoordinatesandcolors][[1]]=!=clickedposition||MemberQ[edges,{_,Length[pointcoordinatesandcolors]}|{Length[pointcoordinatesandcolors],_}],
+nodeinfo=Cases[pointcoordinatesandcolors,{clickedposition,_}][[1]];
+pointcoordinatesandcolors=ReplacePart[pointcoordinatesandcolors,Position[pointcoordinatesandcolors,nodeinfo][[1,1]]\[Rule]{clickedposition,StringJoin[StringTake[nodeinfo[[2]],{1}]/.{"B"\[Rule]"W","W"\[Rule]"B"},StringTake[nodeinfo[[2]],{2}]]}];
+];
+];
+temporarydottededge={};
+];
+If[addremove==="Move",
+unclickedposition=Round[MousePosition["Graphics"],0.1]/.{z1_/;(z1>1.5)\[Rule]1.5,z2_/;(z2<-1.5)\[Rule]-1.5};
+If[Cases[pointcoordinatesandcolors,{unclickedposition,_}]==={},
+pointcoordinatesandcolors=pointcoordinatesandcolors/.{oldposition\[Rule]unclickedposition};
+];
+];
+)
+}],Grid[{{Button["Remove edges:",
+If[areyoupressed==={"DialogBox"},
+edgebuttonlist=Dynamic[Column[Map[Button[Sort[UndirectedEdge@@(#/.MapThread[#1\[Rule]#2&,{Join[Flatten[Position[pointcoordinatesandcolors,{_,"WI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"WE"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BE"}]]],Range[Length[pointcoordinatesandcolors]]}])],edges=Delete[edges,Position[edges,#][[1,1]]];multiedges=Cases[Tally[edges],Except[{_,1}]];If[multiedges=!={},(*we have multiple edges going between the same two nodes*)multiedges=Map[makeBsplineCurves@@#&,MapAt[Sequence@@(pointcoordinatesandcolors[[#,1]])&,multiedges,{All,1}]];];,ImageSize\[Rule]Automatic]&,edges][[Ordering[Map[Sort,edges/.MapThread[#1\[Rule]#2&,{Join[Flatten[Position[pointcoordinatesandcolors,{_,"WI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"WE"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BE"}]]],Range[Length[pointcoordinatesandcolors]]}]]]]]]];
+areyoupressed={"DialogBox","Pressed"};
+,edgebuttonlist=Column[{}];
+areyoupressed={"DialogBox"};
+];,Appearance\[Rule]Dynamic[areyoupressed]]},{Pane[Dynamic[edgebuttonlist],ImageSize\[Rule]{80,368},Scrollbars\[Rule]{False,True},Alignment\[Rule]{Left,Top}]}}]}}(*,Frame\[Rule]All*)]},
+{Row[{ActionMenu["Compute",
+{"Are you reducible? (True/False)"\[RuleDelayed](If[perfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]=!= {},Print[reducibilityQ@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];,Print["This graph has no perfect matchings!"];];),
+"Path Matrix"\[RuleDelayed](If[perfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]=!= {},Print[pathMatrix@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];,Print["This graph has no perfect matchings!"];];),
+"Dimension of Grassmannian"\[RuleDelayed](If[perfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]=!= {},Print[dimensionGrassmannian@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];,Print["This graph has no perfect matchings!"];];),
+"Stratification: Number of boundaries"\[RuleDelayed](If[perfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]=!= {},Print[stratificationNumbers@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];,Print["This graph has no perfect matchings!"];];),
+"Stratification: Euler number"\[RuleDelayed](If[perfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]=!= {},Print[stratificationEulerNumber@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];,Print["This graph has no perfect matchings!"];];),
+"Non-standard Poles (True/False)"\[RuleDelayed](If[perfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]=!= {},Print[nonPluckerPolesQ@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];,Print["This graph has no perfect matchings!"];];),
+"Minors of Path Matrix \[LeftRightArrow] Perfect Matchings"\[RuleDelayed](If[perfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]=!= {},Print[minorsAsPerfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];,Print["This graph has no perfect matchings!"];];),
+"Planarity (True/False)"\[RuleDelayed](If[perfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]=!= {},Print[planarityQ@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];,Print["This graph has no perfect matchings!"];];),
+"Helicity k"\[RuleDelayed](If[perfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]=!= {},Print[getK@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];,Print["This graph has no perfect matchings!"];];),
+"Perfect Matchings"\[RuleDelayed](Print[perfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];)}
+,Method\[Rule]"Queued"],"           ",Button["Print graph",Print[Graph[Range[Length[pointcoordinatesandcolors]],edges,VertexCoordinates\[Rule]pointcoordinatesandcolors[[All,1]],VertexSize\[Rule]Medium,VertexStyle\[Rule]MapThread[Rule,{Range[Length[pointcoordinatesandcolors]],pointcoordinatesandcolors[[All,2]]/.{"WI"\[Rule]White,"WE"\[Rule]White,"BI"\[Rule]Black,"BE"\[Rule]Black}}],EdgeStyle\[Rule]Directive[Black,Thick]]];](*,Button["Raw data (Remove this buttom later)",Print[{pointcoordinatesandcolors,edges}];,ImageSize\[Rule]Large]*)}]}
+}(*,Frame\[Rule]All*),Spacings\[Rule]{{Automatic,Automatic},{Automatic,0,0,Automatic,Automatic,Automatic}}],Background\[Rule]LightBlue]
+];*)
+
+
+(*Functions for the drawGraph interactive drawing box*)
+
+
+(*This function checks whether the graph is bipartite and has correct (monovalent) external nodes*)
+graphBipartiteAndGoodExtNodesQ[inputpointcoordinatesandcolors_,inputedges_]:=Block[{bipartite,extnodetoextnode,monovalentextnodes,allOK},
+(*First we check whether the graph is bipartite*)
+bipartite=(Cases[Map[StringTrim[#,"I"|"E"]&,Map[inputpointcoordinatesandcolors[[#]][[All,2]]&,inputedges],{2}],Except[{"W","B"}|{"B","W"}]]==={});
+(*Now we'll check if any external nodes connect to any other extnernal nodes*)
+extnodetoextnode=(Cases[Map[StringTrim[#,"B"|"W"]&,Cases[Map[inputpointcoordinatesandcolors[[#]][[All,2]]&,inputedges],{___,"WE",___}|{___,"BE",___}],{2}],{"E","E"}]==={});
+monovalentextnodes=DuplicateFreeQ[Cases[Map[Sequence@@inputpointcoordinatesandcolors[[#]]&,inputedges],{_,"WE"|"BE"}]];
+allOK=bipartite&&extnodetoextnode&&monovalentextnodes;
+allOK
+];
+
+(*When we're finished drawing in drawGraph[] we will usually want to output the Kasteleyn components. This function takes the graphical information and makes the four components of the Kasteleyn matrix.*)
+makeKasteleynComponents[inputpointcoordinatesandcolors_,inputedges_]:=Block[{graphOK,whiteinternals,whiteexternals,blackinternals,blackexternals,variablestochoosefrom,intwhitetointblackedges,intwhitetoextblackedges,extwhitetointblackedges,topleftmatrixentries,toprightmatrixentries,bottomleftmatrixentries,outputtopleft,outputtopright,outputbottomleft,outputbottomright},
+(*We'll first check to make sure the graph is bipartite; if not, there's no point trying to make a Kasteleyn.*)
+(*Each edge selects which inputpointcoordinatesandcolors are joined up. If we strip away their coordinates and "I" or "E" labels, we get a list containing {"W","B"} or {"B","W"}. If this list contains {"W","W"} or {"B","B"}, it's not bipartite. Also, no external nodes should be connected to other external nodes.*)
+graphOK=graphBipartiteAndGoodExtNodesQ[inputpointcoordinatesandcolors,inputedges];
+(*graphOK=BipartiteGraphQ[Graph[Range[Length[inputpointcoordinatesandcolors]],inputedges]];(*NB BipartiteGraphQ only checks whether the graph CAN be bipartite!*)*)
+If[graphOK,
+(*We'll begin by making a list of which numbers correspond to the different types of nodes. These numbers are not the final "node numbers"; they are in chronological order of when they were drawn. The final "node numbers" always start with "WI" and continue with "WE", "BI" and "BE".*)
+whiteinternals=Flatten[Position[inputpointcoordinatesandcolors,{_,"WI"}]];
+whiteexternals=Flatten[Position[inputpointcoordinatesandcolors,{_,"WE"}]];
+blackinternals=Flatten[Position[inputpointcoordinatesandcolors,{_,"BI"}]];
+blackexternals=Flatten[Position[inputpointcoordinatesandcolors,{_,"BE"}]];
+(*Each edge will be given a name Z[i]. As we populate the Kasteleyn with edges, we'll remove these names from variablestochoosefrom*)
+variablestochoosefrom=Table[bipartiteSUSY`Z[iii],{iii,Length[inputedges]}];
+(*We'll now construct the top-left part of the matrix. We begin by taking edges {i,j} where "i" is an internal white node and "j" is an internal black node.*)
+intwhitetointblackedges=Cases[inputedges,{Alternatives@@whiteinternals,Alternatives@@blackinternals}];
+(*Associate each {i,j} in intwhitetointblackedges with an eddge from variablestochoosefrom using MapThread. If a given {i,j} appears more than once, we have a bubble and the entry in the Kasteleyn should be the sum of the edges; hence, we use GatherBy[...,First], Transpose to get the edges all together, and finally turn this into {i,j}\[Rule]Z[1]+Z[2]+... etc.*)
+topleftmatrixentries=Map[#[[1,1]]->Total[#[[2]]]&,Map[Transpose[#]&,GatherBy[MapThread[{#1,#2}&,{intwhitetointblackedges,variablestochoosefrom[[Range[Length[intwhitetointblackedges]]]]}],First]]];
+(*Now we eliminate those edge names we just used up*)
+variablestochoosefrom=variablestochoosefrom[[Length[intwhitetointblackedges]+1;;]];
+(*We'll again get a list of {i,j}\[Rule]Z[3] etc., but this time with edges where the black node appears first in inputedges. We'll swap their position however, as we want "i" to be white and "j" to be black in {i,j}.*)
+intwhitetointblackedges=Map[#[[{2,1}]]&,Cases[inputedges,{Alternatives@@blackinternals,Alternatives@@whiteinternals}]];
+topleftmatrixentries=Join[topleftmatrixentries,Map[#[[1,1]]->Total[#[[2]]]&,Map[Transpose[#]&,GatherBy[MapThread[{#1,#2}&,{intwhitetointblackedges,variablestochoosefrom[[Range[Length[intwhitetointblackedges]]]]}],First]]]];
+variablestochoosefrom=variablestochoosefrom[[Length[intwhitetointblackedges]+1;;]];
+(*Now we have all edges, and we can make the top-left part of the matrix using SparseArray[{{i,j}\[Rule]...,{i,k}\[Rule]...}] etc. Since the numbers i and j refer to the chronological order in which they were put down, we'll make a square matrix the size of all nodes, and then select those rows corresponding to internal white nodes and those columns corresponding to internal black nodes.*)
+If[topleftmatrixentries==={},
+outputtopleft=ConstantArray[0,{Length[whiteinternals],Length[blackinternals]}];
+,outputtopleft=Normal[SparseArray[topleftmatrixentries,{Length[inputpointcoordinatesandcolors],Length[inputpointcoordinatesandcolors]}]][[whiteinternals,blackinternals]];
+];
+(*The top-left part of the Kasteleyn is complete. Now we do the same but for the top-right part of the Kasteleyn.*)
+intwhitetoextblackedges=Cases[inputedges,{Alternatives@@whiteinternals,Alternatives@@blackexternals}];
+toprightmatrixentries=Map[#[[1,1]]->Total[#[[2]]]&,Map[Transpose[#]&,GatherBy[MapThread[{#1,#2}&,{intwhitetoextblackedges,variablestochoosefrom[[Range[Length[intwhitetoextblackedges]]]]}],First]]];
+variablestochoosefrom=variablestochoosefrom[[Length[intwhitetoextblackedges]+1;;]];
+intwhitetoextblackedges=Map[#[[{2,1}]]&,Cases[inputedges,{Alternatives@@blackexternals,Alternatives@@whiteinternals}]];
+toprightmatrixentries=Join[toprightmatrixentries,Map[#[[1,1]]->Total[#[[2]]]&,Map[Transpose[#]&,GatherBy[MapThread[{#1,#2}&,{intwhitetoextblackedges,variablestochoosefrom[[Range[Length[intwhitetoextblackedges]]]]}],First]]]];
+variablestochoosefrom=variablestochoosefrom[[Length[intwhitetoextblackedges]+1;;]];
+If[toprightmatrixentries==={},
+outputtopright=ConstantArray[0,{Length[whiteinternals],Length[blackexternals]}];
+,outputtopright=Normal[SparseArray[toprightmatrixentries,{Length[inputpointcoordinatesandcolors],Length[inputpointcoordinatesandcolors]}]][[whiteinternals,blackexternals]];
+];
+(*The top-right part of the Kasteleyn is complete. Now we do the same but for the bottom-left part of the Kasteleyn.*)
+extwhitetointblackedges=Cases[inputedges,{Alternatives@@whiteexternals,Alternatives@@blackinternals}];
+bottomleftmatrixentries=Map[#[[1,1]]->Total[#[[2]]]&,Map[Transpose[#]&,GatherBy[MapThread[{#1,#2}&,{extwhitetointblackedges,variablestochoosefrom[[Range[Length[extwhitetointblackedges]]]]}],First]]];
+variablestochoosefrom=variablestochoosefrom[[Length[extwhitetointblackedges]+1;;]];
+extwhitetointblackedges=Map[#[[{2,1}]]&,Cases[inputedges,{Alternatives@@blackinternals,Alternatives@@whiteexternals}]];
+bottomleftmatrixentries=Join[bottomleftmatrixentries,Map[#[[1,1]]->Total[#[[2]]]&,Map[Transpose[#]&,GatherBy[MapThread[{#1,#2}&,{extwhitetointblackedges,variablestochoosefrom[[Range[Length[extwhitetointblackedges]]]]}],First]]]];
+variablestochoosefrom=variablestochoosefrom[[Length[extwhitetointblackedges]+1;;]];
+If[bottomleftmatrixentries==={},
+outputbottomleft=ConstantArray[0,{Length[whiteexternals],Length[blackinternals]}];
+,outputbottomleft=Normal[SparseArray[bottomleftmatrixentries,{Length[inputpointcoordinatesandcolors],Length[inputpointcoordinatesandcolors]}]][[whiteexternals,blackinternals]];
+];
+(*The bottom-left part of the Kasteleyn is complete. The bottom-right part is always empty*)
+outputbottomright=ConstantArray[0,{Length[whiteexternals],Length[blackexternals]}];
+,Print["The graph is not bipartite, or external nodes are not monovalent!"];
+{outputtopleft,outputtopright,outputbottomleft,outputbottomright}={Null,Null,Null,Null};
+];
+{outputtopleft,outputtopright,outputbottomleft,outputbottomright}];
+
+(*This function translates an inputted Kasteleyn matrix into graph data that drawGraph can draw*)
+makeGraphDatafromKasteleyn[topleft_,topright_,bottomleft_,bottomright_]:=Block[{graph,userspecifiednodes,nodenumbertotype,userspecifiededges,xaxisvalues,yaxisvalues,xscaling,xshift,yscaling,yshift,outputpointcoordinatesandcolors,outputedges,duplicatedcoordinates,freeslots},
+(*Start by drawing the graph automatically.*)
+graph=AdjacencyGraph[turnIntoAdjacencyMatrix[topleft,topright,bottomleft,bottomright]];
+(*using GraphEmbedding, we make tuples containing {2Dcoordinateofnode,nodenumber}. The node numbering is the same as that chosen by turnIntoAdjacencyMatrix, which in turn begins by counting internal white nodes, and proceeds with ext white, int black, ext black.*)
+userspecifiednodes=MapThread[{#1,#2}&,{GraphEmbedding[graph],Range[Length[GraphEmbedding[graph]]]}];
+nodenumbertotype=Join[Map[#->"WI"&,Range[Length[topleft]]],Map[#->"WE"&,Range[Length[topleft]+1,Length[topleft]+Length[bottomleft]]],Map[#->"BI"&,Range[Length[topleft]+Length[bottomleft]+1,Total[Dimensions[Join[topleft,bottomleft]]]]],Map[#->"BE"&,Range[Total[Dimensions[Join[topleft,bottomleft]]]+1,Total[Dimensions[Join[topleft,bottomleft]]]+Dimensions[Join[topright,bottomright]][[2]]]]];
+userspecifiednodes[[All,2]]=userspecifiednodes[[All,2]]/.nodenumbertotype;
+(*Now we almost have the list pointcoordinatesandcolors. The coordinates still need rescaling to fit into our Graphics box.*)
+(*These will be the final edgelist*)
+userspecifiededges=EdgeList[graph]/.UndirectedEdge->List;
+(*Now we'll center the coordinates in the box and rescale them so that they fit*)
+xaxisvalues=userspecifiednodes[[All,1,1]];
+yaxisvalues=userspecifiednodes[[All,1,2]];
+If[Chop[(Max[xaxisvalues]-Min[xaxisvalues])]==0,
+(*If we have a vertical line, the x-axis doesn't need rescaling*)
+xscaling=1;
+,xscaling=2.6/(Max[xaxisvalues]-Min[xaxisvalues]);
+];
+xshift=(Max[xaxisvalues]+Min[xaxisvalues])/2;
+If[Chop[(Max[yaxisvalues]-Min[yaxisvalues])]==0,
+yscaling=1;
+,yscaling=2.6/(Max[yaxisvalues]-Min[yaxisvalues]);
+];
+yshift=(Max[yaxisvalues]+Min[yaxisvalues])/2;
+(*We'll round off the values to make sure they all fit on a grid in the Graphics box. This might accidentally place some nodes on top of each other.*)
+userspecifiednodes[[All,1,1]]=Map[Round[#,0.1]&,(userspecifiednodes[[All,1,1]]-xshift)xscaling];
+userspecifiednodes[[All,1,2]]=Map[Round[#,0.1]&,(userspecifiednodes[[All,1,2]]-yshift)yscaling];
+(*If all nodes are on different grid points, we are done.*)
+If[DuplicateFreeQ[userspecifiednodes[[All,1]]],
+outputpointcoordinatesandcolors=userspecifiednodes;
+outputedges=userspecifiededges;
+,(*if some nodes are on the same coordinate, check if the Graphics box is even large enough (841 grid points) to fit all nodes we want to draw*)
+If[Total[Tally[userspecifiednodes[[All,1]]][[All,2]]]<=841,
+(*we can fit them all. We'll go through each duplicate coordinate and move it to some randomly chosen free spot on the grid.*)
+While[DuplicateFreeQ[userspecifiednodes[[All,1]]]=!=True,
+duplicatedcoordinates=Cases[Tally[userspecifiednodes[[All,1]]],Except[{_,1}]][[All,1]];
+freeslots=Complement[Sequence@@@Table[{iii,jjj},{iii,-1.4,1.4,0.1},{jjj,-1.4,1.4,0.1}],userspecifiednodes[[All,1]]];
+userspecifiednodes[[All,1]]=ReplacePart[userspecifiednodes[[All,1]],MapThread[Rule,{Map[Position[userspecifiednodes[[All,1]],#][[1,1]]&,duplicatedcoordinates],Round[RandomChoice[freeslots,Length[duplicatedcoordinates]],0.1]}]];
+];
+outputpointcoordinatesandcolors=userspecifiednodes;
+outputedges=userspecifiededges;
+,Print["The grid is too small to fit all your nodes!"];
+outputpointcoordinatesandcolors={};
+outputedges={};
+];
+];
+{outputpointcoordinatesandcolors,outputedges}
+];
+
+(*This function takes graph data and outputs the list of edges that correspond to removable edges. It will only output a non-empty list if the graph makes sense*)
+findRemovableEdges[pointcoordinatesandcolors_,edges_]:=Block[{graphOK,kast,kasteleynremovableedges,positionsinthekasteleyn,turnKasteleynPositionsToEdges,removabledges,themultiedges},
+graphOK=graphBipartiteAndGoodExtNodesQ[pointcoordinatesandcolors,edges];
+If[graphOK===True,
+kast=makeKasteleynComponents[pointcoordinatesandcolors,edges];
+If[perfectMatchings@@kast=!={},
+(*Some of these edges should be turned off together; their removal is not independent*)
+kasteleynremovableedges=DeleteDuplicates[Flatten[removableEdges@@makeKasteleynComponents[pointcoordinatesandcolors,edges]]];
+positionsinthekasteleyn=DeleteDuplicates[Map[Position[kast,#][[1,Range[3]]]&,kasteleynremovableedges]];
+turnKasteleynPositionsToEdges=Function[{posinkast},
+Block[{relevantnodes,relevantedge},
+relevantnodes=Map[Flatten[Position[pointcoordinatesandcolors,{_,#}]]&,posinkast[[1]]/.{1->{"WI","BI"},2->{"WI","BE"},3->{"WE","BI"},4->{"WE","BE"}}];
+relevantedge=Sort[MapThread[#1[[#2]]&,{relevantnodes,posinkast[[{2,3}]]}]];
+relevantedge]
+];
+removabledges=Map[turnKasteleynPositionsToEdges,positionsinthekasteleyn];
+removabledges=Cases[Map[Sort,edges],Alternatives@@removabledges];
+If[Length[removabledges]=!=Length[kasteleynremovableedges],
+Print["There was a problem in drawing the removable edges - find them by hand by printing out the Kasteleyn and using removableEdges."];
+removabledges={};
+];
+,removabledges={};
+];
+,removabledges={};
+];
+removabledges
+];
+
+(*This function takes two coordinates (belonging to nodes) and drawns bubbles between them, according to the the number of edges going between these nodes.*)
+makeBsplineCurves[endpoint1_,endpoint2_,multiplicity_]:=Block[{transverseendpoint1,transverseendpoint2,listofbsplinecurves},
+transverseendpoint1=Normalize[Cross[endpoint2-endpoint1]]/3+(endpoint1+endpoint2)/2;
+transverseendpoint2=-Normalize[Cross[endpoint2-endpoint1]]/3+(endpoint1+endpoint2)/2;
+listofbsplinecurves=Map[BSplineCurve[Join[{endpoint1},{transverseendpoint1+(transverseendpoint2-transverseendpoint1)#},{endpoint2}]]&,Range[0,1,1/(multiplicity-1)]];
+listofbsplinecurves];
+
+(*This function takes the graph data, along with various user-speciied options, and renders the edges in the graph, decorated with various labels etc that depend on the user-chosen options.*)
+drawLines[inputpointcoordinatesandcolors_,inputedges_,inputmultiedges_,showarrows_,edgenamesdisplayed_]:=Block[{graphOK,kast,perfectmatchings,referenceperfmatchedges,positionsinthekasteleyn,turnKasteleynPositionsToEdges,swappedeges,normaledges,straightedges,normalstraightdirectedlines,swappedstraightdirectedlines,themultiedges,positionsthatneedswapping,outputgraphics},
+graphOK=graphBipartiteAndGoodExtNodesQ[inputpointcoordinatesandcolors,inputedges];
+If[showarrows&&graphOK,
+(*normaledges have the orientation from white node to black node. swappededges have the opposite orientation, and are the edges in the reference perfect matching. We have to find these edges and translate their Kasteleyn-edge-names into {i,j} names of the graph.*)
+kast=makeKasteleynComponents[inputpointcoordinatesandcolors,inputedges];
+perfectmatchings=perfectMatchings[Sequence@@kast];
+If[perfectmatchings=!={},
+referenceperfmatchedges=Variables[perfectmatchings[[lowNumberLoopsPMpos[Sequence@@kast]]]];
+positionsinthekasteleyn=Map[Position[kast,#][[1,Range[3]]]&,referenceperfmatchedges];
+turnKasteleynPositionsToEdges=Function[{posinkast},
+Block[{relevantnodes,relevantedge},
+relevantnodes=Map[Flatten[Position[inputpointcoordinatesandcolors,{_,#}]]&,posinkast[[1]]/.{1->{"WI","BI"},2->{"WI","BE"},3->{"WE","BI"},4->{"WE","BE"}}];
+relevantedge=Sort[MapThread[#1[[#2]]&,{relevantnodes,posinkast[[{2,3}]]}]];
+relevantedge]
+];
+swappedeges=Map[turnKasteleynPositionsToEdges,positionsinthekasteleyn];
+(*Some of these edges may participate in bubbles. If we take Complement[inputedges,swappededges] we lose the other bubble-edges, so we have to do it more carefully.*)
+normaledges=inputedges[[Complement[Range[Length[inputedges]],Flatten[Map[Position[inputedges,#,{1}][[1]]&,swappedeges]]]]];
+(*We'll first draw the straight lines, i.e. those that are not bubbles*)
+straightedges=Map[First,Cases[Tally[inputedges],{_,1}]];
+normalstraightdirectedlines=(Map[{#[[1]],StringTake[#[[2]],1]}&,Map[inputpointcoordinatesandcolors[[#]]&,Cases[normaledges,Alternatives@@straightedges]],{2}]/.{{{coord1_List,"B"},{coord2_List,"W"}}:>{{coord2,"W"},{coord1,"B"}}})[[All,All,1]];
+swappedstraightdirectedlines=(Map[{#[[1]],StringTake[#[[2]],1]}&,Map[inputpointcoordinatesandcolors[[#]]&,Cases[swappedeges,Alternatives@@straightedges]],{2}]/.{{{coord1_List,"W"},{coord2_List,"B"}}:>{{coord2,"B"},{coord1,"W"}}})[[All,All,1]];
+(*Now we'll draw the bubbles*)
+themultiedges=Cases[Tally[inputedges],Except[{_,1}]];
+(*Each bubble can have at most one swapped edge, if any. We orient this one backwards and all the others from white to black.*)
+(*We now find the position of the BSpline that we want to orient in the opposite way*)
+positionsthatneedswapping=Map[Position[themultiedges,#][[1]]&,Cases[swappedeges,Alternatives@@themultiedges[[All,1]]]];
+If[themultiedges=!={},(*we have multiple edges going between the same two nodes*)
+(*We first orient themultiedges to all go from white node to black node. Then we make the BSpline*)
+themultiedges=Map[makeBsplineCurves@@#&,(MapAt[{#[[1]],StringTake[#[[2]],1]}&,MapAt[(inputpointcoordinatesandcolors[[#]])&,themultiedges,{All,1}],{All,1,All}]/.{{{coord1_List,"B"},{coord2_List,"W"}}:>Sequence[coord2,coord1],{{coord3_List,"W"},{coord4_List,"B"}}:>Sequence[coord3,coord4]})];
+];
+(*Now all BSplines go from white node to black node. We need to orient in the opposite way those BSplines at positions given by positionsthatneedswapping*)
+themultiedges=ReplacePart[themultiedges,Map[#->themultiedges[[Sequence@@#]][[All,{3,2,1}]]&,positionsthatneedswapping]];
+If[edgenamesdisplayed,
+outputgraphics={Arrowheads[{{0.04,0.4}}],Arrow[Join[normalstraightdirectedlines,swappedstraightdirectedlines]],Sequence@@Map[Arrow,themultiedges,{2}]};
+,outputgraphics={Arrowheads[{{0.04,0.6}}],Arrow[Join[normalstraightdirectedlines,swappedstraightdirectedlines]],Sequence@@Map[Arrow,themultiedges,{2}]};
+];
+,outputgraphics={Line[Map[inputpointcoordinatesandcolors[[#,1]]&,Map[First,Cases[Tally[inputedges],{_,1}]]]],Sequence@@inputmultiedges};
+];
+,outputgraphics={Line[Map[inputpointcoordinatesandcolors[[#,1]]&,Map[First,Cases[Tally[inputedges],{_,1}]]]],Sequence@@inputmultiedges};
+];
+outputgraphics
+];
+
+(*This function takes the graphical information and prints out Graph data which, when drawn, shows the node numbers of the Kasteleyn next to each node in the graph*)
+makeNodeNumbers[shownumbers_,inputpointcoordinatesandcolors_]:=Block[{recenterPositions,nodenumbersasstrings,nodenumberpositions,nodenumbersgraphics},
+If[shownumbers,
+(*This function makes sure that if the position of the node number ends up outside the drawing box, it will be moved to be inside the box*)
+recenterPositions=Function[{input},
+Block[{output},
+If[input<=-1.5,
+output=input+0.2;
+,If[input>=1.5,
+output=input-0.2;
+,output=input;
+];
+];
+output]
+];
+(*these are the node numbers written as strings*)
+nodenumbersasstrings=Sort[MapThread[{#1,#2}&,{Join[Flatten[Position[inputpointcoordinatesandcolors,{_,"WI"}]],Flatten[Position[inputpointcoordinatesandcolors,{_,"WE"}]],Flatten[Position[inputpointcoordinatesandcolors,{_,"BI"}]],Flatten[Position[inputpointcoordinatesandcolors,{_,"BE"}]]],Map[ToString,Range[Length[inputpointcoordinatesandcolors]]]}]][[All,2]];
+(*these are the positions of the node numbers. If they fall outside the drawing box, we move them back into the box*)
+nodenumberpositions=Map[recenterPositions[#]&,inputpointcoordinatesandcolors[[All,1]]+0.1,{2}];
+nodenumbersgraphics=MapThread[Text[Style[#1(*number to write*),Medium,FontColor->Blue,Background->RGBColor[1,1,1,0.8]],#2(*position of text*)]&,
+{nodenumbersasstrings,nodenumberpositions}];
+,(*if it is set to False, draw nothing*)
+nodenumbersgraphics={};
+];
+nodenumbersgraphics
+];
+
+(*This function takes the graphical information and prints out Graph data which, when drawn, shows the external node numbers of the Grassmannian. This appears aas a green number next to each external node in the graph*)
+makeExternalNumbers[showexternalnumbers_,inputpointcoordinatesandcolors_]:=Block[{recenterPositions,nodenumbersasstrings,nodenumberpositions,nodenumbersgraphics},
+If[showexternalnumbers,
+(*This function makes sure that if the position of the node number ends up outside the drawing box, it will be moved to be inside the box*)
+recenterPositions=Function[{input},
+Block[{output},
+output=input;
+If[input[[1]]<=-1.5,
+output[[1]]=input[[1]]+0.16;
+,If[input[[1]]>=1.5,
+output[[1]]=input[[1]]-0.16;
+];
+];
+If[input[[2]]<=-1.5,
+output[[2]]=input[[2]]+0.26;
+,If[input[[2]]>=1.5,
+output[[2]]=input[[2]]-0.26;
+];
+];
+output]
+];
+(*these are the node numbers written as strings*)
+nodenumbersasstrings=Sort[MapThread[{#1,#2}&,{(*first the external white nodes, then the external black ones. Their order in inputpointcoordinatesandcolors is the same as in the Kasteleyn (for each color)*)Join[Flatten[Position[inputpointcoordinatesandcolors,{_,"WE"}]],Flatten[Position[inputpointcoordinatesandcolors,{_,"BE"}]]],Map[ToString,Range[Length[Cases[inputpointcoordinatesandcolors,{_,"WE"}|{_,"BE"}]]]]}]][[All,2]];
+(*these are the positions of the node numbers. They are placed to always be inside the drawing box and not conflict too much with nodenumberstext*)
+nodenumberpositions=Map[recenterPositions[#+{0,0.13}]&,inputpointcoordinatesandcolors[[Flatten[Position[inputpointcoordinatesandcolors,{_,"WE"}|{_,"BE"}]],1]]];
+nodenumbersgraphics=Join[{Thick},
+MapThread[Text[Style[#1(*number to write*),FontColor->RGBColor[0.424,0.616,0.169],FontSize->18,FontWeight->Bold,Background->RGBColor[1,1,1,0.8]],#2(*position of text*)]&,
+{nodenumbersasstrings,nodenumberpositions}]];
+,(*if it is set to False, draw nothing*)
+nodenumbersgraphics={};
+];
+nodenumbersgraphics
+];
+
+(*This function provides some consistency checks on the inputted Kasteleyn, so as to not attempt to draw something that doesn't make any sense.*)
+checkinputKasteleyn[topleft_,topright_,bottomleft_,bottomright_]:=Block[{areyouOK},
+areyouOK=(And@@Map[Equal@@#&,Map[Length,{topleft,topright,bottomleft,bottomright},{2}]])&&(Length[topleft]==Length[topright])&&(Length[bottomleft]==Length[bottomright])&&(Length[Dimensions[topleft]]==1||Length[Dimensions[bottomleft]]==1||Dimensions[topleft][[2]]==Dimensions[bottomleft][[2]])&&(Length[Dimensions[topright]]==1||Length[Dimensions[bottomright]]==1||Dimensions[topright][[2]]==Dimensions[bottomright][[2]])&&(getDuplicateEdges[topleft,topright,bottomleft,bottomright]=={})&&(Cases[Cases[Flatten[{topleft,topright,bottomleft,bottomright}],_Integer],Except[0]]=={});
+areyouOK];
+
+(*This function takes the outputted Kasteleyn, given by the function makeKasteleynComponents, and labels the edges in the graph with the corresponding Z[i] names.*)
+drawEdgeNames[inputpointcoordinatesandcolors_,inputedges_,showedges_]:=Block[{graphOK,kast,edgenames,positionsinthekasteleyn,turnKasteleynPositionsToEdges,graphedges,replacetographposition,graphmultiedges,perfmatchings,referencematchingedges,labelpositions,outputgraphics},
+If[showedges,
+graphOK=graphBipartiteAndGoodExtNodesQ[inputpointcoordinatesandcolors,inputedges];
+If[graphOK,
+kast=makeKasteleynComponents[inputpointcoordinatesandcolors,inputedges];
+edgenames=Variables[kast];
+(*Each Z[i] variables will now be translated into an edge name {i,j} in the graph*)
+positionsinthekasteleyn=Map[Position[kast,#][[1,Range[3]]]&,edgenames];
+turnKasteleynPositionsToEdges=Function[{posinkast},
+Block[{relevantnodes,relevantedge},
+relevantnodes=Map[Flatten[Position[inputpointcoordinatesandcolors,{_,#}]]&,posinkast[[1]]/.{1->{"WI","BI"},2->{"WI","BE"},3->{"WE","BI"},4->{"WE","BE"}}];
+relevantedge=Sort[MapThread[#1[[#2]]&,{relevantnodes,posinkast[[{2,3}]]}]];
+relevantedge]
+];
+graphedges=Map[turnKasteleynPositionsToEdges,positionsinthekasteleyn];
+(*Now we have the edge names {i,j}. We will turn each of these into a position, which is on the midway point of the edge. We will use ReplacePart to turn each position in graphedges to its corrresponding coordinate*)
+(*first we turn the single edges into their graph positions*)
+replacetographposition=Map[Position[graphedges,#][[1,1]]->Mean[inputpointcoordinatesandcolors[[#,1]]]&,Cases[Tally[graphedges],{_,1}][[All,1]]];
+(*Now we do the same for the multiedges*)
+graphmultiedges=Cases[Tally[graphedges],Except[{_,1}]];
+If[graphmultiedges=!={},
+perfmatchings=perfectMatchings[Sequence@@kast];
+If[perfmatchings!={},
+referencematchingedges=Variables[perfmatchings[[lowNumberLoopsPMpos[Sequence@@kast]]]];
+,referencematchingedges={};
+];
+(*We order the list #1 such that edges which appear in the reference perfect matching come first. This is because these edges will flow the opposite way in bubbles, and it is always the first BSpline that is chosen to flow the opposite way*)
+replacetographposition=Join[replacetographposition,MapThread[Sequence@@MapThread[Rule,{#1,#2}]&,{Map[Position[edgenames,#][[1,1]]&,Map[Join[Intersection[referencematchingedges,#],Complement[#,Intersection[referencematchingedges,#]]]&,Map[edgenames[[Flatten[Position[graphedges,#]]]]&,graphmultiedges[[All,1]]]],{2}],Map[(BSplineFunction@@#)[0.5]&,Map[makeBsplineCurves@@#&,(MapAt[{#[[1]],StringTake[#[[2]],1]}&,MapAt[(inputpointcoordinatesandcolors[[#]])&,graphmultiedges,{All,1}],{All,1,All}]/.{{{coord1_List,"B"},{coord2_List,"W"}}:>Sequence[coord2,coord1],{{coord3_List,"W"},{coord4_List,"B"}}:>Sequence[coord3,coord4]})],{2}]}]];
+];
+labelpositions=ReplacePart[graphedges,replacetographposition];
+(*Now we have all the positions, and are ready to print out the graphics data for the edge labels*)
+edgenames=Map[ToString,edgenames];
+outputgraphics=MapThread[Text[Style[#1(*edge name*),FontColor->RGBColor[0.173,0.659,0.761],Medium,Background->RGBColor[1,1,1,0.8]],#2(*position of text*)]&,
+{edgenames,labelpositions}];
+,outputgraphics={};
+];
+,outputgraphics={};
+];
+outputgraphics
+];
+
+drawGraph[topleft_:{},topright_:{},bottomleft_:{},bottomright_:{}]/;(Head[topleft]===List&&Head[topright]===List&&Head[bottomleft]===List&&Head[bottomright]===List):=DynamicModule[{nodecolor="White",internalexternal="Internal",pointcoordinatesandcolors={},temppointcoordinatesandcolors={},temporarydottededge={},tempnormaledges={},edges={},removableedges={},tempremovableedges={},removablesuptodate=True,clickedposition,unclickedposition,addremove="Add",draggedposition,nodeinfo,nodenumber,introprinted=0,introprintedremovablewarning=0,multiedges={},tempmultiedges={},getRemovableEdges,drawRemovableLines,madeit,newposition,oldposition,nodenumberstext=False,externalnumberstext=False,showremovableedges=False,perfectorientation=False,edgenametext=False,enablebuttons=True,edgebuttonlist=Column[{}],areyoupressed={"DialogBox"}},
+(*The drawn graph is a Dynamic object, it's redrawn any time the graph has changed. There are two main variables that specify what to draw: pointcoordinatesandcolors, which is the list of nodes, and edges, the list of edges. Each element in pointcoordinatesandcolors contains the coordinates of the node in the Graphics box (whose positions are always approximated to the nearest 0.1 value, effectively turning the box into a grid), and a string which specifies what type of node you have: "WI" for white internal, "BI", for black internal, "WE" and "BE" for the external nodes.*)
+(*We make a function that takes a list of removable edges in the format {{i,j},...} and the coordinates of points, and gives the graphics data for the edges, to be used when drawing removable edges. If showthearrows is True, it will also draw arrows according to the perfect orientation*)
+drawRemovableLines=Function[{inputremovabledges,newpointcoordinatesandcolors,newedges,showthearrows,showtheedgenames},
+Block[{newmultiedges,todrawmultiedges,drawnlines,positiontodraw,objectstodraw,removablelines},
+If[showthearrows,
+newmultiedges=Cases[Tally[newedges],Except[{_,1}]];
+If[newmultiedges=!={},(*we have multiple edges going between the same two nodes*)
+newmultiedges=Map[makeBsplineCurves@@#&,MapAt[Sequence@@(newpointcoordinatesandcolors[[#,1]])&,newmultiedges,{All,1}]];
+];
+(*instead of recalculating the direction of the arrows, we can just copy that made from drawLines*)
+drawnlines=drawLines[newpointcoordinatesandcolors,newedges,newmultiedges,showthearrows,edgenametext];
+(*Our removable edges will be drawn somewhere in drawlines. We list the positions, so as to fetch the relevant part of drawlines that correspond to removable edges.*)
+positiontodraw=Map[Sequence@@Position[drawnlines,#|Reverse[#]|BSplineCurve[{#[[1]],_,#[[2]]}]|BSplineCurve[{#[[2]],_,#[[1]]}]]&,Map[newpointcoordinatesandcolors[[#]][[All,1]]&,DeleteDuplicates[inputremovabledges]]];
+objectstodraw=Map[Arrow[drawnlines[[Sequence@@#]]]&,positiontodraw];
+If[showtheedgenames,
+removablelines=Sequence@@{Thickness[0.01],Arrowheads[{{0.05,0.4}}],Orange,Sequence@@objectstodraw};
+,removablelines=Sequence@@{Thickness[0.01],Arrowheads[{{0.05,0.6}}],Orange,Sequence@@objectstodraw};
+];
+,(*We first draw the bubbles, and then the normal lines.*)
+todrawmultiedges=Cases[Tally[inputremovabledges],Except[{_,1}]];
+If[todrawmultiedges=!={},(*we have multiple edges going between the same two nodes*)
+todrawmultiedges=Map[makeBsplineCurves@@#&,MapAt[Sequence@@(newpointcoordinatesandcolors[[#,1]])&,todrawmultiedges,{All,1}]];
+];
+removablelines=Sequence@@{Thickness[0.01],Orange,Line[Map[newpointcoordinatesandcolors[[#,1]]&,Map[First,Cases[Tally[inputremovabledges],{_,1}]]]],Sequence@@todrawmultiedges};
+];
+removablelines]
+];
+(*This function returns the quantities that are printed in the interactive graphics box. It gets evaluated every time any of its arguments change. Since when we drag nodes around the arguments change very rapidly, this function needs to be fast. Therefore, it has several If statements that only force the computation of removable edges the tickbox has been ticked, and if the list of removable edges is outdated. This function gets evaluated in the kernel when you tick the Tickbox, and in the FrontEnd when you change the graph. However, if the FrontEnd is going to take too long in evaluating it (more than 1 second), the box gets unticked and the FrontEnd does not evaluate this. If you then want to wait out the long computation, you can tick the box again, which will make the long computation happen in the kernel where it can take as long as it wants.*)
+getRemovableEdges=Function[{showtheedges,theedgelist,newpointcoordinatesandcolors,newedges,witharrows,withnamededges},
+Block[{returnededges},
+If[showtheedges,
+If[removablesuptodate,
+returnededges=theedgelist;
+,returnededges=findRemovableEdges[newpointcoordinatesandcolors,newedges];
+removableedges=returnededges;
+removablesuptodate=True;
+];
+,returnededges={};
+];
+returnededges=drawRemovableLines[returnededges,newpointcoordinatesandcolors,newedges,witharrows,withnamededges];
+returnededges]
+];
+(*By default we begin with an empty graph, i.e. pointcoordinatesandcolors={} and edges={}. However, if the user specified a Kasteleyn to be drawn, we begin by automatically drawing the graph using Mathematica, then rescaling the coordinates of its graph so as to fit into our Graphics box. We then populate pointcoordinatesandcolors and edges accordingly.*)
+If[{topleft,topright,bottomleft,bottomright}=!={{},{},{},{}},
+If[checkinputKasteleyn[topleft,topright,bottomleft,bottomright],
+(*The list of removable edges is not up to date (we only want to recompute the edges when removablesuptodate is False)*)
+removablesuptodate=False;
+{pointcoordinatesandcolors,edges}=makeGraphDatafromKasteleyn[topleft,topright,bottomleft,bottomright];
+(*When we have multiple edges, we should draw bubbles*)
+multiedges=Cases[Tally[edges],Except[{_,1}]];
+If[multiedges=!={},(*we have multiple edges going between the same two nodes*)
+multiedges=Map[makeBsplineCurves@@#&,MapAt[Sequence@@(pointcoordinatesandcolors[[#,1]])&,multiedges,{All,1}]];
+];
+,Print["The Kasteleyn in the input is not valid - please check."];
+];
+];
+(*Now it's time to make the interactive drawing box. The entire thing is in a Panel[...,Background\[Rule]LightBlue]. Inside this panel, there's a single element: Grid[{row1,row2,...},Spacings\[Rule]{{...},{...}}]. There are 5 rows in the grid. The first row contains the RadioButtons for drawing the graph nodes and edges, and the Clear All button. The second row is empty; it gives a bit of vertical space. The third row contains Checkboxes to augment the graph drawing with nodenumbers, arrows, etc. The fourth row contains the interactive graph-drawing box and the panel to remove edges. The fifth row contains the buttons for computing quantities and printing out the Kasteleyn and the graph drawing.*)
+Panel[Grid[{
+(*Row1*)
+{(*In this row there is a single Grid. It has 3 rows.*)
+Grid[{
+(*On this row we control the variable addremove, which takes the values "Add", "Remove", or "Move", and will control what a mouse-click does in Row4.*)
+{Row[{RadioButton[Dynamic[addremove],"Add"]," Add nodes/lines  "}],Row[{RadioButton[Dynamic[addremove],"Remove"]," Remove nodes  "}],Row[{RadioButton[Dynamic[addremove],"Move"]," Move nodes  "}]},
+{Null,Null,Null}(*this is bit of empty space*),
+(*The final row contains two Grids separated by white space. The first Grid controls the node colors, and the second contains the "Clear all" button.*)
+(*We control the variable nodecolor with Radiobuttons. These radiobuttons are only Enabled if addremove is set to "Add" and if the variable enablebuttons is set to True. enablebuttons is only set to False while we are dragging with the mouse in the drawing area in Row4. This is to emphasize the fact that if you are dragging a line from a node, the next node color is automatically bipartite; you only get to control the color of nodes if you are simply clicking around without dragging.*)
+{Grid[{{" Node color: ","   Node type:   "},{RadioButtonBar[Dynamic[nodecolor],{"White","Black"},Appearance->"Vertical",Enabled->Dynamic[enablebuttons&&(addremove/.{"Add"->True,"Remove"->False,"Move"->False})]],RadioButtonBar[Dynamic[internalexternal],{"Internal","External"},Appearance->"Vertical",Enabled->Dynamic[enablebuttons&&(addremove/.{"Add"->True,"Remove"->False,"Move"->False})]]}}],
+"","",
+(*To make the "Clear all" button appear lower down we make a Grid with an empty row before placing the button there.*)
+Grid[{{},
+{Button["Clear all",
+pointcoordinatesandcolors={};
+temporarydottededge={};
+edges={};
+multiedges={};
+removableedges={};
+removablesuptodate=True;
+temppointcoordinatesandcolors={};
+temporarydottededge={};
+tempnormaledges={};
+tempremovableedges={};
+tempmultiedges={};
+,ImageSize->Large]}
+}]
+}
+},Spacings->{{Automatic,Automatic,Automatic,Automatic},{Automatic,0,0,Automatic}
+}]},
+(*Row2*)
+(*This row is there to add a little vertical space*)
+{},
+(*Row3*)
+(*This row contains a single Grid with two rows in it. The first row has two Checkboxes in it, the second row has three. Here we control the variable nodenumberstext, which decides whether small blue node numbers should appear next to each node; externalnumberstext, which controls whether the external nodes (numbered according to their order in the path matrix) should appear; edgenametext, which controls whether to show the edge names given by the Kasteleyn matrix; perfectorientation, which controls whether the arrows of the default perfect orientation (chosen by pathMatrix) should be drawn out; and showremovableedges, which controls whether the removable edges should be drawn in a different color.*)
+(*Each Checkbox appears as an object with structure Row[text,checkbox]*)
+{Grid[{{Row[{"Kasteleyn node numbers: ",Checkbox[Dynamic[nodenumberstext]]}],"  ",
+Row[{"Grassmannian external numbers: ",Checkbox[Dynamic[externalnumberstext]]}]},
+{Row[{"Kasteleyn edge names:  ",Checkbox[Dynamic[edgenametext]]}],"  ",Row[{"Default perfect orientation: ",Checkbox[Dynamic[perfectorientation]]}],"  ",
+(*Removable edges are evaluated in the kernel when clicking on the Checkbox. If they require a long time to compute, my program always forces the user to use this Checkbox to view removable edges.*)
+Row[{"Removable edges: ",EventHandler[Checkbox[Dynamic[showremovableedges]],
+{{"MouseClicked",1}:> (
+(*If it's the first time we try and show the removable edges, warn the user that this can take a long time*)
+If[introprintedremovablewarning==0,Print["The computation of removable edges may take a longer time. If the time exceeds 1 second, the checkbox will automatically untick. To proceed with the computations of removable edges, it is necessary to retick the checkbox."];introprintedremovablewarning=1;];
+(*If showremovableedges was True, simply turn it off. Otherwise, compute them now (if they are outdated).*)
+If[showremovableedges,
+showremovableedges=False;
+,If[removablesuptodate==False,
+tempremovableedges=findRemovableEdges[pointcoordinatesandcolors,edges];
+removablesuptodate=True;
+removableedges=tempremovableedges;
+];
+showremovableedges=True;];)}
+,Method->"Queued"]}]}},Alignment->Right]},
+(*Row4*)
+(*This row contains a Grid, which in turn has a single row. This row has two elements: the dynamic graphics on which we draw the graph, and another Grid in which we have the bar for removing edges.*)
+{Grid[{
+(*The structure of the graphics is the following: it is a Dynamic[Graphics[{listofthingstobedrawn},PlotRange\[Rule]1.5,...,Background\[Rule]White].*)
+(*The Dynamic Graphics is in turn wrapped by an EventHandler, which says that if you click in certain ways on the object wrapped by the EventHandler, it can perform actions you want. The structure is 
+EventHandler[Dynamic[Graphics[...]],
+{"MouseClicked"\[RuleDelayed](action if you clicked and released on the same spot),{"MouseClicked",2}\[RuleDelayed](action if you right-clicked),"MouseDown"\[RuleDelayed](action to do as soon as the the mouse click is pressed down),"MouseDragged"\[RuleDelayed](action to do every time the mouse is moved while the click is pressed. This is recomputed a lot as you drag across the screen),"MouseUp"\[RuleDelayed](action to do as soon as the mouse click is released)} *)
+{EventHandler[Dynamic[Graphics[{(*draw edges that are not bubbles*)
+Thickness[0.005],
+(*draw the normal edges (and bubbles), which may be endowed with perfect orientation*)
+Sequence@@drawLines[pointcoordinatesandcolors,edges,multiedges,perfectorientation,edgenametext],
+(*draw removable edges if showremovableedges is set to True. This will update if any of its input variables change*)
+getRemovableEdges[showremovableedges,removableedges,pointcoordinatesandcolors,edges,perfectorientation,edgenametext],
+(*draw dotted edge as you drag the mouse*)
+Thickness[0.005],temporarydottededge,
+(*draw the nodes; external ones get a red edge to distinguish them*)
+{Black,EdgeForm[{Thick,Black}],Map[Disk[#,0.035]&,Cases[pointcoordinatesandcolors,{_,"BI"}][[All,1]]]},{Black,EdgeForm[{Thick,Red}],Map[Disk[#,0.035]&,Cases[pointcoordinatesandcolors,{_,"BE"}][[All,1]]]},{White,EdgeForm[{Thick,Black}],Map[Disk[#,0.035]&,Cases[pointcoordinatesandcolors,{_,"WI"}][[All,1]]]},{White,EdgeForm[{Thick,Red}],Map[Disk[#,0.035]&,Cases[pointcoordinatesandcolors,{_,"WE"}][[All,1]]]},
+(*draw small blue node numbers next to each node, if nodenumberstext is set to True*)
+makeNodeNumbers[nodenumberstext,pointcoordinatesandcolors],
+(*draw green node numbers next to external nodes, if externalnumberstext is set to True*)
+makeExternalNumbers[externalnumberstext,pointcoordinatesandcolors],
+(*draw the edge names appearing in the outputted Kasteleyn on top of the edges*)
+drawEdgeNames[pointcoordinatesandcolors,edges,edgenametext]
+},(*finished drawing. Now we list the options of the Graphics[{thingstodraw},options].*)
+PlotRange->1.5,Frame->True,FrameTicks->None,ImageSize->{400,400},Background->White]],
+(*Now the Dynamic box is finished. Here we list the actions to perform in the EventHandler*)
+(*Drawing new nodes and lines is only done with "MouseDown", "MouseDragged" and "MouseUp". "MouseClicked" is used to remove nodes and {"MouseClicked",2} is used to change them from internal to external.*)
+(*In each case we approximate the mouse position so as to not need to click infinitely precisely.*)
+{"MouseClicked":> (
+clickedposition=Round[MousePosition["Graphics"],0.1];
+(*if addremove is set to "Remove", find out which node you clicked on (if any) and remove it. Then also remove the edges connected to it*)
+If[addremove==="Remove",
+nodenumber=Flatten[Position[pointcoordinatesandcolors,{clickedposition,_}]];
+If[nodenumber=!={},
+temppointcoordinatesandcolors=Delete[pointcoordinatesandcolors,nodenumber[[1]]];
+tempnormaledges=DeleteCases[edges,{nodenumber[[1]],_}|{_,nodenumber[[1]]}]/.{zz_/;(zz>nodenumber[[1]]):>zz-1};
+(*if showremovableedges is True, we may be stuck waiting for the FrontEnd to compute the new removable edges, and if it takes more than 5 seconds it will time out and kill the whole graph. Therefore, we test if the computation time is longer than 2 seconds. If it is, we'll turn off showremovableedges, to avoid recomputing it. Otherwise it's OK. Once we turned it off, if the user goes and turns it back on again there is no problem with it taking longer than 5 seconds, as it is set to work in the kernel (using Method\[Rule]"Queued") instead of the FrontEnd.*)
+If[showremovableedges,
+madeit=TimeConstrained[{drawRemovableLines[findRemovableEdges[temppointcoordinatesandcolors,tempnormaledges],temppointcoordinatesandcolors,tempnormaledges,perfectorientation,edgenametext]},1,"fail"];
+If[madeit==="fail",
+showremovableedges=False;
+];
+];
+removablesuptodate=False;
+pointcoordinatesandcolors=temppointcoordinatesandcolors;
+edges=tempnormaledges;
+multiedges=Cases[Tally[edges],Except[{_,1}]];
+If[multiedges=!={},(*we have multiple edges going between the same two nodes*)
+multiedges=Map[makeBsplineCurves@@#&,MapAt[Sequence@@(pointcoordinatesandcolors[[#,1]])&,multiedges,{All,1}]];
+];
+];
+];
+)
+,{"MouseClicked",2}:>(
+clickedposition=Round[MousePosition["Graphics"],0.1];
+(*if addremove is set to "Add", we are in drawing mode, so a right-click is interpreted as switching a node number from internal to external*)
+If[addremove==="Add",
+nodenumber=Flatten[Position[pointcoordinatesandcolors,{clickedposition,_}]];
+If[nodenumber=!={},
+temppointcoordinatesandcolors=pointcoordinatesandcolors;
+temppointcoordinatesandcolors[[nodenumber[[1]],2]]=temppointcoordinatesandcolors[[nodenumber[[1]],2]]/.{"WI"->"WE","WE"->"WI","BI"->"BE","BE"->"BI"};
+(*again, we only turn off showremovableedges if it takes a long time to compute the removable edges*)
+If[showremovableedges,
+madeit=TimeConstrained[{drawRemovableLines[findRemovableEdges[temppointcoordinatesandcolors,edges],temppointcoordinatesandcolors,edges,perfectorientation,edgenametext]},1,"fail"];
+If[madeit==="fail",
+showremovableedges=False;
+];
+];
+removablesuptodate=False;
+pointcoordinatesandcolors=temppointcoordinatesandcolors;
+];
+];
+)
+,"MouseDown":>(
+(*if addremove is set to "Add", we are in drawing mode.*)
+If[addremove==="Add",
+clickedposition=Round[MousePosition["Graphics"],0.1];
+(*if the position does not have a node already, add a new node of the specified color and type*)
+If[FreeQ[pointcoordinatesandcolors,{clickedposition,_}],
+pointcoordinatesandcolors=Append[pointcoordinatesandcolors,{clickedposition,StringJoin[StringTake[nodecolor,1],StringTake[internalexternal,1]]}];
+];
+];
+(*if addremove is set to "Move", we record where we are now.*)
+If[addremove==="Move",
+oldposition=Round[MousePosition["Graphics"],0.1];
+];
+)
+,"MouseDragged":>(
+(*when we are finished dragging, we automatically choose the color of the node at the end-point. Therefore we set enablebuttons to False to emphasize that the user no longer can control this information.*)
+enablebuttons=False;
+(*if addremove is set to "Add", we are in drawing mode. We draw a dotted edge between the clickedposition and the current position to show where the new edge will be. If we move the mouse outside the box, we force the position back into the box.*)
 If[addremove==="Add",
 draggedposition=Round[MousePosition["Graphics"],0.1]/.{z1_/;(z1>1.5)->1.5,z2_/;(z2<-1.5)->-1.5};
 temporarydottededge={Gray,Dashed,Line[{clickedposition,draggedposition}]};
 ];
+(*if addremove is set to "Move", we need to relocate the node we clicked on*)
 If[addremove==="Move",
 newposition=Round[MousePosition["Graphics"],0.1]/.{z1_/;(z1>1.5)->1.5,z2_/;(z2<-1.5)->-1.5};
+(*if the new position is not on another existing node, move the node we clicked on (if any) and redraw the bubbles*)
 If[Cases[pointcoordinatesandcolors,{newposition,_}]==={},
 pointcoordinatesandcolors=pointcoordinatesandcolors/.{oldposition->newposition};
 multiedges=Cases[Tally[edges],Except[{_,1}]];
@@ -448,25 +1029,44 @@ oldposition=newposition;
 ];
 ),
 "MouseUp":>(
+ (*now that we are finished dragging, we again enable to buttons to choose node color and type.*)
 enablebuttons=True;
 If[addremove==="Add",
+temppointcoordinatesandcolors=pointcoordinatesandcolors;
+tempnormaledges=edges;
 unclickedposition=Round[MousePosition["Graphics"],0.1]/.{z1_/;(z1>1.5)->1.5,z2_/;(z2<-1.5)->-1.5};
-If[FreeQ[pointcoordinatesandcolors,{unclickedposition,_}],
-pointcoordinatesandcolors=Append[pointcoordinatesandcolors,{unclickedposition,StringJoin[StringTake[Cases[pointcoordinatesandcolors,{clickedposition,_}][[1,2]],1]/.{"B"->"W","W"->"B"},StringTake[internalexternal,1]]}];
+(*if we were drawing new nodes and edges, and we released the click on a new position, we draw a node of the opposite color to the clicked position. we still haven't added new edges*)
+If[FreeQ[temppointcoordinatesandcolors,{unclickedposition,_}],
+temppointcoordinatesandcolors=Append[temppointcoordinatesandcolors,{unclickedposition,StringJoin[StringTake[Cases[temppointcoordinatesandcolors,{clickedposition,_}][[1,2]],1]/.{"B"->"W","W"->"B"},StringTake[internalexternal,1]]}];
 ];
+(*if we released on a position different to the starting one, we need to add new edges*)
 If[unclickedposition=!=clickedposition,
-edges=Append[edges,Flatten[Position[pointcoordinatesandcolors,{clickedposition,_}|{unclickedposition,_}]]];
-multiedges=Cases[Tally[edges],Except[{_,1}]];
-If[multiedges=!={},(*we have multiple edges going between the same two nodes*)
-multiedges=Map[makeBsplineCurves@@#&,MapAt[Sequence@@(pointcoordinatesandcolors[[#,1]])&,multiedges,{All,1}]];
+tempnormaledges=Append[tempnormaledges,Flatten[Position[temppointcoordinatesandcolors,{clickedposition,_}|{unclickedposition,_}]]];
+tempmultiedges=Cases[Tally[tempnormaledges],Except[{_,1}]];
+If[tempmultiedges=!={},(*we have multiple edges going between the same two nodes*)
+tempmultiedges=Map[makeBsplineCurves@@#&,MapAt[Sequence@@(temppointcoordinatesandcolors[[#,1]])&,tempmultiedges,{All,1}]];
 ];
-,If[Last[pointcoordinatesandcolors][[1]]=!=clickedposition||MemberQ[edges,{_,Length[pointcoordinatesandcolors]}|{Length[pointcoordinatesandcolors],_}],
-nodeinfo=Cases[pointcoordinatesandcolors,{clickedposition,_}][[1]];
-pointcoordinatesandcolors=ReplacePart[pointcoordinatesandcolors,Position[pointcoordinatesandcolors,nodeinfo][[1,1]]->{clickedposition,StringJoin[StringTake[nodeinfo[[2]],{1}]/.{"B"->"W","W"->"B"},StringTake[nodeinfo[[2]],{2}]]}];
+(*if we released in the same position we started in, we don't draw any new edges, but we swap the color of the node we clicked on. We want to make sure that we are swapping the color of the node only if it wasn't a node we just created.*)
+,If[Last[temppointcoordinatesandcolors][[1]]=!=clickedposition||MemberQ[tempnormaledges,{_,Length[temppointcoordinatesandcolors]}|{Length[temppointcoordinatesandcolors],_}],
+nodeinfo=Cases[temppointcoordinatesandcolors,{clickedposition,_}][[1]];
+temppointcoordinatesandcolors=ReplacePart[temppointcoordinatesandcolors,Position[temppointcoordinatesandcolors,nodeinfo][[1,1]]->{clickedposition,StringJoin[StringTake[nodeinfo[[2]],{1}]/.{"B"->"W","W"->"B"},StringTake[nodeinfo[[2]],{2}]]}];
 ];
 ];
+(*again, we only turn off showremovableedges if it takes a long time to compute the removable edges*)
+If[showremovableedges,
+madeit=TimeConstrained[{drawRemovableLines[findRemovableEdges[temppointcoordinatesandcolors,tempnormaledges],temppointcoordinatesandcolors,tempnormaledges,perfectorientation,edgenametext]},1,"fail"];
+If[madeit==="fail",
+showremovableedges=False;
+];
+];
+removablesuptodate=False;
+pointcoordinatesandcolors=temppointcoordinatesandcolors;
+edges=tempnormaledges;
+If[unclickedposition=!=clickedposition,multiedges=tempmultiedges;];
+(*finally, we remove the dotted edge*)
 temporarydottededge={};
 ];
+(*if addremove is set to "Move", we need to make the final relocation of the node we clicked on*)
 If[addremove==="Move",
 unclickedposition=Round[MousePosition["Graphics"],0.1]/.{z1_/;(z1>1.5)->1.5,z2_/;(z2<-1.5)->-1.5};
 If[Cases[pointcoordinatesandcolors,{unclickedposition,_}]==={},
@@ -474,14 +1074,50 @@ pointcoordinatesandcolors=pointcoordinatesandcolors/.{oldposition->unclickedposi
 ];
 ];
 )
-}],Grid[{{Button["Remove edges:",
+}],
+(*The EventHandler[Dynamic[Graphic[...]],{actions}] is closed: we completely finished the interactive drawing box.*)
+(*Now we make a column where we may remove edges*)
+Grid[{{Button["Remove edges:",
+(*the Appearance of this button is given by the variable areyoupressed. If this variable is set to {"DialogBox"}, the button is "unpressed" and just looks like a normal DialogBox. In this case, clicking on it will set the variable edgebuttonlist to a column of buttons representing edges (which, when clicked, remove that edge). It will also set the variable areyoupressed to {"DialogBox","Pressed"}.
+If areyoupressed was already {"DialogBox","Pressed"}, then we remove the edge buttons and set areyoupressed to {"DialogBox"}*)
 If[areyoupressed==={"DialogBox"},
-edgebuttonlist=Dynamic[Column[Map[Button[Sort[UndirectedEdge@@(#/.MapThread[#1->#2&,{Join[Flatten[Position[pointcoordinatesandcolors,{_,"WI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"WE"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BE"}]]],Range[Length[pointcoordinatesandcolors]]}])],edges=Delete[edges,Position[edges,#][[1,1]]];multiedges=Cases[Tally[edges],Except[{_,1}]];If[multiedges=!={},(*we have multiple edges going between the same two nodes*)multiedges=Map[makeBsplineCurves@@#&,MapAt[Sequence@@(pointcoordinatesandcolors[[#,1]])&,multiedges,{All,1}]];];,ImageSize->Automatic]&,edges][[Ordering[Map[Sort,edges/.MapThread[#1->#2&,{Join[Flatten[Position[pointcoordinatesandcolors,{_,"WI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"WE"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BE"}]]],Range[Length[pointcoordinatesandcolors]]}]]]]]]];
+(*The column needds to by Dynamic because it needs to update if add or remove edges in the graph*)
+edgebuttonlist=Dynamic[Column[
+(*we make a Button for each element in edges*)
+Map[Button[(*the button should be an UndirectedEdge[nodenumber1,nodenumber2]. These nodenumbers are those of the Kasteleyn matrix, NOT the chronological order in which they appear in pointcoordinatesandcolors. Since elements of edges describe the latter, we take this numbering and with MapThread[#1\[Rule]#2,{positions of nodes in pointcoordinatesandcolors,what the nodes are called in the Kastelen}] translate the numbers to their correct values. We use Sort to turn UndirectedEdge[2,1] into UndirectedEdge[1,2].*)
+Sort[UndirectedEdge@@(#/.MapThread[#1->#2&,{
+(*positions of nodes in pointcoordinatesandcolors*)
+Join[Flatten[Position[pointcoordinatesandcolors,{_,"WI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"WE"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BE"}]]],
+(*what the nodes are called in the Kastelen*)
+Range[Length[pointcoordinatesandcolors]]}]
+)]
+(*we are finished with the label of the button*)
+,(*this is th action of the button. It simply removes the edge from the list of edges (and we then redrawn the bubbles accordingly)*)
+tempnormaledges=Delete[edges,Position[edges,#][[1,1]]];
+(*again, we only turn off showremovableedges if it takes a long time to compute the removable edges*)
+If[showremovableedges,
+madeit=TimeConstrained[{drawRemovableLines[findRemovableEdges[pointcoordinatesandcolors,tempnormaledges],pointcoordinatesandcolors,tempnormaledges,perfectorientation,edgenametext]},1,"fail"];
+If[madeit==="fail",
+showremovableedges=False;
+];
+];
+removablesuptodate=False;
+edges=tempnormaledges;multiedges=Cases[Tally[edges],Except[{_,1}]];If[multiedges=!={},(*we have multiple edges going between the same two nodes*)multiedges=Map[makeBsplineCurves@@#&,MapAt[Sequence@@(pointcoordinatesandcolors[[#,1]])&,multiedges,{All,1}]];];,
+(*we are done with the action done by clicking on the button*)
+ImageSize->Automatic]&,edges](*these buttons should be ordered lexicographically. We translate the node numbers again and find their Ordering*)[[Ordering[Map[Sort,edges/.MapThread[#1->#2&,{Join[Flatten[Position[pointcoordinatesandcolors,{_,"WI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"WE"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BI"}]],Flatten[Position[pointcoordinatesandcolors,{_,"BE"}]]],Range[Length[pointcoordinatesandcolors]]}]]]]]
+]];
+(*we are finished with the Column.*)
 areyoupressed={"DialogBox","Pressed"};
 ,edgebuttonlist=Column[{}];
 areyoupressed={"DialogBox"};
-];,Appearance->Dynamic[areyoupressed]]},{Pane[Dynamic[edgebuttonlist],ImageSize->{80,368},Scrollbars->{False,True},Alignment->{Left,Top}]}}]}}(*,Frame\[Rule]All*)]},
-{Row[{ActionMenu["Compute",
+];,Appearance->Dynamic[areyoupressed]]},
+(*we have only created a variable edgebuttonlist which is a column of buttons. But this column hasn't been drawn out anywhere. We do so in the second row of our Grid.*)
+{Pane[Dynamic[edgebuttonlist],ImageSize->{80,368},Scrollbars->{False,True}(*this adds vertical scrollbars*),Alignment->{Left,Top}]}}]}}]},
+(*Row5*)
+(*This row contains a single object called Row, which in turn contains an ActionMenu that computes quantities related to the graph, a button that prints out the Kasteleyn, and a button that prints out the graph. There is also white space between each of these buttons*)
+{Row[{(*some space*)"                                   ",
+(*The "Compute" menu*)
+ActionMenu["Compute",
 {"Are you reducible? (True/False)":>(If[perfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]=!= {},Print[reducibilityQ@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];,Print["This graph has no perfect matchings!"];];),
 "Path Matrix":>(If[perfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]=!= {},Print[pathMatrix@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];,Print["This graph has no perfect matchings!"];];),
 "Dimension of Grassmannian":>(If[perfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]=!= {},Print[dimensionGrassmannian@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];,Print["This graph has no perfect matchings!"];];),
@@ -492,8 +1128,19 @@ areyoupressed={"DialogBox"};
 "Planarity (True/False)":>(If[perfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]=!= {},Print[planarityQ@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];,Print["This graph has no perfect matchings!"];];),
 "Helicity k":>(If[perfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]=!= {},Print[getK@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];,Print["This graph has no perfect matchings!"];];),
 "Perfect Matchings":>(Print[perfectMatchings@@makeKasteleynComponents[pointcoordinatesandcolors,edges]];)}
-,Method->"Queued"],"           ",Button["Print graph",Print[Graph[Range[Length[pointcoordinatesandcolors]],edges,VertexCoordinates->pointcoordinatesandcolors[[All,1]],VertexSize->Medium,VertexStyle->MapThread[Rule,{Range[Length[pointcoordinatesandcolors]],pointcoordinatesandcolors[[All,2]]/.{"WI"->White,"WE"->White,"BI"->Black,"BE"->Black}}],EdgeStyle->Directive[Black,Thick]]];](*,Button["Raw data (Remove this buttom later)",Print[{pointcoordinatesandcolors,edges}];,ImageSize\[Rule]Large]*)}]}
-}(*,Frame\[Rule]All*),Spacings->{{Automatic,Automatic},{Automatic,0,0,Automatic,Automatic,Automatic}}],Background->LightBlue]
+,Method->"Queued"],
+(*some space*)
+"                ",
+Button["Print Kasteleyn components",
+(*The first time we print out the Kasteleyn, write out what the print-out elements stand for.*)
+If[introprinted==0,Print["The Kasteleyn components are: {\"top-left\",\"top-right\",\"bottom-left\",\"bottom-right\"}"];introprinted=1;];
+Print[makeKasteleynComponents[pointcoordinatesandcolors,edges]];
+,ImageSize->Large],
+(*some space*)
+"        ",
+(*"Print graph" button*)
+Button["Print graph",Print[Graph[Range[Length[pointcoordinatesandcolors]],edges,VertexCoordinates->pointcoordinatesandcolors[[All,1]],VertexSize->Medium,VertexStyle->MapThread[Rule,{Range[Length[pointcoordinatesandcolors]],pointcoordinatesandcolors[[All,2]]/.{"WI"->White,"WE"->White,"BI"->Black,"BE"->Black}}],EdgeStyle->Directive[Black,Thick]]];](*,Button["Raw data (Remove this buttom later)",Print[{pointcoordinatesandcolors,edges}];,ImageSize\[Rule]Large]*)}]}
+},Spacings->{{Automatic,Automatic},{Automatic,0,0,Automatic,Automatic,Automatic}}],Background->LightBlue]
 ];
 
 
