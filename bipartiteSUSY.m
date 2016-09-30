@@ -121,14 +121,23 @@ collapseBivalentNodes::usage="Takes the Kasteleyn of a diagram and returns the f
 simplifyGraph::usage="Removes bubbles and collapses bivalent nodes, until this is no longer possible."
 higgsEdgesBFT::usage="Consistently higgses a user-specified set of edges from a BFT, while making sure to maintain a correct index structure for all the edges."
 drawGraph::usage="Initiates an interactive tool that allows the user to draw a bipartite graph and output the Kasteleyn components. It is possible to input into the function an already-existing Kasteleyn, which will then become ediatable."
+functionMemory::usage="Determines whether certain frequently-used functions in the package store to memory their inputs and outputs, for faster execution."
+forgetStoredValues::usage="Clears all stored values in functions which remember their inputs and outputs."
 
 Begin["Private`"]
+
+
+functionMemory=True;
 
 
 (*Basic functions that manipule and extract information from the Kasteleyn*)
 
 
-joinupKasteleyn[topleft_,topright_,bottomleft_,bottomright_]:=joinupKasteleyn[topleft,topright,bottomleft,bottomright]=Join[Join[topleft,bottomleft],Join[topright,bottomright],2];
+joinupKasteleyn[topleft_,topright_,bottomleft_,bottomright_]:=Block[{fullkast},
+fullkast=Join[Join[topleft,bottomleft],Join[topright,bottomright],2];
+If[functionMemory,joinupKasteleyn[topleft,topright,bottomleft,bottomright]=fullkast;];
+fullkast
+];
 
 getNumberFaces[topleft_,topright_,bottomleft_,bottomright_]:=Block[{varlist,facelist,nf},
 varlist=Variables[Join[topleft,topright,bottomleft,bottomright]];
@@ -1206,7 +1215,7 @@ return
 
 perfectMatchings[topleft_,topright_,bottomleft_,bottomright_]:=perfectMatchings[topleft,topright,bottomleft,bottomright,False,False];
 perfectMatchings[topleft_,topright_,bottomleft_,bottomright_,checkneeded_]:=perfectMatchings[topleft,topright,bottomleft,bottomright,checkneeded,False];
-perfectMatchings[topleft_,topright_,bottomleft_,bottomright_,checkneeded_,BFTgraph_]:=perfectMatchings[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph]=Block[{checkOK,externalrows,externalcolumns,rowandcolumnnumbers,rowsmergedonleftandright,newtonpolynomial,perfectmatchigns,zz},
+perfectMatchings[topleft_,topright_,bottomleft_,bottomright_,checkneeded_,BFTgraph_]:=Block[{checkOK,externalrows,externalcolumns,rowandcolumnnumbers,rowsmergedonleftandright,newtonpolynomial,perfectmatchigns,zz},
 checkOK=True;
 If[checkneeded==True,
 checkOK=getKasteleynCheckQ[topleft,topright,bottomleft,bottomright,BFTgraph];
@@ -1232,18 +1241,20 @@ perfectmatchigns={};
 ];
 ,perfectmatchigns=Null;
 ];
+If[functionMemory,perfectMatchings[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph]=perfectmatchigns;];
 perfectmatchigns
 ];
 
 matchingPolytope[topleft_,topright_,bottomleft_,bottomright_]:=matchingPolytope[topleft,topright,bottomleft,bottomright,False,False];
 matchingPolytope[topleft_,topright_,bottomleft_,bottomright_,checkneeded_]:=matchingPolytope[topleft,topright,bottomleft,bottomright,checkneeded,False];
-matchingPolytope[topleft_,topright_,bottomleft_,bottomright_,checkneeded_,BFTgraph_]:=matchingPolytope[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph]=Block[{varlist,plist,pmatrix},
+matchingPolytope[topleft_,topright_,bottomleft_,bottomright_,checkneeded_,BFTgraph_]:=Block[{varlist,plist,pmatrix},
 varlist=Variables[joinupKasteleyn[topleft,topright,bottomleft,bottomright]];
 plist=perfectMatchings[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph];
 If[plist=!=Null,
 pmatrix=Table[MemberQ[Variables[plist[[jjj]]],varlist[[iii]]],{iii,Length[varlist]},{jjj,Length[plist]}]/.{True->1,False->0};
 ,pmatrix=Null;
 ];
+If[functionMemory,matchingPolytope[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph]=pmatrix;];
 pmatrix
 ];
 
@@ -1260,7 +1271,7 @@ survivingcolums
 
 matroidPolytope[topleft_,topright_,bottomleft_,bottomright_]:=matroidPolytope[topleft,topright,bottomleft,bottomright,False,False];
 matroidPolytope[topleft_,topright_,bottomleft_,bottomright_,checkneeded_]:=matroidPolytope[topleft,topright,bottomleft,bottomright,checkneeded,False];
-matroidPolytope[topleft_,topright_,bottomleft_,bottomright_,checkneeded_,BFTgraph_]:=matroidPolytope[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph]=Block[{pmatrix,externaledges,externalrows,matroidpoly},
+matroidPolytope[topleft_,topright_,bottomleft_,bottomright_,checkneeded_,BFTgraph_]:=Block[{pmatrix,externaledges,externalrows,matroidpoly},
 pmatrix=matchingPolytope[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph];
 If[pmatrix=!=Null,
 (*Only select those rows corresponding to external edges in the graph*)
@@ -1272,6 +1283,7 @@ matroidpoly={ConstantArray[0,Dimensions[pmatrix][[2]]]};
 ];
 ,matroidpoly=Null;
 ];
+If[functionMemory,matroidPolytope[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph]=matroidpoly;];
 matroidpoly
 ];
 
@@ -2455,7 +2467,7 @@ doubleedges=findDoubles[newtopleft,newtopright,newbottomleft,newbottomright];
 planarityQ[inputtopleft_,inputtopright_,inputbottomleft_,inputbottomright_]:=
 planarityQ[inputtopleft,inputtopright,inputbottomleft,inputbottomright,True];
 planarityQ[inputtopleft_,inputtopright_,inputbottomleft_,inputbottomright_,collapsebivalentnodes_]:=
-planarityQ[inputtopleft,inputtopright,inputbottomleft,inputbottomright,collapsebivalentnodes]=Block[{topleft,topright,bottomleft,bottomright,kasteleyn,oneskasteleyn,adjacencymat,graph,planar,externals,extnum,allperms,numberofperms,permutations,externaladjacencyseed,externaladjencyattempts,ii,testgraph},
+Block[{topleft,topright,bottomleft,bottomright,kasteleyn,oneskasteleyn,adjacencymat,graph,planar,externals,extnum,allperms,numberofperms,permutations,externaladjacencyseed,externaladjencyattempts,ii,testgraph},
 If[collapsebivalentnodes,
 {topleft,topright,bottomleft,bottomright}=collapseBivalentNodes[inputtopleft,inputtopright,inputbottomleft,inputbottomright];
 ,{topleft,topright,bottomleft,bottomright}={inputtopleft,inputtopright,inputbottomleft,inputbottomright};
@@ -2493,6 +2505,7 @@ Break[];
 planar=True;
 ];
 ];
+If[functionMemory,planarityQ[inputtopleft,inputtopright,inputbottomleft,inputbottomright,collapsebivalentnodes]=planar;];
 planar
 ];
 
@@ -2540,7 +2553,7 @@ sinknodes
 getExternalEdgeNodeNumbers[topleft_,topright_,bottomleft_,bottomright_,externaledgelist_]:=Union[Map[#[[1]]&,Position[bottomleft,Alternatives@@externaledgelist]+Length[topleft]],Map[#[[2]]&,Position[topright,Alternatives@@externaledgelist]+Total[Dimensions[Join[topleft,bottomleft]]]]];
 
 traditionalConnectivityMatrix[topleft_,topright_,bottomleft_,bottomright_]:=traditionalConnectivityMatrix[topleft,topright,bottomleft,bottomright,Null];
-traditionalConnectivityMatrix[topleft_,topright_,bottomleft_,bottomright_,referencematching_]:=traditionalConnectivityMatrix[topleft,topright,bottomleft,bottomright,referencematching]=Block[{perfmatchings,referenceperfmatch,kasteleyn,perfmatchvars,kastnopm,kastinvertedpm,bigmatrix,size,connectivitymat},
+traditionalConnectivityMatrix[topleft_,topright_,bottomleft_,bottomright_,referencematching_]:=Block[{perfmatchings,referenceperfmatch,kasteleyn,perfmatchvars,kastnopm,kastinvertedpm,bigmatrix,size,connectivitymat},
 If[referencematching===Null,
 perfmatchings=perfectMatchings[topleft,topright,bottomleft,bottomright];
 If[perfmatchings=!={},
@@ -2561,11 +2574,12 @@ connectivitymat=Inverse[bigmatrix];
 size=Total[Dimensions[joinupKasteleyn[topleft,topright,bottomleft,bottomright]]];
 connectivitymat=IdentityMatrix[size];
 ];
+If[functionMemory,traditionalConnectivityMatrix[topleft,topright,bottomleft,bottomright,referencematching]=connectivitymat;];
 connectivitymat
 ];
 
 connectivityMatrix[topleft_,topright_,bottomleft_,bottomright_]:=connectivityMatrix[topleft,topright,bottomleft,bottomright,Null];
-connectivityMatrix[topleft_,topright_,bottomleft_,bottomright_,referencematching_]:=connectivityMatrix[topleft,topright,bottomleft,bottomright,referencematching]=Module[{perfmatchings,referenceperfmatch,kasteleyn,bigmatrix,adjacencymat,graph,connectivitymat,turnIntoContributionNoLoops,cycles,loopnodes,extraloopnodes,jj,toadd,duplnode,loopcontributions,cyclenodes,turnIntoContribution,size},
+connectivityMatrix[topleft_,topright_,bottomleft_,bottomright_,referencematching_]:=Module[{perfmatchings,referenceperfmatch,kasteleyn,bigmatrix,adjacencymat,graph,connectivitymat,turnIntoContributionNoLoops,cycles,loopnodes,extraloopnodes,jj,toadd,duplnode,loopcontributions,cyclenodes,turnIntoContribution,size},
 If[referencematching===Null,
 perfmatchings=perfectMatchings[topleft,topright,bottomleft,bottomright];
 If[perfmatchings=!={},
@@ -2617,12 +2631,13 @@ connectivitymat=Map[Total,Map[turnIntoContribution,connectivitymat,{3}],{2}];
 size=Total[Dimensions[joinupKasteleyn[topleft,topright,bottomleft,bottomright]]];
 connectivitymat=IdentityMatrix[size];
 ];
+If[functionMemory,connectivityMatrix[topleft,topright,bottomleft,bottomright,referencematching]=connectivitymat;];
 connectivitymat
 ];
 
 traditionalPathMatrix[topleft_,topright_,bottomleft_,bottomright_]:=traditionalPathMatrix[topleft,topright,bottomleft,bottomright,Null];
 traditionalPathMatrix[topleft_,topright_,bottomleft_,bottomright_,referencematching_]:=
-traditionalPathMatrix[topleft,topright,bottomleft,bottomright,referencematching]=Block[{perfmatchings,referenceperfmatch,bigpathmatrix,externalrows,externalcolumns,finalpathmatrix},
+Block[{perfmatchings,referenceperfmatch,bigpathmatrix,externalrows,externalcolumns,finalpathmatrix},
 If[referencematching===Null,
 perfmatchings=perfectMatchings[topleft,topright,bottomleft,bottomright];
 If[perfmatchings=!={},
@@ -2641,12 +2656,13 @@ finalpathmatrix=Expand[Simplify[bigpathmatrix[[externalrows,externalcolumns]]]];
 ,Print["This graph has no perfect matchings"];
 finalpathmatrix=Null;
 ];
+If[functionMemory,traditionalPathMatrix[topleft,topright,bottomleft,bottomright,referencematching]=finalpathmatrix;];
 finalpathmatrix
 ];
 
 pathMatrix[topleft_,topright_,bottomleft_,bottomright_]:=pathMatrix[topleft,topright,bottomleft,bottomright,Null];
 pathMatrix[topleft_,topright_,bottomleft_,bottomright_,referencematching_]:=
-pathMatrix[topleft,topright,bottomleft,bottomright,referencematching]=Module[{perfmatchings,referenceperfmatch,kasteleyn,bigmatrix,adjacencymat,graph,sources,allexternalnodes,finalpathmatrix,turnIntoContributionNoLoops,cycles,loopnodes,extraloopnodes,jj,toadd,duplnode,loopcontributions,cyclenodes,turnIntoContribution},
+Module[{perfmatchings,referenceperfmatch,kasteleyn,bigmatrix,adjacencymat,graph,sources,allexternalnodes,finalpathmatrix,turnIntoContributionNoLoops,cycles,loopnodes,extraloopnodes,jj,toadd,duplnode,loopcontributions,cyclenodes,turnIntoContribution},
 If[referencematching===Null,
 perfmatchings=perfectMatchings[topleft,topright,bottomleft,bottomright];
 If[perfmatchings=!={},
@@ -2701,6 +2717,7 @@ finalpathmatrix=Map[Total,Map[turnIntoContribution,finalpathmatrix,{3}],{2}];
 ,Print["This graph has no perfect matchings"];
 finalpathmatrix=Null;
 ];
+If[functionMemory,pathMatrix[topleft,topright,bottomleft,bottomright,referencematching]=finalpathmatrix;];
 finalpathmatrix
 ];
 
@@ -2749,7 +2766,7 @@ loopdenominator
 ];
 
 minorsAsPerfectMatchings[topleft_,topright_,bottomleft_,bottomright_]:=minorsAsPerfectMatchings[topleft,topright,bottomleft,bottomright,Null];
-minorsAsPerfectMatchings[topleft_,topright_,bottomleft_,bottomright_,referencematching_]:=minorsAsPerfectMatchings[topleft,topright,bottomleft,bottomright,referencematching]=Block[{perfmatchings,referenceperfmatch,pathmat,minors,loopdenominator,truemapminortoperfmatch},
+minorsAsPerfectMatchings[topleft_,topright_,bottomleft_,bottomright_,referencematching_]:=Block[{perfmatchings,referenceperfmatch,pathmat,minors,loopdenominator,truemapminortoperfmatch},
 (*If we haven't selected a specific perfect matching, choose one with lowest possible multiplicity*)
 If[referencematching===Null,
 perfmatchings=perfectMatchings[topleft,topright,bottomleft,bottomright];
@@ -2769,10 +2786,11 @@ truemapminortoperfmatch=Expand[Simplify[minors loopdenominator]];
 ];
 ,truemapminortoperfmatch=Null;
 ];
+If[functionMemory,minorsAsPerfectMatchings[topleft,topright,bottomleft,bottomright,referencematching]=truemapminortoperfmatch;];
 truemapminortoperfmatch
 ];
 
-dimensionGrassmannian[topleft_,topright_,bottomleft_,bottomright_]:=dimensionGrassmannian[topleft,topright,bottomleft,bottomright]=Block[{minorexpressions,minorvars,tangentspacedim},
+dimensionGrassmannian[topleft_,topright_,bottomleft_,bottomright_]:=Block[{minorexpressions,minorvars,tangentspacedim},
 minorexpressions=minorsAsPerfectMatchings[topleft,topright,bottomleft,bottomright];
 If[minorexpressions===Null,
 tangentspacedim=-1;
@@ -2783,6 +2801,7 @@ tangentspacedim=0;
 tangentspacedim=MatrixRank[Table[D[minorexpressions[[iii]],minorvars[[jjj]]],{iii,Length[minorexpressions]},{jjj,Length[minorvars]}]]-1;
 ];
 ];
+If[functionMemory,dimensionGrassmannian[topleft,topright,bottomleft,bottomright]=tangentspacedim;];
 tangentspacedim
 ];
 
@@ -3034,13 +3053,14 @@ relations=relations[[Complement[Range[Length[relations]],todelete]]](*/.{minor\[
 relations
 ];*)
 
-getPremadePluckerRelations[]:=getPremadePluckerRelations[]=Block[{filename,premaderelationsfromfile},
+getPremadePluckerRelations[]:=Block[{filename,premaderelationsfromfile},
 filename=FileNameJoin[{Directory[],"premadePluckerRelations"}];
 premaderelationsfromfile=Get[(filename)];
+If[functionMemory,getPremadePluckerRelations[]=premaderelationsfromfile;];
 premaderelationsfromfile
 ];
 
-pluckerRelations[k_Integer,n_Integer]:=pluckerRelations[k,n]=Block[{filename,premaderelations,indexlist1,indexlist2,relations,conditions,i,j,oppositerelations,todelete,ii},
+pluckerRelations[k_Integer,n_Integer]:=Block[{filename,premaderelations,indexlist1,indexlist2,relations,conditions,i,j,oppositerelations,todelete,ii},
 filename=FileNameJoin[{Directory[],"premadePluckerRelations"}];
 If[9<=n<=10&&k>2&&k<(n-2)&&FileExistsQ[(filename)],
 premaderelations=getPremadePluckerRelations[];
@@ -3065,6 +3085,7 @@ todelete=Join[todelete,Flatten[Position[oppositerelations,relations[[ii]]]]];
 ];
 relations=relations[[Complement[Range[Length[relations]],todelete]]];
 ];
+If[functionMemory,pluckerRelations[k,n]=relations;];
 relations
 ];
 
@@ -4102,6 +4123,20 @@ secretrelations=Map[turnIntoCleanRelation[#]&,secretrelationssolutions];
 ];
 secretrelations
 ];
+
+
+(*(*Now we'll make a function capable of clearing the memory stored by functions that remember input and output*)
+(*When the package is loaded, functionswithmemory and downvaluesofmemoryfunctions are stored*)
+functionswithmemory={joinupKasteleyn,perfectMatchings,matchingPolytope,matroidPolytope,planarityQ,traditionalConnectivityMatrix,connectivityMatrix,traditionalPathMatrix,pathMatrix,minorsAsPerfectMatchings,dimensionGrassmannian,getPremadePluckerRelations,pluckerRelations};
+(*the DownValues of a function list all of the definitinos beginning with this symbol name. If there are sotred values f[1]=val, they will appear here before f[input_]:=output. We just need to remove these*)
+downvaluesofmemoryfunctions=Map[DownValues,functionswithmemory];
+Protect[functionswithmemory,downvaluesofmemoryfunctions];
+(*This function will clear all the stored values*)
+forgetStoredValues[]:=Block[{ii},
+For[ii=1,ii\[LessEqual]Length[functionswithmemory],ii++,
+DownValues[Evaluate[functionswithmemory[[ii]]]]=downvaluesofmemoryfunctions[[ii]]
+];
+];*)
 
 
 End[];
