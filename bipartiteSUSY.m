@@ -143,8 +143,11 @@ getNumberFaces[topleft_,topright_,bottomleft_,bottomright_]:=Block[{varlist,face
 varlist=Variables[Join[topleft,topright,bottomleft,bottomright]];
 (*If all variables are in the required format X[i,j], go ahead and count faces*)
 If[Cases[varlist,_[_Integer,_Integer]]==varlist,
-facelist=Union[Flatten[List@@@varlist]];
+If[varlist=={},
+nf=1;
+,facelist=Union[Flatten[List@@@varlist]];
 nf=Length[facelist];
+];
 ,Print["Error! The edges must all have the form X[i,j] (where X may be any letter/letters)."];
 nf=Null;
 ];
@@ -1839,7 +1842,10 @@ If[standardfacevariables,
 facenames=getFaceLabels[topleft,topright,bottomleft,bottomright];
 facevariables=Map[(Times@@Cases[alledges,_[_,#]])/(Times@@Cases[alledges,_[#,_]])&,facenames];
 facevariablevectors=Map[Table[D[#,alledges[[iii]]],{iii,Length[alledges]}]/.Map[#->1&,alledges]&,facevariables];
+If[getNumberInternalFaces[topleft,topright,bottomleft,bottomright]>0,
 internalpos=Flatten[Position[facenames,Alternatives@@getInternalFaceLabels[topleft,topright,bottomleft,bottomright]]];
+,internalpos=Flatten[Position[facenames,Alternatives@@{}]];
+];
 internalfacevariables=facevariables[[internalpos]];
 internalfacevariablevectors=facevariablevectors[[internalpos]];
 externalfacevariables=Complement[facevariables,internalfacevariables];
