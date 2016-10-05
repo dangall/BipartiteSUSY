@@ -1547,7 +1547,10 @@ nextedgepos=Position[toplefttopright,nextedge][[1]];
 
 internalZigZagNumeratorDenominator[topleft_,topright_,bottomleft_,bottomright_,startingedge_,numeratorstart_:True,alreadytakenedges_:{{},{}}]:=Block[{blacktowhitematrix,whitetoblackmatrix,kasteleyn,allnumeratoredges,alldenominatoredges,numeratoredges,denominatoredges,currentedge,currentposition},
 blacktowhitematrix=Join[topleft,bottomleft];
+If[Length[topleft]>0,
 whitetoblackmatrix=Join[topleft,topright,2];
+,whitetoblackmatrix={};
+];
 kasteleyn=joinupKasteleyn[topleft,topright,bottomleft,bottomright];
 {allnumeratoredges,alldenominatoredges}=alreadytakenedges;
 If[numeratorstart,
@@ -1603,7 +1606,10 @@ kasteleyn=joinupKasteleyn[topleft,topright,bottomleft,bottomright];
 bottomleftvars=Variables[bottomleft];
 toprightvars=Variables[topright];
 blacktowhitematrix=Join[topleft,bottomleft];
+If[Length[topleft]>0,
 whitetoblackmatrix=Join[topleft,topright,2];
+,whitetoblackmatrix={};
+];
 (*We will begin by making a function that can give a zig-zag which starts from an external white node.*)
 allnumeratoredges={};
 alldenominatoredges={};
