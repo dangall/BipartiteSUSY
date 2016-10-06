@@ -133,8 +133,12 @@ functionMemory=True;
 (*Basic functions that manipule and extract information from the Kasteleyn*)
 
 
-joinupKasteleyn[topleft_,topright_,bottomleft_,bottomright_]:=Block[{fullkast},
-fullkast=Join[Join[topleft,bottomleft],Join[topright,bottomright],2];
+joinupKasteleyn[topleft_,topright_,bottomleft_,bottomright_]:=Block[{fullkast,leftpart},
+leftpart=Join[topleft,bottomleft];
+If[leftpart!={},
+fullkast=Join[leftpart,Join[topright,bottomright],2];
+,fullkast={};
+];
 If[functionMemory,joinupKasteleyn[topleft,topright,bottomleft,bottomright]=fullkast;];
 fullkast
 ];
@@ -2259,12 +2263,33 @@ outputbottomleft=kasteleyn[[-(bottomrightrownum);;,;;-(bottomrightcolnum+1)]];
 {outputtopleft,outputtopright,outputbottomleft,outputbottomright}
 ];*)
 
+formNewMatrixInternalInternal[{rowsbefore___},{rowsafter___},{firstzeros___},{secondzeros___},{thirdzeros___}]:=Block[{outputmat,internalsamecolorcolumns,sumoftwocolumns,remainingsamecolorcolumns},
+(*The output matrix is composed of all rows except those of the bivalent node.*)
+(*We only want to keep certain columns, i.e. opposite-colored nodes: those that do not connect to the bivalent node and the sum of those columns belonging to the bivalent node*)
+outputmat={rowsbefore,rowsafter};
+If[outputmat=!={},
+(*in this matrix there are other nodes of the same color as the bivalent one*)
+internalsamecolorcolumns=outputmat[[All,Join[Range[Length[{firstzeros}]],Range[Length[{firstzeros}]+2,Length[{firstzeros,secondzeros}]+1],Range[Length[{firstzeros,secondzeros}]+3,Length[{firstzeros,secondzeros,thirdzeros}]+2]]]];
+sumoftwocolumns=Map[{Total[#]}&,outputmat[[All,{Length[{firstzeros}]+1,Length[{firstzeros,secondzeros}]+2}]]];
+remainingsamecolorcolumns=outputmat[[All,Range[Length[{firstzeros,secondzeros,thirdzeros}]+3,Length[outputmat[[1]]]]]];
+outputmat=Join[internalsamecolorcolumns,sumoftwocolumns,remainingsamecolorcolumns,2];
+,(*signal there we removed every node of this color. We want to know how many opposite-colored nodes are left though*)
+outputmat={"empty",Length[{firstzeros,secondzeros,thirdzeros}]+1};
+];
+outputmat
+];
+
 collapseBlackNodesInternalInternal[inputtopleft_,inputtopright_,inputbottomleft_,inputbottomright_]:=Block[{transposekasteleyn,reducedkasteleyn,outputtopleft,outputtopright,outputbottomleft,outputbottomright,bottomrightrownum,bottomrightcolnum},
 {outputtopleft,outputtopright,outputbottomleft,outputbottomright}={inputtopleft,inputtopright,inputbottomleft,inputbottomright};
-If[Dimensions[Join[inputtopleft,inputbottomleft]][[2]]>0,
+If[Join[inputtopleft,inputbottomleft]!={}&&Dimensions[Join[inputtopleft,inputbottomleft]][[2]]>0,
 transposekasteleyn=Transpose[joinupKasteleyn[inputtopleft,inputtopright,inputbottomleft,inputbottomright]];
-reducedkasteleyn=(transposekasteleyn//.{rowsbefore___,{firstzeros:0...,Except[0|somedge1_+anotheredge1_+___,firstedge_],secondzeros:0...,Except[0|somedge2_+anotheredge2_+___,secondedge_],thirdzeros:0...,Sequence@@ConstantArray[0,Length[inputbottomleft]]},rowsafter___}:>Join[{rowsbefore,rowsafter}[[All,Join[Range[Length[{firstzeros}]],Range[Length[{firstzeros}]+2,Length[{firstzeros,secondzeros}]+1],Range[Length[{firstzeros,secondzeros}]+3,Length[{firstzeros,secondzeros,thirdzeros}]+2]]]],Map[{Total[#]}&,{rowsbefore,rowsafter}[[All,{Length[{firstzeros}]+1,Length[{firstzeros,secondzeros}]+2}]]],{rowsbefore,rowsafter}[[All,Range[Length[{firstzeros,secondzeros,thirdzeros}]+3,Length[{rowsbefore,rowsafter}[[1]]]]]],2]);
-reducedkasteleyn=Transpose[reducedkasteleyn];
+(*Now that we tool the transpose, each row is a black node.*)
+(*Each bivalent node appears after some rows "rowsbefore" and before some rows "rowsafter", which may be empty, i.e. may be equal to Sequence[]. A bivalent internal node has the structure of having only two nonzero entries, here called "firstedge" and "secondedge". These wil may be separated before and after by some possibly nonzero set of zeros (called "firstzeros", "secondzeros" and "thirdzeros"). Finally, if the black node is internal, there must be at the end a sequence of zeros as long as inputbottomleft; this reflects the fact that our node doesn't connect to external white nodes.*)
+reducedkasteleyn=(transposekasteleyn//.{rowsbefore___,{firstzeros:0...,Except[0|somedge1_+anotheredge1_+___,firstedge_],secondzeros:0...,Except[0|somedge2_+anotheredge2_+___,secondedge_],thirdzeros:0...,Sequence@@ConstantArray[0,Length[inputbottomleft]]},rowsafter___}:>formNewMatrixInternalInternal[{rowsbefore},{rowsafter},{firstzeros},{secondzeros},{thirdzeros}]);
+If[MemberQ[reducedkasteleyn,"empty"],
+reducedkasteleyn=ConstantArray[{},reducedkasteleyn[[2]]];
+,reducedkasteleyn=Transpose[reducedkasteleyn];
+];
 bottomrightrownum=Length[inputbottomright];
 bottomrightcolnum=Dimensions[Join[inputtopright,inputbottomright]][[2]];
 outputtopleft=reducedkasteleyn[[;;-(bottomrightrownum+1),;;-(bottomrightcolnum+1)]];
@@ -2310,7 +2335,11 @@ collapseWhiteNodesInternalInternal[inputtopleft_,inputtopright_,inputbottomleft_
 {outputtopleft,outputtopright,outputbottomleft,outputbottomright}={inputtopleft,inputtopright,inputbottomleft,inputbottomright};
 If[Length[outputtopleft]>0||Length[outputtopright]>0,(*we have internal white nodes (which could potentially be bivalent)*)
 kasteleyn=joinupKasteleyn[inputtopleft,inputtopright,inputbottomleft,inputbottomright];
-reducedkasteleyn=(kasteleyn//.{rowsbefore___,{firstzeros:0...,Except[0|somedge1_+anotheredge1_+___,firstedge_],secondzeros:0...,Except[0|somedge2_+anotheredge2_+___,secondedge_],thirdzeros:0...,Sequence@@ConstantArray[0,Dimensions[Join[inputtopright,inputbottomright]][[2]]]},rowsafter___}:>Join[{rowsbefore,rowsafter}[[All,Join[Range[Length[{firstzeros}]],Range[Length[{firstzeros}]+2,Length[{firstzeros,secondzeros}]+1],Range[Length[{firstzeros,secondzeros}]+3,Length[{firstzeros,secondzeros,thirdzeros}]+2]]]],Map[{Total[#]}&,{rowsbefore,rowsafter}[[All,{Length[{firstzeros}]+1,Length[{firstzeros,secondzeros}]+2}]]],{rowsbefore,rowsafter}[[All,Range[Length[{firstzeros,secondzeros,thirdzeros}]+3,Length[{rowsbefore,rowsafter}[[1]]]]]],2]);
+(*This works very similarly to collapseBlackNodesInternalInternal*)
+reducedkasteleyn=(kasteleyn//.{rowsbefore___,{firstzeros:0...,Except[0|somedge1_+anotheredge1_+___,firstedge_],secondzeros:0...,Except[0|somedge2_+anotheredge2_+___,secondedge_],thirdzeros:0...,Sequence@@ConstantArray[0,Dimensions[Join[inputtopright,inputbottomright]][[2]]]},rowsafter___}:>formNewMatrixInternalInternal[{rowsbefore},{rowsafter},{firstzeros},{secondzeros},{thirdzeros}]);
+If[MemberQ[reducedkasteleyn,"empty"],
+reducedkasteleyn={};
+];
 bottomrightrownum=Length[inputbottomright];
 bottomrightcolnum=Dimensions[Join[inputtopright,inputbottomright]][[2]];
 outputtopleft=reducedkasteleyn[[;;-(bottomrightrownum+1),;;-(bottomrightcolnum+1)]];
@@ -2324,7 +2353,7 @@ outputbottomright=reducedkasteleyn[[-(bottomrightrownum);;,-(bottomrightcolnum);
 collapseBlackNodesInternalExternal[inputtopleft_,inputtopright_,inputbottomleft_,inputbottomright_]:=Block[{outputtopleft,outputtopright,outputbottomleft,outputbottomright,transposekasteleyn,bivalentblacknodes,somedge,anotheredge,kasteleyn,todeleterows,bottomrightrownum,bottomrightcolnum},
 (*Here we want to remove bivalent nodes connected to an internal node and an external node. The way to do this is to throw away the external node and turn the bivalent node into the external node*)
 {outputtopleft,outputtopright,outputbottomleft,outputbottomright}={inputtopleft,inputtopright,inputbottomleft,inputbottomright};
-If[Dimensions[Join[inputtopleft,inputbottomleft]][[2]]>0,(*we have internal black nodes (which could potentially be bivalent)*)
+If[Join[inputtopleft,inputbottomleft]!={}&&Dimensions[Join[inputtopleft,inputbottomleft]][[2]]>0,(*we have internal black nodes (which could potentially be bivalent)*)
 transposekasteleyn=Transpose[joinupKasteleyn[inputtopleft,inputtopright,inputbottomleft,inputbottomright]];
 bivalentblacknodes=DeleteCases[Cases[transposekasteleyn,{0...,Except[0|somedge_+anotheredge_+___],0...,Except[0|somedge_+anotheredge_+___],0...}],{Sequence@@ConstantArray[0,Length[inputtopleft]],Sequence@@ConstantArray[_,Length[inputbottomleft]]}];
 (*we found the bivalent nodes we're looking for. We now need to move these columns into the top-right part of the kasteleyn, and remove the rows associated to the external nodes we're throwing away.*)
@@ -2584,7 +2613,10 @@ bigmatrix=Join[Join[IdentityMatrix[Length[kasteleyn]],kastinvertedpm],Join[kastn
 connectivitymat=Inverse[bigmatrix];
 ,Print["This graph has no perfect matchings"];
 size=Total[Dimensions[joinupKasteleyn[topleft,topright,bottomleft,bottomright]]];
+If[size!=0,
 connectivitymat=IdentityMatrix[size];
+,connectivitymat={};
+];
 ];
 If[functionMemory,traditionalConnectivityMatrix[topleft,topright,bottomleft,bottomright,referencematching]=connectivitymat;];
 connectivitymat
@@ -2641,7 +2673,10 @@ totalcontrib
 connectivitymat=Map[Total,Map[turnIntoContribution,connectivitymat,{3}],{2}];
 ,Print["This graph has no perfect matchings"];
 size=Total[Dimensions[joinupKasteleyn[topleft,topright,bottomleft,bottomright]]];
+If[size!=0,
 connectivitymat=IdentityMatrix[size];
+,connectivitymat={};
+];
 ];
 If[functionMemory,connectivityMatrix[topleft,topright,bottomleft,bottomright,referencematching]=connectivitymat;];
 connectivitymat
@@ -3637,7 +3672,7 @@ ordering=Null;
 ordering
 ];
 
-stratificationBoundaries[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,inputBFTgraph_:False,gauging_:2]/;(gauging===1||gauging===2):=Block[{BFTgraph,checkOK,stratification,xlistandPmatrix,modulispace,startingplanarity,removable,topdim,varlist,makeDaughterGraphs,planarReducibility,tofixlevels,maxnonplanardimension,level,nonplanarpositions,planarboundaries,nonplanarboundaries,templevel,boundarykillededges,newplanarity,planarpositions,fix,identremovable,patternidentremovable,dim,locationofparents,thislevelspositions},
+stratificationBoundaries[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,inputBFTgraph_:False,gauging_:2]/;(gauging===1||gauging===2):=Block[{BFTgraph,checkOK,matchingpoly,stratification,xlistandPmatrix,modulispace,startingplanarity,removable,topdim,varlist,makeDaughterGraphs,planarReducibility,tofixlevels,maxnonplanardimension,level,nonplanarpositions,planarboundaries,nonplanarboundaries,templevel,boundarykillededges,newplanarity,planarpositions,fix,identremovable,patternidentremovable,dim,locationofparents,thislevelspositions},
 If[gauging==1,
 BFTgraph=True;
 ,BFTgraph=inputBFTgraph;
@@ -3649,9 +3684,10 @@ checkOK=getKasteleynCheckQ[topleft,topright,bottomleft,bottomright,BFTgraph];
 If[checkOK==True,
 (*We begin by making the face lattice of the matching polytope. Each element in the face lattice will be composed of three objects: the perfect matching matrix P, the moduli space/matroid polytope, and the answer to planarityQ. This will allow us to construct the face lattice while computing the perfect matchings and matrix P as few times as possible (not once per subgraph!)*)
 (*We'll start with making the top-dimensional element. In P we shall also tag on which edges correspond to each row, by making the first element of each row the edge name*)
-If[Dimensions[matchingPolytope[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph]][[2]]===0,
+matchingpoly=matchingPolytope[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph];
+If[Length[matchingpoly]===0||Dimensions[matchingpoly][[2]]===0,
 stratification={};
-,xlistandPmatrix=Join[Transpose[{Variables[joinupKasteleyn[topleft,topright,bottomleft,bottomright]]}],matchingPolytope[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph],2];
+,xlistandPmatrix=Join[Transpose[{Variables[joinupKasteleyn[topleft,topright,bottomleft,bottomright]]}],matchingpoly,2];
 modulispace=moduliSpaceBFT[topleft,topright,bottomleft,bottomright,gauging,checkneeded,BFTgraph];
 (*This will be the top-dimensional element in our stratification*)
 startingplanarity=planarityQ[topleft,topright,bottomleft,bottomright];
@@ -3661,7 +3697,7 @@ removable[0]={{xlistandPmatrix,modulispace,True}};
 ,removable[0]={{xlistandPmatrix,modulispace,startingplanarity}};
 ];
 (*We'll save some basic information to avoid having to evaluate it many times*)
-topdim=dimensionPolytope[matchingPolytope[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph]];
+topdim=dimensionPolytope[matchingpoly];
 varlist=Variables[joinupKasteleyn[topleft,topright,bottomleft,bottomright]];
 (*For each element in the face lattice, we will need to find all of its boundaries. These are found by deleting edges. makeDaughterGraphs takes an element in the face lattice and removes all possible edges, making potential boundaries (which will need to be verified). Initially the planarity of the subgraphs is inherited, i.e. is declared equal to the originating graph.*)
 makeDaughterGraphs=Function[{boundaryelement},
@@ -3805,7 +3841,7 @@ eulernumber=Sum[Power[(-1),iii+1]stratificationnumbers[[-iii]],{iii,Length[strat
 eulernumber
 ];
 
-matchingPolytopeBoundaries[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False]:=Block[{checkOK,xlistandPmatrix,facelatticeboundaries,topdim,makeDaughterGraphs,level,facelattice},
+matchingPolytopeBoundaries[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False]:=Block[{checkOK,matchingpoly,xlistandPmatrix,facelatticeboundaries,topdim,makeDaughterGraphs,level,facelattice},
 checkOK=True;
 If[checkneeded==True,
 checkOK=getKasteleynCheckQ[topleft,topright,bottomleft,bottomright,BFTgraph];
@@ -3813,7 +3849,10 @@ checkOK=getKasteleynCheckQ[topleft,topright,bottomleft,bottomright,BFTgraph];
 If[checkOK==True,
 (*Each element in the face lattice of the matching polytope will be described by the perfect matching matrix P. This will allow us to construct the face lattice while computing the perfect matchings and matrix P as few times as possible (not once per subgraph!)*)
 (*We'll start with making the top-dimensional element. In P we shall also tag on which edges correspond to each row, by making the first element of each row the edge name*)
-xlistandPmatrix=Join[Transpose[{Variables[joinupKasteleyn[topleft,topright,bottomleft,bottomright]]}],matchingPolytope[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph],2];
+matchingpoly=matchingPolytope[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph];
+If[Length[matchingpoly]===0||Dimensions[matchingpoly][[2]]===0,
+facelattice={};
+,xlistandPmatrix=Join[Transpose[{Variables[joinupKasteleyn[topleft,topright,bottomleft,bottomright]]}],matchingPolytope[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph],2];
 (*This will be the top-dimensional element in our stratification*)
 facelatticeboundaries[0]={xlistandPmatrix};
 (*We'll save some basic information to avoid having to evaluate it many times*)
@@ -3836,12 +3875,13 @@ facelatticeboundaries[level]=Cases[facelatticeboundaries[level],zz_/;dimensionPo
 ];
 facelatticeboundaries[topdim]=DeleteCases[facelatticeboundaries[topdim],{}];
 facelattice=Map[#[[All,1]]&,Table[facelatticeboundaries[iii],{iii,0,topdim}],{2}];
+];
 ,facelattice=Null;
 ];
 facelattice
 ];
 
-stratificationGraph[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,inputBFTgraph_:False,gauging_:2]/;(gauging===1||gauging===2):=Block[{BFTgraph,checkOK,stratificationgraph,xlistandPmatrix,modulispace,startingplanarity,removable,topdim,varlist,makeDaughterGraphs,planarReducibility,tofixlevels,maxnonplanardimension,level,nonplanarpositions,templevel,boundarykillededges,newplanarity,planarpositions,planarboundaries,nonplanarboundaries,fix,identremovable,patternidentremovable,dim,locationofparents,thislevelspositions,identifiedboundaries,newlayer,alllayers,totalnumberofboundaries,tochangeposition,tokeeprowsandcolumns,adjacencymatrix},
+stratificationGraph[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,inputBFTgraph_:False,gauging_:2]/;(gauging===1||gauging===2):=Block[{BFTgraph,checkOK,matchingpoly,stratificationgraph,xlistandPmatrix,modulispace,startingplanarity,removable,topdim,varlist,makeDaughterGraphs,planarReducibility,tofixlevels,maxnonplanardimension,level,nonplanarpositions,templevel,boundarykillededges,newplanarity,planarpositions,planarboundaries,nonplanarboundaries,fix,identremovable,patternidentremovable,dim,locationofparents,thislevelspositions,identifiedboundaries,newlayer,alllayers,totalnumberofboundaries,tochangeposition,tokeeprowsandcolumns,adjacencymatrix},
 If[gauging==1,
 BFTgraph=True;
 ,BFTgraph=inputBFTgraph;
@@ -3853,9 +3893,10 @@ checkOK=getKasteleynCheckQ[topleft,topright,bottomleft,bottomright,BFTgraph];
 If[checkOK==True,
 (*We begin by making the face lattice of the matching polytope. Each element in the face lattice will be composed of three objects: the perfect matching matrix P, the moduli space/matroid polytope, and the answer to planarityQ. This will allow us to construct the face lattice while computing the perfect matchings and matrix P as few times as possible (not once per subgraph!)*)
 (*We'll start with making the top-dimensional element. In P we shall also tag on which edges correspond to each row, by making the first element of each row the edge name*)
-If[Dimensions[matchingPolytope[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph]][[2]]===0,
+matchingpoly=matchingPolytope[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph];
+If[Length[matchingpoly]===0||Dimensions[matchingpoly][[2]]===0,
 stratificationgraph=AdjacencyGraph[{}];
-,xlistandPmatrix=Join[Transpose[{Variables[joinupKasteleyn[topleft,topright,bottomleft,bottomright]]}],matchingPolytope[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph],2];
+,xlistandPmatrix=Join[Transpose[{Variables[joinupKasteleyn[topleft,topright,bottomleft,bottomright]]}],matchingpoly,2];
 modulispace=moduliSpaceBFT[topleft,topright,bottomleft,bottomright,gauging,checkneeded,BFTgraph];
 (*This will be the top-dimensional element in our stratification*)
 startingplanarity=planarityQ[topleft,topright,bottomleft,bottomright];
@@ -3865,7 +3906,7 @@ removable[0]={{xlistandPmatrix,modulispace,True}};
 ,removable[0]={{xlistandPmatrix,modulispace,startingplanarity}};
 ];
 (*We'll save some basic information to avoid having to evaluate it many times*)
-topdim=dimensionPolytope[matchingPolytope[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph]];
+topdim=dimensionPolytope[matchingpoly];
 varlist=Variables[joinupKasteleyn[topleft,topright,bottomleft,bottomright]];
 (*For each element in the face lattice, we will need to find all of its boundaries. These are found by deleting edges. makeDaughterGraphs takes an element in the face lattice and removes all possible edges, making potential boundaries (which will need to be verified). Initially the planarity of the subgraphs is inherited, i.e. is declared equal to the originating graph.*)
 makeDaughterGraphs=Function[{boundaryelement},
@@ -3996,6 +4037,9 @@ If[Length[alllayers]>0,
 alllayers[[1]]=Join[Table[0,{iii,Length[alllayers[[1]]]},{jjj,Length[alllayers[[1]]]}],alllayers[[1]],2];
 ];
 totalnumberofboundaries=Total[Map[Dimensions[#][[2]]&,alllayers]];
+If[totalnumberofboundaries===0,
+totalnumberofboundaries=1;
+];
 (*We need to throw away those boundaries that correspond to fake temporary nodes*)
 tokeeprowsandcolumns=Complement[Range[totalnumberofboundaries],Accumulate[Map[Dimensions[#][[1]]&,alllayers]][[tofixlevels+1]]];
 adjacencymatrix=Normal[SparseArray[Band[{1,1}]->alllayers,{totalnumberofboundaries,totalnumberofboundaries}]][[tokeeprowsandcolumns,tokeeprowsandcolumns]];
@@ -4006,7 +4050,7 @@ stratificationgraph=AdjacencyGraph[adjacencymatrix];
 stratificationgraph
 ];
 
-matchingPolytopeBoundariesGraph[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False]:=Block[{checkOK,xlistandPmatrix,facelatticeboundaries,topdim,makeDaughterGraphs,level,patternfacelatticeboundaries,locationofparents,newlayer,alllayers,totalnumberofboundaries,stratificationgraph},
+matchingPolytopeBoundariesGraph[topleft_,topright_,bottomleft_,bottomright_,checkneeded_:False,BFTgraph_:False]:=Block[{checkOK,matchingpoly,xlistandPmatrix,facelatticeboundaries,topdim,makeDaughterGraphs,level,patternfacelatticeboundaries,locationofparents,newlayer,alllayers,totalnumberofboundaries,stratificationgraph},
 checkOK=True;
 If[checkneeded==True,
 checkOK=getKasteleynCheckQ[topleft,topright,bottomleft,bottomright,BFTgraph];
@@ -4014,13 +4058,14 @@ checkOK=getKasteleynCheckQ[topleft,topright,bottomleft,bottomright,BFTgraph];
 If[checkOK==True,
 (*Each element in the face lattice of the matching polytope will be described by the perfect matching matrix P. This will allow us to construct the face lattice while computing the perfect matchings and matrix P as few times as possible (not once per subgraph!)*)
 (*We'll start with making the top-dimensional element. In P we shall also tag on which edges correspond to each row, by making the first element of each row the edge name*)
-If[Dimensions[matchingPolytope[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph]][[2]]===0,
+matchingpoly=matchingPolytope[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph];
+If[Length[matchingpoly]===0||Dimensions[matchingpoly][[2]]===0,
 stratificationgraph=AdjacencyGraph[{}];
-,xlistandPmatrix=Join[Transpose[{Variables[joinupKasteleyn[topleft,topright,bottomleft,bottomright]]}],matchingPolytope[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph],2];
+,xlistandPmatrix=Join[Transpose[{Variables[joinupKasteleyn[topleft,topright,bottomleft,bottomright]]}],matchingpoly,2];
 (*This will be the top-dimensional element in our stratification*)
 facelatticeboundaries[0]={xlistandPmatrix};
 (*We'll save some basic information to avoid having to evaluate it many times*)
-topdim=dimensionPolytope[matchingPolytope[topleft,topright,bottomleft,bottomright,checkneeded,BFTgraph]];
+topdim=dimensionPolytope[matchingpoly];
 (*For each element in the face lattice, we will need to find all of its boundaries. These are found by deleting edges. makeDaughterGraphs takes an element in the face lattice and removes all possible edges, making potential boundaries (which will need to be verified)*)
 makeDaughterGraphs=Function[{boundaryelement},
 Block[{pmat,pmstokeep,daughters},
@@ -4051,9 +4096,14 @@ locationofparents=Map[Flatten[Position[facelatticeboundaries[level-1],#]]&,patte
 (*Now we'll make a matrix with rows corresponding to boundaries in removable[topdim-dim] and columns corresponding to boundaries in identremovable[topdim-dim+1]. If an object in removable[topdim-dim] can access a subboundary in identremovable[topdim-dim+1] that entry has a 1, otherwise it is 0.*)
 newlayer[level]=Normal[SparseArray[Map[#->1&,MapThread[Sequence@@Transpose[{#1,ConstantArray[#2,Length[#1]]}]&,{locationofparents,Range[Length[locationofparents]]}]]]];
 ];
+If[topdim>0,
 newlayer[1]=Join[Table[0,{iii,Length[newlayer[1]]},{jjj,Length[newlayer[1]]}],newlayer[1],2];
+];
 alllayers=Table[newlayer[iii],{iii,1,topdim}];
 totalnumberofboundaries=Total[Map[Dimensions[#][[2]]&,alllayers]];
+If[totalnumberofboundaries===0,
+totalnumberofboundaries=1;
+];
 stratificationgraph=AdjacencyGraph[Normal[SparseArray[Band[{1,1}]->alllayers,{totalnumberofboundaries,totalnumberofboundaries}]]];
 ];
 ,stratificationgraph=Null;

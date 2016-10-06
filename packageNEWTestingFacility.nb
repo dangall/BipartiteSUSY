@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[    254873,       5463]
-NotebookOptionsPosition[    250327,       5336]
-NotebookOutlinePosition[    250669,       5351]
-CellTagsIndexPosition[    250626,       5348]
+NotebookDataLength[    333815,       7276]
+NotebookOptionsPosition[    327659,       7108]
+NotebookOutlinePosition[    328000,       7123]
+CellTagsIndexPosition[    327957,       7120]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -1177,7 +1177,8 @@ Cell[BoxData[
    3.665388220760619*^9}, {3.6653886771674967`*^9, 3.665388699256188*^9}, {
    3.665394491044639*^9, 3.6653944995239697`*^9}, {3.6653959126545773`*^9, 
    3.6653959187590914`*^9}, 3.6715453677008524`*^9, {3.672749981361431*^9, 
-   3.6727499814444113`*^9}, 3.684575102612509*^9}],
+   3.6727499814444113`*^9}, 3.684575102612509*^9, {3.6847510393558655`*^9, 
+   3.684751039645856*^9}}],
 
 Cell[BoxData[{
  RowBox[{
@@ -1362,7 +1363,9 @@ determining the correct set of surviving perfect-matching numbers\>\""}],
    3.6845751348892555`*^9, 3.6845752095924788`*^9}, {3.6845752899464808`*^9, 
    3.684575319418948*^9}, {3.6845760394775333`*^9, 3.68457605220586*^9}, {
    3.6845763747862554`*^9, 3.6845765564591846`*^9}, {3.684577541616927*^9, 
-   3.684577560248851*^9}, {3.684580289290621*^9, 3.68458029291835*^9}}]
+   3.684577560248851*^9}, {3.684580289290621*^9, 3.68458029291835*^9}, {
+   3.6847498998628654`*^9, 3.68474992199912*^9}, {3.6847500203715506`*^9, 
+   3.684750021958994*^9}, {3.6847524218191314`*^9, 3.6847524264156675`*^9}}]
 }, Closed]],
 
 Cell[BoxData[""], "Input",
@@ -4737,7 +4740,8 @@ Cell[CellGroupData[{
 
 Cell[BoxData[
  RowBox[{"(*", 
-  RowBox[{"Here", " ", "we", " ", "check"}], " ", "*)"}]], "Input",
+  RowBox[{"Here", " ", "we", " ", "check", " ", "moduliLoopVariablesBFT"}], 
+  "*)"}]], "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.},
  CellChangeTimes->{{3.6653194611906705`*^9, 3.665319470875516*^9}, 
    3.665319696162837*^9, 3.665319923129767*^9, {3.66532084581382*^9, 
@@ -4748,61 +4752,327 @@ Cell[BoxData[
    3.6653959187590914`*^9}, 3.6715453677008524`*^9, {3.672749981361431*^9, 
    3.6727499814444113`*^9}, 3.684575102612509*^9, 3.6845802079994617`*^9, 
    3.6846471491723537`*^9, 3.684648173199854*^9, 3.684648253924594*^9, {
-   3.684665345384*^9, 3.684665345774664*^9}}],
+   3.684665345384*^9, 3.684665345774664*^9}, 3.6847526289869757`*^9}],
 
 Cell[BoxData[{
  RowBox[{
   RowBox[{
-   RowBox[{"allTestreductionGraphBFT", "[", 
+   RowBox[{"bftTestModuliLoopVariablesBFT", "[", 
     RowBox[{
      RowBox[{"{", 
       RowBox[{"a_", ",", "b_", ",", "c_", ",", "d_"}], "}"}], ",", 
      "bftlabeling_"}], "]"}], ":=", 
    RowBox[{"Block", "[", 
     RowBox[{
-     RowBox[{"{", "}"}], ","}], "\[IndentingNewLine]", 
-    RowBox[{"(*", 
-     RowBox[{"Print", "[", 
-      RowBox[{"\"\<kast=\>\"", ",", 
-       RowBox[{"{", 
-        RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
-       "\"\< : \>\""}], "]"}], "*)"}], "\[IndentingNewLine]", "]"}]}], 
+     RowBox[{"{", 
+      RowBox[{
+      "perfs", ",", "loopvarmasterspace", ",", "loopvarmodulispace", ",", 
+       "loopvarbasis", ",", "traditionalmodulispace", ",", "loopperfs", ",", 
+       "realperfs", ",", "pmatrix", ",", "toremove"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"perfs", "=", 
+       RowBox[{"perfectMatchings", "[", 
+        RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"perfs", "\[NotEqual]", 
+         RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+           "loopvarmasterspace", ",", "loopvarmodulispace", ",", 
+            "loopvarbasis"}], "}"}], "=", 
+          RowBox[{"moduliLoopVariablesBFT", "[", 
+           RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", "2"}], "]"}]}], 
+         ";", "\[IndentingNewLine]", 
+         RowBox[{"loopvarmodulispace", "=", 
+          RowBox[{"loopvarmodulispace", "-", 
+           RowBox[{"loopvarmodulispace", "[", 
+            RowBox[{"[", 
+             RowBox[{"All", ",", "1"}], "]"}], "]"}]}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"traditionalmodulispace", "=", 
+          RowBox[{"moduliSpaceBFT", "[", 
+           RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", "2"}], "]"}]}], 
+         ";", "\[IndentingNewLine]", 
+         RowBox[{"traditionalmodulispace", "=", 
+          RowBox[{"traditionalmodulispace", "-", 
+           RowBox[{"traditionalmodulispace", "[", 
+            RowBox[{"[", 
+             RowBox[{"All", ",", "1"}], "]"}], "]"}]}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"loopvarbasis", "\[NotEqual]", 
+            RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"loopperfs", "=", 
+             RowBox[{"Map", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"Times", "@@", 
+                 RowBox[{"Power", "[", 
+                  RowBox[{"loopvarbasis", ",", "#"}], "]"}]}], "&"}], ",", 
+               RowBox[{"Transpose", "[", "loopvarmasterspace", "]"}]}], 
+              "]"}]}], ";", "\[IndentingNewLine]", 
+            RowBox[{"realperfs", "=", "perfs"}], ";", "\[IndentingNewLine]", 
+            RowBox[{"realperfs", "=", 
+             RowBox[{"realperfs", "/", 
+              RowBox[{"realperfs", "[", 
+               RowBox[{"[", 
+                RowBox[{
+                 RowBox[{"Cases", "[", 
+                  RowBox[{
+                   RowBox[{"Position", "[", 
+                    RowBox[{"loopperfs", ",", "1"}], "]"}], ",", 
+                   RowBox[{"{", "_", "}"}]}], "]"}], "[", 
+                 RowBox[{"[", 
+                  RowBox[{"1", ",", "1"}], "]"}], "]"}], "]"}], "]"}]}]}], 
+            ";", "\[IndentingNewLine]", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{"loopperfs", "=!=", "realperfs"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"Print", "[", 
+                RowBox[{"\"\<kast=\>\"", ",", 
+                 RowBox[{"{", 
+                  RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                 "\"\< : There's a problem with moduliLoopVariablesBFT! The \
+loop variable basis, when matched with the master space, doesn't give the \
+correct (ratios of) perfect matchings!\>\""}], "]"}], ";"}]}], 
+             "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", 
+          "]"}], ";", "\[IndentingNewLine]", 
+         RowBox[{"toremove", "=", 
+          RowBox[{"ConstantArray", "[", 
+           RowBox[{"0", ",", 
+            RowBox[{
+             RowBox[{"Dimensions", "[", "loopvarmasterspace", "]"}], "[", 
+             RowBox[{"[", "2", "]"}], "]"}]}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"loopvarmasterspace", "=", 
+          RowBox[{"DeleteCases", "[", 
+           RowBox[{
+            RowBox[{"RowReduce", "[", 
+             RowBox[{"loopvarmasterspace", "-", 
+              RowBox[{"loopvarmasterspace", "[", 
+               RowBox[{"[", 
+                RowBox[{"All", ",", "1"}], "]"}], "]"}]}], "]"}], ",", 
+            "toremove"}], "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"pmatrix", "=", 
+          RowBox[{"matchingPolytope", "[", 
+           RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"toremove", "=", 
+          RowBox[{"ConstantArray", "[", 
+           RowBox[{"0", ",", 
+            RowBox[{
+             RowBox[{"Dimensions", "[", "pmatrix", "]"}], "[", 
+             RowBox[{"[", "2", "]"}], "]"}]}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"pmatrix", "=", 
+          RowBox[{"DeleteCases", "[", 
+           RowBox[{
+            RowBox[{"RowReduce", "[", 
+             RowBox[{"pmatrix", "-", 
+              RowBox[{"pmatrix", "[", 
+               RowBox[{"[", 
+                RowBox[{"All", ",", "1"}], "]"}], "]"}]}], "]"}], ",", 
+            "toremove"}], "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"pmatrix", "=!=", "loopvarmasterspace"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"Print", "[", 
+             RowBox[{"\"\<kast=\>\"", ",", 
+              RowBox[{"{", 
+               RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+              
+              "\"\< : There's a problem with moduliLoopVariablesBFT! The \
+resulting master space is different from the one given by the P \
+matrix!\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"DeleteCases", "[", 
+             RowBox[{
+              RowBox[{"RowReduce", "[", "traditionalmodulispace", "]"}], ",", 
+              RowBox[{"ConstantArray", "[", 
+               RowBox[{"0", ",", 
+                RowBox[{
+                 RowBox[{"Dimensions", "[", "traditionalmodulispace", "]"}], 
+                 "[", 
+                 RowBox[{"[", "2", "]"}], "]"}]}], "]"}]}], "]"}], "=!=", 
+            RowBox[{"DeleteCases", "[", 
+             RowBox[{
+              RowBox[{"RowReduce", "[", "loopvarmodulispace", "]"}], ",", 
+              RowBox[{"ConstantArray", "[", 
+               RowBox[{"0", ",", 
+                RowBox[{
+                 RowBox[{"Dimensions", "[", "loopvarmodulispace", "]"}], "[", 
+                 RowBox[{"[", "2", "]"}], "]"}]}], "]"}]}], "]"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"Print", "[", 
+             RowBox[{"\"\<kast=\>\"", ",", 
+              RowBox[{"{", 
+               RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+              "\"\< : There's a problem with the moduli spaces! \
+moduliSpaceBFT and moduliLoopVariablesBFT give different results under \
+gauging 2!\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{"bftlabeling", ",", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{
+              "loopvarmasterspace", ",", "loopvarmodulispace", ",", 
+               "loopvarbasis"}], "}"}], "=", 
+             RowBox[{"moduliLoopVariablesBFT", "[", 
+              RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", "1"}], "]"}]}], 
+            ";", "\[IndentingNewLine]", 
+            RowBox[{"loopvarmodulispace", "=", 
+             RowBox[{"loopvarmodulispace", "-", 
+              RowBox[{"loopvarmodulispace", "[", 
+               RowBox[{"[", 
+                RowBox[{"All", ",", "1"}], "]"}], "]"}]}]}], ";", 
+            "\[IndentingNewLine]", 
+            RowBox[{"traditionalmodulispace", "=", 
+             RowBox[{"moduliSpaceBFT", "[", 
+              RowBox[{
+              "a", ",", "b", ",", "c", ",", "d", ",", "1", ",", "False", ",", 
+               "True"}], "]"}]}], ";", "\[IndentingNewLine]", 
+            RowBox[{"traditionalmodulispace", "=", 
+             RowBox[{"traditionalmodulispace", "-", 
+              RowBox[{"traditionalmodulispace", "[", 
+               RowBox[{"[", 
+                RowBox[{"All", ",", "1"}], "]"}], "]"}]}]}], ";", 
+            "\[IndentingNewLine]", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"DeleteCases", "[", 
+                RowBox[{
+                 RowBox[{"RowReduce", "[", "traditionalmodulispace", "]"}], 
+                 ",", 
+                 RowBox[{"ConstantArray", "[", 
+                  RowBox[{"0", ",", 
+                   RowBox[{
+                    RowBox[{
+                    "Dimensions", "[", "traditionalmodulispace", "]"}], "[", 
+                    RowBox[{"[", "2", "]"}], "]"}]}], "]"}]}], "]"}], "=!=", 
+               RowBox[{"DeleteCases", "[", 
+                RowBox[{
+                 RowBox[{"RowReduce", "[", "loopvarmodulispace", "]"}], ",", 
+                 RowBox[{"ConstantArray", "[", 
+                  RowBox[{"0", ",", 
+                   RowBox[{
+                    RowBox[{"Dimensions", "[", "loopvarmodulispace", "]"}], 
+                    "[", 
+                    RowBox[{"[", "2", "]"}], "]"}]}], "]"}]}], "]"}]}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"Print", "[", 
+                RowBox[{"\"\<kast=\>\"", ",", 
+                 RowBox[{"{", 
+                  RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                 "\"\< : There's a problem with the moduli spaces! \
+moduliSpaceBFT and moduliLoopVariablesBFT give different results under \
+gauging 1!\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";"}]}], 
+          "\[IndentingNewLine]", "]"}], ";"}], "\[IndentingNewLine]", ",", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+           "loopvarmasterspace", ",", "loopvarmodulispace", ",", 
+            "loopvarbasis"}], "}"}], "=", 
+          RowBox[{"moduliLoopVariablesBFT", "[", 
+           RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", "2"}], "]"}]}], 
+         ";", "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{
+              RowBox[{"Dimensions", "[", "loopvarmasterspace", "]"}], "[", 
+              RowBox[{"[", "2", "]"}], "]"}], "=!=", "0"}], "||", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"Dimensions", "[", "loopvarmodulispace", "]"}], "[", 
+              RowBox[{"[", "2", "]"}], "]"}], "=!=", "0"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"Print", "[", 
+             RowBox[{"\"\<kast=\>\"", ",", 
+              RowBox[{"{", 
+               RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+              "\"\< : There's a problem with the moduli spaces under gauging \
+2! moduliLoopVariablesBFT should have 0 columns when there are no perfect \
+matchings\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{"bftlabeling", ",", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{
+              "loopvarmasterspace", ",", "loopvarmodulispace", ",", 
+               "loopvarbasis"}], "}"}], "=", 
+             RowBox[{"moduliLoopVariablesBFT", "[", 
+              RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", "1"}], "]"}]}], 
+            ";", "\[IndentingNewLine]", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{
+                RowBox[{
+                 RowBox[{"Dimensions", "[", "loopvarmasterspace", "]"}], "[", 
+                 RowBox[{"[", "2", "]"}], "]"}], "=!=", "0"}], "||", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"Dimensions", "[", "loopvarmodulispace", "]"}], "[", 
+                 RowBox[{"[", "2", "]"}], "]"}], "=!=", "0"}]}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"Print", "[", 
+                RowBox[{"\"\<kast=\>\"", ",", 
+                 RowBox[{"{", 
+                  RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                 "\"\< : There's a problem with the moduli spaces under \
+gauging 1! moduliLoopVariablesBFT should have 0 columns when there are no \
+perfect matchings\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], 
+            ";"}]}], "\[IndentingNewLine]", "]"}], ";"}]}], 
+       "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", "]"}]}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
-  RowBox[{"DistributeDefinitions", "[", "allTestreductionGraphBFT", "]"}], 
+  RowBox[{
+  "DistributeDefinitions", "[", "bftTestModuliLoopVariablesBFT", "]"}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"ParallelMap", "[", 
    RowBox[{
     RowBox[{
-     RowBox[{"allTestreductionGraphBFT", "[", 
-      RowBox[{"#", ",", "True"}], "]"}], "&"}], ",", 
-    RowBox[{"RandomSample", "[", 
-     RowBox[{"allbft1kasteleyns", ",", "10"}], "]"}]}], "]"}], 
-  ";"}], "\[IndentingNewLine]", 
+     RowBox[{"bftTestModuliLoopVariablesBFT", "[", 
+      RowBox[{"#", ",", "True"}], "]"}], "&"}], ",", "allbft1kasteleyns"}], 
+   "]"}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"ParallelMap", "[", 
    RowBox[{
     RowBox[{
-     RowBox[{"allTestreductionGraphBFT", "[", 
-      RowBox[{"#", ",", "Null"}], "]"}], "&"}], ",", 
-    RowBox[{"RandomSample", "[", 
-     RowBox[{"allbft2kasteleyns", ",", "10"}], "]"}]}], "]"}], 
-  ";"}], "\[IndentingNewLine]", 
+     RowBox[{"bftTestModuliLoopVariablesBFT", "[", 
+      RowBox[{"#", ",", "Null"}], "]"}], "&"}], ",", "allbft2kasteleyns"}], 
+   "]"}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"ParallelMap", "[", 
    RowBox[{
     RowBox[{
-     RowBox[{"allTestreductionGraphBFT", "[", 
-      RowBox[{"#", ",", "False"}], "]"}], "&"}], ",", 
-    RowBox[{"RandomSample", "[", 
-     RowBox[{"allscatteringkasteleyns", ",", "10"}], "]"}]}], "]"}], 
-  ";"}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{"ParallelMap", "[", 
-   RowBox[{
-    RowBox[{
-     RowBox[{"allTestreductionGraphBFT", "[", 
+     RowBox[{"bftTestModuliLoopVariablesBFT", "[", 
       RowBox[{"#", ",", "True"}], "]"}], "&"}], ",", 
     RowBox[{"Cases", "[", 
      RowBox[{"annoyingsmallexamples", ",", 
@@ -4878,7 +5148,16 @@ Cell[BoxData[{
    3.6846472459357777`*^9, 3.6846472663574123`*^9}, {3.684647323817868*^9, 
    3.684647384378982*^9}, {3.6846475128657913`*^9, 3.6846475148894916`*^9}, {
    3.6846478780124445`*^9, 3.684647881333372*^9}, {3.684648202917942*^9, 
-   3.6846482359449673`*^9}, 3.6846483401109657`*^9}]
+   3.6846482359449673`*^9}, 3.6846483401109657`*^9, {3.684752635295762*^9, 
+   3.684752646788473*^9}, {3.684752690206507*^9, 3.6847527554263043`*^9}, {
+   3.684752785913771*^9, 3.6847528046608377`*^9}, {3.6847528369363184`*^9, 
+   3.6847528624766173`*^9}, {3.684752980222526*^9, 3.684753021548809*^9}, {
+   3.6847548762967157`*^9, 3.6847548916389437`*^9}, {3.684755256100696*^9, 
+   3.6847553082260094`*^9}, {3.6847553623283606`*^9, 
+   3.6847554336010294`*^9}, {3.6847556335428853`*^9, 
+   3.6847556691079006`*^9}, {3.684755769259431*^9, 3.684755819885806*^9}, {
+   3.684755912076268*^9, 3.6847560161296897`*^9}, {3.6847586069820337`*^9, 
+   3.684758671759245*^9}, {3.6847587549931345`*^9, 3.6847587567478228`*^9}}]
 }, Closed]],
 
 Cell[BoxData[""], "Input",
@@ -4888,7 +5167,8 @@ Cell[CellGroupData[{
 
 Cell[BoxData[
  RowBox[{"(*", 
-  RowBox[{"Here", " ", "we", " ", "check"}], " ", "*)"}]], "Input",
+  RowBox[{"Here", " ", "we", " ", "check", " ", "planarityQ"}], 
+  "*)"}]], "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.},
  CellChangeTimes->{{3.6653194611906705`*^9, 3.665319470875516*^9}, 
    3.665319696162837*^9, 3.665319923129767*^9, {3.66532084581382*^9, 
@@ -4898,34 +5178,723 @@ Cell[BoxData[
    3.665394491044639*^9, 3.6653944995239697`*^9}, {3.6653959126545773`*^9, 
    3.6653959187590914`*^9}, 3.6715453677008524`*^9, {3.672749981361431*^9, 
    3.6727499814444113`*^9}, 3.684575102612509*^9, 3.6845802079994617`*^9, 
-   3.6846471491723537`*^9, 3.684648173199854*^9, 3.684648253924594*^9}],
+   3.6846471491723537`*^9, 3.684648173199854*^9, 3.684648253924594*^9, 
+   3.6847587331924*^9, {3.684760430800808*^9, 3.684760462916053*^9}, {
+   3.684763860056888*^9, 3.6847638611692953`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+   "This", " ", "is", " ", "code", " ", "from", " ", "stackexchange", " ", 
+    "for", " ", "counting", " ", "the", " ", "number", " ", "of", " ", 
+    "faces"}], "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{
+    "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
+      "===", "===", "===", "==="}], "=", 
+    RowBox[{
+     RowBox[{
+     "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", 
+      "==="}], "=", 
+     RowBox[{"===", "===", "===", "===", "===", "===", "===", "=="}]}]}], 
+   "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{"simple", " ", 
+    RowBox[{"Kruskal", "'"}], "s", " ", "algorithm", " ", "without", " ", 
+    "sorting"}], "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"SpanningTree", "[", "graph_", "]"}], ":=", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"label", ",", 
+         RowBox[{"edges", "=", 
+          RowBox[{"EdgeList", "[", "graph", "]"}]}]}], "}"}], ",", 
+       RowBox[{"Pick", "[", 
+        RowBox[{"edges", ",", 
+         RowBox[{"Table", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{"UnsameQ", "[", 
+                RowBox[{"#1", ",", "#2"}], "]"}], ",", 
+               RowBox[{
+                RowBox[{"#2", "=", "#1"}], ";", "True"}], ",", "False"}], 
+              "]"}], "&"}], "@@", 
+            RowBox[{"Sort", "[", 
+             RowBox[{"label", "/@", "edge"}], "]"}]}], ",", 
+           RowBox[{"{", 
+            RowBox[{"edge", ",", "edges"}], "}"}]}], "]"}]}], "]"}]}], 
+      "]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"makeEges", "[", "list_", "]"}], ":=", 
+    RowBox[{"Sort", "/@", 
+     RowBox[{"UndirectedEdge", "@@@", 
+      RowBox[{"Partition", "[", 
+       RowBox[{"list", ",", "2", ",", "1"}], "]"}]}]}]}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"FindFace", ":", 
+     RowBox[{
+      RowBox[{"finds", " ", "the", " ", "smallest", " ", 
+       RowBox[{"cycle", ".", "This"}], " ", "cycle", " ", "is", " ", "a", " ",
+        "pseudo"}], "-", 
+      RowBox[{"face", "."}]}]}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"FindFace", "[", 
+     RowBox[{"graph_", ",", "edges_"}], "]"}], ":=", 
+    RowBox[{"MapAt", "[", 
+     RowBox[{"makeEges", ",", 
+      RowBox[{"First", "@", 
+       RowBox[{"SortBy", "[", 
+        RowBox[{
+         RowBox[{"Transpose", "[", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{
+             RowBox[{
+              RowBox[{"FindShortestPath", "[", 
+               RowBox[{"graph", ",", 
+                RowBox[{"Sequence", "@@", "#"}]}], "]"}], "&"}], "/@", 
+             "edges"}], ",", "edges"}], "}"}], "]"}], ",", 
+         RowBox[{"Composition", "[", 
+          RowBox[{"Length", ",", "First"}], "]"}]}], "]"}]}], ",", "1"}], 
+     "]"}]}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Append", " ", "analyzed", " ", "edge", " ", "to", " ", "a", " ", 
+     "graph"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"appendEge", "[", 
+     RowBox[{"graph_", ",", "edge_"}], "]"}], ":=", 
+    RowBox[{"Graph", "@", 
+     RowBox[{"Append", "[", 
+      RowBox[{
+       RowBox[{"EdgeList", "[", "graph", "]"}], ",", "edge"}], "]"}]}]}], 
+   "\n", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"iteration", "[", 
+      RowBox[{"graph_", ",", 
+       RowBox[{"{", "}"}]}], "]"}], ":=", "$faces"}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"iteration", "[", 
+     RowBox[{"graph_", ",", "edges_"}], "]"}], ":=", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"iteration", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"AppendTo", "[", 
+          RowBox[{"$faces", ",", 
+           RowBox[{"Flatten", "[", "#", "]"}]}], "]"}], ";", 
+         RowBox[{"appendEge", "[", 
+          RowBox[{"graph", ",", 
+           RowBox[{"Last", "@", "#"}]}], "]"}]}], ",", 
+        RowBox[{"DeleteCases", "[", 
+         RowBox[{"edges", ",", 
+          RowBox[{"Last", "@", "#"}]}], "]"}]}], "]"}], "&"}], "[", 
+     RowBox[{"FindFace", "[", 
+      RowBox[{"graph", ",", "edges"}], "]"}], "]"}]}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"Faces", ":", 
+     RowBox[{
+      RowBox[{"returns", " ", "all", " ", "pseudo"}], "-", 
+      RowBox[{"faces", " ", "of", " ", "a", " ", "graph"}]}]}], "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Faces", "[", "graph_", "]"}], ":=", 
+    RowBox[{"Block", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"$faces", "=", 
+         RowBox[{"{", "}"}]}], ",", 
+        RowBox[{"tree", "=", 
+         RowBox[{"SpanningTree", "[", "graph", "]"}]}]}], "}"}], ",", 
+      RowBox[{"iteration", "[", 
+       RowBox[{
+        RowBox[{"Graph", "[", "tree", "]"}], ",", 
+        RowBox[{"Complement", "[", 
+         RowBox[{
+          RowBox[{"EdgeList", "[", "graph", "]"}], ",", "tree"}], "]"}]}], 
+       "]"}]}], "]"}]}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{
+     "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
+       "===", "===", "===", "==="}], "=", 
+     RowBox[{
+      RowBox[{
+      "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", 
+       "==="}], "=", 
+      RowBox[{"===", "===", "===", "===", "===", "===", "===", "=="}]}]}], 
+    "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"allTestPlanarityQ", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"aa_", ",", "bb_", ",", "cc_", ",", "dd_"}], "}"}], ",", 
+       "bftlabeling_"}], "]"}], ":=", 
+     RowBox[{"Block", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "planaritycollapsed", ",", "planaritynotcollapsed", ",", "graph", ",",
+          "numfaces", ",", "numbubbles", ",", "numdegreesoffreedom"}], "}"}], 
+       ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], "=", 
+         RowBox[{"{", 
+          RowBox[{"aa", ",", "bb", ",", "cc", ",", "dd"}], "}"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"planaritynotcollapsed", "=", 
+         RowBox[{"planarityQ", "[", 
+          RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", "False"}], "]"}]}], 
+        ";", "\[IndentingNewLine]", 
+        RowBox[{"graph", "=", 
+         RowBox[{"turnIntoGraph", "[", 
+          RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", "False"}], "]"}]}], 
+        ";", "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"PlanarGraphQ", "[", "graph", "]"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"numdegreesoffreedom", "=", 
+            RowBox[{"Length", "[", 
+             RowBox[{"Flatten", "[", 
+              RowBox[{"loopVariablesBasis", "[", 
+               RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "]"}], 
+             "]"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"numbubbles", "=", 
+            RowBox[{"numdegreesoffreedom", "-", 
+             RowBox[{"Length", "[", 
+              RowBox[{"Flatten", "[", 
+               RowBox[{"loopVariablesBasis", "[", 
+                RowBox[{"Sequence", "@@", 
+                 RowBox[{"removeBubbles", "[", 
+                  RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}]}], "]"}],
+                "]"}], "]"}]}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"numfaces", "=", 
+            RowBox[{
+             RowBox[{"Length", "[", 
+              RowBox[{"Faces", "[", 
+               RowBox[{"Graph", "[", 
+                RowBox[{"graph", ",", 
+                 RowBox[{
+                 "GraphLayout", "\[Rule]", "\"\<PlanarEmbedding\>\""}]}], 
+                "]"}], "]"}], "]"}], "+", 
+             RowBox[{"getOrderingExternalEdgesDefault", "[", 
+              RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "+", 
+             "numbubbles"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"numfaces", "\[Equal]", "0"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"numfaces", "=", "1"}], ";"}]}], "\[IndentingNewLine]", 
+            "]"}], ";", "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"planaritynotcollapsed", "===", "True"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"numfaces", "+", "1", "-", "2"}], "\[NotEqual]", 
+                 "numdegreesoffreedom"}], ",", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"Print", "[", 
+                  RowBox[{"\"\<kast=\>\"", ",", 
+                   RowBox[{"{", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                   "\"\< : There's a problem with planarityQ! We are on genus \
+zero on a graph declared planar, and yet we don't have that F+B-2=dim.\>\""}],
+                   "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";"}], 
+             "\[IndentingNewLine]", ",", 
+             RowBox[{
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"numfaces", "+", "1", "-", "2"}], "\[GreaterEqual]", 
+                 "numdegreesoffreedom"}], ",", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"Print", "[", 
+                  RowBox[{"\"\<kast=\>\"", ",", 
+                   RowBox[{"{", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                   "\"\< : There's a problem with planarityQ! We are on genus \
+zero on a graph declared nonplanar, and we somehow have that that F+1-2\
+\[LessEqual]dim.\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], 
+              ";"}]}], "\[IndentingNewLine]", "]"}], ";"}], 
+          "\[IndentingNewLine]", ",", 
+          RowBox[{
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"planaritynotcollapsed", "=!=", "False"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"Print", "[", 
+               RowBox[{"\"\<kast=\>\"", ",", 
+                RowBox[{"{", 
+                 RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                "\"\< : There's a problem with planarityQ! When we don't \
+collapse bivalent nodes, it gives that this example is planar even though it \
+can't even be embedded on genus zero.\>\""}], "]"}], ";"}]}], 
+            "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", 
+         "]"}], ";", "\[IndentingNewLine]", 
+        RowBox[{"planaritycollapsed", "=", 
+         RowBox[{"planarityQ", "[", 
+          RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], "=", 
+         RowBox[{"collapseBivalentNodes", "[", 
+          RowBox[{"aa", ",", "bb", ",", "cc", ",", "dd"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"graph", "=", 
+         RowBox[{"turnIntoGraph", "[", 
+          RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", "False"}], "]"}]}], 
+        ";", "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"PlanarGraphQ", "[", "graph", "]"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"numdegreesoffreedom", "=", 
+            RowBox[{"Length", "[", 
+             RowBox[{"Flatten", "[", 
+              RowBox[{"loopVariablesBasis", "[", 
+               RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "]"}], 
+             "]"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"numbubbles", "=", 
+            RowBox[{"numdegreesoffreedom", "-", 
+             RowBox[{"Length", "[", 
+              RowBox[{"Flatten", "[", 
+               RowBox[{"loopVariablesBasis", "[", 
+                RowBox[{"Sequence", "@@", 
+                 RowBox[{"removeBubbles", "[", 
+                  RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}]}], "]"}],
+                "]"}], "]"}]}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"numfaces", "=", 
+            RowBox[{
+             RowBox[{"Length", "[", 
+              RowBox[{"Faces", "[", 
+               RowBox[{"Graph", "[", 
+                RowBox[{"graph", ",", 
+                 RowBox[{
+                 "GraphLayout", "\[Rule]", "\"\<PlanarEmbedding\>\""}]}], 
+                "]"}], "]"}], "]"}], "+", 
+             RowBox[{"getOrderingExternalEdgesDefault", "[", 
+              RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "+", 
+             "numbubbles"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"numfaces", "\[Equal]", "0"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"numfaces", "=", "1"}], ";"}]}], "\[IndentingNewLine]", 
+            "]"}], ";", "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"planaritynotcollapsed", "===", "True"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"numfaces", "+", "1", "-", "2"}], "\[NotEqual]", 
+                 "numdegreesoffreedom"}], ",", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"Print", "[", 
+                  RowBox[{"\"\<kast=\>\"", ",", 
+                   RowBox[{"{", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                   "\"\< : There's a problem with planarityQ! We are on genus \
+zero on a graph declared planar, and yet we don't have that F+B-2=dim.\>\""}],
+                   "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";"}], 
+             "\[IndentingNewLine]", ",", 
+             RowBox[{
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"numfaces", "+", "1", "-", "2"}], "\[GreaterEqual]", 
+                 "numdegreesoffreedom"}], ",", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"Print", "[", 
+                  RowBox[{"\"\<kast=\>\"", ",", 
+                   RowBox[{"{", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                   "\"\< : There's a problem with planarityQ! We are on genus \
+zero on a graph declared nonplanar, and we somehow have that that F+1-2\
+\[LessEqual]dim.\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], 
+              ";"}]}], "\[IndentingNewLine]", "]"}], ";"}], 
+          "\[IndentingNewLine]", ",", 
+          RowBox[{
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"planaritynotcollapsed", "=!=", "False"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"Print", "[", 
+               RowBox[{"\"\<kast=\>\"", ",", 
+                RowBox[{"{", 
+                 RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                "\"\< : There's a problem with planarityQ! When we don't \
+collapse bivalent nodes, it gives that this example is planar even though it \
+can't even be embedded on genus zero.\>\""}], "]"}], ";"}]}], 
+            "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", 
+         "]"}], ";"}]}], "\[IndentingNewLine]", "]"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"DistributeDefinitions", "[", "allTestPlanarityQ", "]"}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"ParallelMap", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"allTestPlanarityQ", "[", 
+        RowBox[{"#", ",", "True"}], "]"}], "&"}], ",", "allbft1kasteleyns"}], 
+     "]"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"ParallelMap", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"allTestPlanarityQ", "[", 
+        RowBox[{"#", ",", "Null"}], "]"}], "&"}], ",", "allbft2kasteleyns"}], 
+     "]"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"ParallelMap", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"allTestPlanarityQ", "[", 
+        RowBox[{"#", ",", "False"}], "]"}], "&"}], ",", 
+      "allscatteringkasteleyns"}], "]"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"ParallelMap", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"allTestPlanarityQ", "[", 
+        RowBox[{"#", ",", "True"}], "]"}], "&"}], ",", 
+      RowBox[{"Cases", "[", 
+       RowBox[{"annoyingsmallexamples", ",", 
+        RowBox[{"zz_", "/;", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"perfectMatchings", "@@", "zz"}], ")"}], "\[NotEqual]", 
+          RowBox[{"{", "}"}]}]}]}], "]"}]}], "]"}], ";"}]}]}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.665318171181672*^9, 3.665318202704878*^9}, {
+   3.6653183216068077`*^9, 3.6653183520994596`*^9}, {3.66531839215139*^9, 
+   3.6653184111501756`*^9}, 3.6653192263125267`*^9, 3.6653192607611127`*^9, {
+   3.665319433827194*^9, 3.665319470875516*^9}, {3.6653197007946744`*^9, 
+   3.6653197104984245`*^9}, {3.6653202255463314`*^9, 3.665320244858407*^9}, {
+   3.6653207815004144`*^9, 3.6653208951053333`*^9}, {3.6653209452862015`*^9, 
+   3.66532097842157*^9}, {3.6653210227354336`*^9, 3.6653211041830716`*^9}, {
+   3.665321718658688*^9, 3.6653217820570545`*^9}, {3.6653218590977*^9, 
+   3.665321920578185*^9}, {3.665322195244587*^9, 3.6653222033328075`*^9}, {
+   3.6653223748763256`*^9, 3.6653224330165462`*^9}, {3.66532322955106*^9, 
+   3.6653232390476637`*^9}, {3.6653238225077314`*^9, 3.665323879242934*^9}, {
+   3.6653239159845405`*^9, 3.665324034040783*^9}, {3.6653257558168*^9, 
+   3.6653257558748393`*^9}, 3.6653807684593163`*^9, 3.665382653447832*^9, {
+   3.665382822865073*^9, 3.6653828563613834`*^9}, {3.665387578430645*^9, 
+   3.6653876417433176`*^9}, {3.665387772827407*^9, 3.6653879319324636`*^9}, {
+   3.665387975013636*^9, 3.6653880124958487`*^9}, {3.6653881161778917`*^9, 
+   3.665388203398225*^9}, {3.665388418670115*^9, 3.6653884602207074`*^9}, {
+   3.6653885272304087`*^9, 3.665388540956611*^9}, {3.6653885991701355`*^9, 
+   3.6653886322947865`*^9}, {3.6653887029314117`*^9, 3.665388703056418*^9}, {
+   3.665389018738357*^9, 3.665389158046074*^9}, {3.665389284500309*^9, 
+   3.665389339919886*^9}, {3.6653897666302986`*^9, 3.6653898363558693`*^9}, {
+   3.665389910163226*^9, 3.665389961631102*^9}, {3.6653901380930347`*^9, 
+   3.665390149511369*^9}, {3.665390300980686*^9, 3.6653903028178134`*^9}, {
+   3.6653903445906506`*^9, 3.6653904473908606`*^9}, {3.6653945222132363`*^9, 
+   3.6653945445009356`*^9}, 3.665394584118007*^9, {3.665394640528449*^9, 
+   3.6653946583592005`*^9}, {3.665394756936673*^9, 3.665394939098732*^9}, {
+   3.6653949871547394`*^9, 3.665394996124837*^9}, {3.6653950323304377`*^9, 
+   3.6653951271812873`*^9}, {3.6653951719081173`*^9, 
+   3.6653952161041775`*^9}, {3.6653952920676613`*^9, 
+   3.6653953916260896`*^9}, {3.665395727510127*^9, 3.665395790959216*^9}, {
+   3.665395874423108*^9, 3.6653958840790167`*^9}, {3.667043472896695*^9, 
+   3.6670434732248583`*^9}, {3.667561011069772*^9, 3.6675610331953616`*^9}, {
+   3.6675683705643673`*^9, 3.667568372444744*^9}, 3.6676533331215067`*^9, {
+   3.6715436771272993`*^9, 3.671543681137492*^9}, 3.6715443363915234`*^9, {
+   3.671545425662253*^9, 3.671545432037966*^9}, {3.6715455210817585`*^9, 
+   3.6715455226717453`*^9}, 3.6715457983370934`*^9, 3.671545831968717*^9, {
+   3.671687653202075*^9, 3.671687653879326*^9}, {3.6727399887330008`*^9, 
+   3.672739990697439*^9}, {3.6727421263550673`*^9, 3.672742168143506*^9}, {
+   3.6727422146222696`*^9, 3.6727423194137597`*^9}, 3.672742420889721*^9, {
+   3.672742542057129*^9, 3.6727426039915247`*^9}, {3.6845626409503555`*^9, 
+   3.6845626502690935`*^9}, {3.684562805443205*^9, 3.6845630598708067`*^9}, {
+   3.6845657736702204`*^9, 3.6845658028526173`*^9}, {3.6845659484464293`*^9, 
+   3.684565950534692*^9}, 3.684566031738899*^9, {3.684566104056777*^9, 
+   3.684566104197403*^9}, {3.6845697720568457`*^9, 3.684569772432065*^9}, {
+   3.6845698378986716`*^9, 3.6845698652439203`*^9}, 3.68457016258515*^9, {
+   3.6845703082790585`*^9, 3.684570464063136*^9}, {3.684570497938422*^9, 
+   3.6845706184043627`*^9}, {3.6845716053621597`*^9, 3.684571734735937*^9}, {
+   3.6845718189559803`*^9, 3.684571836183045*^9}, {3.6845719767397957`*^9, 
+   3.6845719777019696`*^9}, {3.684572567131533*^9, 3.6845726202715187`*^9}, {
+   3.6845727031368017`*^9, 3.6845727037462063`*^9}, {3.684572834769595*^9, 
+   3.6845729103081703`*^9}, {3.6845729436497173`*^9, 
+   3.6845731129096518`*^9}, {3.684573191816368*^9, 3.684573191863244*^9}, 
+   3.6845735963099227`*^9, {3.6845741429123693`*^9, 3.6845742049491363`*^9}, {
+   3.6845742431095514`*^9, 3.6845742782655716`*^9}, 3.6845744692237563`*^9, {
+   3.6845751348892555`*^9, 3.6845752095924788`*^9}, {3.6845752899464808`*^9, 
+   3.684575319418948*^9}, {3.6845760394775333`*^9, 3.68457605220586*^9}, {
+   3.6845763747862554`*^9, 3.6845765564591846`*^9}, {3.684577541616927*^9, 
+   3.684577560248851*^9}, {3.684580256299975*^9, 3.684580282809972*^9}, 
+   3.6845803764763565`*^9, {3.684580507835149*^9, 3.684580885665312*^9}, {
+   3.6845809186862803`*^9, 3.6845809219235106`*^9}, {3.6845810516980286`*^9, 
+   3.684581080172103*^9}, {3.684581383285103*^9, 3.6845814928285522`*^9}, {
+   3.68458152555422*^9, 3.6845815491653495`*^9}, {3.684581580046487*^9, 
+   3.6845816003550897`*^9}, {3.6846471625889072`*^9, 3.684647185156494*^9}, {
+   3.6846472459357777`*^9, 3.6846472663574123`*^9}, {3.684647323817868*^9, 
+   3.684647384378982*^9}, {3.6846475128657913`*^9, 3.6846475148894916`*^9}, {
+   3.6846478780124445`*^9, 3.684647881333372*^9}, {3.684648202917942*^9, 
+   3.6846482359449673`*^9}, 3.6846483401109657`*^9, {3.684758740765997*^9, 
+   3.6847587486757727`*^9}, 3.6847589668246293`*^9, {3.684759072087677*^9, 
+   3.684759076976714*^9}, {3.6847598533847303`*^9, 3.684759862502415*^9}, {
+   3.6847604105457573`*^9, 3.684760426176469*^9}, {3.6847615341998477`*^9, 
+   3.684761647955044*^9}, {3.684761711202359*^9, 3.684761732113801*^9}, {
+   3.68476195005608*^9, 3.684761964276211*^9}, {3.6847623007053823`*^9, 
+   3.684762387136321*^9}, {3.684762500621395*^9, 3.6847625752463145`*^9}, {
+   3.6847627958635535`*^9, 3.684762808272461*^9}, {3.684763201499195*^9, 
+   3.6847632065296397`*^9}, {3.6847634031348734`*^9, 
+   3.6847634159043713`*^9}, {3.684763477922958*^9, 3.6847634936633058`*^9}, {
+   3.684763557871423*^9, 3.684763631819785*^9}, {3.6847636994284062`*^9, 
+   3.684763764461209*^9}, {3.6847638102387953`*^9, 3.68476381304633*^9}, {
+   3.684763914083949*^9, 3.6847639209600916`*^9}}]
+}, Closed]],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.6847633005667562`*^9, 3.6847633259467363`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{
+   "Here", " ", "we", " ", "check", " ", "getOrderingExternalEdgesDefault"}], 
+   ",", " ", "getSourceEdges", ",", " ", "getSinkEdges", ",", " ", 
+   "getExternalEdgeNodeNumbers"}], "*)"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.6653194611906705`*^9, 3.665319470875516*^9}, 
+   3.665319696162837*^9, 3.665319923129767*^9, {3.66532084581382*^9, 
+   3.6653208558484077`*^9}, 3.66532141327155*^9, 3.6653872607352314`*^9, {
+   3.6653878723812013`*^9, 3.665387872807293*^9}, {3.6653882181571608`*^9, 
+   3.665388220760619*^9}, {3.6653886771674967`*^9, 3.665388699256188*^9}, {
+   3.665394491044639*^9, 3.6653944995239697`*^9}, {3.6653959126545773`*^9, 
+   3.6653959187590914`*^9}, 3.6715453677008524`*^9, {3.672749981361431*^9, 
+   3.6727499814444113`*^9}, 3.684575102612509*^9, 3.6845802079994617`*^9, 
+   3.6846471491723537`*^9, 3.684648173199854*^9, 3.684648253924594*^9, 
+   3.684763960849737*^9}],
 
 Cell[BoxData[{
  RowBox[{
   RowBox[{
-   RowBox[{"allTestreductionGraphBFT", "[", 
+   RowBox[{"allTestSourceSinkEdgesOrdering", "[", 
     RowBox[{
      RowBox[{"{", 
       RowBox[{"a_", ",", "b_", ",", "c_", ",", "d_"}], "}"}], ",", 
      "bftlabeling_"}], "]"}], ":=", 
    RowBox[{"Block", "[", 
     RowBox[{
-     RowBox[{"{", "}"}], ","}], "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+      "perfs", ",", "sources", ",", "sourcetally", ",", "sinks", ",", 
+       "sinktally", ",", "matroidtally", ",", "kasteleyn"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Map", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"#", "[", 
+             RowBox[{"[", "1", "]"}], "]"}], "&"}], ",", 
+           RowBox[{"getOrderingExternalEdgesDefault", "[", 
+            RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}]}], "]"}], "=!=", 
+         RowBox[{"Flatten", "[", 
+          RowBox[{"Join", "[", 
+           RowBox[{
+            RowBox[{"DeleteCases", "[", 
+             RowBox[{"c", ",", "0", ",", 
+              RowBox[{"{", "2", "}"}]}], "]"}], ",", 
+            RowBox[{"DeleteCases", "[", 
+             RowBox[{
+              RowBox[{"Transpose", "[", "b", "]"}], ",", "0", ",", 
+              RowBox[{"{", "2", "}"}]}], "]"}]}], "]"}], "]"}]}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<kast=\>\"", ",", 
+           RowBox[{"{", 
+            RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+           "\"\< : There's a problem with getOrderingExternalEdgesDefault! It \
+doesn't give the right edges in the right order\>\""}], "]"}], ";"}]}], 
+       "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", 
+    "\[IndentingNewLine]", 
     RowBox[{"(*", 
-     RowBox[{"Print", "[", 
-      RowBox[{"\"\<kast=\>\"", ",", 
-       RowBox[{"{", 
-        RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
-       "\"\< : \>\""}], "]"}], "*)"}], "\[IndentingNewLine]", "]"}]}], 
-  ";"}], "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"perfs", "=", 
+       RowBox[{"perfectMatchings", "[", 
+        RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"sources", "=", 
+       RowBox[{"Map", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"getSourceEdges", "[", 
+           RowBox[{"b", ",", "c", ",", "#"}], "]"}], "&"}], ",", "perfs"}], 
+        "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"sourcetally", "=", 
+       RowBox[{"Tally", "[", "sources", "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"sinks", "=", 
+       RowBox[{"Map", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"getSinkEdges", "[", 
+           RowBox[{"b", ",", "c", ",", "#"}], "]"}], "&"}], ",", "perfs"}], 
+        "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"sinktally", "=", 
+       RowBox[{"Tally", "[", "sinks", "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"matroidtally", "=", 
+       RowBox[{"Tally", "[", 
+        RowBox[{"Transpose", "[", 
+         RowBox[{"matroidPolytope", "[", 
+          RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "]"}], "]"}]}], 
+      ";"}], "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    RowBox[{"(*", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Map", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{"Cases", "[", 
+              RowBox[{"sourcetally", ",", 
+               RowBox[{"{", 
+                RowBox[{"#", ",", "_"}], "}"}]}], "]"}], "[", 
+             RowBox[{"[", 
+              RowBox[{"1", ",", "2"}], "]"}], "]"}], "&"}], ",", "sources"}], 
+          "]"}], "=!=", 
+         RowBox[{"Map", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{"Cases", "[", 
+              RowBox[{"matroidtally", ",", 
+               RowBox[{"{", 
+                RowBox[{"#", ",", "_"}], "}"}]}], "]"}], "[", 
+             RowBox[{"[", 
+              RowBox[{"1", ",", "2"}], "]"}], "]"}], "&"}], ",", 
+           RowBox[{"Transpose", "[", 
+            RowBox[{"matroidPolytope", "[", 
+             RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "]"}]}], 
+          "]"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<kast=\>\"", ",", 
+           RowBox[{"{", 
+            RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+           "\"\< : There's a problem with getSourceEdges! It doesn't \
+correspond with the perfect -matching multiplicities given by the matroid \
+polytope\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Map", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{"Cases", "[", 
+              RowBox[{"sinktally", ",", 
+               RowBox[{"{", 
+                RowBox[{"#", ",", "_"}], "}"}]}], "]"}], "[", 
+             RowBox[{"[", 
+              RowBox[{"1", ",", "2"}], "]"}], "]"}], "&"}], ",", "sinks"}], 
+          "]"}], "=!=", 
+         RowBox[{"Map", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{"Cases", "[", 
+              RowBox[{"matroidtally", ",", 
+               RowBox[{"{", 
+                RowBox[{"#", ",", "_"}], "}"}]}], "]"}], "[", 
+             RowBox[{"[", 
+              RowBox[{"1", ",", "2"}], "]"}], "]"}], "&"}], ",", 
+           RowBox[{"Transpose", "[", 
+            RowBox[{"matroidPolytope", "[", 
+             RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "]"}]}], 
+          "]"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<kast=\>\"", ",", 
+           RowBox[{"{", 
+            RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+           "\"\< : There's a problem with getSinkEdges! It doesn't correspond \
+with the perfect -matching multiplicities given by the matroid \
+polytope\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"kasteleyn", "=", 
+       RowBox[{"joinupKasteleyn", "[", 
+        RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Variables", "[", 
+          RowBox[{
+           RowBox[{"Join", "[", 
+            RowBox[{"kasteleyn", ",", 
+             RowBox[{"Transpose", "[", "kasteleyn", "]"}]}], "]"}], "[", 
+           RowBox[{"[", 
+            RowBox[{"getExternalEdgeNodeNumbers", "[", 
+             RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", 
+              RowBox[{"Variables", "[", 
+               RowBox[{"Join", "[", 
+                RowBox[{"b", ",", "c"}], "]"}], "]"}]}], "]"}], "]"}], "]"}], 
+          "]"}], "=!=", 
+         RowBox[{"Variables", "[", 
+          RowBox[{"Join", "[", 
+           RowBox[{"b", ",", "c"}], "]"}], "]"}]}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<kast=\>\"", ",", 
+           RowBox[{"{", 
+            RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+           "\"\< : There's a problem with getExternalEdgeNodeNumbers! It \
+doesn't give the correct node numbers\>\""}], "]"}], ";"}]}], 
+       "\[IndentingNewLine]", "]"}], ";"}], "*)"}], "\[IndentingNewLine]", 
+    "\[IndentingNewLine]", "]"}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
-  RowBox[{"DistributeDefinitions", "[", "allTestreductionGraphBFT", "]"}], 
+  RowBox[{
+  "DistributeDefinitions", "[", "allTestSourceSinkEdgesOrdering", "]"}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"ParallelMap", "[", 
    RowBox[{
     RowBox[{
-     RowBox[{"allTestreductionGraphBFT", "[", 
+     RowBox[{"allTestSourceSinkEdgesOrdering", "[", 
       RowBox[{"#", ",", "True"}], "]"}], "&"}], ",", 
     RowBox[{"RandomSample", "[", 
      RowBox[{"allbft1kasteleyns", ",", "10"}], "]"}]}], "]"}], 
@@ -4934,7 +5903,7 @@ Cell[BoxData[{
   RowBox[{"ParallelMap", "[", 
    RowBox[{
     RowBox[{
-     RowBox[{"allTestreductionGraphBFT", "[", 
+     RowBox[{"allTestSourceSinkEdgesOrdering", "[", 
       RowBox[{"#", ",", "Null"}], "]"}], "&"}], ",", 
     RowBox[{"RandomSample", "[", 
      RowBox[{"allbft2kasteleyns", ",", "10"}], "]"}]}], "]"}], 
@@ -4943,7 +5912,7 @@ Cell[BoxData[{
   RowBox[{"ParallelMap", "[", 
    RowBox[{
     RowBox[{
-     RowBox[{"allTestreductionGraphBFT", "[", 
+     RowBox[{"allTestSourceSinkEdgesOrdering", "[", 
       RowBox[{"#", ",", "False"}], "]"}], "&"}], ",", 
     RowBox[{"RandomSample", "[", 
      RowBox[{"allscatteringkasteleyns", ",", "10"}], "]"}]}], "]"}], 
@@ -4952,7 +5921,7 @@ Cell[BoxData[{
   RowBox[{"ParallelMap", "[", 
    RowBox[{
     RowBox[{
-     RowBox[{"allTestreductionGraphBFT", "[", 
+     RowBox[{"allTestSourceSinkEdgesOrdering", "[", 
       RowBox[{"#", ",", "True"}], "]"}], "&"}], ",", 
     RowBox[{"Cases", "[", 
      RowBox[{"annoyingsmallexamples", ",", 
@@ -5028,11 +5997,664 @@ Cell[BoxData[{
    3.6846472459357777`*^9, 3.6846472663574123`*^9}, {3.684647323817868*^9, 
    3.684647384378982*^9}, {3.6846475128657913`*^9, 3.6846475148894916`*^9}, {
    3.6846478780124445`*^9, 3.684647881333372*^9}, {3.684648202917942*^9, 
-   3.6846482359449673`*^9}, 3.6846483401109657`*^9}]
-}, Closed]],
+   3.6846482359449673`*^9}, 3.6846483401109657`*^9, {3.6847639944818907`*^9, 
+   3.6847640333081274`*^9}, {3.684764065055216*^9, 3.6847640674277997`*^9}, {
+   3.684764600196615*^9, 3.6847646658909426`*^9}, {3.6847647178194*^9, 
+   3.684764724408382*^9}}]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"Transpose", "::", "nmtx"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"The first two levels of \\!\\({}\\) cannot be \
+transposed.\"\>"}]], "Message", "MSG",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.684764940265046*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"Join", "::", "heads"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"Heads \\!\\(List\\) and \\!\\(Transpose\\) at positions \
+\\!\\(1\\) and \\!\\(2\\) are expected to be the same.\"\>"}]], "Message", \
+"MSG",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.684764940300793*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"kast=\"\>", "\[InvisibleSpace]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", "}"}], ",", 
+     RowBox[{"{", "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", "0", "}"}], ",", 
+       RowBox[{"{", "0", "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"X", "[", 
+         RowBox[{"4", ",", "5"}], "]"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"X", "[", 
+         RowBox[{"5", ",", "3"}], "]"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"XX", "[", 
+         RowBox[{"3", ",", "8"}], "]"}], "}"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", "0", "}"}], ",", 
+       RowBox[{"{", "0", "}"}], ",", 
+       RowBox[{"{", "0", "}"}], ",", 
+       RowBox[{"{", "0", "}"}], ",", 
+       RowBox[{"{", "0", "}"}]}], "}"}]}], "}"}], 
+   "\[InvisibleSpace]", "\<\" : There's a problem with \
+getOrderingExternalEdgesDefault! It doesn't give the right edges in the right \
+order\"\>"}],
+  SequenceForm["kast=", {{}, {}, {{0}, {0}, {
+      $CellContext`X[4, 5]}, {
+      $CellContext`X[5, 3]}, {
+      bipartiteSUSY`XX[3, 8]}}, {{0}, {0}, {0}, {0}, {0}}}, 
+   " : There's a problem with getOrderingExternalEdgesDefault! It doesn't \
+give the right edges in the right order"],
+  Editable->False]], "Print",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.684764940348654*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"Transpose", "::", "nmtx"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"The first two levels of \\!\\({}\\) cannot be \
+transposed.\"\>"}]], "Message", "MSG",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.6847649404243927`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"Join", "::", "heads"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"Heads \\!\\(List\\) and \\!\\(Transpose\\) at positions \
+\\!\\(1\\) and \\!\\(2\\) are expected to be the same.\"\>"}]], "Message", \
+"MSG",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.684764940464393*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"kast=\"\>", "\[InvisibleSpace]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", "}"}], ",", 
+     RowBox[{"{", "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"edge", "[", "2", "]"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"edge", "[", "3", "]"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"edge", "[", "1", "]"}], "}"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"0", ",", "0", ",", "0"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"0", ",", "0", ",", "0"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"0", ",", "0", ",", "0"}], "}"}]}], "}"}]}], "}"}], 
+   "\[InvisibleSpace]", "\<\" : There's a problem with \
+getOrderingExternalEdgesDefault! It doesn't give the right edges in the right \
+order\"\>"}],
+  SequenceForm["kast=", {{}, {}, {{
+      $CellContext`edge[2]}, {
+      $CellContext`edge[3]}, {
+      $CellContext`edge[1]}}, {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}}}, 
+   " : There's a problem with getOrderingExternalEdgesDefault! It doesn't \
+give the right edges in the right order"],
+  Editable->False]], "Print",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.6847649405201454`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"Transpose", "::", "nmtx"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"The first two levels of \\!\\({}\\) cannot be \
+transposed.\"\>"}]], "Message", "MSG",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.68476494059988*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"Transpose", "::", "nmtx"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"The first two levels of \\!\\({}\\) cannot be \
+transposed.\"\>"}]], "Message", "MSG",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.6847649406477456`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"Transpose", "::", "nmtx"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"The first two levels of \\!\\({}\\) cannot be \
+transposed.\"\>"}]], "Message", "MSG",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.684764940685913*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"Join", "::", "heads"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"Heads \\!\\(List\\) and \\!\\(Transpose\\) at positions \
+\\!\\(1\\) and \\!\\(2\\) are expected to be the same.\"\>"}]], "Message", \
+"MSG",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.684764940725424*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"Join", "::", "heads"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"Heads \\!\\(List\\) and \\!\\(Transpose\\) at positions \
+\\!\\(1\\) and \\!\\(2\\) are expected to be the same.\"\>"}]], "Message", \
+"MSG",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.684764940761428*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"Join", "::", "heads"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"Heads \\!\\(List\\) and \\!\\(Transpose\\) at positions \
+\\!\\(1\\) and \\!\\(2\\) are expected to be the same.\"\>"}]], "Message", \
+"MSG",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.684764940796321*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"kast=\"\>", "\[InvisibleSpace]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", "}"}], ",", 
+     RowBox[{"{", "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"X", "[", 
+          RowBox[{"1", ",", "1"}], "]"}], ",", "0"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"0", ",", "0"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"0", ",", 
+         RowBox[{"Y", "[", 
+          RowBox[{"1", ",", "1"}], "]"}]}], "}"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", "}"}], ",", 
+       RowBox[{"{", "}"}], ",", 
+       RowBox[{"{", "}"}]}], "}"}]}], "}"}], 
+   "\[InvisibleSpace]", "\<\" : There's a problem with \
+getOrderingExternalEdgesDefault! It doesn't give the right edges in the right \
+order\"\>"}],
+  SequenceForm["kast=", {{}, {}, {{
+      $CellContext`X[1, 1], 0}, {0, 0}, {0, 
+      $CellContext`Y[1, 1]}}, {{}, {}, {}}}, 
+   " : There's a problem with getOrderingExternalEdgesDefault! It doesn't \
+give the right edges in the right order"],
+  Editable->False]], "Print",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.6847649408401947`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"Transpose", "::", "nmtx"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"The first two levels of \\!\\({}\\) cannot be \
+transposed.\"\>"}]], "Message", "MSG",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.6847649408803387`*^9}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"kast=\"\>", "\[InvisibleSpace]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", "}"}], ",", 
+     RowBox[{"{", "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"X", "[", 
+          RowBox[{"1", ",", "1"}], "]"}], ",", "0"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"0", ",", 
+         RowBox[{"Y", "[", 
+          RowBox[{"1", ",", "1"}], "]"}]}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"0", ",", "0"}], "}"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"0", ",", "0"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"0", ",", "0"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"0", ",", "0"}], "}"}]}], "}"}]}], "}"}], 
+   "\[InvisibleSpace]", "\<\" : There's a problem with \
+getOrderingExternalEdgesDefault! It doesn't give the right edges in the right \
+order\"\>"}],
+  SequenceForm["kast=", {{}, {}, {{
+      $CellContext`X[1, 1], 0}, {0, 
+      $CellContext`Y[1, 1]}, {0, 0}}, {{0, 0}, {0, 0}, {0, 0}}}, 
+   " : There's a problem with getOrderingExternalEdgesDefault! It doesn't \
+give the right edges in the right order"],
+  Editable->False]], "Print",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.6847649409198236`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"kast=\"\>", "\[InvisibleSpace]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", "}"}], ",", 
+     RowBox[{"{", "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"X", "[", 
+          RowBox[{"1", ",", "1"}], "]"}], ",", "0"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"0", ",", 
+         RowBox[{"Y", "[", 
+          RowBox[{"1", ",", "1"}], "]"}]}], "}"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"0", ",", "0"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"0", ",", "0"}], "}"}]}], "}"}]}], "}"}], 
+   "\[InvisibleSpace]", "\<\" : There's a problem with \
+getOrderingExternalEdgesDefault! It doesn't give the right edges in the right \
+order\"\>"}],
+  SequenceForm["kast=", {{}, {}, {{
+      $CellContext`X[1, 1], 0}, {0, 
+      $CellContext`Y[1, 1]}}, {{0, 0}, {0, 0}}}, 
+   " : There's a problem with getOrderingExternalEdgesDefault! It doesn't \
+give the right edges in the right order"],
+  Editable->False]], "Print",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.6847649409598246`*^9}]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"Join", "::", "heads"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"Heads \\!\\(List\\) and \\!\\(Transpose\\) at positions \
+\\!\\(1\\) and \\!\\(2\\) are expected to be the same.\"\>"}]], "Message", \
+"MSG",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.6847649409956074`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"kast=\"\>", "\[InvisibleSpace]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", "}"}], ",", 
+     RowBox[{"{", "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"X", "[", 
+         RowBox[{"1", ",", "2"}], "]"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"X", "[", 
+         RowBox[{"2", ",", "3"}], "]"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"X", "[", 
+         RowBox[{"3", ",", "1"}], "]"}], "}"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", "}"}], ",", 
+       RowBox[{"{", "}"}], ",", 
+       RowBox[{"{", "}"}]}], "}"}]}], "}"}], 
+   "\[InvisibleSpace]", "\<\" : There's a problem with \
+getOrderingExternalEdgesDefault! It doesn't give the right edges in the right \
+order\"\>"}],
+  SequenceForm["kast=", {{}, {}, {{
+      $CellContext`X[1, 2]}, {
+      $CellContext`X[2, 3]}, {
+      $CellContext`X[3, 1]}}, {{}, {}, {}}}, 
+   " : There's a problem with getOrderingExternalEdgesDefault! It doesn't \
+give the right edges in the right order"],
+  Editable->False]], "Print",
+ ShowCellLabel->True,
+ CellChangeTimes->{3.6847649410394893`*^9}],
 
 Cell[BoxData[""], "Input",
- CellChangeTimes->{{3.684648844448781*^9, 3.6846488444988146`*^9}}],
+ CellChangeTimes->{{3.6846488466756153`*^9, 3.684648846722494*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{
+   "Here", " ", "we", " ", "check", " ", "getOrderingExternalNodesDefault"}], 
+   ",", " ", "getSourceNodes", ",", " ", "getSinkNodes"}], "*)"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.6653194611906705`*^9, 3.665319470875516*^9}, 
+   3.665319696162837*^9, 3.665319923129767*^9, {3.66532084581382*^9, 
+   3.6653208558484077`*^9}, 3.66532141327155*^9, 3.6653872607352314`*^9, {
+   3.6653878723812013`*^9, 3.665387872807293*^9}, {3.6653882181571608`*^9, 
+   3.665388220760619*^9}, {3.6653886771674967`*^9, 3.665388699256188*^9}, {
+   3.665394491044639*^9, 3.6653944995239697`*^9}, {3.6653959126545773`*^9, 
+   3.6653959187590914`*^9}, 3.6715453677008524`*^9, {3.672749981361431*^9, 
+   3.6727499814444113`*^9}, 3.684575102612509*^9, 3.6845802079994617`*^9, 
+   3.6846471491723537`*^9, 3.684648173199854*^9, 3.684648253924594*^9, 
+   3.684764704719036*^9}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"allTestSourceSinkNodesOrdering", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"a_", ",", "b_", ",", "c_", ",", "d_"}], "}"}], ",", 
+     "bftlabeling_"}], "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "perfs", ",", "sourcenodes", ",", "sourcetally", ",", "sinknodes", ",", 
+       "sinktally", ",", "matroidtally"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"getOrderingExternalNodesDefault", "[", 
+          RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "=!=", 
+         RowBox[{"Union", "[", 
+          RowBox[{
+           RowBox[{"Range", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"Length", "[", "a", "]"}], "+", "1"}], ",", 
+             RowBox[{"Length", "[", 
+              RowBox[{"Join", "[", 
+               RowBox[{"a", ",", "c"}], "]"}], "]"}]}], "]"}], ",", 
+           RowBox[{"Range", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"Total", "[", 
+               RowBox[{"Dimensions", "[", 
+                RowBox[{"Join", "[", 
+                 RowBox[{"a", ",", "c"}], "]"}], "]"}], "]"}], "+", "1"}], 
+             ",", 
+             RowBox[{
+              RowBox[{"Total", "[", 
+               RowBox[{"Dimensions", "[", 
+                RowBox[{"Join", "[", 
+                 RowBox[{"a", ",", "c"}], "]"}], "]"}], "]"}], "+", 
+              RowBox[{"Length", "[", 
+               RowBox[{"Transpose", "[", "b", "]"}], "]"}]}]}], "]"}]}], 
+          "]"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<kast=\>\"", ",", 
+           RowBox[{"{", 
+            RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+           "\"\< : There's a problem with getOrderingExternalNodesDefault! It \
+doesn't give the right nodes in the right order!\>\""}], "]"}], ";"}]}], 
+       "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", 
+    "\[IndentingNewLine]", 
+    RowBox[{"(*", 
+     RowBox[{
+      RowBox[{"perfs", "=", 
+       RowBox[{"perfectMatchings", "[", 
+        RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"sourcenodes", "=", 
+       RowBox[{"Map", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"getSourceNodes", "[", 
+           RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", "#"}], "]"}], 
+          "&"}], ",", "perfs"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"sourcetally", "=", 
+       RowBox[{"Tally", "[", "sourcenodes", "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"sinknodes", "=", 
+       RowBox[{"Map", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"getSinkNodes", "[", 
+           RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", "#"}], "]"}], 
+          "&"}], ",", "perfs"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"sinktally", "=", 
+       RowBox[{"Tally", "[", "sinknodes", "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"matroidtally", "=", 
+       RowBox[{"Tally", "[", 
+        RowBox[{"Transpose", "[", 
+         RowBox[{"matroidPolytope", "[", 
+          RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "]"}], "]"}]}], 
+      ";"}], "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    RowBox[{"(*", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Map", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{"Cases", "[", 
+              RowBox[{"sourcetally", ",", 
+               RowBox[{"{", 
+                RowBox[{"#", ",", "_"}], "}"}]}], "]"}], "[", 
+             RowBox[{"[", 
+              RowBox[{"1", ",", "2"}], "]"}], "]"}], "&"}], ",", 
+           "sourcenodes"}], "]"}], "=!=", 
+         RowBox[{"Map", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{"Cases", "[", 
+              RowBox[{"matroidtally", ",", 
+               RowBox[{"{", 
+                RowBox[{"#", ",", "_"}], "}"}]}], "]"}], "[", 
+             RowBox[{"[", 
+              RowBox[{"1", ",", "2"}], "]"}], "]"}], "&"}], ",", 
+           RowBox[{"Transpose", "[", 
+            RowBox[{"matroidPolytope", "[", 
+             RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "]"}]}], 
+          "]"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<kast=\>\"", ",", 
+           RowBox[{"{", 
+            RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+           "\"\< : There's a problem with getSourceEdges! It doesn't \
+correspond with the perfect -matching multiplicities given by the matroid \
+polytope\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Map", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{"Cases", "[", 
+              RowBox[{"sinktally", ",", 
+               RowBox[{"{", 
+                RowBox[{"#", ",", "_"}], "}"}]}], "]"}], "[", 
+             RowBox[{"[", 
+              RowBox[{"1", ",", "2"}], "]"}], "]"}], "&"}], ",", 
+           "sinknodes"}], "]"}], "=!=", 
+         RowBox[{"Map", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{"Cases", "[", 
+              RowBox[{"matroidtally", ",", 
+               RowBox[{"{", 
+                RowBox[{"#", ",", "_"}], "}"}]}], "]"}], "[", 
+             RowBox[{"[", 
+              RowBox[{"1", ",", "2"}], "]"}], "]"}], "&"}], ",", 
+           RowBox[{"Transpose", "[", 
+            RowBox[{"matroidPolytope", "[", 
+             RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "]"}]}], 
+          "]"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<kast=\>\"", ",", 
+           RowBox[{"{", 
+            RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+           "\"\< : There's a problem with getSinkEdges! It doesn't correspond \
+with the perfect -matching multiplicities given by the matroid \
+polytope\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";"}], "*)"}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+  "DistributeDefinitions", "[", "allTestSourceSinkNodesOrdering", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ParallelMap", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"allTestSourceSinkNodesOrdering", "[", 
+      RowBox[{"#", ",", "True"}], "]"}], "&"}], ",", 
+    RowBox[{"RandomSample", "[", 
+     RowBox[{"allbft1kasteleyns", ",", "10"}], "]"}]}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ParallelMap", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"allTestSourceSinkNodesOrdering", "[", 
+      RowBox[{"#", ",", "Null"}], "]"}], "&"}], ",", 
+    RowBox[{"RandomSample", "[", 
+     RowBox[{"allbft2kasteleyns", ",", "10"}], "]"}]}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ParallelMap", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"allTestSourceSinkNodesOrdering", "[", 
+      RowBox[{"#", ",", "False"}], "]"}], "&"}], ",", 
+    RowBox[{"RandomSample", "[", 
+     RowBox[{"allscatteringkasteleyns", ",", "10"}], "]"}]}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ParallelMap", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"allTestSourceSinkNodesOrdering", "[", 
+      RowBox[{"#", ",", "True"}], "]"}], "&"}], ",", 
+    RowBox[{"Cases", "[", 
+     RowBox[{"annoyingsmallexamples", ",", 
+      RowBox[{"zz_", "/;", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"perfectMatchings", "@@", "zz"}], ")"}], "\[NotEqual]", 
+        RowBox[{"{", "}"}]}]}]}], "]"}]}], "]"}], ";"}]}], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.665318171181672*^9, 3.665318202704878*^9}, {
+   3.6653183216068077`*^9, 3.6653183520994596`*^9}, {3.66531839215139*^9, 
+   3.6653184111501756`*^9}, 3.6653192263125267`*^9, 3.6653192607611127`*^9, {
+   3.665319433827194*^9, 3.665319470875516*^9}, {3.6653197007946744`*^9, 
+   3.6653197104984245`*^9}, {3.6653202255463314`*^9, 3.665320244858407*^9}, {
+   3.6653207815004144`*^9, 3.6653208951053333`*^9}, {3.6653209452862015`*^9, 
+   3.66532097842157*^9}, {3.6653210227354336`*^9, 3.6653211041830716`*^9}, {
+   3.665321718658688*^9, 3.6653217820570545`*^9}, {3.6653218590977*^9, 
+   3.665321920578185*^9}, {3.665322195244587*^9, 3.6653222033328075`*^9}, {
+   3.6653223748763256`*^9, 3.6653224330165462`*^9}, {3.66532322955106*^9, 
+   3.6653232390476637`*^9}, {3.6653238225077314`*^9, 3.665323879242934*^9}, {
+   3.6653239159845405`*^9, 3.665324034040783*^9}, {3.6653257558168*^9, 
+   3.6653257558748393`*^9}, 3.6653807684593163`*^9, 3.665382653447832*^9, {
+   3.665382822865073*^9, 3.6653828563613834`*^9}, {3.665387578430645*^9, 
+   3.6653876417433176`*^9}, {3.665387772827407*^9, 3.6653879319324636`*^9}, {
+   3.665387975013636*^9, 3.6653880124958487`*^9}, {3.6653881161778917`*^9, 
+   3.665388203398225*^9}, {3.665388418670115*^9, 3.6653884602207074`*^9}, {
+   3.6653885272304087`*^9, 3.665388540956611*^9}, {3.6653885991701355`*^9, 
+   3.6653886322947865`*^9}, {3.6653887029314117`*^9, 3.665388703056418*^9}, {
+   3.665389018738357*^9, 3.665389158046074*^9}, {3.665389284500309*^9, 
+   3.665389339919886*^9}, {3.6653897666302986`*^9, 3.6653898363558693`*^9}, {
+   3.665389910163226*^9, 3.665389961631102*^9}, {3.6653901380930347`*^9, 
+   3.665390149511369*^9}, {3.665390300980686*^9, 3.6653903028178134`*^9}, {
+   3.6653903445906506`*^9, 3.6653904473908606`*^9}, {3.6653945222132363`*^9, 
+   3.6653945445009356`*^9}, 3.665394584118007*^9, {3.665394640528449*^9, 
+   3.6653946583592005`*^9}, {3.665394756936673*^9, 3.665394939098732*^9}, {
+   3.6653949871547394`*^9, 3.665394996124837*^9}, {3.6653950323304377`*^9, 
+   3.6653951271812873`*^9}, {3.6653951719081173`*^9, 
+   3.6653952161041775`*^9}, {3.6653952920676613`*^9, 
+   3.6653953916260896`*^9}, {3.665395727510127*^9, 3.665395790959216*^9}, {
+   3.665395874423108*^9, 3.6653958840790167`*^9}, {3.667043472896695*^9, 
+   3.6670434732248583`*^9}, {3.667561011069772*^9, 3.6675610331953616`*^9}, {
+   3.6675683705643673`*^9, 3.667568372444744*^9}, 3.6676533331215067`*^9, {
+   3.6715436771272993`*^9, 3.671543681137492*^9}, 3.6715443363915234`*^9, {
+   3.671545425662253*^9, 3.671545432037966*^9}, {3.6715455210817585`*^9, 
+   3.6715455226717453`*^9}, 3.6715457983370934`*^9, 3.671545831968717*^9, {
+   3.671687653202075*^9, 3.671687653879326*^9}, {3.6727399887330008`*^9, 
+   3.672739990697439*^9}, {3.6727421263550673`*^9, 3.672742168143506*^9}, {
+   3.6727422146222696`*^9, 3.6727423194137597`*^9}, 3.672742420889721*^9, {
+   3.672742542057129*^9, 3.6727426039915247`*^9}, {3.6845626409503555`*^9, 
+   3.6845626502690935`*^9}, {3.684562805443205*^9, 3.6845630598708067`*^9}, {
+   3.6845657736702204`*^9, 3.6845658028526173`*^9}, {3.6845659484464293`*^9, 
+   3.684565950534692*^9}, 3.684566031738899*^9, {3.684566104056777*^9, 
+   3.684566104197403*^9}, {3.6845697720568457`*^9, 3.684569772432065*^9}, {
+   3.6845698378986716`*^9, 3.6845698652439203`*^9}, 3.68457016258515*^9, {
+   3.6845703082790585`*^9, 3.684570464063136*^9}, {3.684570497938422*^9, 
+   3.6845706184043627`*^9}, {3.6845716053621597`*^9, 3.684571734735937*^9}, {
+   3.6845718189559803`*^9, 3.684571836183045*^9}, {3.6845719767397957`*^9, 
+   3.6845719777019696`*^9}, {3.684572567131533*^9, 3.6845726202715187`*^9}, {
+   3.6845727031368017`*^9, 3.6845727037462063`*^9}, {3.684572834769595*^9, 
+   3.6845729103081703`*^9}, {3.6845729436497173`*^9, 
+   3.6845731129096518`*^9}, {3.684573191816368*^9, 3.684573191863244*^9}, 
+   3.6845735963099227`*^9, {3.6845741429123693`*^9, 3.6845742049491363`*^9}, {
+   3.6845742431095514`*^9, 3.6845742782655716`*^9}, 3.6845744692237563`*^9, {
+   3.6845751348892555`*^9, 3.6845752095924788`*^9}, {3.6845752899464808`*^9, 
+   3.684575319418948*^9}, {3.6845760394775333`*^9, 3.68457605220586*^9}, {
+   3.6845763747862554`*^9, 3.6845765564591846`*^9}, {3.684577541616927*^9, 
+   3.684577560248851*^9}, {3.684580256299975*^9, 3.684580282809972*^9}, 
+   3.6845803764763565`*^9, {3.684580507835149*^9, 3.684580885665312*^9}, {
+   3.6845809186862803`*^9, 3.6845809219235106`*^9}, {3.6845810516980286`*^9, 
+   3.684581080172103*^9}, {3.684581383285103*^9, 3.6845814928285522`*^9}, {
+   3.68458152555422*^9, 3.6845815491653495`*^9}, {3.684581580046487*^9, 
+   3.6845816003550897`*^9}, {3.6846471625889072`*^9, 3.684647185156494*^9}, {
+   3.6846472459357777`*^9, 3.6846472663574123`*^9}, {3.684647323817868*^9, 
+   3.684647384378982*^9}, {3.6846475128657913`*^9, 3.6846475148894916`*^9}, {
+   3.6846478780124445`*^9, 3.684647881333372*^9}, {3.684648202917942*^9, 
+   3.6846482359449673`*^9}, 3.6846483401109657`*^9, {3.684764725497431*^9, 
+   3.6847648249711018`*^9}}]
+}, Open  ]],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.684648848496868*^9, 3.684648848543746*^9}}],
 
 Cell[CellGroupData[{
 
@@ -5182,7 +6804,157 @@ Cell[BoxData[{
 }, Closed]],
 
 Cell[BoxData[""], "Input",
- CellChangeTimes->{{3.6846488466756153`*^9, 3.684648846722494*^9}}],
+ CellChangeTimes->{{3.684648848496868*^9, 3.684648848543746*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{"Here", " ", "we", " ", "check"}], " ", "*)"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.6653194611906705`*^9, 3.665319470875516*^9}, 
+   3.665319696162837*^9, 3.665319923129767*^9, {3.66532084581382*^9, 
+   3.6653208558484077`*^9}, 3.66532141327155*^9, 3.6653872607352314`*^9, {
+   3.6653878723812013`*^9, 3.665387872807293*^9}, {3.6653882181571608`*^9, 
+   3.665388220760619*^9}, {3.6653886771674967`*^9, 3.665388699256188*^9}, {
+   3.665394491044639*^9, 3.6653944995239697`*^9}, {3.6653959126545773`*^9, 
+   3.6653959187590914`*^9}, 3.6715453677008524`*^9, {3.672749981361431*^9, 
+   3.6727499814444113`*^9}, 3.684575102612509*^9, 3.6845802079994617`*^9, 
+   3.6846471491723537`*^9, 3.684648173199854*^9, 3.684648253924594*^9}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"allTestreductionGraphBFT", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"a_", ",", "b_", ",", "c_", ",", "d_"}], "}"}], ",", 
+     "bftlabeling_"}], "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", "}"}], ","}], "\[IndentingNewLine]", 
+    RowBox[{"(*", 
+     RowBox[{"Print", "[", 
+      RowBox[{"\"\<kast=\>\"", ",", 
+       RowBox[{"{", 
+        RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+       "\"\< : \>\""}], "]"}], "*)"}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"DistributeDefinitions", "[", "allTestreductionGraphBFT", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ParallelMap", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"allTestreductionGraphBFT", "[", 
+      RowBox[{"#", ",", "True"}], "]"}], "&"}], ",", 
+    RowBox[{"RandomSample", "[", 
+     RowBox[{"allbft1kasteleyns", ",", "10"}], "]"}]}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ParallelMap", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"allTestreductionGraphBFT", "[", 
+      RowBox[{"#", ",", "Null"}], "]"}], "&"}], ",", 
+    RowBox[{"RandomSample", "[", 
+     RowBox[{"allbft2kasteleyns", ",", "10"}], "]"}]}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ParallelMap", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"allTestreductionGraphBFT", "[", 
+      RowBox[{"#", ",", "False"}], "]"}], "&"}], ",", 
+    RowBox[{"RandomSample", "[", 
+     RowBox[{"allscatteringkasteleyns", ",", "10"}], "]"}]}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ParallelMap", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"allTestreductionGraphBFT", "[", 
+      RowBox[{"#", ",", "True"}], "]"}], "&"}], ",", 
+    RowBox[{"Cases", "[", 
+     RowBox[{"annoyingsmallexamples", ",", 
+      RowBox[{"zz_", "/;", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"perfectMatchings", "@@", "zz"}], ")"}], "\[NotEqual]", 
+        RowBox[{"{", "}"}]}]}]}], "]"}]}], "]"}], ";"}]}], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.665318171181672*^9, 3.665318202704878*^9}, {
+   3.6653183216068077`*^9, 3.6653183520994596`*^9}, {3.66531839215139*^9, 
+   3.6653184111501756`*^9}, 3.6653192263125267`*^9, 3.6653192607611127`*^9, {
+   3.665319433827194*^9, 3.665319470875516*^9}, {3.6653197007946744`*^9, 
+   3.6653197104984245`*^9}, {3.6653202255463314`*^9, 3.665320244858407*^9}, {
+   3.6653207815004144`*^9, 3.6653208951053333`*^9}, {3.6653209452862015`*^9, 
+   3.66532097842157*^9}, {3.6653210227354336`*^9, 3.6653211041830716`*^9}, {
+   3.665321718658688*^9, 3.6653217820570545`*^9}, {3.6653218590977*^9, 
+   3.665321920578185*^9}, {3.665322195244587*^9, 3.6653222033328075`*^9}, {
+   3.6653223748763256`*^9, 3.6653224330165462`*^9}, {3.66532322955106*^9, 
+   3.6653232390476637`*^9}, {3.6653238225077314`*^9, 3.665323879242934*^9}, {
+   3.6653239159845405`*^9, 3.665324034040783*^9}, {3.6653257558168*^9, 
+   3.6653257558748393`*^9}, 3.6653807684593163`*^9, 3.665382653447832*^9, {
+   3.665382822865073*^9, 3.6653828563613834`*^9}, {3.665387578430645*^9, 
+   3.6653876417433176`*^9}, {3.665387772827407*^9, 3.6653879319324636`*^9}, {
+   3.665387975013636*^9, 3.6653880124958487`*^9}, {3.6653881161778917`*^9, 
+   3.665388203398225*^9}, {3.665388418670115*^9, 3.6653884602207074`*^9}, {
+   3.6653885272304087`*^9, 3.665388540956611*^9}, {3.6653885991701355`*^9, 
+   3.6653886322947865`*^9}, {3.6653887029314117`*^9, 3.665388703056418*^9}, {
+   3.665389018738357*^9, 3.665389158046074*^9}, {3.665389284500309*^9, 
+   3.665389339919886*^9}, {3.6653897666302986`*^9, 3.6653898363558693`*^9}, {
+   3.665389910163226*^9, 3.665389961631102*^9}, {3.6653901380930347`*^9, 
+   3.665390149511369*^9}, {3.665390300980686*^9, 3.6653903028178134`*^9}, {
+   3.6653903445906506`*^9, 3.6653904473908606`*^9}, {3.6653945222132363`*^9, 
+   3.6653945445009356`*^9}, 3.665394584118007*^9, {3.665394640528449*^9, 
+   3.6653946583592005`*^9}, {3.665394756936673*^9, 3.665394939098732*^9}, {
+   3.6653949871547394`*^9, 3.665394996124837*^9}, {3.6653950323304377`*^9, 
+   3.6653951271812873`*^9}, {3.6653951719081173`*^9, 
+   3.6653952161041775`*^9}, {3.6653952920676613`*^9, 
+   3.6653953916260896`*^9}, {3.665395727510127*^9, 3.665395790959216*^9}, {
+   3.665395874423108*^9, 3.6653958840790167`*^9}, {3.667043472896695*^9, 
+   3.6670434732248583`*^9}, {3.667561011069772*^9, 3.6675610331953616`*^9}, {
+   3.6675683705643673`*^9, 3.667568372444744*^9}, 3.6676533331215067`*^9, {
+   3.6715436771272993`*^9, 3.671543681137492*^9}, 3.6715443363915234`*^9, {
+   3.671545425662253*^9, 3.671545432037966*^9}, {3.6715455210817585`*^9, 
+   3.6715455226717453`*^9}, 3.6715457983370934`*^9, 3.671545831968717*^9, {
+   3.671687653202075*^9, 3.671687653879326*^9}, {3.6727399887330008`*^9, 
+   3.672739990697439*^9}, {3.6727421263550673`*^9, 3.672742168143506*^9}, {
+   3.6727422146222696`*^9, 3.6727423194137597`*^9}, 3.672742420889721*^9, {
+   3.672742542057129*^9, 3.6727426039915247`*^9}, {3.6845626409503555`*^9, 
+   3.6845626502690935`*^9}, {3.684562805443205*^9, 3.6845630598708067`*^9}, {
+   3.6845657736702204`*^9, 3.6845658028526173`*^9}, {3.6845659484464293`*^9, 
+   3.684565950534692*^9}, 3.684566031738899*^9, {3.684566104056777*^9, 
+   3.684566104197403*^9}, {3.6845697720568457`*^9, 3.684569772432065*^9}, {
+   3.6845698378986716`*^9, 3.6845698652439203`*^9}, 3.68457016258515*^9, {
+   3.6845703082790585`*^9, 3.684570464063136*^9}, {3.684570497938422*^9, 
+   3.6845706184043627`*^9}, {3.6845716053621597`*^9, 3.684571734735937*^9}, {
+   3.6845718189559803`*^9, 3.684571836183045*^9}, {3.6845719767397957`*^9, 
+   3.6845719777019696`*^9}, {3.684572567131533*^9, 3.6845726202715187`*^9}, {
+   3.6845727031368017`*^9, 3.6845727037462063`*^9}, {3.684572834769595*^9, 
+   3.6845729103081703`*^9}, {3.6845729436497173`*^9, 
+   3.6845731129096518`*^9}, {3.684573191816368*^9, 3.684573191863244*^9}, 
+   3.6845735963099227`*^9, {3.6845741429123693`*^9, 3.6845742049491363`*^9}, {
+   3.6845742431095514`*^9, 3.6845742782655716`*^9}, 3.6845744692237563`*^9, {
+   3.6845751348892555`*^9, 3.6845752095924788`*^9}, {3.6845752899464808`*^9, 
+   3.684575319418948*^9}, {3.6845760394775333`*^9, 3.68457605220586*^9}, {
+   3.6845763747862554`*^9, 3.6845765564591846`*^9}, {3.684577541616927*^9, 
+   3.684577560248851*^9}, {3.684580256299975*^9, 3.684580282809972*^9}, 
+   3.6845803764763565`*^9, {3.684580507835149*^9, 3.684580885665312*^9}, {
+   3.6845809186862803`*^9, 3.6845809219235106`*^9}, {3.6845810516980286`*^9, 
+   3.684581080172103*^9}, {3.684581383285103*^9, 3.6845814928285522`*^9}, {
+   3.68458152555422*^9, 3.6845815491653495`*^9}, {3.684581580046487*^9, 
+   3.6845816003550897`*^9}, {3.6846471625889072`*^9, 3.684647185156494*^9}, {
+   3.6846472459357777`*^9, 3.6846472663574123`*^9}, {3.684647323817868*^9, 
+   3.684647384378982*^9}, {3.6846475128657913`*^9, 3.6846475148894916`*^9}, {
+   3.6846478780124445`*^9, 3.684647881333372*^9}, {3.684648202917942*^9, 
+   3.6846482359449673`*^9}, 3.6846483401109657`*^9}]
+}, Closed]],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.684648848496868*^9, 3.684648848543746*^9}}],
 
 Cell[CellGroupData[{
 
@@ -5335,7 +7107,7 @@ Cell[BoxData[""], "Input",
  CellChangeTimes->{{3.684648848496868*^9, 3.684648848543746*^9}}]
 },
 WindowSize->{1366, 685},
-WindowMargins->{{-8, Automatic}, {Automatic, -8}},
+WindowMargins->{{-8, Automatic}, {Automatic, 0}},
 FrontEndVersion->"10.2 for Microsoft Windows (64-bit) (July 7, 2015)",
 StyleDefinitions->"Default.nb"
 ]
@@ -5382,89 +7154,130 @@ Cell[35574, 857, 14777, 302, 792, "Input",
 }, Closed]],
 Cell[50366, 1162, 96, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[50487, 1167, 750, 12, 31, "Input",
+Cell[50487, 1167, 802, 13, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[51240, 1181, 9025, 183, 372, "Input",
+Cell[51292, 1182, 9178, 185, 372, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[60280, 1367, 92, 1, 25, "Input"],
+Cell[60485, 1370, 92, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[60397, 1372, 881, 14, 31, "Input",
+Cell[60602, 1375, 881, 14, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[61281, 1388, 20911, 440, 1512, "Input",
+Cell[61486, 1391, 20911, 440, 1512, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[82207, 1831, 94, 1, 25, "Input"],
+Cell[82412, 1834, 94, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[82326, 1836, 814, 13, 31, "Input",
+Cell[82531, 1839, 814, 13, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[83143, 1851, 19110, 392, 1532, "Input",
+Cell[83348, 1854, 19110, 392, 1532, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[102268, 2246, 92, 1, 25, "Input"],
+Cell[102473, 2249, 92, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[102385, 2251, 798, 13, 31, "Input",
+Cell[102590, 2254, 798, 13, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[103186, 2266, 10600, 217, 372, "Input",
+Cell[103391, 2269, 10600, 217, 372, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[113801, 2486, 248, 3, 25, "Input"],
+Cell[114006, 2489, 248, 3, 25, "Input"],
 Cell[CellGroupData[{
-Cell[114074, 2493, 816, 13, 31, "Input",
+Cell[114279, 2496, 816, 13, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[114893, 2508, 16068, 317, 1152, "Input",
+Cell[115098, 2511, 16068, 317, 1152, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[130976, 2828, 94, 1, 25, "Input"],
+Cell[131181, 2831, 94, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[131095, 2833, 1192, 21, 31, "Input",
+Cell[131300, 2836, 1192, 21, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[132290, 2856, 20587, 437, 891, "Input",
+Cell[132495, 2859, 20587, 437, 891, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[152892, 3296, 94, 1, 25, "Input"],
+Cell[153097, 3299, 94, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[153011, 3301, 1282, 23, 52, "Input",
+Cell[153216, 3304, 1282, 23, 52, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[154296, 3326, 49146, 1116, 2540, "Input",
+Cell[154501, 3329, 49146, 1116, 2540, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[203457, 4445, 96, 1, 25, "Input"],
+Cell[203662, 4448, 96, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[203578, 4450, 867, 14, 31, "Input",
+Cell[203783, 4453, 867, 14, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[204448, 4466, 13539, 263, 712, "Input",
+Cell[204653, 4469, 13539, 263, 712, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[218002, 4732, 92, 1, 25, "Input"],
+Cell[218207, 4735, 92, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[218119, 4737, 861, 13, 31, "Input",
+Cell[218324, 4740, 914, 14, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[218983, 4752, 7095, 128, 172, "Input",
+Cell[219241, 4756, 19875, 403, 1232, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[226093, 4883, 94, 1, 25, "Input"],
+Cell[239131, 5162, 94, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[226212, 4888, 814, 12, 31, "Input",
+Cell[239250, 5167, 953, 15, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[227029, 4902, 7095, 128, 172, "Input",
+Cell[240206, 5184, 22924, 493, 1512, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[234139, 5033, 94, 1, 25, "Input"],
+Cell[263145, 5680, 96, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[234258, 5038, 814, 12, 31, "Input",
+Cell[263266, 5685, 995, 17, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[235075, 5052, 7095, 128, 172, "Input",
+Cell[264264, 5704, 13998, 298, 632, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
-}, Closed]],
-Cell[242185, 5183, 94, 1, 25, "Input"],
+}, Open  ]],
+Cell[278277, 6005, 273, 8, 21, "Message"],
+Cell[278553, 6015, 324, 9, 21, "Message"],
+Cell[278880, 6026, 1370, 38, 43, "Print"],
+Cell[280253, 6066, 275, 8, 21, "Message"],
+Cell[280531, 6076, 324, 9, 21, "Message"],
+Cell[280858, 6087, 1251, 34, 43, "Print"],
+Cell[282112, 6123, 272, 8, 21, "Message"],
+Cell[282387, 6133, 275, 8, 21, "Message"],
+Cell[282665, 6143, 273, 8, 21, "Message"],
+Cell[282941, 6153, 324, 9, 21, "Message"],
+Cell[283268, 6164, 324, 9, 21, "Message"],
+Cell[283595, 6175, 324, 9, 21, "Message"],
+Cell[283922, 6186, 1189, 34, 23, "Print"],
+Cell[285114, 6222, 275, 8, 21, "Message"],
 Cell[CellGroupData[{
-Cell[242304, 5188, 814, 12, 31, "Input",
+Cell[285414, 6234, 1303, 37, 23, "Print"],
+Cell[286720, 6273, 1153, 33, 23, "Print"]
+}, Open  ]],
+Cell[287888, 6309, 326, 9, 21, "Message"],
+Cell[288217, 6320, 1179, 34, 23, "Print"],
+Cell[289399, 6356, 94, 1, 31, "Input"],
+Cell[CellGroupData[{
+Cell[289518, 6361, 951, 16, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[243121, 5202, 7095, 128, 172, "Input",
+Cell[290472, 6379, 12944, 273, 552, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}]
+}, Open  ]],
+Cell[303431, 6655, 92, 1, 31, "Input"],
+Cell[CellGroupData[{
+Cell[303548, 6660, 814, 12, 31, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[304365, 6674, 7095, 128, 172, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[250231, 5333, 92, 1, 25, "Input"]
+Cell[311475, 6805, 92, 1, 25, "Input"],
+Cell[CellGroupData[{
+Cell[311592, 6810, 814, 12, 31, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[312409, 6824, 7095, 128, 172, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}]
+}, Closed]],
+Cell[319519, 6955, 92, 1, 25, "Input"],
+Cell[CellGroupData[{
+Cell[319636, 6960, 814, 12, 31, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[320453, 6974, 7095, 128, 172, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}]
+}, Closed]],
+Cell[327563, 7105, 92, 1, 25, "Input"]
 }
 ]
 *)
