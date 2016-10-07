@@ -2635,7 +2635,7 @@ referenceperfmatch=perfmatchings[[lowNumberLoopsPMpos[topleft,topright,bottomlef
 If[referenceperfmatch=!=0,
 kasteleyn=joinupKasteleyn[topleft,topright,bottomleft,bottomright];
 bigmatrix=turnIntoOrientedAdjacencyMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch,True];adjacencymat=bigmatrix/.Map[#->1&,Variables[kasteleyn]];
-graph=AdjacencyGraph[adjacencymat];
+graph=DirectedGraph[AdjacencyGraph[adjacencymat]];
 (*We'll now find all paths between all nodes, expressed a lists of nodes traversed between the two endpoints*)
 connectivitymat=Table[FindPath[graph,iii,jjj,Infinity,All],{iii,Total[Dimensions[kasteleyn]]},{jjj,Total[Dimensions[kasteleyn]]}];
 (*FindPath misses the diagonal, i.e. from a node to itself, so we'll put that in by hand*)
@@ -2721,7 +2721,7 @@ referenceperfmatch=perfmatchings[[lowNumberLoopsPMpos[topleft,topright,bottomlef
 If[referenceperfmatch=!=0,
 kasteleyn=joinupKasteleyn[topleft,topright,bottomleft,bottomright];
 bigmatrix=turnIntoOrientedAdjacencyMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch,True];adjacencymat=bigmatrix/.Map[#->1&,Variables[kasteleyn]];
-graph=AdjacencyGraph[adjacencymat];
+graph=DirectedGraph[AdjacencyGraph[adjacencymat]];
 sources=getSourceNodes[topleft,topright,bottomleft,bottomright,referenceperfmatch];
 allexternalnodes=getOrderingExternalNodesDefault[topleft,topright,bottomleft,bottomright];
 (*We'll now find all paths between source nodes and external nodes, expressed a lists of nodes traversed between the two endpoints*)
@@ -2781,7 +2781,7 @@ referenceperfmatch=perfmatchings[[lowNumberLoopsPMpos[topleft,topright,bottomlef
 If[referenceperfmatch=!=0,
 kasteleyn=joinupKasteleyn[topleft,topright,bottomleft,bottomright];
 bigmatrix=turnIntoOrientedAdjacencyMatrix[topleft,topright,bottomleft,bottomright,referenceperfmatch,True];adjacencymat=bigmatrix/.Map[#->1&,Variables[kasteleyn]];
-graph=AdjacencyGraph[adjacencymat];
+graph=DirectedGraph[AdjacencyGraph[adjacencymat]];
 (*this function translates a sequence of nodes to an expression in terms of edge variables, neglecting the loop contributions in the denominator*)
 turnIntoContributionNoLoops=Function[{pathnodes},
 (Times@@Map[Power[bigmatrix[[Sequence@@#]],Signature[#]]&,Table[pathnodes[[{iii,iii+1}]],{iii,Length[pathnodes]-1}]])
