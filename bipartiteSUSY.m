@@ -1345,8 +1345,8 @@ dimension
 ];
 
 turnIntoPolytope[mat_]:=Block[{columnsandmultiplicity,polytope,multiplicity},
-If[mat==={},
-polytope={};
+If[mat==={}||Dimensions[mat][[2]]==0,
+polytope=mat;
 multiplicity={};
 ,columnsandmultiplicity=Tally[Transpose[mat]];
 polytope=Transpose[Map[#[[1]]&,columnsandmultiplicity]];
@@ -1821,7 +1821,7 @@ bpaths=Subsets[externaledges,{2}];(*For now bpaths only contain the external edg
 adjacencymat=turnIntoAdjacencyMatrix[topleft,topright,bottomleft,bottomright];
 graph=AdjacencyGraph[adjacencymat];
 bpaths=Map[Table[UndirectedEdge[#[[iii]],#[[iii+1]]],{iii,Length[#]-1}]&,Map[FindShortestPath[graph,Sequence@@#]&,bpaths/.externaledgestonodenumbers]];
-(*Now each boundary path is expressed as a list of directed edges that go from one boundary to the next. We need to turn these directed edges into a product of edges*)
+(*Now each boundary path is expressed as a list of edges that go from one boundary to the next. We need to turn these edges into a product of edges*)
 bigkasteleyn=Join[kasteleyn,Transpose[kasteleyn]];
 nameUndirectedEdges=Function[{undirectededge},
 Block[{edgename,edgeweight},
@@ -1837,7 +1837,7 @@ bpaths=Map[Times@@#&,Map[nameUndirectedEdges,bpaths,{2}]];
 bpathvectors=Map[Table[D[#,alledges[[iii]]],{iii,Length[alledges]}]/.Map[#->1&,alledges]&,bpaths];
 (*We shall now make all internal paths. These contain internal faces, non-trivial paths around higher-genus, and products of external faces around each boundary*)
 (*We start from a direct graph, as this will allow us to understand the direction of our internal loops*)
-directedgraph=AdjacencyGraph[UpperTriangularize[adjacencymat]];
+directedgraph=DirectedGraph[AdjacencyGraph[UpperTriangularize[adjacencymat]]];
 nameDirectedEdges=Function[{directededge},
 Block[{edgename},
 edgename=(Intersection@@Map[Variables[bigkasteleyn[[#]]]&,List@@directededge])[[1]];
@@ -3138,7 +3138,7 @@ relations
 
 independentPluckerRelations[k_Integer,n_Integer]:=Block[{pluckerrel,numindeppluckerrelations,solutions,independentrelations,newsolution,ii},
 pluckerrel=pluckerRelations[k,n];
-(*The number of independent plucker relations*)
+(*The max number of independent plucker relations*)
 numindeppluckerrelations=Binomial[n,k]-1-k(n-k);
 solutions={};
 (*If we have any plukcer relations, start solving them*)
