@@ -2800,11 +2800,10 @@ Break[];
 extraloopnodes=Join[extraloopnodes,toadd];
 ];
 loopnodes=Join[Transpose[{loopnodes}],extraloopnodes];
-(*loopcontributions contains the full list of loops, with their correct sign*)
-loopcontributions=Map[Power[-1,Length[#]-1](Times@@#)&,Map[turnIntoContributionNoLoops,loopnodes,{2}]];
+(*The quantity inside Expand[Total[...]] contains the full list of loops, with their correct sign*)
 If[withsigns===False,
-loopdenominator=(1-Expand[Total[loopcontributions]]);
-,loopdenominator=(1+Expand[Total[loopcontributions]]);
+loopdenominator=(1-Expand[Total[Map[Power[-1,Length[#]-1](Times@@#)&,Map[turnIntoContributionNoLoops,loopnodes,{2}]]]]);
+,loopdenominator=(1-Expand[Total[Map[Power[-1,2Length[#]-1](Times@@#)&,Map[turnIntoContributionNoLoops,loopnodes,{2}]]]]);
 ];
 ,Print["This graph has no perfect matchings"];
 loopdenominator=Null;
