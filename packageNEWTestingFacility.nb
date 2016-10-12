@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[    772273,      16455]
-NotebookOptionsPosition[    762083,      16182]
-NotebookOutlinePosition[    762425,      16197]
-CellTagsIndexPosition[    762382,      16194]
+NotebookDataLength[    877452,      18684]
+NotebookOptionsPosition[    867106,      18407]
+NotebookOutlinePosition[    867448,      18422]
+CellTagsIndexPosition[    867405,      18419]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -9538,7 +9538,7 @@ method!\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";"}]}],
    3.6851147777977285`*^9}, {3.6851606430898285`*^9, 3.685160643308591*^9}, {
    3.6851681854261937`*^9, 3.6851681858480988`*^9}, {3.6851771418855376`*^9, 
    3.6851771676801505`*^9}}]
-}, Open  ]],
+}, Closed]],
 
 Cell[BoxData[""], "Input",
  CellChangeTimes->{{3.6848347417400913`*^9, 3.684834741916008*^9}}],
@@ -9561,7 +9561,8 @@ Cell[BoxData[
    3.6653959187590914`*^9}, 3.6715453677008524`*^9, {3.672749981361431*^9, 
    3.6727499814444113`*^9}, 3.684575102612509*^9, 3.6845802079994617`*^9, 
    3.6846471491723537`*^9, 3.684648173199854*^9, 3.684648253924594*^9, 
-   3.685006513827117*^9, 3.685006587109598*^9}],
+   3.685006513827117*^9, 3.685006587109598*^9, {3.6852049821925707`*^9, 
+   3.685204982556488*^9}}],
 
 Cell[BoxData[{
  RowBox[{
@@ -10322,7 +10323,6 @@ points in the moduli space!\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]",
 should be reducible, though reducibilityQ does not return True\>\""}], "]"}], 
                ";"}]}], "\[IndentingNewLine]", "]"}], ";"}]}], 
           "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
-         "\[IndentingNewLine]", 
          RowBox[{"If", "[", 
           RowBox[{
            RowBox[{
@@ -10345,7 +10345,7 @@ should be reducible, though reducibilityQ does not return True\>\""}], "]"}],
                     RowBox[{"Cmat", ",", 
                     RowBox[{"Length", "[", "Cmat", "]"}]}], "]"}], "[", 
                     RowBox[{"[", "1", "]"}], "]"}], ",", "0"}], "]"}], 
-                 "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+                 "]"}]}], ";", "\[IndentingNewLine]", 
                RowBox[{"didyoukillpluckers", "=", 
                 RowBox[{"Map", "[", 
                  RowBox[{
@@ -10410,7 +10410,7 @@ should be reducible, though reducibilityQ does not return True\>\""}], "]"}],
                     "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
                     RowBox[{"numzerominors", ">", "numberofzerominors"}]}]}], 
                     "]"}]}], "]"}], "[", "#", "]"}], "&"}], ",", "edges"}], 
-                 "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+                 "]"}]}], ";", "\[IndentingNewLine]", 
                RowBox[{"If", "[", 
                 RowBox[{
                  RowBox[{"planar", "\[Equal]", "False"}], ",", 
@@ -10540,7 +10540,7 @@ should be reducible, though reducibilityQ does not return True\>\""}], "]"}],
                     "DeleteDuplicates", "[", "originalorder3relations", "]"}],
                      "]"}]}], ")"}]}]}], ";", "\[IndentingNewLine]", 
                     "outputTrueFalse"}]}], "]"}]}], "]"}]}], ";", 
-                  "\[IndentingNewLine]", "\[IndentingNewLine]", 
+                  "\[IndentingNewLine]", 
                   RowBox[{"posdidnotkillpluckers", "=", 
                    RowBox[{"Flatten", "[", 
                     RowBox[{"Position", "[", 
@@ -10559,7 +10559,7 @@ should be reducible, though reducibilityQ does not return True\>\""}], "]"}],
                     "]"}]}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
                "\[IndentingNewLine]", 
                RowBox[{"didyoukillDOF", "=", "didyoukillpluckers"}], ";", 
-               "\[IndentingNewLine]", "\[IndentingNewLine]", 
+               "\[IndentingNewLine]", 
                RowBox[{"If", "[", 
                 RowBox[{"redscattering", ",", "\[IndentingNewLine]", 
                  RowBox[{
@@ -10594,9 +10594,9 @@ scattering graph is not reducible, even though there are edges which I can \
 remove that keep the same number of elements in the Grassmannian \
 matrix!\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";"}]}], 
                 "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", 
-             "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", 
-          "]"}], ";"}]}], "\[IndentingNewLine]", "\[IndentingNewLine]", "]"}],
-       ";"}]}], "\[IndentingNewLine]", "]"}]}], ";"}], "\[IndentingNewLine]", 
+             "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";"}]}], 
+       "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
   "DistributeDefinitions", "[", "allTestGrassmannianAndReducibility", "]"}], 
@@ -10606,22 +10606,31 @@ matrix!\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";"}]}],
    RowBox[{
     RowBox[{
      RowBox[{"allTestGrassmannianAndReducibility", "[", 
-      RowBox[{"#", ",", "True"}], "]"}], "&"}], ",", "allbft1kasteleyns"}], 
-   "]"}], ";"}], "\[IndentingNewLine]", 
+      RowBox[{"#", ",", "True"}], "]"}], "&"}], ",", 
+    RowBox[{"RandomSample", "[", 
+     RowBox[{"allbft1kasteleyns", ",", 
+      RowBox[{"Length", "[", "allbft1kasteleyns", "]"}]}], "]"}]}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"ParallelMap", "[", 
    RowBox[{
     RowBox[{
      RowBox[{"allTestGrassmannianAndReducibility", "[", 
-      RowBox[{"#", ",", "Null"}], "]"}], "&"}], ",", "allbft2kasteleyns"}], 
-   "]"}], ";"}], "\[IndentingNewLine]", 
+      RowBox[{"#", ",", "Null"}], "]"}], "&"}], ",", 
+    RowBox[{"RandomSample", "[", 
+     RowBox[{"allbft2kasteleyns", ",", 
+      RowBox[{"Length", "[", "allbft2kasteleyns", "]"}]}], "]"}]}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"ParallelMap", "[", 
    RowBox[{
     RowBox[{
      RowBox[{"allTestGrassmannianAndReducibility", "[", 
       RowBox[{"#", ",", "False"}], "]"}], "&"}], ",", 
-    "allscatteringkasteleyns"}], "]"}], ";"}], "\[IndentingNewLine]", 
+    RowBox[{"RandomSample", "[", 
+     RowBox[{"allscatteringkasteleyns", ",", 
+      RowBox[{"Length", "[", "allscatteringkasteleyns", "]"}]}], "]"}]}], 
+   "]"}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"ParallelMap", "[", 
    RowBox[{
@@ -10745,8 +10754,9 @@ matrix!\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";"}]}],
    3.685104271242422*^9, 3.6851042720640845`*^9}, {3.685104309766074*^9, 
    3.685104313769066*^9}, {3.6851043442000117`*^9, 3.6851043818701334`*^9}, {
    3.685104682885183*^9, 3.685104686262794*^9}, 3.685105366554883*^9, {
-   3.685105704850353*^9, 3.68510570972126*^9}}]
-}, Open  ]],
+   3.685105704850353*^9, 3.68510570972126*^9}, {3.6852053257632165`*^9, 
+   3.685205351408187*^9}, {3.6852053841571193`*^9, 3.6852054073130283`*^9}}]
+}, Closed]],
 
 Cell[BoxData[""], "Input",
  CellChangeTimes->{{3.684648848496868*^9, 3.684648848543746*^9}}],
@@ -11258,7 +11268,7 @@ dimension\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";"}]}],
    3.685085018563446*^9}, {3.6850854231581745`*^9, 3.6850854264198303`*^9}, {
    3.685105814470922*^9, 3.685105867676779*^9}, {3.6851118687053175`*^9, 
    3.6851121046602125`*^9}, {3.68511221533849*^9, 3.685112219825635*^9}}]
-}, Open  ]],
+}, Closed]],
 
 Cell[BoxData[""], "Input",
  CellChangeTimes->{{3.684648848496868*^9, 3.684648848543746*^9}}],
@@ -11956,7 +11966,7 @@ reduce the dimension of the Grassmannian by one!\>\""}], "]"}], ";"}]}],
    3.6850913565400715`*^9, 3.6850913970058827`*^9}, {3.6850914634190073`*^9, 
    3.685091483729704*^9}, {3.6850949830499973`*^9, 3.6850949868615804`*^9}, {
    3.6851705374912953`*^9, 3.685170537957991*^9}}]
-}, Open  ]],
+}, Closed]],
 
 Cell[BoxData[""], "Input",
  CellChangeTimes->{{3.68508768831905*^9, 3.6850876889810085`*^9}}],
@@ -14386,6 +14396,10 @@ Its size is not correct!\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}],
                     RowBox[{"If", "[", 
                     RowBox[{
                     RowBox[{
+                    RowBox[{
+                    RowBox[{"Variables", "[", "Cmatrix", "]"}], "\[NotEqual]", 
+                    RowBox[{"{", "}"}]}], "&&", 
+                    RowBox[{
                     RowBox[{"(", 
                     RowBox[{
                     RowBox[{"(", 
@@ -14427,7 +14441,7 @@ Its size is not correct!\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}],
                     RowBox[{"Sort", "[", 
                     RowBox[{"Intersection", "[", 
                     RowBox[{"usefulloopvariables", ",", "sinkedges"}], "]"}], 
-                    "]"}]}], ")"}]}], ")"}], "=!=", "True"}], ",", 
+                    "]"}]}], ")"}]}], ")"}], "=!=", "True"}]}], ",", 
                     "\[IndentingNewLine]", 
                     RowBox[{
                     RowBox[{"Print", "[", 
@@ -14718,7 +14732,8 @@ calculation done directly by the path matrix\>\""}], "]"}], ";"}]}],
      RowBox[{"allTestGrassmannianMatrix", "[", 
       RowBox[{"#", ",", "True"}], "]"}], "&"}], ",", 
     RowBox[{"RandomSample", "[", 
-     RowBox[{"allbft1kasteleyns", ",", "10"}], "]"}]}], "]"}], 
+     RowBox[{"allbft1kasteleyns", ",", 
+      RowBox[{"Length", "[", "allbft1kasteleyns", "]"}]}], "]"}]}], "]"}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"ParallelMap", "[", 
@@ -14727,7 +14742,8 @@ calculation done directly by the path matrix\>\""}], "]"}], ";"}]}],
      RowBox[{"allTestGrassmannianMatrix", "[", 
       RowBox[{"#", ",", "Null"}], "]"}], "&"}], ",", 
     RowBox[{"RandomSample", "[", 
-     RowBox[{"allbft2kasteleyns", ",", "10"}], "]"}]}], "]"}], 
+     RowBox[{"allbft2kasteleyns", ",", 
+      RowBox[{"Length", "[", "allbft2kasteleyns", "]"}]}], "]"}]}], "]"}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"ParallelMap", "[", 
@@ -14736,8 +14752,9 @@ calculation done directly by the path matrix\>\""}], "]"}], ";"}]}],
      RowBox[{"allTestGrassmannianMatrix", "[", 
       RowBox[{"#", ",", "False"}], "]"}], "&"}], ",", 
     RowBox[{"RandomSample", "[", 
-     RowBox[{"allscatteringkasteleyns", ",", "10"}], "]"}]}], "]"}], 
-  ";"}], "\[IndentingNewLine]", 
+     RowBox[{"allscatteringkasteleyns", ",", 
+      RowBox[{"Length", "[", "allscatteringkasteleyns", "]"}]}], "]"}]}], 
+   "]"}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"ParallelMap", "[", 
    RowBox[{
@@ -14831,7 +14848,8 @@ calculation done directly by the path matrix\>\""}], "]"}], ";"}]}],
    3.6851786652351427`*^9}, {3.685178704445988*^9, 3.68517888705653*^9}, 
    3.6851797190822363`*^9, {3.6851800164428988`*^9, 3.685180023282978*^9}, {
    3.68518084034384*^9, 3.6851808411095047`*^9}, 3.685184487835971*^9, {
-   3.6851868152000847`*^9, 3.685186829452794*^9}}]
+   3.6851868152000847`*^9, 3.685186829452794*^9}, {3.6852652584050493`*^9, 
+   3.6852652675686965`*^9}, {3.685265336535299*^9, 3.685265359058519*^9}}]
 }, Open  ]],
 
 Cell[BoxData[""], "Input",
@@ -14870,8 +14888,8 @@ Cell[BoxData[{
       "perfs", ",", "srcs", ",", "multiplic", ",", "lowestloopPM", ",", 
        "pluckers", ",", "pathmatpluckers", ",", "pathmatloopdenom", ",", 
        "loopdenom", ",", "truemappluckertoperfmatch", ",", "sourcesets", ",", 
-       "correctsourcesets", ",", "everythingOK", ",", "pathmat", ",", 
-       "Cmat"}], "}"}], ",", "\[IndentingNewLine]", 
+       "correctsourcesets", ",", "everythingOK", ",", "pathmat", ",", "Cmat", 
+       ",", "jj"}], "}"}], ",", "\[IndentingNewLine]", 
      RowBox[{
       RowBox[{"If", "[", 
        RowBox[{
@@ -14950,23 +14968,34 @@ Cell[BoxData[{
                  RowBox[{"[", "jj", "]"}], "]"}], "\[LessEqual]", "3"}]}], 
               ",", "\[IndentingNewLine]", 
               RowBox[{
-               RowBox[{"pluckers", "=", 
-                RowBox[{"pluckerCoordinates", "[", 
+               RowBox[{"pathmat", "=", 
+                RowBox[{"pathMatrix", "[", 
                  RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", 
                   RowBox[{"perfs", "[", 
-                   RowBox[{"[", "jj", "]"}], "]"}], ",", "True"}], "]"}]}], 
-               ";", "\[IndentingNewLine]", 
-               RowBox[{"pathmatpluckers", "=", 
-                RowBox[{"pluckerCoordinates", "[", 
-                 RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", 
-                  RowBox[{"perfs", "[", 
-                   RowBox[{"[", "jj", "]"}], "]"}], ",", "False"}], "]"}]}], 
-               ";", "\[IndentingNewLine]", 
+                   RowBox[{"[", "jj", "]"}], "]"}]}], "]"}]}], ";", 
+               "\[IndentingNewLine]", 
                RowBox[{"If", "[", 
                 RowBox[{
+                 RowBox[{"pathmat", "\[NotEqual]", 
+                  RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
                  RowBox[{
-                  RowBox[{"Position", "[", 
-                   RowBox[{"pluckers", ",", 
+                  RowBox[{"pluckers", "=", 
+                   RowBox[{"pluckerCoordinates", "[", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", 
+                    RowBox[{"perfs", "[", 
+                    RowBox[{"[", "jj", "]"}], "]"}], ",", "True"}], "]"}]}], 
+                  ";", "\[IndentingNewLine]", 
+                  RowBox[{"pathmatpluckers", "=", 
+                   RowBox[{"pluckerCoordinates", "[", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", 
+                    RowBox[{"perfs", "[", 
+                    RowBox[{"[", "jj", "]"}], "]"}], ",", "False"}], "]"}]}], 
+                  ";", "\[IndentingNewLine]", 
+                  RowBox[{"If", "[", 
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{"Position", "[", 
+                    RowBox[{"pluckers", ",", 
                     RowBox[{
                     RowBox[{"(", 
                     RowBox[{
@@ -14978,52 +15007,52 @@ Cell[BoxData[{
                     RowBox[{"Times", "[", 
                     RowBox[{"num2_", ",", "___"}], "]"}], "/;", 
                     RowBox[{"num2", ">", "1"}]}], ")"}]}]}], "]"}], "=!=", 
-                  RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
-                 RowBox[{
-                  RowBox[{"Print", "[", 
-                   RowBox[{"\"\<kast=\>\"", ",", 
+                    RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Print", "[", 
+                    RowBox[{"\"\<kast=\>\"", ",", 
                     RowBox[{"{", 
                     RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
                     "\"\< : There's a problem with the Pluckers! The minors \
 did not simplify\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
-               "\[IndentingNewLine]", 
-               RowBox[{"pathmatloopdenom", "=", 
-                RowBox[{"Expand", "[", 
-                 RowBox[{"1", "/", 
-                  RowBox[{"Expand", "[", 
-                   RowBox[{"Simplify", "[", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"pathmatloopdenom", "=", 
+                   RowBox[{"Expand", "[", 
+                    RowBox[{"1", "/", 
+                    RowBox[{"Expand", "[", 
+                    RowBox[{"Simplify", "[", 
                     RowBox[{"Det", "[", 
                     RowBox[{"connectivityMatrix", "[", 
                     RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", 
                     RowBox[{"perfs", "[", 
                     RowBox[{"[", "jj", "]"}], "]"}]}], "]"}], "]"}], "]"}], 
-                   "]"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
-               RowBox[{"loopdenom", "=", 
-                RowBox[{"pathmatloopdenom", "/.", 
-                 RowBox[{"{", 
-                  RowBox[{
-                   RowBox[{"Times", "[", 
+                    "]"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+                  RowBox[{"loopdenom", "=", 
+                   RowBox[{"pathmatloopdenom", "/.", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"Times", "[", 
                     RowBox[{
                     RowBox[{"-", "1"}], ",", "zz_"}], "]"}], "\[RuleDelayed]", 
-                   RowBox[{"Times", "[", 
+                    RowBox[{"Times", "[", 
                     RowBox[{"1", ",", "zz"}], "]"}]}], "}"}]}]}], ";", 
-               "\[IndentingNewLine]", 
-               RowBox[{"truemappluckertoperfmatch", "=", 
-                RowBox[{"Expand", "[", 
-                 RowBox[{"Simplify", "[", 
-                  RowBox[{"pluckers", " ", "loopdenom", " ", 
-                   RowBox[{"perfs", "[", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"truemappluckertoperfmatch", "=", 
+                   RowBox[{"Expand", "[", 
+                    RowBox[{"Simplify", "[", 
+                    RowBox[{"pluckers", " ", "loopdenom", " ", 
+                    RowBox[{"perfs", "[", 
                     RowBox[{"[", "jj", "]"}], "]"}]}], "]"}], "]"}]}], ";", 
-               "\[IndentingNewLine]", 
-               RowBox[{"sourcesets", "=", 
-                RowBox[{"Map", "[", 
-                 RowBox[{
-                  RowBox[{
-                   RowBox[{"getSourceNodes", "[", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"sourcesets", "=", 
+                   RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"getSourceNodes", "[", 
                     RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", "#"}], 
                     "]"}], "&"}], ",", 
-                  RowBox[{"Map", "[", 
-                   RowBox[{
+                    RowBox[{"Map", "[", 
+                    RowBox[{
                     RowBox[{
                     RowBox[{
                     RowBox[{"Function", "[", 
@@ -15045,23 +15074,23 @@ did not simplify\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";",
                     RowBox[{"{", "terms", "}"}]}], ";"}]}], "]"}], ";", 
                     "return"}]}], "]"}]}], "]"}], "[", "#", "]"}], "&"}], ",",
                      "truemappluckertoperfmatch"}], "]"}], ",", 
-                  RowBox[{"{", "2", "}"}]}], "]"}]}], ";", 
-               "\[IndentingNewLine]", 
-               RowBox[{"correctsourcesets", "=", 
-                RowBox[{"Subsets", "[", 
-                 RowBox[{
-                  RowBox[{"getOrderingExternalNodesGrassmannian", "[", 
-                   RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], ",", 
-                  RowBox[{"{", 
-                   RowBox[{"Length", "[", 
+                    RowBox[{"{", "2", "}"}]}], "]"}]}], ";", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"correctsourcesets", "=", 
+                   RowBox[{"Subsets", "[", 
+                    RowBox[{
+                    RowBox[{"getOrderingExternalNodesGrassmannian", "[", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"Length", "[", 
                     RowBox[{"srcs", "[", 
                     RowBox[{"[", "jj", "]"}], "]"}], "]"}], "}"}]}], "]"}]}], 
-               ";", "\[IndentingNewLine]", 
-               RowBox[{"everythingOK", "=", 
-                RowBox[{"And", "@@", 
-                 RowBox[{"Flatten", "[", 
-                  RowBox[{"MapThread", "[", 
-                   RowBox[{
+                  ";", "\[IndentingNewLine]", 
+                  RowBox[{"everythingOK", "=", 
+                   RowBox[{"And", "@@", 
+                    RowBox[{"Flatten", "[", 
+                    RowBox[{"MapThread", "[", 
+                    RowBox[{
                     RowBox[{
                     RowBox[{"Map", "[", 
                     RowBox[{
@@ -15072,31 +15101,25 @@ did not simplify\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";",
                     "]"}], "&"}], ",", 
                     RowBox[{"{", 
                     RowBox[{"correctsourcesets", ",", "sourcesets"}], "}"}]}],
-                    "]"}], "]"}]}]}], ";", "\[IndentingNewLine]", 
-               RowBox[{"If", "[", 
-                RowBox[{
-                 RowBox[{"everythingOK", "=!=", "True"}], ",", 
-                 "\[IndentingNewLine]", 
-                 RowBox[{
-                  RowBox[{"Print", "[", 
-                   RowBox[{"\"\<kast=\>\"", ",", 
+                     "]"}], "]"}]}]}], ";", "\[IndentingNewLine]", 
+                  RowBox[{"If", "[", 
+                   RowBox[{
+                    RowBox[{"everythingOK", "=!=", "True"}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Print", "[", 
+                    RowBox[{"\"\<kast=\>\"", ",", 
                     RowBox[{"{", 
                     RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
                     "\"\< : There's a problem with the Pluckers! Some perfect \
 matchings don't have the set dictated by the Plucker coordinate in which \
 they're in!\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
-               "\[IndentingNewLine]", 
-               RowBox[{"pathmat", "=", 
-                RowBox[{"pathMatrix", "[", 
-                 RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", 
-                  RowBox[{"perfs", "[", 
-                   RowBox[{"[", "jj", "]"}], "]"}]}], "]"}]}], ";", 
-               "\[IndentingNewLine]", 
-               RowBox[{"If", "[", 
-                RowBox[{
-                 RowBox[{
-                  RowBox[{"Simplify", "[", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"If", "[", 
                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Simplify", "[", 
+                    RowBox[{
                     RowBox[{"Simplify", "[", 
                     RowBox[{
                     RowBox[{"Minors", "[", 
@@ -15104,27 +15127,27 @@ they're in!\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";",
                     RowBox[{"Length", "[", "pathmat", "]"}]}], "]"}], "[", 
                     RowBox[{"[", "1", "]"}], "]"}], "]"}], "\[Equal]", 
                     "pathmatpluckers"}], "]"}], "=!=", "True"}], ",", 
-                 "\[IndentingNewLine]", 
-                 RowBox[{
-                  RowBox[{"Print", "[", 
-                   RowBox[{"\"\<kast=\>\"", ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Print", "[", 
+                    RowBox[{"\"\<kast=\>\"", ",", 
                     RowBox[{"{", 
                     RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
                     "\"\< : There's a problem with the Pluckers! When the \
 final argument is set to False, its perfect matchings are not equal to those \
 of pathMatrix\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
-               "\[IndentingNewLine]", 
-               RowBox[{"Cmat", "=", 
-                RowBox[{"grassmannianMatrix", "[", 
-                 RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", 
-                  RowBox[{"perfs", "[", 
-                   RowBox[{"[", "jj", "]"}], "]"}]}], "]"}]}], ";", 
-               "\[IndentingNewLine]", 
-               RowBox[{"If", "[", 
-                RowBox[{
-                 RowBox[{
-                  RowBox[{"Simplify", "[", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"Cmat", "=", 
+                   RowBox[{"grassmannianMatrix", "[", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", 
+                    RowBox[{"perfs", "[", 
+                    RowBox[{"[", "jj", "]"}], "]"}]}], "]"}]}], ";", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"If", "[", 
                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Simplify", "[", 
+                    RowBox[{
                     RowBox[{"Simplify", "[", 
                     RowBox[{
                     RowBox[{"Minors", "[", 
@@ -15132,15 +15155,16 @@ of pathMatrix\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";",
                     RowBox[{"Length", "[", "Cmat", "]"}]}], "]"}], "[", 
                     RowBox[{"[", "1", "]"}], "]"}], "]"}], "\[Equal]", 
                     "pluckers"}], "]"}], "=!=", "True"}], ",", 
-                 "\[IndentingNewLine]", 
-                 RowBox[{
-                  RowBox[{"Print", "[", 
-                   RowBox[{
-                   "\"\<ii=\>\"", ",", "ii", ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Print", "[", 
+                    RowBox[{
+                    "\"\<ii=\>\"", ",", "ii", ",", 
                     "\"\< : There's a problem with the Pluckers! Its perfect \
 matchings are not equal to those of grassmannianMatrix\>\""}], "]"}], ";"}]}],
-                 "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]",
-              "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";"}]}], 
+                    "\[IndentingNewLine]", "]"}], ";"}]}], 
+                "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", 
+             "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";"}]}], 
        "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", "]"}]}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
@@ -15153,7 +15177,8 @@ matchings are not equal to those of grassmannianMatrix\>\""}], "]"}], ";"}]}],
      RowBox[{"allTestPluckerCoordinates", "[", 
       RowBox[{"#", ",", "True"}], "]"}], "&"}], ",", 
     RowBox[{"RandomSample", "[", 
-     RowBox[{"allbft1kasteleyns", ",", "10"}], "]"}]}], "]"}], 
+     RowBox[{"allbft1kasteleyns", ",", 
+      RowBox[{"Length", "[", "allbft1kasteleyns", "]"}]}], "]"}]}], "]"}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"ParallelMap", "[", 
@@ -15162,7 +15187,8 @@ matchings are not equal to those of grassmannianMatrix\>\""}], "]"}], ";"}]}],
      RowBox[{"allTestPluckerCoordinates", "[", 
       RowBox[{"#", ",", "Null"}], "]"}], "&"}], ",", 
     RowBox[{"RandomSample", "[", 
-     RowBox[{"allbft2kasteleyns", ",", "10"}], "]"}]}], "]"}], 
+     RowBox[{"allbft2kasteleyns", ",", 
+      RowBox[{"Length", "[", "allbft2kasteleyns", "]"}]}], "]"}]}], "]"}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"ParallelMap", "[", 
@@ -15171,8 +15197,9 @@ matchings are not equal to those of grassmannianMatrix\>\""}], "]"}], ";"}]}],
      RowBox[{"allTestPluckerCoordinates", "[", 
       RowBox[{"#", ",", "False"}], "]"}], "&"}], ",", 
     RowBox[{"RandomSample", "[", 
-     RowBox[{"allscatteringkasteleyns", ",", "10"}], "]"}]}], "]"}], 
-  ";"}], "\[IndentingNewLine]", 
+     RowBox[{"allscatteringkasteleyns", ",", 
+      RowBox[{"Length", "[", "allscatteringkasteleyns", "]"}]}], "]"}]}], 
+   "]"}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"ParallelMap", "[", 
    RowBox[{
@@ -15256,7 +15283,9 @@ matchings are not equal to those of grassmannianMatrix\>\""}], "]"}], ";"}]}],
    3.6846482359449673`*^9}, 3.6846483401109657`*^9, {3.685189380498271*^9, 
    3.685189388238267*^9}, {3.6851894267573447`*^9, 3.685189699540902*^9}, {
    3.685189729992201*^9, 3.685189749913371*^9}, {3.6851898138806334`*^9, 
-   3.6851898650646734`*^9}}]
+   3.6851898650646734`*^9}, {3.6852674785146723`*^9, 3.685267478655306*^9}, 
+   3.6852676994767265`*^9, {3.6852677821333427`*^9, 3.6852677842681723`*^9}, {
+   3.685268021259802*^9, 3.685268031241452*^9}}]
 }, Open  ]],
 
 Cell[BoxData[""], "Input",
@@ -15266,7 +15295,9 @@ Cell[CellGroupData[{
 
 Cell[BoxData[
  RowBox[{"(*", 
-  RowBox[{"Here", " ", "we", " ", "check"}], " ", "*)"}]], "Input",
+  RowBox[{
+  "Here", " ", "we", " ", "check", " ", 
+   "getOrderingExternalEdgesGrassmannian"}], "*)"}]], "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.},
  CellChangeTimes->{{3.6653194611906705`*^9, 3.665319470875516*^9}, 
    3.665319696162837*^9, 3.665319923129767*^9, {3.66532084581382*^9, 
@@ -15276,61 +15307,311 @@ Cell[BoxData[
    3.665394491044639*^9, 3.6653944995239697`*^9}, {3.6653959126545773`*^9, 
    3.6653959187590914`*^9}, 3.6715453677008524`*^9, {3.672749981361431*^9, 
    3.6727499814444113`*^9}, 3.684575102612509*^9, 3.6845802079994617`*^9, 
-   3.6846471491723537`*^9, 3.684648173199854*^9, 3.684648253924594*^9}],
+   3.6846471491723537`*^9, 3.684648173199854*^9, 3.684648253924594*^9, 
+   3.6852680915011263`*^9}],
 
 Cell[BoxData[{
  RowBox[{
   RowBox[{
-   RowBox[{"allTestreductionGraphBFT", "[", 
+   RowBox[{"allTestOrderingEdgesGrassmannian", "[", 
     RowBox[{
      RowBox[{"{", 
       RowBox[{"a_", ",", "b_", ",", "c_", ",", "d_"}], "}"}], ",", 
      "bftlabeling_"}], "]"}], ":=", 
    RowBox[{"Block", "[", 
     RowBox[{
-     RowBox[{"{", "}"}], ","}], "\[IndentingNewLine]", 
-    RowBox[{"(*", 
-     RowBox[{"Print", "[", 
-      RowBox[{"\"\<kast=\>\"", ",", 
-       RowBox[{"{", 
-        RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
-       "\"\< : \>\""}], "]"}], "*)"}], "\[IndentingNewLine]", "]"}]}], 
+     RowBox[{"{", 
+      RowBox[{
+      "perfs", ",", "srcs", ",", "snks", ",", "multiplic", ",", 
+       "lowestloopPM", ",", "jj", ",", "Cmatrix", ",", "variablesmatrix"}], 
+      "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"Length", "[", "c", "]"}], "+", 
+           RowBox[{
+            RowBox[{"Dimensions", "[", 
+             RowBox[{"Join", "[", 
+              RowBox[{"b", ",", "d"}], "]"}], "]"}], "[", 
+            RowBox[{"[", "2", "]"}], "]"}]}], "=!=", "0"}], "&&", 
+         RowBox[{"PlanarGraphQ", "[", 
+          RowBox[{"AdjacencyGraph", "[", 
+           RowBox[{"turnIntoAdjacencyMatrix", "[", 
+            RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "]"}], 
+          "]"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{"we", " ", 
+          RowBox[{"don", "'"}], "t", " ", "have", " ", "a", " ", "dimer"}], 
+         "*)"}], "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"perfs", "=", 
+          RowBox[{"perfectMatchings", "[", 
+           RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"srcs", "=", 
+          RowBox[{"Map", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"getSourceNodes", "[", 
+              RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", "#"}], "]"}], 
+             "&"}], ",", "perfs"}], "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"snks", "=", 
+          RowBox[{"Map", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"getSinkNodes", "[", 
+              RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", "#"}], "]"}], 
+             "&"}], ",", "perfs"}], "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"multiplic", "=", 
+          RowBox[{"Map", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{
+              RowBox[{"Tally", "[", "srcs", "]"}], "[", 
+              RowBox[{"[", 
+               RowBox[{"#", ",", "2"}], "]"}], "]"}], "&"}], ",", 
+            RowBox[{"Map", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{
+                RowBox[{"Position", "[", 
+                 RowBox[{
+                  RowBox[{"Tally", "[", "srcs", "]"}], ",", 
+                  RowBox[{"{", 
+                   RowBox[{"#", ",", "_"}], "}"}]}], "]"}], "[", 
+                RowBox[{"[", 
+                 RowBox[{"1", ",", "1"}], "]"}], "]"}], "&"}], ",", "srcs"}], 
+             "]"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"perfs", "\[NotEqual]", 
+            RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"lowestloopPM", "=", 
+             RowBox[{"lowNumberLoopsPMpos", "[", 
+              RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}]}], ";"}]}], 
+          "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+         RowBox[{"For", "[", 
+          RowBox[{
+           RowBox[{"jj", "=", "1"}], ",", 
+           RowBox[{"jj", "\[LessEqual]", 
+            RowBox[{"Length", "[", "perfs", "]"}]}], ",", 
+           RowBox[{"jj", "++"}], ",", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"jj", "\[Equal]", "lowestloopPM"}], "||", 
+               RowBox[{
+                RowBox[{"multiplic", "[", 
+                 RowBox[{"[", "jj", "]"}], "]"}], "\[LessEqual]", "3"}]}], 
+              ",", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"Cmatrix", "=", 
+                RowBox[{"grassmannianMatrix", "[", 
+                 RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", 
+                  RowBox[{"perfs", "[", 
+                   RowBox[{"[", "jj", "]"}], "]"}]}], "]"}]}], ";", 
+               "\[IndentingNewLine]", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{"Cmatrix", "=!=", "Null"}], ",", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"If", "[", 
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{"Length", "[", 
+                    RowBox[{"getOrderingExternalEdgesGrassmannian", "[", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "]"}],
+                     "=!=", 
+                    RowBox[{"Length", "[", 
+                    RowBox[{"Variables", "[", 
+                    RowBox[{"Join", "[", 
+                    RowBox[{"b", ",", "c"}], "]"}], "]"}], "]"}]}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Print", "[", 
+                    RowBox[{"\"\<kast=\>\"", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                    "\"\< : There's a problem with the \
+getOrderingExternalEdgesGrassmannian! Its length is not equal to the number \
+of external edges.\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"If", "[", 
+                   RowBox[{
+                    RowBox[{"Cmatrix", "\[NotEqual]", 
+                    RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"variablesmatrix", "=", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Intersection", "[", 
+                    RowBox[{
+                    RowBox[{"Variables", "[", "#", "]"}], ",", 
+                    RowBox[{"Variables", "[", 
+                    RowBox[{"Join", "[", 
+                    RowBox[{"b", ",", "c"}], "]"}], "]"}]}], "]"}], "&"}], 
+                    ",", "Cmatrix", ",", 
+                    RowBox[{"{", "2", "}"}]}], "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"And", "@@", 
+                    RowBox[{"MapThread", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"#1", "===", 
+                    RowBox[{"{", "}"}]}], "||", 
+                    RowBox[{"MemberQ", "[", 
+                    RowBox[{"#1", ",", "#2"}], "]"}]}], "&"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Function", "[", 
+                    RowBox[{
+                    RowBox[{"{", "input", "}"}], ",", 
+                    RowBox[{"Block", "[", 
+                    RowBox[{
+                    RowBox[{"{", "output", "}"}], ",", 
+                    RowBox[{
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"input", "===", 
+                    RowBox[{"{", "}"}]}], ",", 
+                    RowBox[{
+                    RowBox[{"output", "=", 
+                    RowBox[{"{", "}"}]}], ";"}], ",", 
+                    RowBox[{
+                    RowBox[{"output", "=", 
+                    RowBox[{"Intersection", "@@", "input"}]}], ";"}]}], "]"}],
+                     ";", "output"}]}], "]"}]}], "]"}], "[", "#", "]"}], 
+                    "&"}], ",", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"DeleteCases", "[", 
+                    RowBox[{"#", ",", 
+                    RowBox[{"{", "}"}]}], "]"}], "&"}], ",", 
+                    "variablesmatrix"}], "]"}]}], "]"}], ",", 
+                    RowBox[{
+                    RowBox[{"Flatten", "[", 
+                    RowBox[{"Position", "[", 
+                    RowBox[{
+                    RowBox[{"Transpose", "[", "Cmatrix", "]"}], ",", 
+                    RowBox[{"Alternatives", "@@", 
+                    RowBox[{"IdentityMatrix", "[", 
+                    RowBox[{"Length", "[", "Cmatrix", "]"}], "]"}]}]}], "]"}],
+                     "]"}], "/.", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"#", "[", 
+                    RowBox[{"[", "2", "]"}], "]"}], "\[Rule]", 
+                    RowBox[{"#", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}]}], "&"}], ",", 
+                    RowBox[{"getOrderingExternalEdgesGrassmannian", "[", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}]}], 
+                    "]"}]}]}], "}"}]}], "]"}]}], ")"}], "=!=", "True"}], "||", 
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"And", "@@", 
+                    RowBox[{"MapThread", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"#1", "===", 
+                    RowBox[{"{", "}"}]}], "||", 
+                    RowBox[{"MemberQ", "[", 
+                    RowBox[{"#1", ",", "#2"}], "]"}]}], "&"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Intersection", "@@", "#"}], "&"}], ",", 
+                    RowBox[{"Transpose", "[", "variablesmatrix", "]"}]}], 
+                    "]"}], ",", 
+                    RowBox[{
+                    RowBox[{"Range", "[", 
+                    RowBox[{
+                    RowBox[{"Dimensions", "[", "Cmatrix", "]"}], "[", 
+                    RowBox[{"[", "2", "]"}], "]"}], "]"}], "/.", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"#", "[", 
+                    RowBox[{"[", "2", "]"}], "]"}], "\[Rule]", 
+                    RowBox[{"#", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}]}], "&"}], ",", 
+                    RowBox[{"getOrderingExternalEdgesGrassmannian", "[", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}]}], 
+                    "]"}]}]}], "}"}]}], "]"}]}], ")"}], "=!=", "True"}]}], 
+                    ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Print", "[", 
+                    RowBox[{"\"\<kast=\>\"", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                    "\"\< : There's a problem with the \
+getOrderingExternalEdgesGrassmannian! It doesn't correspond to what the \
+Grassmannian matrix has\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", 
+                    "\[IndentingNewLine]", "]"}], ";"}]}], 
+                   "\[IndentingNewLine]", "]"}], ";"}]}], 
+                "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", 
+             "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";"}]}], 
+       "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", "]"}]}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
-  RowBox[{"DistributeDefinitions", "[", "allTestreductionGraphBFT", "]"}], 
+  RowBox[{
+  "DistributeDefinitions", "[", "allTestOrderingEdgesGrassmannian", "]"}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"ParallelMap", "[", 
    RowBox[{
     RowBox[{
-     RowBox[{"allTestreductionGraphBFT", "[", 
+     RowBox[{"allTestOrderingEdgesGrassmannian", "[", 
       RowBox[{"#", ",", "True"}], "]"}], "&"}], ",", 
     RowBox[{"RandomSample", "[", 
-     RowBox[{"allbft1kasteleyns", ",", "10"}], "]"}]}], "]"}], 
+     RowBox[{"allbft1kasteleyns", ",", "100"}], "]"}]}], "]"}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"ParallelMap", "[", 
    RowBox[{
     RowBox[{
-     RowBox[{"allTestreductionGraphBFT", "[", 
+     RowBox[{"allTestOrderingEdgesGrassmannian", "[", 
       RowBox[{"#", ",", "Null"}], "]"}], "&"}], ",", 
     RowBox[{"RandomSample", "[", 
-     RowBox[{"allbft2kasteleyns", ",", "10"}], "]"}]}], "]"}], 
+     RowBox[{"allbft2kasteleyns", ",", "100"}], "]"}]}], "]"}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"ParallelMap", "[", 
    RowBox[{
     RowBox[{
-     RowBox[{"allTestreductionGraphBFT", "[", 
+     RowBox[{"allTestOrderingEdgesGrassmannian", "[", 
       RowBox[{"#", ",", "False"}], "]"}], "&"}], ",", 
     RowBox[{"RandomSample", "[", 
-     RowBox[{"allscatteringkasteleyns", ",", "10"}], "]"}]}], "]"}], 
+     RowBox[{"allscatteringkasteleyns", ",", "100"}], "]"}]}], "]"}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"ParallelMap", "[", 
    RowBox[{
     RowBox[{
-     RowBox[{"allTestreductionGraphBFT", "[", 
+     RowBox[{"allTestOrderingEdgesGrassmannian", "[", 
       RowBox[{"#", ",", "True"}], "]"}], "&"}], ",", 
     RowBox[{"Cases", "[", 
      RowBox[{"annoyingsmallexamples", ",", 
@@ -15406,20 +15687,27 @@ Cell[BoxData[{
    3.6846472459357777`*^9, 3.6846472663574123`*^9}, {3.684647323817868*^9, 
    3.684647384378982*^9}, {3.6846475128657913`*^9, 3.6846475148894916`*^9}, {
    3.6846478780124445`*^9, 3.684647881333372*^9}, {3.684648202917942*^9, 
-   3.6846482359449673`*^9}, 3.6846483401109657`*^9}]
-}, Closed]],
+   3.6846482359449673`*^9}, 3.6846483401109657`*^9, {3.685268103150651*^9, 
+   3.6852681118260403`*^9}, {3.6852681672401114`*^9, 3.68526824122163*^9}, {
+   3.685268331633485*^9, 3.68526836654072*^9}, {3.6852688433597307`*^9, 
+   3.6852688444693604`*^9}, {3.6852688890254445`*^9, 3.685269017465767*^9}, {
+   3.6852690571209216`*^9, 3.685269062694605*^9}, {3.68526917924467*^9, 
+   3.685269180894126*^9}, {3.6852702936603007`*^9, 3.685270315524802*^9}, {
+   3.685270351593664*^9, 3.6852703727702646`*^9}, {3.68527041092912*^9, 
+   3.685270461880286*^9}, {3.6852705513285847`*^9, 3.6852705524692683`*^9}, {
+   3.6852706011740513`*^9, 3.685270622897464*^9}}]
+}, Open  ]],
 
 Cell[BoxData[""], "Input",
  CellChangeTimes->{{3.684648848496868*^9, 3.684648848543746*^9}}],
-
-Cell[BoxData[""], "Input",
- CellChangeTimes->{{3.6851607340875006`*^9, 3.6851607341857743`*^9}}],
 
 Cell[CellGroupData[{
 
 Cell[BoxData[
  RowBox[{"(*", 
-  RowBox[{"Here", " ", "we", " ", "check"}], " ", "*)"}]], "Input",
+  RowBox[{
+  "Here", " ", "we", " ", "check", " ", 
+   "getOrderingExternalNodesGrassmannians"}], "*)"}]], "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.},
  CellChangeTimes->{{3.6653194611906705`*^9, 3.665319470875516*^9}, 
    3.665319696162837*^9, 3.665319923129767*^9, {3.66532084581382*^9, 
@@ -15429,61 +15717,336 @@ Cell[BoxData[
    3.665394491044639*^9, 3.6653944995239697`*^9}, {3.6653959126545773`*^9, 
    3.6653959187590914`*^9}, 3.6715453677008524`*^9, {3.672749981361431*^9, 
    3.6727499814444113`*^9}, 3.684575102612509*^9, 3.6845802079994617`*^9, 
-   3.6846471491723537`*^9, 3.684648173199854*^9, 3.684648253924594*^9}],
+   3.6846471491723537`*^9, 3.684648173199854*^9, 3.684648253924594*^9, 
+   3.6852680915011263`*^9, 3.685269210725298*^9}],
 
 Cell[BoxData[{
  RowBox[{
   RowBox[{
-   RowBox[{"allTestreductionGraphBFT", "[", 
+   RowBox[{"allTestOrderingNodesGrassmannian", "[", 
     RowBox[{
      RowBox[{"{", 
       RowBox[{"a_", ",", "b_", ",", "c_", ",", "d_"}], "}"}], ",", 
      "bftlabeling_"}], "]"}], ":=", 
    RowBox[{"Block", "[", 
     RowBox[{
-     RowBox[{"{", "}"}], ","}], "\[IndentingNewLine]", 
-    RowBox[{"(*", 
-     RowBox[{"Print", "[", 
-      RowBox[{"\"\<kast=\>\"", ",", 
-       RowBox[{"{", 
-        RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
-       "\"\< : \>\""}], "]"}], "*)"}], "\[IndentingNewLine]", "]"}]}], 
+     RowBox[{"{", 
+      RowBox[{
+      "perfs", ",", "srcs", ",", "snks", ",", "multiplic", ",", 
+       "lowestloopPM", ",", "jj", ",", "Cmatrix", ",", "variablesmatrix", ",",
+        "orderingextnodesCmat", ",", "possibleidentitycolumns", ",", 
+       "externalvariables", ",", "extvarstonodenums", ",", "thesourcenodes"}],
+       "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"Length", "[", "c", "]"}], "+", 
+           RowBox[{
+            RowBox[{"Dimensions", "[", 
+             RowBox[{"Join", "[", 
+              RowBox[{"b", ",", "d"}], "]"}], "]"}], "[", 
+            RowBox[{"[", "2", "]"}], "]"}]}], "=!=", "0"}], "&&", 
+         RowBox[{"PlanarGraphQ", "[", 
+          RowBox[{"AdjacencyGraph", "[", 
+           RowBox[{"turnIntoAdjacencyMatrix", "[", 
+            RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "]"}], 
+          "]"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{"we", " ", 
+          RowBox[{"don", "'"}], "t", " ", "have", " ", "a", " ", "dimer"}], 
+         "*)"}], "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"perfs", "=", 
+          RowBox[{"perfectMatchings", "[", 
+           RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"srcs", "=", 
+          RowBox[{"Map", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"getSourceNodes", "[", 
+              RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", "#"}], "]"}], 
+             "&"}], ",", "perfs"}], "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"snks", "=", 
+          RowBox[{"Map", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"getSinkNodes", "[", 
+              RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", "#"}], "]"}], 
+             "&"}], ",", "perfs"}], "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"multiplic", "=", 
+          RowBox[{"Map", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{
+              RowBox[{"Tally", "[", "srcs", "]"}], "[", 
+              RowBox[{"[", 
+               RowBox[{"#", ",", "2"}], "]"}], "]"}], "&"}], ",", 
+            RowBox[{"Map", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{
+                RowBox[{"Position", "[", 
+                 RowBox[{
+                  RowBox[{"Tally", "[", "srcs", "]"}], ",", 
+                  RowBox[{"{", 
+                   RowBox[{"#", ",", "_"}], "}"}]}], "]"}], "[", 
+                RowBox[{"[", 
+                 RowBox[{"1", ",", "1"}], "]"}], "]"}], "&"}], ",", "srcs"}], 
+             "]"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"perfs", "\[NotEqual]", 
+            RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"lowestloopPM", "=", 
+             RowBox[{"lowNumberLoopsPMpos", "[", 
+              RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}]}], ";"}]}], 
+          "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+         RowBox[{"For", "[", 
+          RowBox[{
+           RowBox[{"jj", "=", "1"}], ",", 
+           RowBox[{"jj", "\[LessEqual]", 
+            RowBox[{"Length", "[", "perfs", "]"}]}], ",", 
+           RowBox[{"jj", "++"}], ",", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"jj", "\[Equal]", "lowestloopPM"}], "||", 
+               RowBox[{
+                RowBox[{"multiplic", "[", 
+                 RowBox[{"[", "jj", "]"}], "]"}], "\[LessEqual]", "3"}]}], 
+              ",", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"Cmatrix", "=", 
+                RowBox[{"grassmannianMatrix", "[", 
+                 RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", 
+                  RowBox[{"perfs", "[", 
+                   RowBox[{"[", "jj", "]"}], "]"}]}], "]"}]}], ";", 
+               "\[IndentingNewLine]", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{"Cmatrix", "=!=", "Null"}], ",", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"If", "[", 
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{"Length", "[", 
+                    RowBox[{"getOrderingExternalNodesGrassmannian", "[", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "]"}],
+                     "=!=", 
+                    RowBox[{
+                    RowBox[{"Length", "[", "c", "]"}], "+", 
+                    RowBox[{
+                    RowBox[{"Dimensions", "[", 
+                    RowBox[{"Join", "[", 
+                    RowBox[{"b", ",", "d"}], "]"}], "]"}], "[", 
+                    RowBox[{"[", "2", "]"}], "]"}]}]}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Print", "[", 
+                    RowBox[{"\"\<kast=\>\"", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                    "\"\< : There's a problem with the \
+getOrderingExternalNodesGrassmannians! Its length is not equal to the number \
+of external nodes.\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"If", "[", 
+                   RowBox[{
+                    RowBox[{"Cmatrix", "\[NotEqual]", 
+                    RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"orderingextnodesCmat", "=", 
+                    RowBox[{"getOrderingExternalNodesGrassmannian", "[", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}]}], ";",
+                     "\[IndentingNewLine]", 
+                    RowBox[{"possibleidentitycolumns", "=", 
+                    RowBox[{"Alternatives", "@@", 
+                    RowBox[{"IdentityMatrix", "[", 
+                    RowBox[{"Length", "[", "Cmatrix", "]"}], "]"}]}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"externalvariables", "=", 
+                    RowBox[{"Variables", "[", 
+                    RowBox[{"Join", "[", 
+                    RowBox[{"b", ",", "c"}], "]"}], "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"extvarstonodenums", "=", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"#", "\[Rule]", 
+                    RowBox[{
+                    RowBox[{"getExternalEdgeNodeNumbers", "[", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", 
+                    RowBox[{"{", "#", "}"}]}], "]"}], "[", 
+                    RowBox[{"[", "1", "]"}], "]"}]}], "&"}], ",", 
+                    "externalvariables"}], "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"thesourcenodes", "=", 
+                    RowBox[{"orderingextnodesCmat", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"Flatten", "[", 
+                    RowBox[{"Position", "[", 
+                    RowBox[{
+                    RowBox[{"Transpose", "[", "Cmatrix", "]"}], ",", 
+                    "possibleidentitycolumns"}], "]"}], "]"}], "]"}], "]"}]}],
+                     ";", "\[IndentingNewLine]", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Sort", "[", "thesourcenodes", "]"}], "=!=", 
+                    RowBox[{"srcs", "[", 
+                    RowBox[{"[", "jj", "]"}], "]"}]}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Print", "[", 
+                    RowBox[{"\"\<kast=\>\"", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                    "\"\< : There's a problem with the \
+getOrderingExternalNodesGrassmannian! It doesn't correspond with the source \
+set of the Grassmannian\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], 
+                    ";", "\[IndentingNewLine]", 
+                    RowBox[{"variablesmatrix", "=", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Intersection", "[", 
+                    RowBox[{
+                    RowBox[{"Variables", "[", "#", "]"}], ",", 
+                    "externalvariables"}], "]"}], "&"}], ",", "Cmatrix", ",", 
+                    RowBox[{"{", "2", "}"}]}], "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"And", "@@", 
+                    RowBox[{"MapThread", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"#1", "===", 
+                    RowBox[{"{", "}"}]}], "||", 
+                    RowBox[{"MemberQ", "[", 
+                    RowBox[{"#1", ",", "#2"}], "]"}]}], "&"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Function", "[", 
+                    RowBox[{
+                    RowBox[{"{", "input", "}"}], ",", 
+                    RowBox[{"Block", "[", 
+                    RowBox[{
+                    RowBox[{"{", "output", "}"}], ",", 
+                    RowBox[{
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"input", "===", 
+                    RowBox[{"{", "}"}]}], ",", 
+                    RowBox[{
+                    RowBox[{"output", "=", 
+                    RowBox[{"{", "}"}]}], ";"}], ",", 
+                    RowBox[{
+                    RowBox[{"output", "=", 
+                    RowBox[{"Intersection", "@@", "input"}]}], ";"}]}], "]"}],
+                     ";", "output"}]}], "]"}]}], "]"}], "[", "#", "]"}], 
+                    "&"}], ",", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"DeleteCases", "[", 
+                    RowBox[{"#", ",", 
+                    RowBox[{"{", "}"}]}], "]"}], "&"}], ",", 
+                    "variablesmatrix"}], "]"}]}], "]"}], "/.", 
+                    "extvarstonodenums"}], ",", "thesourcenodes"}], "}"}]}], 
+                    "]"}]}], ")"}], "=!=", "True"}], "||", 
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"And", "@@", 
+                    RowBox[{"MapThread", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"#1", "===", 
+                    RowBox[{"{", "}"}]}], "||", 
+                    RowBox[{"MemberQ", "[", 
+                    RowBox[{"#1", ",", "#2"}], "]"}]}], "&"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Intersection", "@@", "#"}], "&"}], ",", 
+                    RowBox[{"Transpose", "[", "variablesmatrix", "]"}]}], 
+                    "]"}], "/.", "extvarstonodenums"}], ",", 
+                    "orderingextnodesCmat"}], "}"}]}], "]"}]}], ")"}], "=!=", 
+                    "True"}]}], ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Print", "[", 
+                    RowBox[{"\"\<kast=\>\"", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                    "\"\< : There's a problem with the \
+getOrderingExternalEdgesGrassmannian! It doesn't correspond to what the \
+Grassmannian matrix has\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", 
+                    "\[IndentingNewLine]", "]"}], ";"}]}], 
+                   "\[IndentingNewLine]", "]"}], ";"}]}], 
+                "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", 
+             "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";"}]}], 
+       "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", "]"}]}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
-  RowBox[{"DistributeDefinitions", "[", "allTestreductionGraphBFT", "]"}], 
+  RowBox[{
+  "DistributeDefinitions", "[", "allTestOrderingNodesGrassmannian", "]"}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"ParallelMap", "[", 
    RowBox[{
     RowBox[{
-     RowBox[{"allTestreductionGraphBFT", "[", 
+     RowBox[{"allTestOrderingNodesGrassmannian", "[", 
       RowBox[{"#", ",", "True"}], "]"}], "&"}], ",", 
     RowBox[{"RandomSample", "[", 
-     RowBox[{"allbft1kasteleyns", ",", "10"}], "]"}]}], "]"}], 
+     RowBox[{"allbft1kasteleyns", ",", 
+      RowBox[{"Length", "[", "allbft1kasteleyns", "]"}]}], "]"}]}], "]"}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"ParallelMap", "[", 
    RowBox[{
     RowBox[{
-     RowBox[{"allTestreductionGraphBFT", "[", 
+     RowBox[{"allTestOrderingNodesGrassmannian", "[", 
       RowBox[{"#", ",", "Null"}], "]"}], "&"}], ",", 
     RowBox[{"RandomSample", "[", 
-     RowBox[{"allbft2kasteleyns", ",", "10"}], "]"}]}], "]"}], 
+     RowBox[{"allbft2kasteleyns", ",", 
+      RowBox[{"Length", "[", "allbft2kasteleyns", "]"}]}], "]"}]}], "]"}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"ParallelMap", "[", 
    RowBox[{
     RowBox[{
-     RowBox[{"allTestreductionGraphBFT", "[", 
+     RowBox[{"allTestOrderingNodesGrassmannian", "[", 
       RowBox[{"#", ",", "False"}], "]"}], "&"}], ",", 
     RowBox[{"RandomSample", "[", 
-     RowBox[{"allscatteringkasteleyns", ",", "10"}], "]"}]}], "]"}], 
-  ";"}], "\[IndentingNewLine]", 
+     RowBox[{"allscatteringkasteleyns", ",", 
+      RowBox[{"Length", "[", "allscatteringkasteleyns", "]"}]}], "]"}]}], 
+   "]"}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"ParallelMap", "[", 
    RowBox[{
     RowBox[{
-     RowBox[{"allTestreductionGraphBFT", "[", 
+     RowBox[{"allTestOrderingNodesGrassmannian", "[", 
       RowBox[{"#", ",", "True"}], "]"}], "&"}], ",", 
     RowBox[{"Cases", "[", 
      RowBox[{"annoyingsmallexamples", ",", 
@@ -15559,20 +16122,30 @@ Cell[BoxData[{
    3.6846472459357777`*^9, 3.6846472663574123`*^9}, {3.684647323817868*^9, 
    3.684647384378982*^9}, {3.6846475128657913`*^9, 3.6846475148894916`*^9}, {
    3.6846478780124445`*^9, 3.684647881333372*^9}, {3.684648202917942*^9, 
-   3.6846482359449673`*^9}, 3.6846483401109657`*^9}]
-}, Closed]],
+   3.6846482359449673`*^9}, 3.6846483401109657`*^9, {3.685268103150651*^9, 
+   3.6852681118260403`*^9}, {3.6852681672401114`*^9, 3.68526824122163*^9}, {
+   3.685268331633485*^9, 3.68526836654072*^9}, {3.6852688433597307`*^9, 
+   3.6852688444693604`*^9}, {3.6852688890254445`*^9, 3.685269017465767*^9}, {
+   3.6852690571209216`*^9, 3.685269062694605*^9}, {3.6852691679656286`*^9, 
+   3.685269173014634*^9}, {3.6852692136091814`*^9, 3.6852692319968824`*^9}, {
+   3.685269276821148*^9, 3.68526953919482*^9}, {3.6852696274617634`*^9, 
+   3.685269670148961*^9}, {3.685269704375707*^9, 3.685269726015604*^9}, {
+   3.6852697631616135`*^9, 3.685269764670931*^9}, {3.6852706116180286`*^9, 
+   3.685270612711822*^9}, {3.6852707672892075`*^9, 3.6852707972620173`*^9}}]
+}, Open  ]],
 
 Cell[BoxData[""], "Input",
  CellChangeTimes->{{3.684648848496868*^9, 3.684648848543746*^9}}],
-
-Cell[BoxData[""], "Input",
- CellChangeTimes->{{3.6851607340875006`*^9, 3.6851607341857743`*^9}}],
 
 Cell[CellGroupData[{
 
 Cell[BoxData[
  RowBox[{"(*", 
-  RowBox[{"Here", " ", "we", " ", "check"}], " ", "*)"}]], "Input",
+  RowBox[{
+   RowBox[{"Here", " ", "we", " ", "check", " ", "planarityQ"}], ",", " ", 
+   "stratificationBoundaries", ",", " ", "stratificationNumbers", ",", " ", 
+   "stratificationEulerNumber", ",", " ", "stratificationGraph"}], 
+  "*)"}]], "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.},
  CellChangeTimes->{{3.6653194611906705`*^9, 3.665319470875516*^9}, 
    3.665319696162837*^9, 3.665319923129767*^9, {3.66532084581382*^9, 
@@ -15582,7 +16155,8 @@ Cell[BoxData[
    3.665394491044639*^9, 3.6653944995239697`*^9}, {3.6653959126545773`*^9, 
    3.6653959187590914`*^9}, 3.6715453677008524`*^9, {3.672749981361431*^9, 
    3.6727499814444113`*^9}, 3.684575102612509*^9, 3.6845802079994617`*^9, 
-   3.6846471491723537`*^9, 3.684648173199854*^9, 3.684648253924594*^9}],
+   3.6846471491723537`*^9, 3.684648173199854*^9, 3.684648253924594*^9, {
+   3.685270676355695*^9, 3.685270678911297*^9}}],
 
 Cell[BoxData[{
  RowBox[{
@@ -15594,14 +16168,1185 @@ Cell[BoxData[{
      "bftlabeling_"}], "]"}], ":=", 
    RowBox[{"Block", "[", 
     RowBox[{
-     RowBox[{"{", "}"}], ","}], "\[IndentingNewLine]", 
-    RowBox[{"(*", 
-     RowBox[{"Print", "[", 
-      RowBox[{"\"\<kast=\>\"", ",", 
-       RowBox[{"{", 
-        RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
-       "\"\< : \>\""}], "]"}], "*)"}], "\[IndentingNewLine]", "]"}]}], 
-  ";"}], "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+      "dimP", ",", "kk", ",", "nn", ",", "maxCdim", ",", "numremovableedges", 
+       ",", "scatteringstratification", ",", "bft2stratification", ",", 
+       "bft1stratification", ",", "scatteringnums", ",", "bft2nums", ",", 
+       "bft1nums", ",", "bft1euler", ",", "bft2euler", ",", "scatteringeuler",
+        ",", "perfs", ",", "substratposscatter", ",", "nodeorder", ",", 
+       "substratposbft2", ",", "substratposbft1", ",", "scattersubstrats", 
+       ",", "planarity", ",", "toZero", ",", "ilev", ",", "shouldbelevel", 
+       ",", "shouldbestratification", ",", "levelshift", ",", "checkStrats", 
+       ",", "spuriousedgestozero", ",", "alternativescatteringstrat", ",", 
+       "newa", ",", "newb", ",", "newc", ",", "newd", ",", 
+       "alternativedimP"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"(*", 
+      RowBox[{
+       RowBox[{
+       "First", " ", "we", " ", "check", " ", "whether", " ", "the", " ", 
+        "Kasteleyn", " ", "is", " ", "exaggerated", " ", "or", " ", 
+        RowBox[{"not", ".", " ", "If"}], " ", "it", " ", "is"}], ",", " ", 
+       RowBox[{
+        RowBox[{"don", "'"}], "t", " ", "do", " ", "any", " ", "tests", " ", 
+        "on", " ", 
+        RowBox[{"it", "."}]}]}], "*)"}], "\[IndentingNewLine]", 
+     RowBox[{"(*", 
+      RowBox[{
+       RowBox[{"We", " ", "say", " ", 
+        RowBox[{"it", "'"}], "s", " ", "exxagerated", " ", "if", " ", "its", 
+        " ", "matching", " ", "poytope", " ", "has", " ", "dimension", " ", 
+        "greater", " ", "than", " ", "10"}], ",", " ", 
+       RowBox[{
+       "or", " ", "it", " ", "has", " ", "more", " ", "than", " ", "3", " ", 
+        "levels", " ", "of", " ", "reducibility", " ", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"e", ".", "g", ".", " ", "three"}], " ", "bubbbles"}], 
+         ")"}]}], ",", " ", 
+       RowBox[{
+       "or", " ", "more", " ", "than", " ", "12", " ", "removable", " ", 
+        "edges"}]}], "*)"}], "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"dimP", "=", 
+       RowBox[{"dimensionPolytope", "[", 
+        RowBox[{"matchingPolytope", "[", 
+         RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"dimP", "\[LessEqual]", "10"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"kk", "=", 
+          RowBox[{"getK", "[", 
+           RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"nn", "=", 
+          RowBox[{"getN", "[", 
+           RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"maxCdim", "=", 
+          RowBox[{"kk", 
+           RowBox[{"(", 
+            RowBox[{"nn", "-", "kk"}], ")"}]}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"dimP", "-", "maxCdim"}], "\[LessEqual]", "3"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"numremovableedges", "=", 
+             RowBox[{"Length", "[", 
+              RowBox[{"removableEdges", "[", 
+               RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "]"}]}], 
+            ";", "\[IndentingNewLine]", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{"numremovableedges", "\[LessEqual]", "12"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"(*", 
+               RowBox[{"we", " ", "have", " ", "passed", " ", "the", " ", 
+                RowBox[{"test", ":", " ", 
+                 RowBox[{
+                 "this", " ", "example", " ", "is", " ", "not", " ", 
+                  "exaggeratedly", " ", "complex", " ", "and", " ", "is", " ",
+                   "worth", " ", "testing"}]}]}], "*)"}], 
+              "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"scatteringstratification", "=", 
+                RowBox[{"stratificationBoundaries", "[", 
+                 RowBox[{
+                 "a", ",", "b", ",", "c", ",", "d", ",", "True", ",", "False",
+                   ",", "2"}], "]"}]}], ";", "\[IndentingNewLine]", 
+               RowBox[{"bft2stratification", "=", 
+                RowBox[{"stratificationBoundaries", "[", 
+                 RowBox[{
+                 "a", ",", "b", ",", "c", ",", "d", ",", "True", ",", "False",
+                   ",", "2"}], "]"}]}], ";", "\[IndentingNewLine]", 
+               RowBox[{"scatteringnums", "=", 
+                RowBox[{"stratificationNumbers", "[", 
+                 RowBox[{
+                 "a", ",", "b", ",", "c", ",", "d", ",", "True", ",", "False",
+                   ",", "2"}], "]"}]}], ";", "\[IndentingNewLine]", 
+               RowBox[{"bft2nums", "=", 
+                RowBox[{"stratificationNumbers", "[", 
+                 RowBox[{
+                 "a", ",", "b", ",", "c", ",", "d", ",", "True", ",", "False",
+                   ",", "2"}], "]"}]}], ";", "\[IndentingNewLine]", 
+               RowBox[{"scatteringeuler", "=", 
+                RowBox[{"stratificationEulerNumber", "[", 
+                 RowBox[{
+                 "a", ",", "b", ",", "c", ",", "d", ",", "True", ",", "False",
+                   ",", "2"}], "]"}]}], ";", "\[IndentingNewLine]", 
+               RowBox[{"bft2euler", "=", 
+                RowBox[{"stratificationEulerNumber", "[", 
+                 RowBox[{
+                 "a", ",", "b", ",", "c", ",", "d", ",", "True", ",", "False",
+                   ",", "2"}], "]"}]}], ";", "\[IndentingNewLine]", 
+               RowBox[{"If", "[", 
+                RowBox[{"bftlabeling", ",", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"bft1stratification", "=", 
+                   RowBox[{"stratificationBoundaries", "[", 
+                    RowBox[{
+                    "a", ",", "b", ",", "c", ",", "d", ",", "True", ",", 
+                    "True", ",", "1"}], "]"}]}], ";", "\[IndentingNewLine]", 
+                  RowBox[{"bft1nums", "=", 
+                   RowBox[{"stratificationNumbers", "[", 
+                    RowBox[{
+                    "a", ",", "b", ",", "c", ",", "d", ",", "True", ",", 
+                    "True", ",", "1"}], "]"}]}], ";", "\[IndentingNewLine]", 
+                  RowBox[{"bft1euler", "=", 
+                   RowBox[{"stratificationEulerNumber", "[", 
+                    RowBox[{
+                    "a", ",", "b", ",", "c", ",", "d", ",", "True", ",", 
+                    "True", ",", "1"}], "]"}]}], ";", "\[IndentingNewLine]", 
+                  RowBox[{"If", "[", 
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Head", "[", "bft1stratification", "]"}], "=!=", 
+                    "List"}], "||", 
+                    RowBox[{"(", 
+                    RowBox[{"Or", "@@", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Head", "[", "#", "]"}], "=!=", "List"}], "&"}], 
+                    ",", "bft1stratification"}], "]"}]}], ")"}]}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Print", "[", 
+                    RowBox[{"\"\<kast=\>\"", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                    "\"\< : There's a problem with the gauging 1 \
+stratification! It doesn't output a list of lists\>\""}], "]"}], ";"}]}], 
+                   "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+                  RowBox[{"If", "[", 
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Map", "[", 
+                    RowBox[{"Length", ",", "bft1stratification"}], "]"}], "=!=",
+                     "bft1nums"}], "||", 
+                    RowBox[{
+                    RowBox[{"Sum", "[", 
+                    RowBox[{
+                    RowBox[{
+                    SuperscriptBox[
+                    RowBox[{"(", 
+                    RowBox[{"-", "1"}], ")"}], 
+                    RowBox[{"ijk", "+", "1"}]], 
+                    RowBox[{"bft1nums", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"-", "ijk"}], "]"}], "]"}]}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"ijk", ",", 
+                    RowBox[{"Length", "[", "bft1nums", "]"}]}], "}"}]}], 
+                    "]"}], "=!=", "bft1euler"}]}], ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Print", "[", 
+                    RowBox[{"\"\<kast=\>\"", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                    "\"\< : There's a problem with the scattering \
+stratification numbers! They aren't equal to the length of the stratification \
+lists, or they don't give the expected Euler number.\>\""}], "]"}], ";"}]}], 
+                   "\[IndentingNewLine]", "]"}], ";"}]}], 
+                "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"Head", "[", "scatteringstratification", "]"}], "=!=",
+                    "List"}], "||", 
+                  RowBox[{"(", 
+                   RowBox[{"Or", "@@", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Head", "[", "#", "]"}], "=!=", "List"}], "&"}], 
+                    ",", "scatteringstratification"}], "]"}]}], ")"}]}], ",", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"Print", "[", 
+                   RowBox[{"\"\<kast=\>\"", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                    "\"\< : There's a problem with the scattering \
+stratification! It doesn't output a list of lists\>\"", ",", 
+                    "scatteringstratification"}], "]"}], ";"}]}], 
+                "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"Head", "[", "bft2stratification", "]"}], "=!=", 
+                   "List"}], "||", 
+                  RowBox[{"(", 
+                   RowBox[{"Or", "@@", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Head", "[", "#", "]"}], "=!=", "List"}], "&"}], 
+                    ",", "bft2stratification"}], "]"}]}], ")"}]}], ",", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"Print", "[", 
+                   RowBox[{"\"\<kast=\>\"", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                    "\"\< : There's a problem with the gauging 2 \
+stratification! It doesn't output a list of lists\>\""}], "]"}], ";"}]}], 
+                "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"Map", "[", 
+                    RowBox[{"Length", ",", "scatteringstratification"}], 
+                    "]"}], "=!=", "scatteringnums"}], "||", 
+                  RowBox[{
+                   RowBox[{"Sum", "[", 
+                    RowBox[{
+                    RowBox[{
+                    SuperscriptBox[
+                    RowBox[{"(", 
+                    RowBox[{"-", "1"}], ")"}], 
+                    RowBox[{"ijk", "+", "1"}]], 
+                    RowBox[{"scatteringnums", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"-", "ijk"}], "]"}], "]"}]}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"ijk", ",", 
+                    RowBox[{"Length", "[", "scatteringnums", "]"}]}], "}"}]}],
+                     "]"}], "=!=", "scatteringeuler"}]}], ",", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"Print", "[", 
+                   RowBox[{"\"\<kast=\>\"", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                    "\"\< : There's a problem with the scattering \
+stratification numbers! They aren't equal to the length of the stratification \
+lists, or they don't give the expected Euler number.\>\""}], "]"}], ";"}]}], 
+                "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"Map", "[", 
+                    RowBox[{"Length", ",", "bft2stratification"}], "]"}], "=!=",
+                    "bft2nums"}], "||", 
+                  RowBox[{
+                   RowBox[{"Sum", "[", 
+                    RowBox[{
+                    RowBox[{
+                    SuperscriptBox[
+                    RowBox[{"(", 
+                    RowBox[{"-", "1"}], ")"}], 
+                    RowBox[{"ijk", "+", "1"}]], 
+                    RowBox[{"bft2nums", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"-", "ijk"}], "]"}], "]"}]}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"ijk", ",", 
+                    RowBox[{"Length", "[", "bft2nums", "]"}]}], "}"}]}], 
+                    "]"}], "=!=", "bft2euler"}]}], ",", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"Print", "[", 
+                   RowBox[{"\"\<kast=\>\"", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                    "\"\< : There's a problem with the gauging 2 \
+stratification numbers! They aren't equal to the length of the stratification \
+lists, or they don't give the expected Euler number.\>\""}], "]"}], ";"}]}], 
+                "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+               RowBox[{"perfs", "=", 
+                RowBox[{"perfectMatchings", "[", 
+                 RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}]}], ";", 
+               "\[IndentingNewLine]", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{"perfs", "\[NotEqual]", 
+                  RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"If", "[", 
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{"Length", "[", "scatteringstratification", "]"}], 
+                    "=!=", 
+                    RowBox[{"dimP", "+", "1"}]}], ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Print", "[", 
+                    RowBox[{"\"\<kast=\>\"", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                    "\"\< : There's a problem with the scattering \
+stratification! Its length is not equal to dim(P)+1\>\""}], "]"}], ";"}]}], 
+                   "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+                  RowBox[{"If", "[", 
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{"Length", "[", "bft2stratification", "]"}], "=!=", 
+                    RowBox[{"dimP", "+", "1"}]}], ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Print", "[", 
+                    RowBox[{"\"\<kast=\>\"", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                    "\"\< : There's a problem with the gauging 2 \
+stratification! Its length is not equal to dim(P)+1\>\""}], "]"}], ";"}]}], 
+                   "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+                  RowBox[{"If", "[", 
+                   RowBox[{"bftlabeling", ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Length", "[", "bft1stratification", "]"}], "=!=", 
+                    RowBox[{"dimP", "+", "1"}]}], ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Print", "[", 
+                    RowBox[{"\"\<kast=\>\"", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                    "\"\< : There's a problem with the gauging 1 \
+stratification! Its length is not equal to dim(P)+1\>\""}], "]"}], ";"}]}], 
+                    "\[IndentingNewLine]", "]"}], ";"}]}], 
+                   "\[IndentingNewLine]", "]"}], ";"}]}], 
+                "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"And", "@@", 
+                   RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Head", "[", "#", "]"}], "===", "Integer"}], "&&", 
+                    RowBox[{"#", "=!=", "0"}]}], ")"}], "&"}], ",", 
+                    RowBox[{"scatteringnums", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"Flatten", "[", 
+                    RowBox[{"Position", "[", 
+                    RowBox[{"scatteringnums", ",", 
+                    RowBox[{"_", "?", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"#", "\[NotEqual]", "0"}], "&"}], ")"}]}], ",", 
+                    "1", ",", "1"}], "]"}], "]"}], "]"}], "]"}]}], "]"}]}], "=!=",
+                   "True"}], ",", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"Print", "[", 
+                   RowBox[{"\"\<kast=\>\"", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                    "\"\< : There's a problem with the scattering \
+stratification numbers! After initial zeroes, there should be a nonzero \
+number\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+               "\[IndentingNewLine]", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"And", "@@", 
+                   RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Head", "[", "#", "]"}], "===", "Integer"}], "&&", 
+                    RowBox[{"#", "=!=", "0"}]}], ")"}], "&"}], ",", 
+                    RowBox[{"bft2nums", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"Flatten", "[", 
+                    RowBox[{"Position", "[", 
+                    RowBox[{"bft2nums", ",", 
+                    RowBox[{"_", "?", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"#", "\[NotEqual]", "0"}], "&"}], ")"}]}], ",", 
+                    "1", ",", "1"}], "]"}], "]"}], "]"}], "]"}]}], "]"}]}], "=!=",
+                   "True"}], ",", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"Print", "[", 
+                   RowBox[{"\"\<kast=\>\"", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                    "\"\< : There's a problem with the scattering \
+stratification numbers! After initial zeroes, there should be a nonzero \
+number\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+               "\[IndentingNewLine]", 
+               RowBox[{"If", "[", 
+                RowBox[{"bftlabeling", ",", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"If", "[", 
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{"And", "@@", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Head", "[", "#", "]"}], "===", "Integer"}], "&&", 
+                    RowBox[{"#", "=!=", "0"}]}], ")"}], "&"}], ",", 
+                    RowBox[{"bft1nums", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"Flatten", "[", 
+                    RowBox[{"Position", "[", 
+                    RowBox[{"bft1nums", ",", 
+                    RowBox[{"_", "?", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"#", "\[NotEqual]", "0"}], "&"}], ")"}]}], ",", 
+                    "1", ",", "1"}], "]"}], "]"}], "]"}], "]"}]}], "]"}]}], "=!=",
+                     "True"}], ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Print", "[", 
+                    RowBox[{"\"\<kast=\>\"", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                    "\"\< : There's a problem with the scattering \
+stratification numbers! After initial zeroes, there should be a nonzero \
+number\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";"}]}], 
+                "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+               RowBox[{"substratposscatter", "=", 
+                RowBox[{"Function", "[", 
+                 RowBox[{
+                  RowBox[{"{", "configuration", "}"}], ",", 
+                  RowBox[{"Position", "[", 
+                   RowBox[{
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Or", "@@", "#"}], "&"}], ",", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"SubsetQ", "[", 
+                    RowBox[{"configuration", ",", "#"}], "]"}], "&"}], ",", 
+                    "scatteringstratification", ",", 
+                    RowBox[{"{", "3", "}"}]}], "]"}], ",", 
+                    RowBox[{"{", "2", "}"}]}], "]"}], ",", "True"}], "]"}]}], 
+                 "]"}]}], ";", "\[IndentingNewLine]", 
+               RowBox[{"nodeorder", "=", 
+                RowBox[{"Function", "[", 
+                 RowBox[{
+                  RowBox[{"{", "configuration", "}"}], ",", 
+                  RowBox[{"getOrderingExternalNodesGrassmannian", "[", 
+                   RowBox[{
+                    RowBox[{"a", "/.", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"#", "\[Rule]", "0"}], "&"}], ",", 
+                    RowBox[{"Complement", "[", 
+                    RowBox[{
+                    RowBox[{"Variables", "[", 
+                    RowBox[{"Join", "[", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "]"}],
+                     ",", "configuration"}], "]"}]}], "]"}]}], ",", 
+                    RowBox[{"b", "/.", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"#", "\[Rule]", "0"}], "&"}], ",", 
+                    RowBox[{"Complement", "[", 
+                    RowBox[{
+                    RowBox[{"Variables", "[", 
+                    RowBox[{"Join", "[", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "]"}],
+                     ",", "configuration"}], "]"}]}], "]"}]}], ",", 
+                    RowBox[{"c", "/.", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"#", "\[Rule]", "0"}], "&"}], ",", 
+                    RowBox[{"Complement", "[", 
+                    RowBox[{
+                    RowBox[{"Variables", "[", 
+                    RowBox[{"Join", "[", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "]"}],
+                     ",", "configuration"}], "]"}]}], "]"}]}], ",", "d"}], 
+                   "]"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+               RowBox[{"substratposbft2", "=", 
+                RowBox[{"Function", "[", 
+                 RowBox[{
+                  RowBox[{"{", "configuration", "}"}], ",", 
+                  RowBox[{"Block", "[", 
+                   RowBox[{
+                    RowBox[{"{", "outtputt", "}"}], ",", 
+                    RowBox[{
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"planarityQ", "[", 
+                    RowBox[{
+                    RowBox[{"a", "/.", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"#", "\[Rule]", "0"}], "&"}], ",", 
+                    RowBox[{"Complement", "[", 
+                    RowBox[{
+                    RowBox[{"Variables", "[", 
+                    RowBox[{"Join", "[", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "]"}],
+                     ",", "configuration"}], "]"}]}], "]"}]}], ",", 
+                    RowBox[{"b", "/.", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"#", "\[Rule]", "0"}], "&"}], ",", 
+                    RowBox[{"Complement", "[", 
+                    RowBox[{
+                    RowBox[{"Variables", "[", 
+                    RowBox[{"Join", "[", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "]"}],
+                     ",", "configuration"}], "]"}]}], "]"}]}], ",", 
+                    RowBox[{"c", "/.", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"#", "\[Rule]", "0"}], "&"}], ",", 
+                    RowBox[{"Complement", "[", 
+                    RowBox[{
+                    RowBox[{"Variables", "[", 
+                    RowBox[{"Join", "[", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "]"}],
+                     ",", "configuration"}], "]"}]}], "]"}]}], ",", "d"}], 
+                    "]"}], ",", 
+                    RowBox[{
+                    RowBox[{"outtputt", "=", 
+                    RowBox[{"Position", "[", 
+                    RowBox[{
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Or", "@@", "#"}], "&"}], ",", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"SubsetQ", "[", 
+                    RowBox[{"configuration", ",", "#"}], "]"}], "&"}], ",", 
+                    "bft2stratification", ",", 
+                    RowBox[{"{", "3", "}"}]}], "]"}], ",", 
+                    RowBox[{"{", "2", "}"}]}], "]"}], ",", "True"}], "]"}]}], 
+                    ";"}], ",", 
+                    RowBox[{
+                    RowBox[{"outtputt", "=", 
+                    RowBox[{"{", "I", "}"}]}], ";"}]}], "]"}], ";", 
+                    "outtputt"}]}], "]"}]}], "]"}]}], ";", 
+               "\[IndentingNewLine]", 
+               RowBox[{"If", "[", 
+                RowBox[{"bftlabeling", ",", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"substratposbft1", "=", 
+                   RowBox[{"Function", "[", 
+                    RowBox[{
+                    RowBox[{"{", "configuration", "}"}], ",", 
+                    RowBox[{"Position", "[", 
+                    RowBox[{
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Or", "@@", "#"}], "&"}], ",", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"SubsetQ", "[", 
+                    RowBox[{"configuration", ",", "#"}], "]"}], "&"}], ",", 
+                    "bft1stratification", ",", 
+                    RowBox[{"{", "3", "}"}]}], "]"}], ",", 
+                    RowBox[{"{", "2", "}"}]}], "]"}], ",", "True"}], "]"}]}], 
+                    "]"}]}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+               "\[IndentingNewLine]", 
+               RowBox[{"scattersubstrats", "=", 
+                RowBox[{"Map", "[", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"substratposscatter", "[", "#", "]"}], "&"}], ",", 
+                  "scatteringstratification", ",", 
+                  RowBox[{"{", "3", "}"}]}], "]"}]}], ";", 
+               "\[IndentingNewLine]", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"(", 
+                   RowBox[{"And", "@@", 
+                    RowBox[{"Flatten", "[", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Equal", "@@", "#"}], "&"}], ",", 
+                    "scattersubstrats", ",", 
+                    RowBox[{"{", "2", "}"}]}], "]"}], "]"}]}], ")"}], "=!=", 
+                  "True"}], ",", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"Print", "[", 
+                   RowBox[{"\"\<kast=\>\"", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                    "\"\< : There's a problem with the scattering \
+stratification! Move-equivalent boundaries should have the same subboundaries \
+at all levels\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+               "\[IndentingNewLine]", 
+               RowBox[{"(*", 
+                RowBox[{"For", " ", 
+                 SubscriptBox["BFT", "2"], " ", "we", " ", "can", " ", "only",
+                  " ", "attempt", " ", "to", " ", "identify", " ", 
+                 "according", " ", "to", " ", "the", " ", "moduli", " ", 
+                 "space", " ", "if", " ", "their", " ", "external", " ", 
+                 "nodes", " ", "can", " ", "be", " ", "placed", " ", "in", 
+                 " ", "the", " ", "same", " ", 
+                 RowBox[{"order", ".", " ", "CONSIDER"}], " ", "REMOVING", 
+                 " ", "THIS", " ", 
+                 RowBox[{"TEST", "!"}]}], "*)"}], "\[IndentingNewLine]", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"(", 
+                   RowBox[{"And", "@@", 
+                    RowBox[{"Flatten", "[", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Equal", "@@", "#"}], "&"}], ",", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"substratposbft2", "[", "#", "]"}], "&"}], ",", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"GatherBy", "[", 
+                    RowBox[{"#", ",", "nodeorder"}], "]"}], "&"}], ",", 
+                    "bft2stratification", ",", 
+                    RowBox[{"{", "2", "}"}]}], "]"}], ",", 
+                    RowBox[{"{", "4", "}"}]}], "]"}], ",", 
+                    RowBox[{"{", "3", "}"}]}], "]"}], "]"}]}], ")"}], "=!=", 
+                  "True"}], ",", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"Print", "[", 
+                   RowBox[{"\"\<kast=\>\"", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                    "\"\< : There's a problem with the gauging 2 \
+stratification! Move-equivalent boundaries should have the same subboundaries \
+at all levels\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+               "\[IndentingNewLine]", 
+               RowBox[{"planarity", "=", 
+                RowBox[{"Function", "[", 
+                 RowBox[{
+                  RowBox[{"{", "configuration", "}"}], ",", 
+                  RowBox[{"planarityQ", "[", 
+                   RowBox[{
+                    RowBox[{"a", "/.", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"#", "\[Rule]", "0"}], "&"}], ",", 
+                    RowBox[{"Complement", "[", 
+                    RowBox[{
+                    RowBox[{"Variables", "[", 
+                    RowBox[{"Join", "[", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "]"}],
+                     ",", "configuration"}], "]"}]}], "]"}]}], ",", 
+                    RowBox[{"b", "/.", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"#", "\[Rule]", "0"}], "&"}], ",", 
+                    RowBox[{"Complement", "[", 
+                    RowBox[{
+                    RowBox[{"Variables", "[", 
+                    RowBox[{"Join", "[", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "]"}],
+                     ",", "configuration"}], "]"}]}], "]"}]}], ",", 
+                    RowBox[{"c", "/.", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"#", "\[Rule]", "0"}], "&"}], ",", 
+                    RowBox[{"Complement", "[", 
+                    RowBox[{
+                    RowBox[{"Variables", "[", 
+                    RowBox[{"Join", "[", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "]"}],
+                     ",", "configuration"}], "]"}]}], "]"}]}], ",", "d"}], 
+                   "]"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{"MemberQ", "[", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"Flatten", "[", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Sum", "[", 
+                    RowBox[{
+                    RowBox[{
+                    SuperscriptBox[
+                    RowBox[{"(", 
+                    RowBox[{"-", "1"}], ")"}], 
+                    RowBox[{"kjk", "+", "1"}]], 
+                    RowBox[{"#", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"-", "kjk"}], "]"}], "]"}]}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"kjk", ",", 
+                    RowBox[{"Length", "[", "#", "]"}]}], "}"}]}], "]"}], 
+                    "&"}], ",", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{"Length", ",", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"GatherBy", "[", 
+                    RowBox[{
+                    RowBox[{"substratposscatter", "[", "#", "]"}], ",", 
+                    "First"}], "]"}], "&"}], ",", "scatteringstratification", 
+                    ",", 
+                    RowBox[{"{", "3", "}"}]}], "]"}], ",", 
+                    RowBox[{"{", "4", "}"}]}], "]"}], ",", 
+                    RowBox[{"{", "3", "}"}]}], "]"}], "]"}], "[", 
+                    RowBox[{"[", 
+                    RowBox[{"Flatten", "[", 
+                    RowBox[{"Position", "[", 
+                    RowBox[{
+                    RowBox[{"Flatten", "[", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"planarity", "[", "#", "]"}], "&"}], ",", 
+                    "scatteringstratification", ",", 
+                    RowBox[{"{", "3", "}"}]}], "]"}], "]"}], ",", "True"}], 
+                    "]"}], "]"}], "]"}], "]"}], ",", 
+                   RowBox[{"zz_", "/;", 
+                    RowBox[{"zz", "=!=", "1"}]}]}], "]"}], ",", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"Print", "[", 
+                   RowBox[{"\"\<kast=\>\"", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                    "\"\< : There's a problem with planarity! Some elements \
+in the stratification are declared to be planar but do not have an Eulerian \
+substratification!\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+               "\[IndentingNewLine]", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{"perfs", "\[NotEqual]", 
+                  RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"spuriousedgestozero", "=", 
+                   RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"#", "\[Rule]", "0"}], "&"}], ",", 
+                    RowBox[{"consistentEdgeRemoval", "[", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", 
+                    RowBox[{"{", "}"}]}], "]"}]}], "]"}]}], ";", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{
+                   RowBox[{"{", 
+                    RowBox[{"newa", ",", "newb", ",", "newc", ",", "newd"}], 
+                    "}"}], "=", 
+                   RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], "/.", 
+                    "spuriousedgestozero"}]}], ";", "\[IndentingNewLine]", 
+                  RowBox[{"If", "[", 
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"newa", ",", "newb", ",", "newc", ",", "newd"}], 
+                    "}"}], "===", 
+                    RowBox[{"{", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}]}], ",",
+                     "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"toZero", "=", 
+                    RowBox[{"Function", "[", 
+                    RowBox[{
+                    RowBox[{"{", "listofedges", "}"}], ",", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"#", "\[Rule]", "0"}], "&"}], ",", 
+                    "listofedges"}], "]"}]}], "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"ilev", "=", "0"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"shouldbelevel", "[", "ilev", "]"}], "=", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Sequence", "@@", "#"}], "&"}], ",", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Complement", "[", 
+                    RowBox[{
+                    RowBox[{"Variables", "[", 
+                    RowBox[{"Join", "[", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "]"}],
+                     ",", "#"}], "]"}], "&"}], ",", 
+                    RowBox[{
+                    RowBox[{"Cases", "[", 
+                    RowBox[{"scatteringstratification", ",", 
+                    RowBox[{"Except", "[", 
+                    RowBox[{"{", "}"}], "]"}]}], "]"}], "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], ",", 
+                    RowBox[{"{", "2", "}"}]}], "]"}]}], "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"levelshift", "=", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Position", "[", 
+                    RowBox[{"scatteringstratification", ",", 
+                    RowBox[{"_", "?", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"#", "\[NotEqual]", 
+                    RowBox[{"{", "}"}]}], "&"}], ")"}]}], ",", "1", ",", 
+                    "1"}], "]"}], "[", 
+                    RowBox[{"[", 
+                    RowBox[{"1", ",", "1"}], "]"}], "]"}], "-", "1"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"For", "[", 
+                    RowBox[{
+                    RowBox[{"ilev", "=", "1"}], ",", 
+                    RowBox[{"ilev", "\[LessEqual]", 
+                    RowBox[{"dimP", "-", "levelshift"}]}], ",", 
+                    RowBox[{"ilev", "++"}], ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"shouldbelevel", "[", "ilev", "]"}], "=", 
+                    RowBox[{"DeleteDuplicates", "[", 
+                    RowBox[{"MapThread", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Function", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"list1", ",", "list2"}], "}"}], ",", 
+                    RowBox[{"Sequence", "@@", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Sort", "[", 
+                    RowBox[{"Join", "[", 
+                    RowBox[{"#", ",", "list2"}], "]"}], "]"}], "&"}], ",", 
+                    "list1"}], "]"}]}]}], "]"}], "[", 
+                    RowBox[{"#1", ",", "#2"}], "]"}], "&"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"removableEdges", "[", 
+                    RowBox[{
+                    RowBox[{"a", "/.", 
+                    RowBox[{"toZero", "[", "#", "]"}]}], ",", 
+                    RowBox[{"b", "/.", 
+                    RowBox[{"toZero", "[", "#", "]"}]}], ",", 
+                    RowBox[{"c", "/.", 
+                    RowBox[{"toZero", "[", "#", "]"}]}], ",", "d", ",", 
+                    "True", ",", "False", ",", "2"}], "]"}], "&"}], ",", 
+                    RowBox[{"shouldbelevel", "[", 
+                    RowBox[{"ilev", "-", "1"}], "]"}]}], "]"}], ",", 
+                    RowBox[{"shouldbelevel", "[", 
+                    RowBox[{"ilev", "-", "1"}], "]"}]}], "}"}]}], "]"}], 
+                    "]"}]}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"shouldbestratification", "=", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Complement", "[", 
+                    RowBox[{
+                    RowBox[{"Variables", "[", 
+                    RowBox[{"Join", "[", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}], "]"}],
+                     ",", "#"}], "]"}], "&"}], ",", 
+                    RowBox[{"Table", "[", 
+                    RowBox[{
+                    RowBox[{"shouldbelevel", "[", "jjj", "]"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"jjj", ",", "0", ",", 
+                    RowBox[{"dimP", "-", "levelshift"}]}], "}"}]}], "]"}], 
+                    ",", 
+                    RowBox[{"{", "2", "}"}]}], "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"checkStrats", "=", 
+                    RowBox[{"Function", "[", 
+                    RowBox[{
+                    RowBox[{"{", "levelnumtocheck", "}"}], ",", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"And", "@@", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"MemberQ", "[", 
+                    RowBox[{
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Sequence", "@@", "#"}], "&"}], ",", 
+                    RowBox[{"scatteringstratification", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"levelnumtocheck", "+", "levelshift"}], "]"}], 
+                    "]"}]}], "]"}], ",", "#"}], "]"}], "&"}], ",", 
+                    RowBox[{"shouldbestratification", "[", 
+                    RowBox[{"[", "levelnumtocheck", "]"}], "]"}]}], "]"}]}], 
+                    ")"}], "&&", 
+                    RowBox[{"(", 
+                    RowBox[{"And", "@@", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"MemberQ", "[", 
+                    RowBox[{
+                    RowBox[{"shouldbestratification", "[", 
+                    RowBox[{"[", "levelnumtocheck", "]"}], "]"}], ",", 
+                    RowBox[{"Alternatives", "@@", "#"}]}], "]"}], "&"}], ",", 
+                    RowBox[{"scatteringstratification", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"levelnumtocheck", "+", "levelshift"}], "]"}], 
+                    "]"}]}], "]"}]}], ")"}]}], ")"}]}], "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"And", "@@", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{"checkStrats", ",", 
+                    RowBox[{"Range", "[", 
+                    RowBox[{"dimP", "-", "levelshift", "+", "1"}], "]"}]}], 
+                    "]"}]}], ")"}], "=!=", "True"}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Print", "[", 
+                    RowBox[{"\"\<kast=\>\"", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                    "\"\< : There's a problem with the scattering \
+stratification! It doesn't correspond to the stratification obtained by \
+removing removable edges\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}],
+                     ";"}], "\[IndentingNewLine]", ",", 
+                    RowBox[{
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"perfectMatchings", "[", 
+                    RowBox[{"newa", ",", "newb", ",", "newc", ",", "newd"}], 
+                    "]"}], "\[NotEqual]", 
+                    RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"alternativescatteringstrat", "=", 
+                    RowBox[{"stratificationBoundaries", "[", 
+                    RowBox[{"newa", ",", "newb", ",", "newc", ",", "newd"}], 
+                    "]"}]}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"alternativedimP", "=", 
+                    RowBox[{"dimensionPolytope", "[", 
+                    RowBox[{"matchingPolytope", "[", 
+                    RowBox[{"newa", ",", "newb", ",", "newc", ",", "newd"}], 
+                    "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"toZero", "=", 
+                    RowBox[{"Function", "[", 
+                    RowBox[{
+                    RowBox[{"{", "listofedges", "}"}], ",", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"#", "\[Rule]", "0"}], "&"}], ",", 
+                    "listofedges"}], "]"}]}], "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"ilev", "=", "0"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"shouldbelevel", "[", "ilev", "]"}], "=", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Sequence", "@@", "#"}], "&"}], ",", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Complement", "[", 
+                    RowBox[{
+                    RowBox[{"Variables", "[", 
+                    RowBox[{"Join", "[", 
+                    RowBox[{"newa", ",", "newb", ",", "newc", ",", "newd"}], 
+                    "]"}], "]"}], ",", "#"}], "]"}], "&"}], ",", 
+                    RowBox[{
+                    RowBox[{"Cases", "[", 
+                    RowBox[{"alternativescatteringstrat", ",", 
+                    RowBox[{"Except", "[", 
+                    RowBox[{"{", "}"}], "]"}]}], "]"}], "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], ",", 
+                    RowBox[{"{", "2", "}"}]}], "]"}]}], "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"levelshift", "=", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Position", "[", 
+                    RowBox[{"alternativescatteringstrat", ",", 
+                    RowBox[{"_", "?", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"#", "\[NotEqual]", 
+                    RowBox[{"{", "}"}]}], "&"}], ")"}]}], ",", "1", ",", 
+                    "1"}], "]"}], "[", 
+                    RowBox[{"[", 
+                    RowBox[{"1", ",", "1"}], "]"}], "]"}], "-", "1"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"For", "[", 
+                    RowBox[{
+                    RowBox[{"ilev", "=", "1"}], ",", 
+                    RowBox[{"ilev", "\[LessEqual]", 
+                    RowBox[{"alternativedimP", "-", "levelshift"}]}], ",", 
+                    RowBox[{"ilev", "++"}], ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"shouldbelevel", "[", "ilev", "]"}], "=", 
+                    RowBox[{"DeleteDuplicates", "[", 
+                    RowBox[{"MapThread", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Function", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"list1", ",", "list2"}], "}"}], ",", 
+                    RowBox[{"Sequence", "@@", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Sort", "[", 
+                    RowBox[{"Join", "[", 
+                    RowBox[{"#", ",", "list2"}], "]"}], "]"}], "&"}], ",", 
+                    "list1"}], "]"}]}]}], "]"}], "[", 
+                    RowBox[{"#1", ",", "#2"}], "]"}], "&"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"removableEdges", "[", 
+                    RowBox[{
+                    RowBox[{"newa", "/.", 
+                    RowBox[{"toZero", "[", "#", "]"}]}], ",", 
+                    RowBox[{"newb", "/.", 
+                    RowBox[{"toZero", "[", "#", "]"}]}], ",", 
+                    RowBox[{"newc", "/.", 
+                    RowBox[{"toZero", "[", "#", "]"}]}], ",", "newd", ",", 
+                    "True", ",", "False", ",", "2"}], "]"}], "&"}], ",", 
+                    RowBox[{"shouldbelevel", "[", 
+                    RowBox[{"ilev", "-", "1"}], "]"}]}], "]"}], ",", 
+                    RowBox[{"shouldbelevel", "[", 
+                    RowBox[{"ilev", "-", "1"}], "]"}]}], "}"}]}], "]"}], 
+                    "]"}]}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"shouldbestratification", "=", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Complement", "[", 
+                    RowBox[{
+                    RowBox[{"Variables", "[", 
+                    RowBox[{"Join", "[", 
+                    RowBox[{"newa", ",", "newb", ",", "newc", ",", "newd"}], 
+                    "]"}], "]"}], ",", "#"}], "]"}], "&"}], ",", 
+                    RowBox[{"Table", "[", 
+                    RowBox[{
+                    RowBox[{"shouldbelevel", "[", "jjj", "]"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"jjj", ",", "0", ",", 
+                    RowBox[{"alternativedimP", "-", "levelshift"}]}], "}"}]}],
+                     "]"}], ",", 
+                    RowBox[{"{", "2", "}"}]}], "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"checkStrats", "=", 
+                    RowBox[{"Function", "[", 
+                    RowBox[{
+                    RowBox[{"{", "levelnumtocheck", "}"}], ",", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"And", "@@", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"MemberQ", "[", 
+                    RowBox[{
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Sequence", "@@", "#"}], "&"}], ",", 
+                    RowBox[{"alternativescatteringstrat", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"levelnumtocheck", "+", "levelshift"}], "]"}], 
+                    "]"}]}], "]"}], ",", "#"}], "]"}], "&"}], ",", 
+                    RowBox[{"shouldbestratification", "[", 
+                    RowBox[{"[", "levelnumtocheck", "]"}], "]"}]}], "]"}]}], 
+                    ")"}], "&&", 
+                    RowBox[{"(", 
+                    RowBox[{"And", "@@", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"MemberQ", "[", 
+                    RowBox[{
+                    RowBox[{"shouldbestratification", "[", 
+                    RowBox[{"[", "levelnumtocheck", "]"}], "]"}], ",", 
+                    RowBox[{"Alternatives", "@@", "#"}]}], "]"}], "&"}], ",", 
+                    RowBox[{"alternativescatteringstrat", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"levelnumtocheck", "+", "levelshift"}], "]"}], 
+                    "]"}]}], "]"}]}], ")"}]}], ")"}]}], "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"And", "@@", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{"checkStrats", ",", 
+                    RowBox[{"Range", "[", 
+                    RowBox[{"alternativedimP", "-", "levelshift", "+", "1"}], 
+                    "]"}]}], "]"}]}], ")"}], "=!=", "True"}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Print", "[", 
+                    RowBox[{"\"\<kast=\>\"", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                    "\"\< : There's a problem with the scattering \
+stratification! It doesn't correspond to the stratification obtained by \
+removing removable edges\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}],
+                     ";"}]}], "\[IndentingNewLine]", "]"}], ";"}]}], 
+                   "\[IndentingNewLine]", "]"}], ";"}]}], 
+                "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", 
+             "\[IndentingNewLine]", "\[IndentingNewLine]", 
+             "\[IndentingNewLine]", "\[IndentingNewLine]", 
+             "\[IndentingNewLine]", "\[IndentingNewLine]", 
+             "\[IndentingNewLine]", "\[IndentingNewLine]", "]"}], ";"}]}], 
+          "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", "]"}],
+       ";"}]}], "\[IndentingNewLine]", "]"}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"DistributeDefinitions", "[", "allTestreductionGraphBFT", "]"}], 
   ";"}], "\[IndentingNewLine]", 
@@ -15712,11 +17457,491 @@ Cell[BoxData[{
    3.6846472459357777`*^9, 3.6846472663574123`*^9}, {3.684647323817868*^9, 
    3.684647384378982*^9}, {3.6846475128657913`*^9, 3.6846475148894916`*^9}, {
    3.6846478780124445`*^9, 3.684647881333372*^9}, {3.684648202917942*^9, 
-   3.6846482359449673`*^9}, 3.6846483401109657`*^9}]
-}, Closed]],
+   3.6846482359449673`*^9}, 3.6846483401109657`*^9, {3.6852768084237957`*^9, 
+   3.685276811974022*^9}, {3.685277256485749*^9, 3.6852773078866205`*^9}, {
+   3.6852773515549016`*^9, 3.6852775882426815`*^9}, {3.6852776467304573`*^9, 
+   3.6852776767478466`*^9}, {3.68527773738489*^9, 3.685277738342886*^9}, 
+   3.685277775107335*^9, {3.6852778103426294`*^9, 3.6852778816601562`*^9}, {
+   3.6852779392716503`*^9, 3.6852780026701145`*^9}, {3.685278036022973*^9, 
+   3.6852780388599353`*^9}, {3.6852780790231905`*^9, 3.685278218268424*^9}, {
+   3.685278249654645*^9, 3.685278335055872*^9}, {3.6852783759835763`*^9, 
+   3.6852785140775623`*^9}, {3.6852785503770084`*^9, 3.68527859121406*^9}, {
+   3.68527862627855*^9, 3.685278631000987*^9}, {3.685278667817532*^9, 
+   3.685278747599384*^9}, {3.6852787830310307`*^9, 3.685278799274227*^9}, {
+   3.6852796058691597`*^9, 3.6852796085658507`*^9}, {3.6852797131174593`*^9, 
+   3.685279753506839*^9}, {3.6852802376720476`*^9, 3.6852802411274776`*^9}, {
+   3.6852805265100837`*^9, 3.685280545727108*^9}, {3.6852805922142487`*^9, 
+   3.685280815111873*^9}, {3.6852808651890354`*^9, 3.6852809028935375`*^9}, {
+   3.685280937222394*^9, 3.6852810469852867`*^9}, {3.685281170875184*^9, 
+   3.6852811711024356`*^9}, {3.685281661504255*^9, 3.6852816624261665`*^9}}]
+}, Open  ]],
 
 Cell[BoxData[""], "Input",
  CellChangeTimes->{{3.684648848496868*^9, 3.684648848543746*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"(*", "*)"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6653076030813026`*^9, 3.6653083280341244`*^9, 3.6676535795146055`*^9, {
+   3.669623478197051*^9, 3.669623503511433*^9}, {3.6696236225555973`*^9, 
+   3.6696237460838375`*^9}, 3.6716879859831944`*^9, 3.671688113306757*^9, 
+   3.6716881635703287`*^9, 3.671688421670931*^9, {3.6847590642298794`*^9, 
+   3.684759066026931*^9}, 3.68527068445259*^9}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"testscattering", "[", 
+     RowBox[{"{", 
+      RowBox[{"a_", ",", "b_", ",", "c_", ",", "d_"}], "}"}], "]"}], ":=", 
+    RowBox[{"Block", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "dimP", ",", "iinum", ",", "scatteringstratification", ",", 
+        "bft2stratification", ",", "bft1stratification", ",", 
+        "scatteringnums", ",", "bft2nums", ",", "bft1nums", ",", 
+        "scatteringeuler", ",", "bft2euler", ",", "bft1euler", ",", 
+        "substratposscatter", ",", "substratposbft2", ",", "substratposbft1", 
+        ",", "nodeorder", ",", "planarity", ",", "toZero", ",", "ilev", ",", 
+        "shouldbelevel", ",", "levelshift", ",", "shouldbestratification", 
+        ",", "checkStrats", ",", "scattersubstrats", ",", 
+        "scatteringstratgraph", ",", "bft2stratgraph", ",", "bft1stratgraph", 
+        ",", "scatteringadjmat", ",", "howmanydaughtersscattering", ",", 
+        "fullsubstratposbft2", ",", "fullbft2substrats", ",", 
+        "howmanydaughtersbft2", ",", "bft2adjmat", ",", "bft1substrats", ",", 
+        "howmanydaughtersbft1", ",", "bft1adjmat", ",", "parentposscatter", 
+        ",", "scatterparents", ",", "howmanyparentsscattering", ",", 
+        "parentposbft2", ",", "bft2parents", ",", "howmanyparentsbft2", ",", 
+        "parentposbft1", ",", "bft1parents", ",", "howmanyparentsbft1"}], 
+       "}"}], ",", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"scatteringstratgraph", "=", 
+        RowBox[{"stratificationGraph", "[", 
+         RowBox[{
+         "a", ",", "b", ",", "c", ",", "d", ",", "True", ",", "False", ",", 
+          "2"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"bft2stratgraph", "=", 
+        RowBox[{"stratificationGraph", "[", 
+         RowBox[{
+         "a", ",", "b", ",", "c", ",", "d", ",", "True", ",", "True", ",", 
+          "2"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"bft1stratgraph", "=", 
+        RowBox[{"stratificationGraph", "[", 
+         RowBox[{
+         "a", ",", "b", ",", "c", ",", "d", ",", "True", ",", "True", ",", 
+          "1"}], "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"iinum", "\[NotEqual]", "104"}], ",", "\[IndentingNewLine]", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"scatteringadjmat", "=", 
+           RowBox[{"Normal", "[", 
+            RowBox[{"AdjacencyMatrix", "[", "scatteringstratgraph", "]"}], 
+            "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"howmanydaughtersscattering", "=", 
+           RowBox[{"Map", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"Length", "[", 
+               RowBox[{"Cases", "[", 
+                RowBox[{"#", ",", 
+                 RowBox[{"{", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"#", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"1", ",", "1"}], "]"}], "]"}], "+", "1"}], ",", 
+                   "_"}], "}"}]}], "]"}], "]"}], "&"}], ",", 
+             RowBox[{"Map", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"Union", "@@", "#"}], "&"}], ",", "scattersubstrats", 
+               ",", 
+               RowBox[{"{", "2", "}"}]}], "]"}], ",", 
+             RowBox[{"{", "2", "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"Flatten", "[", "howmanydaughtersscattering", "]"}], "=!=", 
+             RowBox[{"Map", "[", 
+              RowBox[{"Total", ",", "scatteringadjmat"}], "]"}]}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"Print", "[", 
+              RowBox[{
+              "\"\<ii=\>\"", ",", "iinum", ",", 
+               "\"\< : There's a problem with the scattering stratification \
+graph! The numbers of daughters of elements in the stratification doesn't \
+match those using SubsetQ\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", 
+           "]"}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+          RowBox[{"fullsubstratposbft2", "=", 
+           RowBox[{"Function", "[", 
+            RowBox[{
+             RowBox[{"{", "configuration", "}"}], ",", 
+             RowBox[{"Position", "[", 
+              RowBox[{
+               RowBox[{"Map", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"Or", "@@", "#"}], "&"}], ",", 
+                 RowBox[{"Map", "[", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"SubsetQ", "[", 
+                    RowBox[{"configuration", ",", "#"}], "]"}], "&"}], ",", 
+                   "bft2stratification", ",", 
+                   RowBox[{"{", "3", "}"}]}], "]"}], ",", 
+                 RowBox[{"{", "2", "}"}]}], "]"}], ",", "True"}], "]"}]}], 
+            "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"fullbft2substrats", "=", 
+           RowBox[{"Map", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"fullsubstratposbft2", "[", "#", "]"}], "&"}], ",", 
+             "bft2stratification", ",", 
+             RowBox[{"{", "3", "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"howmanydaughtersbft2", "=", 
+           RowBox[{"Map", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"Length", "[", 
+               RowBox[{"Cases", "[", 
+                RowBox[{"#", ",", 
+                 RowBox[{"{", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"#", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"1", ",", "1"}], "]"}], "]"}], "+", "1"}], ",", 
+                   "_"}], "}"}]}], "]"}], "]"}], "&"}], ",", 
+             RowBox[{"Map", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"Union", "@@", "#"}], "&"}], ",", "fullbft2substrats",
+                ",", 
+               RowBox[{"{", "2", "}"}]}], "]"}], ",", 
+             RowBox[{"{", "2", "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"bft2adjmat", "=", 
+           RowBox[{"Normal", "[", 
+            RowBox[{"AdjacencyMatrix", "[", "bft2stratgraph", "]"}], "]"}]}], 
+          ";", "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"Flatten", "[", "howmanydaughtersbft2", "]"}], "=!=", 
+             RowBox[{"Map", "[", 
+              RowBox[{"Total", ",", "bft2adjmat"}], "]"}]}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"Print", "[", 
+              RowBox[{
+              "\"\<ii=\>\"", ",", "iinum", ",", 
+               "\"\< : There's a problem with the gauging 2 stratification \
+graph! The numbers of daughters of elements in the stratification doesn't \
+match those using SubsetQ\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", 
+           "]"}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+          RowBox[{"bft1substrats", "=", 
+           RowBox[{"Map", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"substratposbft1", "[", "#", "]"}], "&"}], ",", 
+             "bft1stratification", ",", 
+             RowBox[{"{", "3", "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"howmanydaughtersbft1", "=", 
+           RowBox[{"Map", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"Length", "[", 
+               RowBox[{"Cases", "[", 
+                RowBox[{"#", ",", 
+                 RowBox[{"{", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"#", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"1", ",", "1"}], "]"}], "]"}], "+", "1"}], ",", 
+                   "_"}], "}"}]}], "]"}], "]"}], "&"}], ",", 
+             RowBox[{"Map", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"Union", "@@", "#"}], "&"}], ",", "bft1substrats", 
+               ",", 
+               RowBox[{"{", "2", "}"}]}], "]"}], ",", 
+             RowBox[{"{", "2", "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"bft1adjmat", "=", 
+           RowBox[{"Normal", "[", 
+            RowBox[{"AdjacencyMatrix", "[", "bft1stratgraph", "]"}], "]"}]}], 
+          ";", "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"Flatten", "[", "howmanydaughtersbft1", "]"}], "=!=", 
+             RowBox[{"Map", "[", 
+              RowBox[{"Total", ",", "bft1adjmat"}], "]"}]}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"Print", "[", 
+              RowBox[{
+              "\"\<ii=\>\"", ",", "iinum", ",", 
+               "\"\< : There's a problem with the gauging 1 stratification \
+graph! The numbers of daughters of elements in the stratification doesn't \
+match those using SubsetQ\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", 
+           "]"}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+          RowBox[{"parentposscatter", "=", 
+           RowBox[{"Function", "[", 
+            RowBox[{
+             RowBox[{"{", "configuration", "}"}], ",", 
+             RowBox[{"Position", "[", 
+              RowBox[{
+               RowBox[{"Map", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"Or", "@@", "#"}], "&"}], ",", 
+                 RowBox[{"Map", "[", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"SubsetQ", "[", 
+                    RowBox[{"#", ",", "configuration"}], "]"}], "&"}], ",", 
+                   "scatteringstratification", ",", 
+                   RowBox[{"{", "3", "}"}]}], "]"}], ",", 
+                 RowBox[{"{", "2", "}"}]}], "]"}], ",", "True"}], "]"}]}], 
+            "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"scatterparents", "=", 
+           RowBox[{"Map", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"parentposscatter", "[", "#", "]"}], "&"}], ",", 
+             "scatteringstratification", ",", 
+             RowBox[{"{", "3", "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"howmanyparentsscattering", "=", 
+           RowBox[{"Map", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"Length", "[", 
+               RowBox[{"Cases", "[", 
+                RowBox[{"#", ",", 
+                 RowBox[{"{", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{"Last", "[", "#", "]"}], "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], "-", "1"}], ",", "_"}], 
+                  "}"}]}], "]"}], "]"}], "&"}], ",", 
+             RowBox[{"Map", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"Union", "@@", "#"}], "&"}], ",", "scatterparents", 
+               ",", 
+               RowBox[{"{", "2", "}"}]}], "]"}], ",", 
+             RowBox[{"{", "2", "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"Flatten", "[", "howmanyparentsscattering", "]"}], "=!=", 
+             RowBox[{"Map", "[", 
+              RowBox[{"Total", ",", 
+               RowBox[{"Transpose", "[", "scatteringadjmat", "]"}]}], "]"}]}],
+             ",", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"Print", "[", 
+              RowBox[{
+              "\"\<ii=\>\"", ",", "iinum", ",", 
+               "\"\< : There's a problem with the scattering stratification \
+graph! The numbers of parents of elements in the stratification doesn't match \
+those using SubsetQ\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";",
+           "\[IndentingNewLine]", "\[IndentingNewLine]", 
+          RowBox[{"parentposbft2", "=", 
+           RowBox[{"Function", "[", 
+            RowBox[{
+             RowBox[{"{", "configuration", "}"}], ",", 
+             RowBox[{"Position", "[", 
+              RowBox[{
+               RowBox[{"Map", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"Or", "@@", "#"}], "&"}], ",", 
+                 RowBox[{"Map", "[", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"SubsetQ", "[", 
+                    RowBox[{"#", ",", "configuration"}], "]"}], "&"}], ",", 
+                   "bft2stratification", ",", 
+                   RowBox[{"{", "3", "}"}]}], "]"}], ",", 
+                 RowBox[{"{", "2", "}"}]}], "]"}], ",", "True"}], "]"}]}], 
+            "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"bft2parents", "=", 
+           RowBox[{"Map", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"parentposbft2", "[", "#", "]"}], "&"}], ",", 
+             "bft2stratification", ",", 
+             RowBox[{"{", "3", "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"howmanyparentsbft2", "=", 
+           RowBox[{"Map", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"Length", "[", 
+               RowBox[{"Cases", "[", 
+                RowBox[{"#", ",", 
+                 RowBox[{"{", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{"Last", "[", "#", "]"}], "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], "-", "1"}], ",", "_"}], 
+                  "}"}]}], "]"}], "]"}], "&"}], ",", 
+             RowBox[{"Map", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"Union", "@@", "#"}], "&"}], ",", "bft2parents", ",", 
+               RowBox[{"{", "2", "}"}]}], "]"}], ",", 
+             RowBox[{"{", "2", "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"Flatten", "[", "howmanyparentsbft2", "]"}], "=!=", 
+             RowBox[{"Map", "[", 
+              RowBox[{"Total", ",", 
+               RowBox[{"Transpose", "[", "bft2adjmat", "]"}]}], "]"}]}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"Print", "[", 
+              RowBox[{
+              "\"\<ii=\>\"", ",", "iinum", ",", 
+               "\"\< : There's a problem with the gauging 2 stratification \
+graph! The numbers of parents of elements in the stratification doesn't match \
+those using SubsetQ\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";",
+           "\[IndentingNewLine]", "\[IndentingNewLine]", 
+          RowBox[{"parentposbft1", "=", 
+           RowBox[{"Function", "[", 
+            RowBox[{
+             RowBox[{"{", "configuration", "}"}], ",", 
+             RowBox[{"Position", "[", 
+              RowBox[{
+               RowBox[{"Map", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"Or", "@@", "#"}], "&"}], ",", 
+                 RowBox[{"Map", "[", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"SubsetQ", "[", 
+                    RowBox[{"#", ",", "configuration"}], "]"}], "&"}], ",", 
+                   "bft1stratification", ",", 
+                   RowBox[{"{", "3", "}"}]}], "]"}], ",", 
+                 RowBox[{"{", "2", "}"}]}], "]"}], ",", "True"}], "]"}]}], 
+            "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"bft1parents", "=", 
+           RowBox[{"Map", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"parentposbft1", "[", "#", "]"}], "&"}], ",", 
+             "bft1stratification", ",", 
+             RowBox[{"{", "3", "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"howmanyparentsbft1", "=", 
+           RowBox[{"Map", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"Length", "[", 
+               RowBox[{"Cases", "[", 
+                RowBox[{"#", ",", 
+                 RowBox[{"{", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{"Last", "[", "#", "]"}], "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], "-", "1"}], ",", "_"}], 
+                  "}"}]}], "]"}], "]"}], "&"}], ",", 
+             RowBox[{"Map", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"Union", "@@", "#"}], "&"}], ",", "bft1parents", ",", 
+               RowBox[{"{", "2", "}"}]}], "]"}], ",", 
+             RowBox[{"{", "2", "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"Flatten", "[", "howmanyparentsbft1", "]"}], "=!=", 
+             RowBox[{"Map", "[", 
+              RowBox[{"Total", ",", 
+               RowBox[{"Transpose", "[", "bft1adjmat", "]"}]}], "]"}]}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"Print", "[", 
+              RowBox[{
+              "\"\<ii=\>\"", ",", "iinum", ",", 
+               "\"\< : There's a problem with the gauging 2 stratification \
+graph! The numbers of parents of elements in the stratification doesn't match \
+those using SubsetQ\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], 
+          ";"}]}], "\[IndentingNewLine]", "\[IndentingNewLine]", "]"}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"Print", "[", 
+        RowBox[{"\"\<ii=\>\"", ",", "iinum", ",", "\"\<: Complete\>\""}], 
+        "]"}], ";"}]}], "\[IndentingNewLine]", "\[IndentingNewLine]", "]"}]}],
+    ";"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"DistributeDefinitions", "[", "testscattering", "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dontdothese", "=", 
+   RowBox[{"{", 
+    RowBox[{
+    "26", ",", "33", ",", "50", ",", "51", ",", "79", ",", "106", ",", "107", 
+     ",", "110"}], "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"longtimers", "=", 
+   RowBox[{"{", 
+    RowBox[{
+    "30", ",", "32", ",", "39", ",", "40", ",", "52", ",", "53", ",", "61", 
+     ",", "94"}], "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"fornowdontdothese", "=", 
+   RowBox[{"{", 
+    RowBox[{"13", ",", "44", ",", "46", ",", "74", ",", "80", ",", "92"}], 
+    "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dothese", "=", 
+   RowBox[{"Complement", "[", 
+    RowBox[{
+     RowBox[{"Range", "[", "110", "]"}], ",", "dontdothese", ",", 
+     "longtimers", ",", "fornowdontdothese"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ParallelMap", "[", 
+   RowBox[{"testscattering", ",", 
+    RowBox[{"allbfts", "[", 
+     RowBox[{"[", "dothese", "]"}], "]"}]}], "]"}], ";"}]}], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6696235746380396`*^9, {3.669623610098814*^9, 3.6696236195405407`*^9}, 
+   3.669623753127334*^9, {3.669624024457741*^9, 3.66962405078391*^9}, {
+   3.669624089402275*^9, 3.6696241247859883`*^9}, 3.670128948154625*^9, {
+   3.671354490317777*^9, 3.6713545334757743`*^9}, {3.671543692885229*^9, 
+   3.671543695724641*^9}, {3.6715453740500803`*^9, 3.671545374954458*^9}, {
+   3.6716878784813905`*^9, 3.67168787932522*^9}, {3.671687991043371*^9, 
+   3.6716880013068056`*^9}, {3.671688114244274*^9, 3.6716881160510674`*^9}, {
+   3.6716881646328835`*^9, 3.671688168115918*^9}, 3.6716882269304934`*^9, 
+   3.671688372664858*^9, {3.6716884225399275`*^9, 3.671688424845953*^9}, {
+   3.6727469921053867`*^9, 3.672747005897662*^9}, {3.6727470472858286`*^9, 
+   3.6727470607872653`*^9}, {3.672747101083252*^9, 3.672747103626311*^9}, {
+   3.6727473781301117`*^9, 3.6727473785439763`*^9}, {3.6852706670303316`*^9, 
+   3.6852707021554737`*^9}, {3.6852708699481564`*^9, 3.685270874106292*^9}, 
+   3.685277769860499*^9, 3.6852779012380447`*^9, {3.6852779771785374`*^9, 
+   3.685277978468359*^9}, {3.685278062263815*^9, 3.6852780760921507`*^9}, {
+   3.685278199672243*^9, 3.685278201228237*^9}, {3.6852783051326284`*^9, 
+   3.6852783061951933`*^9}, 3.6852783700002623`*^9, {3.685278432859847*^9, 
+   3.6852784334001555`*^9}, {3.685278466588217*^9, 3.6852784952843723`*^9}, {
+   3.6852785467492495`*^9, 3.685278547093015*^9}, {3.685278597606245*^9, 
+   3.6852786232600203`*^9}, {3.6852817526025267`*^9, 3.685281752961917*^9}}]
+}, Open  ]],
 
 Cell[BoxData[""], "Input",
  CellChangeTimes->{{3.6851607340875006`*^9, 3.6851607341857743`*^9}}],
@@ -16337,126 +18562,130 @@ Cell[369513, 7963, 973, 16, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
 Cell[370489, 7981, 72016, 1558, 4312, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
-}, Open  ]],
-Cell[442520, 9542, 94, 1, 31, "Input"],
+}, Closed]],
+Cell[442520, 9542, 94, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[442639, 9547, 951, 16, 31, "Input",
+Cell[442639, 9547, 1003, 17, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[443593, 9565, 58166, 1182, 4052, "Input",
- CellGroupingRules->{GroupTogetherGrouping, 10000.}]
-}, Open  ]],
-Cell[501774, 10750, 92, 1, 31, "Input"],
-Cell[CellGroupData[{
-Cell[501891, 10755, 909, 15, 31, "Input",
- CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[502803, 10772, 25560, 487, 1752, "Input",
- CellGroupingRules->{GroupTogetherGrouping, 10000.}]
-}, Open  ]],
-Cell[528378, 11262, 92, 1, 31, "Input"],
-Cell[CellGroupData[{
-Cell[528495, 11267, 865, 14, 31, "Input",
- CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[529363, 11283, 14240, 280, 692, "Input",
+Cell[443645, 9566, 58453, 1191, 3912, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[543618, 11566, 92, 1, 25, "Input"],
+Cell[502113, 10760, 92, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[543735, 11571, 941, 15, 31, "Input",
+Cell[502230, 10765, 909, 15, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[544679, 11588, 18791, 369, 1032, "Input",
- CellGroupingRules->{GroupTogetherGrouping, 10000.}]
-}, Open  ]],
-Cell[563485, 11960, 93, 1, 31, "Input"],
-Cell[CellGroupData[{
-Cell[563603, 11965, 923, 15, 31, "Input",
- CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[564529, 11982, 11478, 230, 492, "Input",
+Cell[503142, 10782, 25560, 487, 1752, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[576022, 12215, 92, 1, 25, "Input"],
+Cell[528717, 11272, 92, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[576139, 12220, 966, 15, 31, "Input",
+Cell[528834, 11277, 865, 14, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[577108, 12237, 12080, 246, 540, "Input",
+Cell[529702, 11293, 14240, 280, 692, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[589203, 12486, 92, 1, 25, "Input"],
+Cell[543957, 11576, 92, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[589320, 12491, 648, 11, 31, "Input",
+Cell[544074, 11581, 941, 15, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[589971, 12504, 56871, 1406, 2832, "Input",
+Cell[545018, 11598, 18791, 369, 1032, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[646857, 13913, 96, 1, 25, "Input"],
+Cell[563824, 11970, 93, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[646978, 13918, 983, 16, 31, "Input",
+Cell[563942, 11975, 923, 15, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[647964, 13936, 11439, 231, 512, "Input",
+Cell[564868, 11992, 11478, 230, 492, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[659418, 14170, 94, 1, 25, "Input"],
+Cell[576361, 12225, 92, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[659537, 14175, 915, 14, 31, "Input",
+Cell[576478, 12230, 966, 15, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[660455, 14191, 31857, 642, 1612, "Input",
+Cell[577447, 12247, 12080, 246, 540, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
-}, Open  ]],
-Cell[692327, 14836, 92, 1, 31, "Input"],
+}, Closed]],
+Cell[589542, 12496, 92, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[692444, 14841, 867, 14, 31, "Input",
+Cell[589659, 12501, 648, 11, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[693314, 14857, 19800, 401, 972, "Input",
+Cell[590310, 12514, 56871, 1406, 2832, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}]
+}, Closed]],
+Cell[647196, 13923, 96, 1, 25, "Input"],
+Cell[CellGroupData[{
+Cell[647317, 13928, 983, 16, 31, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[648303, 13946, 11439, 231, 512, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}]
+}, Closed]],
+Cell[659757, 14180, 94, 1, 25, "Input"],
+Cell[CellGroupData[{
+Cell[659876, 14185, 915, 14, 31, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[660794, 14201, 32309, 650, 1612, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Open  ]],
-Cell[713129, 15261, 92, 1, 31, "Input"],
+Cell[693118, 14854, 92, 1, 31, "Input"],
 Cell[CellGroupData[{
-Cell[713246, 15266, 814, 12, 31, "Input",
+Cell[693235, 14859, 867, 14, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[714063, 15280, 7095, 128, 172, "Input",
+Cell[694105, 14875, 20646, 412, 1032, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}]
+}, Open  ]],
+Cell[714766, 15290, 92, 1, 31, "Input"],
+Cell[CellGroupData[{
+Cell[714883, 15295, 889, 15, 31, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[715775, 15312, 18775, 385, 852, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}]
+}, Open  ]],
+Cell[734565, 15700, 92, 1, 31, "Input"],
+Cell[CellGroupData[{
+Cell[734682, 15705, 912, 15, 31, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[735597, 15722, 20374, 411, 1032, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}]
+}, Open  ]],
+Cell[755986, 16136, 92, 1, 31, "Input"],
+Cell[CellGroupData[{
+Cell[756103, 16141, 1048, 17, 31, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[757154, 16160, 64480, 1315, 3607, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}]
+}, Open  ]],
+Cell[821649, 17478, 92, 1, 31, "Input"],
+Cell[CellGroupData[{
+Cell[821766, 17483, 467, 8, 31, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[822236, 17493, 20326, 449, 1652, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}]
+}, Open  ]],
+Cell[842577, 17945, 96, 1, 31, "Input"],
+Cell[CellGroupData[{
+Cell[842698, 17950, 814, 12, 31, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[843515, 17964, 7095, 128, 172, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[721173, 15411, 92, 1, 25, "Input"],
-Cell[721268, 15414, 96, 1, 31, "Input"],
+Cell[850625, 18095, 92, 1, 25, "Input"],
+Cell[850720, 18098, 96, 1, 31, "Input"],
 Cell[CellGroupData[{
-Cell[721389, 15419, 814, 12, 31, "Input",
+Cell[850841, 18103, 814, 12, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[722206, 15433, 7095, 128, 172, "Input",
+Cell[851658, 18117, 7095, 128, 172, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[729316, 15564, 92, 1, 25, "Input"],
-Cell[729411, 15567, 96, 1, 31, "Input"],
+Cell[858768, 18248, 92, 1, 25, "Input"],
+Cell[858863, 18251, 96, 1, 31, "Input"],
 Cell[CellGroupData[{
-Cell[729532, 15572, 814, 12, 31, "Input",
+Cell[858984, 18256, 814, 12, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[730349, 15586, 7095, 128, 172, "Input",
+Cell[859801, 18270, 7095, 128, 172, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[737459, 15717, 92, 1, 25, "Input"],
-Cell[737554, 15720, 96, 1, 31, "Input"],
-Cell[CellGroupData[{
-Cell[737675, 15725, 814, 12, 31, "Input",
- CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[738492, 15739, 7095, 128, 172, "Input",
- CellGroupingRules->{GroupTogetherGrouping, 10000.}]
-}, Closed]],
-Cell[745602, 15870, 92, 1, 25, "Input"],
-Cell[745697, 15873, 96, 1, 31, "Input"],
-Cell[CellGroupData[{
-Cell[745818, 15878, 814, 12, 31, "Input",
- CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[746635, 15892, 7095, 128, 172, "Input",
- CellGroupingRules->{GroupTogetherGrouping, 10000.}]
-}, Closed]],
-Cell[753745, 16023, 92, 1, 25, "Input"],
-Cell[753840, 16026, 96, 1, 31, "Input"],
-Cell[CellGroupData[{
-Cell[753961, 16031, 814, 12, 31, "Input",
- CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[754778, 16045, 7095, 128, 172, "Input",
- CellGroupingRules->{GroupTogetherGrouping, 10000.}]
-}, Closed]],
-Cell[761888, 16176, 92, 1, 25, "Input"],
-Cell[761983, 16179, 96, 1, 31, "Input"]
+Cell[866911, 18401, 92, 1, 25, "Input"],
+Cell[867006, 18404, 96, 1, 31, "Input"]
 }
 ]
 *)
