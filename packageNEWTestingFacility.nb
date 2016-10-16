@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[   1140355,      24756]
-NotebookOptionsPosition[   1129613,      24469]
-NotebookOutlinePosition[   1129955,      24484]
-CellTagsIndexPosition[   1129912,      24481]
+NotebookDataLength[   1144091,      24828]
+NotebookOptionsPosition[   1133348,      24541]
+NotebookOutlinePosition[   1133690,      24556]
+CellTagsIndexPosition[   1133647,      24553]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -14298,10 +14298,23 @@ Cell[BoxData[{
              RowBox[{
               RowBox[{
                RowBox[{"jj", "\[Equal]", "lowestloopPM"}], "||", 
-               RowBox[{
-                RowBox[{"multiplic", "[", 
-                 RowBox[{"[", "jj", "]"}], "]"}], "\[LessEqual]", "3"}]}], 
-              ",", "\[IndentingNewLine]", 
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"multiplic", "[", 
+                   RowBox[{"[", "jj", "]"}], "]"}], "\[LessEqual]", "3"}], "&&", 
+                 RowBox[{
+                  RowBox[{"Count", "[", 
+                   RowBox[{
+                    RowBox[{"multiplic", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"Range", "[", "jj", "]"}], "]"}], "]"}], ",", 
+                    RowBox[{"multiplic", "[", 
+                    RowBox[{"[", "jj", "]"}], "]"}]}], "]"}], "\[LessEqual]", 
+                  RowBox[{"10", "-", 
+                   RowBox[{"multiplic", "[", 
+                    RowBox[{"[", "jj", "]"}], "]"}]}]}]}], ")"}]}], ",", 
+              "\[IndentingNewLine]", 
               RowBox[{
                RowBox[{"Cmatrix", "=", 
                 RowBox[{"grassmannianMatrix", "[", 
@@ -14324,6 +14337,7 @@ Cell[BoxData[{
                     RowBox[{"\"\<kast=\>\"", ",", 
                     RowBox[{"{", 
                     RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                    
                     "\"\< : There's a problem with the Grassmannian matrix! \
 It is equal to {} even though we have perfect matchings and a nonzero set of \
 sources.\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";"}], 
@@ -14849,7 +14863,8 @@ calculation done directly by the path matrix\>\""}], "]"}], ";"}]}],
    3.6851797190822363`*^9, {3.6851800164428988`*^9, 3.685180023282978*^9}, {
    3.68518084034384*^9, 3.6851808411095047`*^9}, 3.685184487835971*^9, {
    3.6851868152000847`*^9, 3.685186829452794*^9}, {3.6852652584050493`*^9, 
-   3.6852652675686965`*^9}, {3.685265336535299*^9, 3.685265359058519*^9}}]
+   3.6852652675686965`*^9}, {3.685265336535299*^9, 3.685265359058519*^9}, {
+   3.68544680511075*^9, 3.6854468123356733`*^9}}]
 }, Open  ]],
 
 Cell[BoxData[""], "Input",
@@ -14963,10 +14978,23 @@ Cell[BoxData[{
              RowBox[{
               RowBox[{
                RowBox[{"jj", "\[Equal]", "lowestloopPM"}], "||", 
-               RowBox[{
-                RowBox[{"multiplic", "[", 
-                 RowBox[{"[", "jj", "]"}], "]"}], "\[LessEqual]", "3"}]}], 
-              ",", "\[IndentingNewLine]", 
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"multiplic", "[", 
+                   RowBox[{"[", "jj", "]"}], "]"}], "\[LessEqual]", "3"}], "&&", 
+                 RowBox[{
+                  RowBox[{"Count", "[", 
+                   RowBox[{
+                    RowBox[{"multiplic", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"Range", "[", "jj", "]"}], "]"}], "]"}], ",", 
+                    RowBox[{"multiplic", "[", 
+                    RowBox[{"[", "jj", "]"}], "]"}]}], "]"}], "\[LessEqual]", 
+                  RowBox[{"10", "-", 
+                   RowBox[{"multiplic", "[", 
+                    RowBox[{"[", "jj", "]"}], "]"}]}]}]}], ")"}]}], ",", 
+              "\[IndentingNewLine]", 
               RowBox[{
                RowBox[{"pathmat", "=", 
                 RowBox[{"pathMatrix", "[", 
@@ -15285,7 +15313,7 @@ matchings are not equal to those of grassmannianMatrix\>\""}], "]"}], ";"}]}],
    3.685189729992201*^9, 3.685189749913371*^9}, {3.6851898138806334`*^9, 
    3.6851898650646734`*^9}, {3.6852674785146723`*^9, 3.685267478655306*^9}, 
    3.6852676994767265`*^9, {3.6852677821333427`*^9, 3.6852677842681723`*^9}, {
-   3.685268021259802*^9, 3.685268031241452*^9}}]
+   3.685268021259802*^9, 3.685268031241452*^9}, 3.685450135150688*^9}]
 }, Open  ]],
 
 Cell[BoxData[""], "Input",
@@ -15408,7 +15436,24 @@ Cell[BoxData[{
                RowBox[{
                 RowBox[{"multiplic", "[", 
                  RowBox[{"[", "jj", "]"}], "]"}], "\[LessEqual]", "3"}]}], 
-              ",", "\[IndentingNewLine]", 
+              RowBox[{"(*", 
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"multiplic", "[", 
+                   RowBox[{"[", "jj", "]"}], "]"}], "\[LessEqual]", "3"}], "&&", 
+                 RowBox[{
+                  RowBox[{"Count", "[", 
+                   RowBox[{
+                    RowBox[{"multiplic", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"Range", "[", "jj", "]"}], "]"}], "]"}], ",", 
+                    RowBox[{"multiplic", "[", 
+                    RowBox[{"[", "jj", "]"}], "]"}]}], "]"}], "\[LessEqual]", 
+                  RowBox[{"10", "-", 
+                   RowBox[{"multiplic", "[", 
+                    RowBox[{"[", "jj", "]"}], "]"}]}]}]}], ")"}], "*)"}], ",",
+               "\[IndentingNewLine]", 
               RowBox[{
                RowBox[{"Cmatrix", "=", 
                 RowBox[{"grassmannianMatrix", "[", 
@@ -15699,7 +15744,7 @@ Grassmannian matrix has\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]",
    3.685270351593664*^9, 3.6852703727702646`*^9}, {3.68527041092912*^9, 
    3.685270461880286*^9}, {3.6852705513285847`*^9, 3.6852705524692683`*^9}, {
    3.6852706011740513`*^9, 3.685270622897464*^9}, {3.685282177093717*^9, 
-   3.6852822124530306`*^9}}]
+   3.6852822124530306`*^9}, {3.6854618572717695`*^9, 3.6854618601630015`*^9}}]
 }, Open  ]],
 
 Cell[BoxData[""], "Input",
@@ -15824,7 +15869,24 @@ Cell[BoxData[{
                RowBox[{
                 RowBox[{"multiplic", "[", 
                  RowBox[{"[", "jj", "]"}], "]"}], "\[LessEqual]", "3"}]}], 
-              ",", "\[IndentingNewLine]", 
+              RowBox[{"(*", 
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"multiplic", "[", 
+                   RowBox[{"[", "jj", "]"}], "]"}], "\[LessEqual]", "3"}], "&&", 
+                 RowBox[{
+                  RowBox[{"Count", "[", 
+                   RowBox[{
+                    RowBox[{"multiplic", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"Range", "[", "jj", "]"}], "]"}], "]"}], ",", 
+                    RowBox[{"multiplic", "[", 
+                    RowBox[{"[", "jj", "]"}], "]"}]}], "]"}], "\[LessEqual]", 
+                  RowBox[{"10", "-", 
+                   RowBox[{"multiplic", "[", 
+                    RowBox[{"[", "jj", "]"}], "]"}]}]}]}], ")"}], "*)"}], ",",
+               "\[IndentingNewLine]", 
               RowBox[{
                RowBox[{"Cmatrix", "=", 
                 RowBox[{"grassmannianMatrix", "[", 
@@ -16135,7 +16197,8 @@ Grassmannian matrix has\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]",
    3.685269276821148*^9, 3.68526953919482*^9}, {3.6852696274617634`*^9, 
    3.685269670148961*^9}, {3.685269704375707*^9, 3.685269726015604*^9}, {
    3.6852697631616135`*^9, 3.685269764670931*^9}, {3.6852706116180286`*^9, 
-   3.685270612711822*^9}, {3.6852707672892075`*^9, 3.6852707972620173`*^9}}]
+   3.685270612711822*^9}, {3.6852707672892075`*^9, 3.6852707972620173`*^9}, {
+   3.685461872581338*^9, 3.6854618768307877`*^9}}]
 }, Open  ]],
 
 Cell[BoxData[""], "Input",
@@ -24181,187 +24244,195 @@ Cell[BoxData[{
         "a", " ", "bit", " ", "to", " ", "give", " ", "a", " ", "wider", " ", 
         "variety", " ", "of", " ", "scenarios"}], "*)"}], 
       "\[IndentingNewLine]", 
-      RowBox[{"alledges", "=", 
-       RowBox[{"Riffle", "[", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"alledges", "\[NotEqual]", 
+         RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
         RowBox[{
-         RowBox[{"alledges", "[", 
-          RowBox[{"[", 
-           RowBox[{"1", ";;", 
-            RowBox[{"-", "1"}], ";;", "2"}], "]"}], "]"}], ",", 
-         RowBox[{"Reverse", "[", 
-          RowBox[{"alledges", "[", 
-           RowBox[{"[", 
-            RowBox[{"2", ";;", 
-             RowBox[{"-", "1"}], ";;", "2"}], "]"}], "]"}], "]"}]}], "]"}]}], 
-      ";", "\[IndentingNewLine]", 
-      RowBox[{"turnoffcombinations", "=", 
-       RowBox[{"Join", "[", 
-        RowBox[{
-         RowBox[{"Subsets", "[", 
-          RowBox[{"alledges", ",", 
-           RowBox[{"{", "0", "}"}]}], "]"}], ",", 
-         RowBox[{"Subsets", "[", 
-          RowBox[{"alledges", ",", 
-           RowBox[{"{", "1", "}"}]}], "]"}], ",", 
-         RowBox[{"Subsets", "[", 
-          RowBox[{"alledges", ",", 
-           RowBox[{"{", "2", "}"}]}], "]"}], ",", 
-         RowBox[{"Join", "@@", 
-          RowBox[{"Table", "[", 
+         RowBox[{"alledges", "=", 
+          RowBox[{"Riffle", "[", 
+           RowBox[{
+            RowBox[{"alledges", "[", 
+             RowBox[{"[", 
+              RowBox[{"1", ";;", 
+               RowBox[{"-", "1"}], ";;", "2"}], "]"}], "]"}], ",", 
+            RowBox[{"Reverse", "[", 
+             RowBox[{"alledges", "[", 
+              RowBox[{"[", 
+               RowBox[{"2", ";;", 
+                RowBox[{"-", "1"}], ";;", "2"}], "]"}], "]"}], "]"}]}], 
+           "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"turnoffcombinations", "=", 
+          RowBox[{"Join", "[", 
            RowBox[{
             RowBox[{"Subsets", "[", 
              RowBox[{"alledges", ",", 
-              RowBox[{"{", "iii", "}"}], ",", 
-              RowBox[{"Min", "[", 
-               RowBox[{
-                RowBox[{"Binomial", "[", 
-                 RowBox[{
-                  RowBox[{"Length", "[", "alledges", "]"}], ",", "iii"}], 
-                 "]"}], ",", 
-                RowBox[{"(", 
-                 RowBox[{
-                  RowBox[{"Round", "[", 
-                   RowBox[{"2000", "/", 
+              RowBox[{"{", "0", "}"}]}], "]"}], ",", 
+            RowBox[{"Subsets", "[", 
+             RowBox[{"alledges", ",", 
+              RowBox[{"{", "1", "}"}]}], "]"}], ",", 
+            RowBox[{"Subsets", "[", 
+             RowBox[{"alledges", ",", 
+              RowBox[{"{", "2", "}"}]}], "]"}], ",", 
+            RowBox[{"Join", "@@", 
+             RowBox[{"Table", "[", 
+              RowBox[{
+               RowBox[{"Subsets", "[", 
+                RowBox[{"alledges", ",", 
+                 RowBox[{"{", "iii", "}"}], ",", 
+                 RowBox[{"Min", "[", 
+                  RowBox[{
+                   RowBox[{"Binomial", "[", 
+                    RowBox[{
+                    RowBox[{"Length", "[", "alledges", "]"}], ",", "iii"}], 
+                    "]"}], ",", 
+                   RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"Round", "[", 
+                    RowBox[{"2000", "/", 
                     RowBox[{"(", 
                     RowBox[{
                     RowBox[{"Length", "[", "alledges", "]"}], "-", "5"}], 
                     ")"}]}], "]"}], "/.", 
-                  RowBox[{"{", 
-                   RowBox[{"0", "\[Rule]", "1"}], "}"}]}], ")"}]}], "]"}]}], 
-             "]"}], ",", 
-            RowBox[{"{", 
-             RowBox[{"iii", ",", "3", ",", 
-              RowBox[{
-               RowBox[{"Length", "[", "alledges", "]"}], "-", "3"}]}], 
-             "}"}]}], "]"}]}]}], "]"}]}], ";", "\[IndentingNewLine]", 
-      RowBox[{"If", "[", 
-       RowBox[{
-        RowBox[{
-         RowBox[{
-          RowBox[{"Length", "[", "alledges", "]"}], "-", "2"}], ">", "0"}], 
-        ",", "\[IndentingNewLine]", 
-        RowBox[{
-         RowBox[{"turnoffcombinations", "=", 
-          RowBox[{"Join", "[", 
-           RowBox[{"turnoffcombinations", ",", 
-            RowBox[{"Subsets", "[", 
-             RowBox[{"alledges", ",", 
-              RowBox[{"{", 
-               RowBox[{
-                RowBox[{"Length", "[", "alledges", "]"}], "-", "2"}], "}"}]}],
-              "]"}]}], "]"}]}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
-      "\[IndentingNewLine]", 
-      RowBox[{"If", "[", 
-       RowBox[{
-        RowBox[{
-         RowBox[{
-          RowBox[{"Length", "[", "alledges", "]"}], "-", "1"}], ">", "0"}], 
-        ",", "\[IndentingNewLine]", 
-        RowBox[{
-         RowBox[{"turnoffcombinations", "=", 
-          RowBox[{"Join", "[", 
-           RowBox[{"turnoffcombinations", ",", 
-            RowBox[{"Subsets", "[", 
-             RowBox[{"alledges", ",", 
-              RowBox[{"{", 
-               RowBox[{
-                RowBox[{"Length", "[", "alledges", "]"}], "-", "1"}], "}"}]}],
-              "]"}]}], "]"}]}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
-      "\[IndentingNewLine]", 
-      RowBox[{"If", "[", 
-       RowBox[{
-        RowBox[{
-         RowBox[{"Length", "[", "alledges", "]"}], ">", "0"}], ",", 
-        "\[IndentingNewLine]", 
-        RowBox[{
-         RowBox[{"turnoffcombinations", "=", 
-          RowBox[{"Join", "[", 
-           RowBox[{"turnoffcombinations", ",", 
-            RowBox[{"Subsets", "[", 
-             RowBox[{"alledges", ",", 
-              RowBox[{"{", 
-               RowBox[{"Length", "[", "alledges", "]"}], "}"}]}], "]"}]}], 
-           "]"}]}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
-      "\[IndentingNewLine]", 
-      RowBox[{"If", "[", 
-       RowBox[{
-        RowBox[{
-         RowBox[{"Length", "[", "turnoffcombinations", "]"}], ">", "200"}], 
-        ",", "\[IndentingNewLine]", 
-        RowBox[{
-         RowBox[{"turnoffcombinations", "=", 
-          RowBox[{"RandomSample", "[", 
-           RowBox[{"turnoffcombinations", ",", "200"}], "]"}]}], ";"}]}], 
-       "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
-      RowBox[{"higgsedkasteleyns", "=", 
-       RowBox[{"Map", "[", 
-        RowBox[{
-         RowBox[{
-          RowBox[{"higgsEdgesBFT", "[", 
-           RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", "#"}], "]"}], 
-          "&"}], ",", "turnoffcombinations"}], "]"}]}], ";", 
-      "\[IndentingNewLine]", 
-      RowBox[{"If", "[", 
-       RowBox[{
-        RowBox[{
-         RowBox[{"(", 
-          RowBox[{"And", "@@", 
-           RowBox[{"Map", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"0", "\[Rule]", "1"}], "}"}]}], ")"}]}], "]"}]}], 
+                "]"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"iii", ",", "3", ",", 
+                 RowBox[{
+                  RowBox[{"Length", "[", "alledges", "]"}], "-", "3"}]}], 
+                "}"}]}], "]"}]}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
             RowBox[{
-             RowBox[{
-              RowBox[{"(", 
-               RowBox[{
-                RowBox[{
-                 RowBox[{"getDuplicateEdges", "[", 
-                  RowBox[{"Sequence", "@@", "#"}], "]"}], "\[Equal]", 
-                 RowBox[{"{", "}"}]}], "&&", 
-                RowBox[{"getEdgesBFTformQ", "[", 
-                 RowBox[{"Sequence", "@@", "#"}], "]"}], "&&", 
-                RowBox[{
-                 RowBox[{"getKasteleynConsistencyViolation", "[", 
-                  RowBox[{"Sequence", "@@", "#"}], "]"}], "===", 
+             RowBox[{"Length", "[", "alledges", "]"}], "-", "2"}], ">", "0"}],
+            ",", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"turnoffcombinations", "=", 
+             RowBox[{"Join", "[", 
+              RowBox[{"turnoffcombinations", ",", 
+               RowBox[{"Subsets", "[", 
+                RowBox[{"alledges", ",", 
                  RowBox[{"{", 
                   RowBox[{
-                   RowBox[{"{", "}"}], ",", 
-                   RowBox[{"{", "}"}]}], "}"}]}]}], ")"}], "&"}], ",", 
-             "higgsedkasteleyns"}], "]"}]}], ")"}], "=!=", "True"}], ",", 
-        "\[IndentingNewLine]", 
-        RowBox[{
-         RowBox[{"Print", "[", 
-          RowBox[{"\"\<kast=\>\"", ",", 
-           RowBox[{"{", 
-            RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
-           "\"\< : The index structure of BFTs wasn't preserved after the \
-higgsing!\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
-      "\[IndentingNewLine]", 
-      RowBox[{"If", "[", 
-       RowBox[{
-        RowBox[{
-         RowBox[{"(", 
-          RowBox[{"And", "@@", 
-           RowBox[{"MapThread", "[", 
+                   RowBox[{"Length", "[", "alledges", "]"}], "-", "2"}], 
+                  "}"}]}], "]"}]}], "]"}]}], ";"}]}], "\[IndentingNewLine]", 
+          "]"}], ";", "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
             RowBox[{
-             RowBox[{
-              RowBox[{
+             RowBox[{"Length", "[", "alledges", "]"}], "-", "1"}], ">", "0"}],
+            ",", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"turnoffcombinations", "=", 
+             RowBox[{"Join", "[", 
+              RowBox[{"turnoffcombinations", ",", 
+               RowBox[{"Subsets", "[", 
+                RowBox[{"alledges", ",", 
+                 RowBox[{"{", 
+                  RowBox[{
+                   RowBox[{"Length", "[", "alledges", "]"}], "-", "1"}], 
+                  "}"}]}], "]"}]}], "]"}]}], ";"}]}], "\[IndentingNewLine]", 
+          "]"}], ";", "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Length", "[", "alledges", "]"}], ">", "0"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"turnoffcombinations", "=", 
+             RowBox[{"Join", "[", 
+              RowBox[{"turnoffcombinations", ",", 
+               RowBox[{"Subsets", "[", 
+                RowBox[{"alledges", ",", 
+                 RowBox[{"{", 
+                  RowBox[{"Length", "[", "alledges", "]"}], "}"}]}], "]"}]}], 
+              "]"}]}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Length", "[", "turnoffcombinations", "]"}], ">", "200"}],
+            ",", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"turnoffcombinations", "=", 
+             RowBox[{"RandomSample", "[", 
+              RowBox[{"turnoffcombinations", ",", "200"}], "]"}]}], ";"}]}], 
+          "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+         RowBox[{"higgsedkasteleyns", "=", 
+          RowBox[{"Map", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"higgsEdgesBFT", "[", 
+              RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", "#"}], "]"}], 
+             "&"}], ",", "turnoffcombinations"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{"And", "@@", 
+              RowBox[{"Map", "[", 
                RowBox[{
-                RowBox[{"Length", "[", "alledges", "]"}], "-", 
-                RowBox[{"Length", "[", 
-                 RowBox[{"Variables", "[", "#1", "]"}], "]"}]}], "\[Equal]", 
-               RowBox[{"Length", "[", 
-                RowBox[{"consistentEdgeRemoval", "[", 
-                 RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", "#2"}], 
-                 "]"}], "]"}]}], "&"}], ",", 
-             RowBox[{"{", 
-              RowBox[{"higgsedkasteleyns", ",", "turnoffcombinations"}], "}"}]
-              }], "]"}]}], ")"}], "=!=", "True"}], ",", "\[IndentingNewLine]", 
-        RowBox[{
-         RowBox[{"Print", "[", 
-          RowBox[{"\"\<kast=\>\"", ",", 
-           RowBox[{"{", 
-            RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
-           "\"\< : The higgsing hasn't removed the correct number of edges!\>\
-\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";"}]}], 
-    "\[IndentingNewLine]", "]"}]}], ";"}], "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"(", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"getDuplicateEdges", "[", 
+                    RowBox[{"Sequence", "@@", "#"}], "]"}], "\[Equal]", 
+                    RowBox[{"{", "}"}]}], "&&", 
+                   RowBox[{"getEdgesBFTformQ", "[", 
+                    RowBox[{"Sequence", "@@", "#"}], "]"}], "&&", 
+                   RowBox[{
+                    RowBox[{"getKasteleynConsistencyViolation", "[", 
+                    RowBox[{"Sequence", "@@", "#"}], "]"}], "===", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"{", "}"}], ",", 
+                    RowBox[{"{", "}"}]}], "}"}]}]}], ")"}], "&"}], ",", 
+                "higgsedkasteleyns"}], "]"}]}], ")"}], "=!=", "True"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"Print", "[", 
+             RowBox[{"\"\<kast=\>\"", ",", 
+              RowBox[{"{", 
+               RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+              "\"\< : The index structure of BFTs wasn't preserved after the \
+higgsing!\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{"And", "@@", 
+              RowBox[{"MapThread", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"Length", "[", "alledges", "]"}], "-", 
+                   RowBox[{"Length", "[", 
+                    RowBox[{"Variables", "[", "#1", "]"}], "]"}]}], 
+                  "\[Equal]", 
+                  RowBox[{"Length", "[", 
+                   RowBox[{"consistentEdgeRemoval", "[", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", "#2"}], 
+                    "]"}], "]"}]}], "&"}], ",", 
+                RowBox[{"{", 
+                 RowBox[{"higgsedkasteleyns", ",", "turnoffcombinations"}], 
+                 "}"}]}], "]"}]}], ")"}], "=!=", "True"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"Print", "[", 
+             RowBox[{"\"\<kast=\>\"", ",", 
+              RowBox[{"{", 
+               RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+              "\"\< : The higgsing hasn't removed the correct number of \
+edges!\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";"}]}], 
+       "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"DistributeDefinitions", "[", "bft1TestHiggsEdgesBFT", "]"}], 
   ";"}], "\[IndentingNewLine]", 
@@ -24461,7 +24532,8 @@ higgsing!\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";",
    3.685361532944867*^9, 3.68536153690064*^9}, {3.6853615843165865`*^9, 
    3.6853616659085407`*^9}, {3.6853617378823156`*^9, 
    3.6853617460601563`*^9}, {3.685362102230776*^9, 3.6853621234892235`*^9}, {
-   3.6853635388979053`*^9, 3.6853635529759455`*^9}}]
+   3.6853635388979053`*^9, 3.6853635529759455`*^9}, {3.685462038694764*^9, 
+   3.6854620668332167`*^9}}]
 }, Open  ]],
 
 Cell[BoxData[""], "Input",
@@ -24685,79 +24757,79 @@ Cell[659757, 14180, 94, 1, 25, "Input"],
 Cell[CellGroupData[{
 Cell[659876, 14185, 915, 14, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[660794, 14201, 32309, 650, 1612, "Input",
+Cell[660794, 14201, 32975, 665, 1612, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Open  ]],
-Cell[693118, 14854, 92, 1, 31, "Input"],
+Cell[693784, 14869, 92, 1, 31, "Input"],
 Cell[CellGroupData[{
-Cell[693235, 14859, 867, 14, 31, "Input",
+Cell[693901, 14874, 867, 14, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[694105, 14875, 20646, 412, 1032, "Input",
+Cell[694771, 14890, 21262, 425, 1032, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Open  ]],
-Cell[714766, 15290, 92, 1, 31, "Input"],
+Cell[716048, 15318, 92, 1, 31, "Input"],
 Cell[CellGroupData[{
-Cell[714883, 15295, 889, 15, 31, "Input",
+Cell[716165, 15323, 889, 15, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[715775, 15312, 18987, 389, 852, "Input",
+Cell[717057, 15340, 19809, 406, 852, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Open  ]],
-Cell[734777, 15704, 92, 1, 31, "Input"],
+Cell[736881, 15749, 92, 1, 31, "Input"],
 Cell[CellGroupData[{
-Cell[734894, 15709, 912, 15, 31, "Input",
+Cell[736998, 15754, 912, 15, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[735809, 15726, 20374, 411, 1032, "Input",
+Cell[737913, 15771, 21198, 429, 1032, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Open  ]],
-Cell[756198, 16140, 92, 1, 31, "Input"],
+Cell[759126, 16203, 92, 1, 31, "Input"],
 Cell[CellGroupData[{
-Cell[756315, 16145, 1048, 17, 31, "Input",
+Cell[759243, 16208, 1048, 17, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[757366, 16164, 86260, 1762, 4747, "Input",
+Cell[760294, 16227, 86260, 1762, 4747, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Open  ]],
-Cell[843641, 17929, 92, 1, 31, "Input"],
+Cell[846569, 17992, 92, 1, 31, "Input"],
 Cell[CellGroupData[{
-Cell[843758, 17934, 957, 15, 31, "Input",
+Cell[846686, 17997, 957, 15, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[844718, 17951, 23170, 463, 1275, "Input",
+Cell[847646, 18014, 23170, 463, 1275, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Open  ]],
-Cell[867903, 18417, 92, 1, 31, "Input"],
+Cell[870831, 18480, 92, 1, 31, "Input"],
 Cell[CellGroupData[{
-Cell[868020, 18422, 1123, 19, 31, "Input",
+Cell[870948, 18485, 1123, 19, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10001.}],
-Cell[869146, 18443, 108945, 2803, 6212, "Input",
+Cell[872074, 18506, 108945, 2803, 6212, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10001.}]
 }, Closed]],
 Cell[CellGroupData[{
-Cell[978128, 21251, 1289, 22, 25, "Input",
+Cell[981056, 21314, 1289, 22, 25, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[979420, 21275, 17458, 352, 832, "Input",
+Cell[982348, 21338, 17458, 352, 832, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Open  ]],
-Cell[996893, 21630, 92, 1, 31, "Input"],
+Cell[999821, 21693, 92, 1, 31, "Input"],
 Cell[CellGroupData[{
-Cell[997010, 21635, 899, 15, 31, "Input",
+Cell[999938, 21698, 899, 15, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[997912, 21652, 28711, 590, 1892, "Input",
+Cell[1000840, 21715, 28711, 590, 1892, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Open  ]],
-Cell[1026638, 22245, 92, 1, 31, "Input"],
+Cell[1029566, 22308, 92, 1, 31, "Input"],
 Cell[CellGroupData[{
-Cell[1026755, 22250, 859, 14, 31, "Input",
+Cell[1029683, 22313, 859, 14, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[1027617, 22266, 85840, 1859, 5272, "Input",
+Cell[1030545, 22329, 85840, 1859, 5192, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Open  ]],
-Cell[1113472, 24128, 92, 1, 31, "Input"],
+Cell[1116400, 24191, 92, 1, 31, "Input"],
 Cell[CellGroupData[{
-Cell[1113589, 24133, 1372, 22, 52, "Input",
+Cell[1116517, 24196, 1372, 22, 52, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[1114964, 24157, 14538, 306, 692, "Input",
+Cell[1117892, 24220, 15345, 315, 732, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Open  ]],
-Cell[1129517, 24466, 92, 1, 31, "Input"]
+Cell[1133252, 24538, 92, 1, 31, "Input"]
 }
 ]
 *)
