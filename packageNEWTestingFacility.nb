@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[   1144091,      24828]
-NotebookOptionsPosition[   1133348,      24541]
-NotebookOutlinePosition[   1133690,      24556]
-CellTagsIndexPosition[   1133647,      24553]
+NotebookDataLength[   1209025,      26138]
+NotebookOptionsPosition[   1198276,      25851]
+NotebookOutlinePosition[   1198618,      25866]
+CellTagsIndexPosition[   1198575,      25863]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -5180,7 +5180,8 @@ Cell[BoxData[
    3.6727499814444113`*^9}, 3.684575102612509*^9, 3.6845802079994617`*^9, 
    3.6846471491723537`*^9, 3.684648173199854*^9, 3.684648253924594*^9, 
    3.6847587331924*^9, {3.684760430800808*^9, 3.684760462916053*^9}, {
-   3.684763860056888*^9, 3.6847638611692953`*^9}}],
+   3.684763860056888*^9, 3.6847638611692953`*^9}, {3.6857010000163345`*^9, 
+   3.6857010000944653`*^9}}],
 
 Cell[BoxData[
  RowBox[{
@@ -5237,14 +5238,15 @@ Cell[BoxData[
     RowBox[{"Sort", "/@", 
      RowBox[{"UndirectedEdge", "@@@", 
       RowBox[{"Partition", "[", 
-       RowBox[{"list", ",", "2", ",", "1"}], "]"}]}]}]}], "\n", 
+       RowBox[{"list", ",", "2", ",", "1"}], "]"}]}]}]}], 
+   "\[IndentingNewLine]", 
    RowBox[{"(*", 
     RowBox[{"FindFace", ":", 
      RowBox[{
       RowBox[{"finds", " ", "the", " ", "smallest", " ", 
        RowBox[{"cycle", ".", "This"}], " ", "cycle", " ", "is", " ", "a", " ",
         "pseudo"}], "-", 
-      RowBox[{"face", "."}]}]}], "*)"}], "\[IndentingNewLine]", 
+      RowBox[{"face", "."}]}]}], "*)"}], "\n", 
    RowBox[{
     RowBox[{"FindFace", "[", 
      RowBox[{"graph_", ",", "edges_"}], "]"}], ":=", 
@@ -16228,6 +16230,1201 @@ Cell[BoxData[
 Cell[BoxData[{
  RowBox[{
   RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"stratificationBoundariesNoPlanarity", "[", 
+      RowBox[{
+      "topleft_", ",", "topright_", ",", "bottomleft_", ",", "bottomright_", 
+       ",", 
+       RowBox[{"checkneeded_:", "False"}], ",", 
+       RowBox[{"inputBFTgraph_:", "False"}], ",", 
+       RowBox[{"gauging_:", "2"}]}], "]"}], "/;", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"gauging", "===", "1"}], "||", 
+       RowBox[{"gauging", "===", "2"}]}], ")"}]}], ":=", 
+    RowBox[{"Block", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "BFTgraph", ",", "checkOK", ",", "matchingpoly", ",", "stratification",
+         ",", "xlistandPmatrix", ",", "modulispace", ",", "startingplanarity",
+         ",", "removable", ",", "topdim", ",", "varlist", ",", 
+        "makeDaughterGraphs", ",", "planarReducibility", ",", "tofixlevels", 
+        ",", "maxnonplanardimension", ",", "level", ",", "nonplanarpositions",
+         ",", "planarboundaries", ",", "nonplanarboundaries", ",", 
+        "templevel", ",", "boundarykillededges", ",", "newplanarity", ",", 
+        "planarpositions", ",", "fix", ",", "identremovable", ",", 
+        "patternidentremovable", ",", "dim", ",", "locationofparents", ",", 
+        "thislevelspositions"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"gauging", "\[Equal]", "1"}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"BFTgraph", "=", "True"}], ";"}], "\[IndentingNewLine]", 
+         ",", 
+         RowBox[{
+          RowBox[{"BFTgraph", "=", "inputBFTgraph"}], ";"}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"checkOK", "=", "True"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"checkneeded", "\[Equal]", "True"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"checkOK", "=", 
+           RowBox[{"getKasteleynCheckQ", "[", 
+            RowBox[{
+            "topleft", ",", "topright", ",", "bottomleft", ",", "bottomright",
+              ",", "BFTgraph"}], "]"}]}], ";"}]}], "\[IndentingNewLine]", 
+        "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"checkOK", "\[Equal]", "True"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"(*", 
+          RowBox[{
+           RowBox[{
+           "We", " ", "begin", " ", "by", " ", "making", " ", "the", " ", 
+            "face", " ", "lattice", " ", "of", " ", "the", " ", "matching", 
+            " ", 
+            RowBox[{"polytope", ".", " ", "Each"}], " ", "element", " ", "in",
+             " ", "the", " ", "face", " ", "lattice", " ", "will", " ", "be", 
+            " ", "composed", " ", "of", " ", "three", " ", 
+            RowBox[{"objects", ":", " ", 
+             RowBox[{
+             "the", " ", "perfect", " ", "matching", " ", "matrix", " ", 
+              "P"}]}]}], ",", " ", 
+           RowBox[{"the", " ", "moduli", " ", 
+            RowBox[{"space", "/", "matroid"}], " ", "polytope"}], ",", " ", 
+           RowBox[{"and", " ", "the", " ", "answer", " ", "to", " ", 
+            RowBox[{"planarityQ", ".", " ", "This"}], " ", "will", " ", 
+            "allow", " ", "us", " ", "to", " ", "construct", " ", "the", " ", 
+            "face", " ", "lattice", " ", "while", " ", "computing", " ", 
+            "the", " ", "perfect", " ", "matchings", " ", "and", " ", 
+            "matrix", " ", "P", " ", "as", " ", "few", " ", "times", " ", 
+            "as", " ", "possible", " ", 
+            RowBox[{"(", 
+             RowBox[{"not", " ", "once", " ", "per", " ", 
+              RowBox[{"subgraph", "!"}]}], ")"}]}]}], "*)"}], 
+         "\[IndentingNewLine]", 
+         RowBox[{"(*", 
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{"We", "'"}], "ll", " ", "start", " ", "with", " ", 
+             "making", " ", "the", " ", "top"}], "-", 
+            RowBox[{"dimensional", " ", 
+             RowBox[{"element", ".", " ", "In"}], " ", "P", " ", "we", " ", 
+             "shall", " ", "also", " ", "tag", " ", "on", " ", "which", " ", 
+             "edges", " ", "correspond", " ", "to", " ", "each", " ", 
+             "row"}]}], ",", " ", 
+           RowBox[{
+           "by", " ", "making", " ", "the", " ", "first", " ", "element", " ",
+             "of", " ", "each", " ", "row", " ", "the", " ", "edge", " ", 
+            "name"}]}], "*)"}], "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"matchingpoly", "=", 
+           RowBox[{"matchingPolytope", "[", 
+            RowBox[{
+            "topleft", ",", "topright", ",", "bottomleft", ",", "bottomright",
+              ",", "checkneeded", ",", "BFTgraph"}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{
+              RowBox[{"Length", "[", "matchingpoly", "]"}], "===", "0"}], "||", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"Dimensions", "[", "matchingpoly", "]"}], "[", 
+               RowBox[{"[", "2", "]"}], "]"}], "===", "0"}]}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"stratification", "=", 
+              RowBox[{"{", "}"}]}], ";"}], "\[IndentingNewLine]", ",", 
+            RowBox[{
+             RowBox[{"xlistandPmatrix", "=", 
+              RowBox[{"Join", "[", 
+               RowBox[{
+                RowBox[{"Transpose", "[", 
+                 RowBox[{"{", 
+                  RowBox[{"Variables", "[", 
+                   RowBox[{"joinupKasteleyn", "[", 
+                    RowBox[{
+                    "topleft", ",", "topright", ",", "bottomleft", ",", 
+                    "bottomright"}], "]"}], "]"}], "}"}], "]"}], ",", 
+                "matchingpoly", ",", "2"}], "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"modulispace", "=", 
+              RowBox[{"moduliSpaceBFT", "[", 
+               RowBox[{
+               "topleft", ",", "topright", ",", "bottomleft", ",", 
+                "bottomright", ",", "gauging", ",", "checkneeded", ",", 
+                "BFTgraph"}], "]"}]}], ";", "\[IndentingNewLine]", 
+             RowBox[{"(*", 
+              RowBox[{
+               RowBox[{
+               "This", " ", "will", " ", "be", " ", "the", " ", "top"}], "-", 
+               RowBox[{
+               "dimensional", " ", "element", " ", "in", " ", "our", " ", 
+                "stratification"}]}], "*)"}], "\[IndentingNewLine]", 
+             RowBox[{"startingplanarity", "=", "False"}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{"BFTgraph", "||", "startingplanarity"}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"removable", "[", "0", "]"}], "=", 
+                 RowBox[{"{", 
+                  RowBox[{"{", 
+                   RowBox[{
+                   "xlistandPmatrix", ",", "modulispace", ",", "True"}], 
+                   "}"}], "}"}]}], ";"}], "\[IndentingNewLine]", 
+               RowBox[{"(*", 
+                RowBox[{
+                 RowBox[{
+                 "Since", " ", "planarity", " ", "is", " ", "inherited", " ", 
+                  "by", " ", "subgraphs"}], ",", " ", 
+                 RowBox[{"this", " ", "means", " ", 
+                  RowBox[{"we", "'"}], "ll", " ", "never", " ", "have", " ", 
+                  "to", " ", "assess", " ", "planarity", " ", "again", " ", 
+                  "and", " ", "we", " ", "can", " ", "treat", " ", 
+                  "everything", " ", "as", " ", 
+                  RowBox[{"planar", ".", " ", "This"}], " ", "will", " ", 
+                  "mean", " ", "we", " ", "can", " ", "assess", " ", 
+                  "reducibility", " ", "very", " ", "fast", " ", "and", " ", 
+                  "easily"}], ",", " ", 
+                 RowBox[{
+                 "and", " ", "identify", " ", "everything", " ", "according", 
+                  " ", "to", " ", "their", " ", "moduli", " ", 
+                  RowBox[{"space", "."}]}]}], "*)"}], "\[IndentingNewLine]", 
+               ",", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"removable", "[", "0", "]"}], "=", 
+                 RowBox[{"{", 
+                  RowBox[{"{", 
+                   RowBox[{
+                   "xlistandPmatrix", ",", "modulispace", ",", 
+                    "startingplanarity"}], "}"}], "}"}]}], ";"}]}], 
+              "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+             RowBox[{"(*", 
+              RowBox[{
+               RowBox[{"We", "'"}], "ll", " ", "save", " ", "some", " ", 
+               "basic", " ", "information", " ", "to", " ", "avoid", " ", 
+               "having", " ", "to", " ", "evaluate", " ", "it", " ", "many", 
+               " ", "times"}], "*)"}], "\[IndentingNewLine]", 
+             RowBox[{"topdim", "=", 
+              RowBox[{"dimensionPolytope", "[", "matchingpoly", "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"varlist", "=", 
+              RowBox[{"Variables", "[", 
+               RowBox[{"joinupKasteleyn", "[", 
+                RowBox[{
+                "topleft", ",", "topright", ",", "bottomleft", ",", 
+                 "bottomright"}], "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+             RowBox[{"(*", 
+              RowBox[{
+               RowBox[{
+               "For", " ", "each", " ", "element", " ", "in", " ", "the", " ",
+                 "face", " ", "lattice"}], ",", " ", 
+               RowBox[{
+               "we", " ", "will", " ", "need", " ", "to", " ", "find", " ", 
+                "all", " ", "of", " ", "its", " ", 
+                RowBox[{"boundaries", ".", " ", "These"}], " ", "are", " ", 
+                "found", " ", "by", " ", "deleting", " ", 
+                RowBox[{"edges", ".", " ", "makeDaughterGraphs"}], " ", 
+                "takes", " ", "an", " ", "element", " ", "in", " ", "the", 
+                " ", "face", " ", "lattice", " ", "and", " ", "removes", " ", 
+                "all", " ", "possible", " ", "edges"}], ",", " ", 
+               RowBox[{"making", " ", "potential", " ", "boundaries", " ", 
+                RowBox[{
+                 RowBox[{"(", 
+                  RowBox[{
+                  "which", " ", "will", " ", "need", " ", "to", " ", "be", 
+                   " ", "verified"}], ")"}], ".", " ", "Initially"}], " ", 
+                "the", " ", "planarity", " ", "of", " ", "the", " ", 
+                "subgraphs", " ", "is", " ", "inherited"}], ",", " ", 
+               RowBox[{
+                RowBox[{"i", ".", "e", ".", " ", "is"}], " ", "declared", " ",
+                 "equal", " ", "to", " ", "the", " ", "originating", " ", 
+                RowBox[{"graph", "."}]}]}], "*)"}], "\[IndentingNewLine]", 
+             RowBox[{"makeDaughterGraphs", "=", 
+              RowBox[{"Function", "[", 
+               RowBox[{
+                RowBox[{"{", "boundaryelement", "}"}], ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{"Block", "[", 
+                 RowBox[{
+                  RowBox[{"{", 
+                   RowBox[{
+                   "pmat", ",", "moduli", ",", "elementplanarity", ",", 
+                    "pmstokeep", ",", "daughters"}], "}"}], ",", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{
+                   RowBox[{"pmat", "=", 
+                    RowBox[{"boundaryelement", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}]}], ";", 
+                   "\[IndentingNewLine]", 
+                   RowBox[{"moduli", "=", 
+                    RowBox[{"boundaryelement", "[", 
+                    RowBox[{"[", "2", "]"}], "]"}]}], ";", 
+                   "\[IndentingNewLine]", 
+                   RowBox[{"elementplanarity", "=", 
+                    RowBox[{"boundaryelement", "[", 
+                    RowBox[{"[", "3", "]"}], "]"}]}], ";", 
+                   "\[IndentingNewLine]", 
+                   RowBox[{"pmstokeep", "=", 
+                    RowBox[{"Table", "[", 
+                    RowBox[{
+                    RowBox[{"Flatten", "[", 
+                    RowBox[{"Position", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"boundaryelement", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], "[", 
+                    RowBox[{"[", "jjj", "]"}], "]"}], ",", "0", ",", "1"}], 
+                    "]"}], "]"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"jjj", ",", 
+                    RowBox[{"Length", "[", "pmat", "]"}]}], "}"}]}], "]"}]}], 
+                   ";", "\[IndentingNewLine]", 
+                   RowBox[{"daughters", "=", 
+                    RowBox[{"Table", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"DeleteCases", "[", 
+                    RowBox[{
+                    RowBox[{"pmat", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"All", ",", 
+                    RowBox[{"Prepend", "[", 
+                    RowBox[{
+                    RowBox[{"pmstokeep", "[", 
+                    RowBox[{"[", "jjj", "]"}], "]"}], ",", "1"}], "]"}]}], 
+                    "]"}], "]"}], ",", 
+                    RowBox[{"Prepend", "[", 
+                    RowBox[{
+                    RowBox[{"ConstantArray", "[", 
+                    RowBox[{"0", ",", 
+                    RowBox[{"Length", "[", 
+                    RowBox[{"pmstokeep", "[", 
+                    RowBox[{"[", "jjj", "]"}], "]"}], "]"}]}], "]"}], ",", 
+                    "_"}], "]"}]}], "]"}], ",", 
+                    RowBox[{"moduli", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"All", ",", 
+                    RowBox[{
+                    RowBox[{"pmstokeep", "[", 
+                    RowBox[{"[", "jjj", "]"}], "]"}], "-", "1"}]}], "]"}], 
+                    "]"}], ",", "elementplanarity"}], "}"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"jjj", ",", 
+                    RowBox[{"Length", "[", "pmstokeep", "]"}]}], "}"}]}], 
+                    "]"}]}], ";", "\[IndentingNewLine]", "daughters"}]}], 
+                 "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+               "]"}]}], ";", "\[IndentingNewLine]", 
+             RowBox[{"(*", 
+              RowBox[{
+               RowBox[{"After", " ", "making", " ", "allsubgraphs"}], ",", 
+               " ", 
+               RowBox[{
+                RowBox[{"we", "'"}], "ll", " ", "keep", " ", "only", " ", 
+                "those", " ", "whose", " ", "dimension", " ", "has", " ", 
+                "decreased", " ", "by", " ", 
+                RowBox[{"one", ".", " ", "Furthermore"}]}], ",", " ", 
+               RowBox[{"since", " ", 
+                RowBox[{"we", "'"}], "re", " ", "ultimately", " ", "only", 
+                " ", "interested", " ", "in", " ", "reduced", " ", "graphs"}],
+                ",", " ", 
+               RowBox[{
+                RowBox[{"we", "'"}], "ll", " ", "remove", " ", "those", " ", 
+                "that", " ", "are", " ", 
+                RowBox[{"reducible", ".", " ", "planarReducibility"}], " ", 
+                "is", " ", "able", " ", "to", " ", "take", " ", "a", " ", 
+                "planar", " ", "case", " ", "and", " ", "tell", " ", "you", 
+                " ", "its", " ", "reducibility", " ", "very", " ", 
+                RowBox[{"fast", "."}]}]}], "*)"}], "\[IndentingNewLine]", 
+             RowBox[{"planarReducibility", "=", 
+              RowBox[{"Function", "[", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{"pmatrix", ",", "modulispace"}], "}"}], ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{"Block", "[", 
+                 RowBox[{
+                  RowBox[{"{", 
+                   RowBox[{
+                   "pmatrixtranspose", ",", "modulitranspose", ",", 
+                    "pmatrixshort", ",", "reducib"}], "}"}], ",", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{
+                   RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"pmatrix", "===", 
+                    RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"reducib", "=", "True"}], ";"}], 
+                    "\[IndentingNewLine]", ",", 
+                    RowBox[{
+                    RowBox[{"pmatrixtranspose", "=", 
+                    RowBox[{"Transpose", "[", "pmatrix", "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"modulispace", "===", 
+                    RowBox[{"{", "}"}]}], ",", 
+                    RowBox[{
+                    RowBox[{"modulitranspose", "=", 
+                    RowBox[{"Table", "[", 
+                    RowBox[{
+                    RowBox[{"{", "0", "}"}], ",", 
+                    RowBox[{"Length", "[", "pmatrixtranspose", "]"}]}], 
+                    "]"}]}], ";"}], ",", 
+                    RowBox[{
+                    RowBox[{"modulitranspose", "=", 
+                    RowBox[{"Transpose", "[", "modulispace", "]"}]}], ";"}]}],
+                     "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"pmatrixshort", "=", 
+                    RowBox[{"Transpose", "[", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Times", "@@", 
+                    RowBox[{"pmatrixtranspose", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"Flatten", "[", 
+                    RowBox[{"Position", "[", 
+                    RowBox[{"modulitranspose", ",", "#"}], "]"}], "]"}], 
+                    "]"}], "]"}]}], "&"}], ",", 
+                    RowBox[{
+                    "DeleteDuplicates", "[", "modulitranspose", "]"}]}], 
+                    "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"MemberQ", "[", 
+                    RowBox[{"pmatrixshort", ",", 
+                    RowBox[{"ConstantArray", "[", 
+                    RowBox[{"0", ",", 
+                    RowBox[{
+                    RowBox[{"Dimensions", "[", "pmatrixshort", "]"}], "[", 
+                    RowBox[{"[", "2", "]"}], "]"}]}], "]"}]}], "]"}], ",", 
+                    RowBox[{
+                    RowBox[{"reducib", "=", "True"}], ";"}], ",", 
+                    RowBox[{
+                    RowBox[{"reducib", "=", "False"}], ";"}]}], "]"}], 
+                    ";"}]}], "]"}], ";", "\[IndentingNewLine]", "reducib"}]}],
+                  "]"}]}], "\[IndentingNewLine]", "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"(*", 
+              RowBox[{
+               RowBox[{"Now", " ", 
+                RowBox[{"we", "'"}], "ll", " ", "go", " ", "through", " ", 
+                "each", " ", "level"}], ",", " ", 
+               RowBox[{
+                RowBox[{"starting", " ", "from", " ", "the", " ", "top"}], 
+                "-", 
+                RowBox[{
+                "dimensional", " ", "one", " ", "and", " ", "working", " ", 
+                 "our", " ", "way", " ", "down"}]}], ",", " ", 
+               RowBox[{
+               "and", " ", "first", " ", "construct", " ", "the", " ", "face",
+                 " ", "lattice"}], ",", " ", 
+               RowBox[{
+               "and", " ", "then", " ", "remove", " ", "those", " ", 
+                "elements", " ", "which", " ", "are", " ", 
+                RowBox[{"reducible", "."}]}]}], "*)"}], "\[IndentingNewLine]", 
+             RowBox[{"(*", 
+              RowBox[{"Sometimes", " ", 
+               RowBox[{"(", 
+                RowBox[{
+                "when", " ", "the", " ", "starting", " ", "graph", " ", "is", 
+                 " ", "reducible"}], ")"}], " ", "a", " ", "level", " ", 
+               "only", " ", "contains", " ", "reducible", " ", 
+               RowBox[{"boundaries", ".", " ", "In"}], " ", "these", " ", 
+               "cases", " ", 
+               RowBox[{"we", "'"}], "ll", " ", "eliminate", " ", "the", " ", 
+               "reducible", " ", "examples", " ", "in", " ", "a", " ", 
+               "second", " ", "step"}], "*)"}], "\[IndentingNewLine]", 
+             RowBox[{"(*", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"We", "'"}], "ll", " ", "start", " ", "by", " ", 
+                "assessing", " ", "the", " ", "reducibility", " ", "of", " ", 
+                "the", " ", "starting", " ", 
+                RowBox[{"point", ".", " ", "If"}], " ", 
+                RowBox[{"it", "'"}], "s", " ", "planar"}], ",", " ", 
+               RowBox[{
+               "we", " ", "may", " ", "use", " ", "the", " ", "fast", " ", 
+                RowBox[{"way", ".", " ", "Otherwise"}], " ", 
+                RowBox[{"we", "'"}], "ll", " ", "need", " ", "to", " ", "use",
+                 " ", "the", " ", "dimension", " ", "of", " ", "the", " ", 
+                RowBox[{"Grassmannian", "."}]}]}], "*)"}], 
+             "\[IndentingNewLine]", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{"BFTgraph", "||", "startingplanarity"}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"If", "[", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"planarReducibility", "[", 
+                    RowBox[{
+                    RowBox[{"Drop", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"removable", "[", "0", "]"}], "[", 
+                    RowBox[{"[", 
+                    RowBox[{"1", ",", "1"}], "]"}], "]"}], ",", "None", ",", 
+                    RowBox[{"{", "1", "}"}]}], "]"}], ",", 
+                    RowBox[{
+                    RowBox[{"removable", "[", "0", "]"}], "[", 
+                    RowBox[{"[", 
+                    RowBox[{"1", ",", "2"}], "]"}], "]"}]}], "]"}], "===", 
+                   "False"}], ",", "\[IndentingNewLine]", 
+                  RowBox[{
+                   RowBox[{"tofixlevels", "=", 
+                    RowBox[{"{", "}"}]}], ";"}], "\[IndentingNewLine]", ",", 
+                  RowBox[{
+                   RowBox[{"tofixlevels", "=", 
+                    RowBox[{"{", "0", "}"}]}], ";"}]}], "\[IndentingNewLine]",
+                  "]"}], ";"}], "\[IndentingNewLine]", ",", 
+               RowBox[{
+                RowBox[{"If", "[", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"dimensionGrassmannian", "[", 
+                    RowBox[{
+                    "topleft", ",", "topright", ",", "bottomleft", ",", 
+                    "bottomright"}], "]"}], "===", "topdim"}], ",", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{
+                   RowBox[{"tofixlevels", "=", 
+                    RowBox[{"{", "}"}]}], ";"}], "\[IndentingNewLine]", ",", 
+                  RowBox[{
+                   RowBox[{"tofixlevels", "=", 
+                    RowBox[{"{", "0", "}"}]}], ";"}]}], "\[IndentingNewLine]",
+                  "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"(*", 
+              RowBox[{
+              "We", " ", "will", " ", "only", " ", "evaluate", " ", "the", 
+               " ", "Grassmannian", " ", "dimension", " ", "of", " ", "those",
+                " ", "nonplanar", " ", "diagrams", " ", "that", " ", "have", 
+               " ", "a", " ", "chance", " ", "of", " ", "not", " ", "being", 
+               " ", 
+               RowBox[{"reducible", "."}]}], "*)"}], "\[IndentingNewLine]", 
+             RowBox[{"maxnonplanardimension", "=", "topdim"}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"For", "[", 
+              RowBox[{
+               RowBox[{"level", "=", "1"}], ",", 
+               RowBox[{"level", "\[LessEqual]", "topdim"}], ",", 
+               RowBox[{"level", "++"}], ",", "\[IndentingNewLine]", 
+               RowBox[{"(*", 
+                RowBox[{
+                 RowBox[{"For", " ", "each", " ", "element", " ", "in", " ", 
+                  RowBox[{"removable", "[", 
+                   RowBox[{"level", "-", "1"}], "]"}], " ", "we", " ", "make",
+                   " ", "all", " ", 
+                  RowBox[{"subgraphs", ".", " ", 
+                   RowBox[{"We", "'"}]}], "ll", " ", "end", " ", "up", " ", 
+                  "with", " ", "many", " ", 
+                  RowBox[{"duplicates", ".", " ", "Since"}], " ", "they", " ",
+                   "all", " ", "inherit", " ", "their", " ", "planarity"}], 
+                 ",", " ", 
+                 RowBox[{
+                  RowBox[{
+                  "some", " ", "subgraphs", " ", "are", " ", "simultaneously",
+                    " ", "labelled", " ", "planar"}], "=", 
+                  RowBox[{
+                   RowBox[{
+                   "True", " ", "as", " ", "well", " ", "as", " ", "planar"}],
+                    "=", 
+                   RowBox[{
+                    RowBox[{"False", ".", " ", "If"}], " ", "any", " ", "of", 
+                    " ", "these", " ", "labels", " ", "is", " ", "True"}]}]}],
+                  ",", " ", 
+                 RowBox[{
+                  RowBox[{
+                  "then", " ", "the", " ", "graph", " ", "has", " ", "come", 
+                   " ", "from", " ", "a", " ", "planar", " ", "one", " ", 
+                   "and", " ", "must", " ", "hence", " ", "be", " ", 
+                   RowBox[{"planar", ".", " ", "If"}], " ", 
+                   RowBox[{"it", "'"}], "s", " ", "still", " ", "labelled", 
+                   " ", "non"}], "-", "planar"}], ",", " ", 
+                 RowBox[{
+                  RowBox[{"we", "'"}], "ll", " ", "later", " ", "use", " ", 
+                  "planarityQ", " ", "to", " ", "check", " ", "whether", " ", 
+                  "this", " ", "is", " ", "still", " ", "the", " ", 
+                  RowBox[{"case", "."}]}]}], "*)"}], "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"removable", "[", "level", "]"}], "=", 
+                 RowBox[{"Map", "[", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"#", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"1", ",", "1"}], "]"}], "]"}], ",", 
+                    RowBox[{"#", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"1", ",", "2"}], "]"}], "]"}], ",", 
+                    RowBox[{"Or", "@@", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{"Last", ",", "#"}], "]"}]}]}], "}"}], "&"}], ",", 
+                   RowBox[{"GatherBy", "[", 
+                    RowBox[{
+                    RowBox[{"Table", "[", 
+                    RowBox[{
+                    RowBox[{"Sequence", "@@", 
+                    RowBox[{"makeDaughterGraphs", "[", 
+                    RowBox[{
+                    RowBox[{"removable", "[", 
+                    RowBox[{"level", "-", "1"}], "]"}], "[", 
+                    RowBox[{"[", "iii", "]"}], "]"}], "]"}]}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"iii", ",", 
+                    RowBox[{"Length", "[", 
+                    RowBox[{"removable", "[", 
+                    RowBox[{"level", "-", "1"}], "]"}], "]"}]}], "}"}]}], 
+                    "]"}], ",", "First"}], "]"}]}], "]"}]}], ";", 
+                "\[IndentingNewLine]", 
+                RowBox[{"(*", 
+                 RowBox[{"Now", " ", 
+                  RowBox[{"we", "'"}], "ll", " ", "remove", " ", "those", " ",
+                   "elements", " ", "whose", " ", "dimension", " ", "has", 
+                  " ", "decreased", " ", "by", " ", "too", " ", "much"}], 
+                 "*)"}], "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"removable", "[", "level", "]"}], "=", 
+                 RowBox[{"Cases", "[", 
+                  RowBox[{
+                   RowBox[{"removable", "[", "level", "]"}], ",", 
+                   RowBox[{"zz_", "/;", 
+                    RowBox[{
+                    RowBox[{"dimensionPolytope", "[", 
+                    RowBox[{"Drop", "[", 
+                    RowBox[{
+                    RowBox[{"zz", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], ",", "None", ",", 
+                    RowBox[{"{", "1", "}"}]}], "]"}], "]"}], "===", 
+                    RowBox[{"topdim", "-", "level"}]}]}]}], "]"}]}], ";", 
+                "\[IndentingNewLine]", 
+                RowBox[{"(*", 
+                 RowBox[{
+                  RowBox[{
+                  "On", " ", "the", " ", "surviving", " ", "elements"}], ",", 
+                  " ", 
+                  RowBox[{
+                   RowBox[{"we", "'"}], "ll", " ", "reassess", " ", 
+                   "planarity", " ", "on", " ", "the", " ", "nonplanar", " ", 
+                   RowBox[{"cases", "."}]}]}], "*)"}], "\[IndentingNewLine]", 
+                RowBox[{"nonplanarpositions", "=", 
+                 RowBox[{"Flatten", "[", 
+                  RowBox[{"Position", "[", 
+                   RowBox[{
+                    RowBox[{"removable", "[", "level", "]"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"___", ",", "False"}], "}"}]}], "]"}], "]"}]}], 
+                ";", "\[IndentingNewLine]", 
+                RowBox[{"templevel", "=", 
+                 RowBox[{"removable", "[", "level", "]"}]}], ";", 
+                "\[IndentingNewLine]", 
+                RowBox[{"(*", 
+                 RowBox[{"Now", " ", 
+                  RowBox[{"we", "'"}], "ll", " ", "take", " ", "the", " ", 
+                  "nonplanar", " ", "cases", " ", "and", " ", "check", " ", 
+                  "whether", " ", "they", " ", "really", " ", "are", " ", 
+                  "still", " ", 
+                  RowBox[{"nonplanar", ".", " ", "Begin"}], " ", "by", " ", 
+                  "turning", " ", "each", " ", "of", " ", "these", " ", 
+                  "cases", " ", "into", " ", "a", " ", "list", " ", "of", " ",
+                   "killed", " ", 
+                  RowBox[{"edges", "."}]}], "*)"}], "\[IndentingNewLine]", 
+                RowBox[{"boundarykillededges", "=", 
+                 RowBox[{"Map", "[", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"#", "\[Rule]", "0"}], "&"}], ",", 
+                   RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Complement", "[", 
+                    RowBox[{"varlist", ",", 
+                    RowBox[{"#", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"1", ",", "All", ",", "1"}], "]"}], "]"}]}], 
+                    "]"}], "&"}], ",", 
+                    RowBox[{
+                    RowBox[{"removable", "[", "level", "]"}], "[", 
+                    RowBox[{"[", "nonplanarpositions", "]"}], "]"}]}], "]"}], 
+                   ",", 
+                   RowBox[{"{", "2", "}"}]}], "]"}]}], ";", 
+                "\[IndentingNewLine]", 
+                RowBox[{"newplanarity", "=", 
+                 RowBox[{"Map", "[", 
+                  RowBox[{
+                   RowBox[{"False", "&"}], ",", "boundarykillededges"}], 
+                  "]"}]}], ";", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"templevel", "[", 
+                  RowBox[{"[", 
+                   RowBox[{"nonplanarpositions", ",", "3"}], "]"}], "]"}], 
+                 "=", "newplanarity"}], ";", "\[IndentingNewLine]", 
+                RowBox[{"(*", 
+                 RowBox[{
+                 "Now", " ", "we", " ", "know", " ", "for", " ", "sure", " ", 
+                  "that", " ", "the", " ", "planarity", " ", "labelling", " ",
+                   "is", " ", "correct"}], "*)"}], "\[IndentingNewLine]", 
+                RowBox[{"(*", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"We", "'"}], "ll", " ", "now", " ", "want", " ", 
+                   "to", " ", "only", " ", "keep", " ", "reduced", " ", 
+                   RowBox[{"elements", ".", " ", "For"}], " ", "planar", " ", 
+                   "cases"}], ",", " ", 
+                  RowBox[{
+                  "planarReducibility", " ", "is", " ", "very", " ", "fast", 
+                   " ", "at", " ", "deterining", " ", 
+                   RowBox[{"this", ".", " ", "For"}], " ", "nonplanar", " ", 
+                   "cases"}], ",", " ", 
+                  RowBox[{
+                   RowBox[{"we", "'"}], "ll", " ", "need", " ", "to", " ", 
+                   "check", " ", "whether", " ", "the", " ", "dimension", " ",
+                    "of", " ", "the", " ", "Grassmannian", " ", "is", " ", 
+                   "the", " ", "same", " ", "as", " ", "that", " ", "of", " ", 
+                   RowBox[{"P", ".", " ", "If"}], " ", "not"}], ",", " ", 
+                  RowBox[{
+                  "it", " ", "means", " ", "we", " ", "have", " ", "secretly",
+                    " ", "reduced", " ", "the", " ", "dimension", " ", "of", 
+                   " ", "the", " ", "Grassmannian", " ", "too", " ", "much", 
+                   " ", "by", " ", "creating", " ", "a", " ", "reducible", 
+                   " ", 
+                   RowBox[{"graph", "."}]}]}], "*)"}], "\[IndentingNewLine]", 
+                RowBox[{"planarpositions", "=", 
+                 RowBox[{"Flatten", "[", 
+                  RowBox[{"Position", "[", 
+                   RowBox[{"templevel", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"___", ",", "True"}], "}"}]}], "]"}], "]"}]}], 
+                ";", "\[IndentingNewLine]", 
+                RowBox[{"nonplanarpositions", "=", 
+                 RowBox[{"Flatten", "[", 
+                  RowBox[{"Position", "[", 
+                   RowBox[{"templevel", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"___", ",", "False"}], "}"}]}], "]"}], "]"}]}], 
+                ";", "\[IndentingNewLine]", 
+                RowBox[{"(*", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"We", "'"}], "ll", " ", "put", " ", "the", " ", 
+                   "reduced", " ", "planar", " ", "elements", " ", "first"}], 
+                  ",", " ", 
+                  RowBox[{
+                   RowBox[{"then", " ", "the", " ", "reduced", " ", "non"}], 
+                   "-", 
+                   RowBox[{"planar", " ", "ones"}]}]}], "*)"}], 
+                "\[IndentingNewLine]", 
+                RowBox[{"planarboundaries", "=", 
+                 RowBox[{"Cases", "[", 
+                  RowBox[{
+                   RowBox[{"templevel", "[", 
+                    RowBox[{"[", "planarpositions", "]"}], "]"}], ",", 
+                   RowBox[{"zz_", "/;", 
+                    RowBox[{
+                    RowBox[{"planarReducibility", "[", 
+                    RowBox[{
+                    RowBox[{"Drop", "[", 
+                    RowBox[{
+                    RowBox[{"zz", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], ",", "None", ",", 
+                    RowBox[{"{", "1", "}"}]}], "]"}], ",", 
+                    RowBox[{"zz", "[", 
+                    RowBox[{"[", "2", "]"}], "]"}]}], "]"}], "===", 
+                    "False"}]}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+                RowBox[{"(*", 
+                 RowBox[{
+                  RowBox[{
+                  "For", " ", "the", " ", "nonplanar", " ", "boundaries", " ", 
+                   RowBox[{"we", "'"}], "ll", " ", "need", " ", "to", " ", 
+                   "evluate", " ", "the", " ", "dimension", " ", "of", " ", 
+                   "the", " ", 
+                   RowBox[{"Grassmannian", ".", " ", "However"}]}], ",", " ", 
+                  RowBox[{
+                   RowBox[{"if", " ", "at", " ", "level"}], "=", 
+                   RowBox[{
+                   "1", " ", "we", " ", "already", " ", "found", " ", "that", 
+                    " ", "all", " ", "nonplanar", " ", "diagrams", " ", "had",
+                     " ", "at", " ", "most", " ", "dim", 
+                    RowBox[{"(", "Grassmannian", ")"}]}]}], ",", " ", 
+                  RowBox[{
+                  "the", " ", "nonplanar", " ", "diagrams", " ", "at", " ", 
+                   "this", " ", "level", " ", "will", " ", "not", " ", "have",
+                    " ", "a", " ", "higher", " ", "dimension", " ", "than", 
+                   " ", 
+                   RowBox[{"that", ".", " ", "Hence"}]}], ",", " ", 
+                  RowBox[{
+                   RowBox[{
+                   "if", " ", "that", " ", "dimension", " ", "is", " ", 
+                    "less", " ", "than", " ", "topdim"}], "-", "level"}], ",",
+                   " ", 
+                  RowBox[{
+                  "we", " ", "do", " ", "not", " ", "even", " ", "need", " ", 
+                   "to", " ", "bother", " ", "evaluating", " ", "the", " ", 
+                   "Grassmannian"}]}], "*)"}], "\[IndentingNewLine]", 
+                RowBox[{"If", "[", 
+                 RowBox[{
+                  RowBox[{"maxnonplanardimension", "\[GreaterEqual]", 
+                   RowBox[{"topdim", "-", "level"}]}], ",", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{
+                   RowBox[{"nonplanarboundaries", "=", 
+                    RowBox[{
+                    RowBox[{"templevel", "[", 
+                    RowBox[{"[", "nonplanarpositions", "]"}], "]"}], "[", 
+                    RowBox[{"[", 
+                    RowBox[{"Flatten", "[", 
+                    RowBox[{"Position", "[", 
+                    RowBox[{
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"dimensionGrassmannian", "[", 
+                    RowBox[{
+                    RowBox[{"topleft", "/.", "#"}], ",", 
+                    RowBox[{"topright", "/.", "#"}], ",", 
+                    RowBox[{"bottomleft", "/.", "#"}], ",", "bottomright"}], 
+                    "]"}], "&"}], ",", 
+                    RowBox[{"boundarykillededges", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"Flatten", "[", 
+                    RowBox[{"Position", "[", 
+                    RowBox[{"newplanarity", ",", "False"}], "]"}], "]"}], 
+                    "]"}], "]"}]}], "]"}], ",", 
+                    RowBox[{"topdim", "-", "level"}]}], "]"}], "]"}], "]"}], 
+                    "]"}]}], ";"}], "\[IndentingNewLine]", ",", 
+                  RowBox[{
+                   RowBox[{"nonplanarboundaries", "=", 
+                    RowBox[{"{", "}"}]}], ";"}]}], "\[IndentingNewLine]", 
+                 "]"}], ";", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"removable", "[", "level", "]"}], "=", 
+                 RowBox[{"Join", "[", 
+                  RowBox[{"planarboundaries", ",", "nonplanarboundaries"}], 
+                  "]"}]}], ";", "\[IndentingNewLine]", 
+                RowBox[{"If", "[", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"removable", "[", "level", "]"}], "===", 
+                   RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+                  RowBox[{"(*", 
+                   RowBox[{
+                    RowBox[{
+                    "If", " ", "some", " ", "level", " ", "happens", " ", 
+                    "to", " ", "only", " ", "contain", " ", "reducible", " ", 
+                    "examples"}], ",", " ", 
+                    RowBox[{
+                    RowBox[{"we", "'"}], "ll", " ", "keep", " ", "all", " ", 
+                    "boundaries"}], ",", " ", 
+                    RowBox[{
+                    "and", " ", "remove", " ", "the", " ", "reducible", " ", 
+                    "ones", " ", 
+                    RowBox[{"later", "."}]}]}], "*)"}], "\[IndentingNewLine]", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"removable", "[", "level", "]"}], "=", 
+                    "templevel"}], ";", "\[IndentingNewLine]", 
+                   RowBox[{"tofixlevels", "=", 
+                    RowBox[{"Append", "[", 
+                    RowBox[{"tofixlevels", ",", "level"}], "]"}]}], ";", 
+                   "\[IndentingNewLine]", 
+                   RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{
+                    "If", " ", "we", " ", "are", " ", "the", " ", "at", " ", 
+                    "the", " ", "first", " ", "level", " ", "and", " ", 
+                    "there", " ", "were", " ", "no", " ", "reduced", " ", 
+                    "boundaries"}], ",", " ", 
+                    RowBox[{
+                    "find", " ", "out", " ", "what", " ", "the", " ", 
+                    "maximal", " ", "dimension", " ", "of", " ", "the", " ", 
+                    "Grassmannian", " ", "is", " ", "for", " ", "nonplanar", 
+                    " ", "diagrams"}], ",", " ", 
+                    RowBox[{
+                    RowBox[{"so", " ", "that", " ", "we", " ", 
+                    RowBox[{"don", "'"}], "t", " ", "need", " ", "to", " ", 
+                    "evaluate", " ", "it", " ", "again", " ", "until", " ", 
+                    "topdim"}], "-", 
+                    RowBox[{
+                    "level", " ", "is", " ", "equal", " ", "to", " ", "this", 
+                    " ", "Grassmannian", " ", 
+                    RowBox[{"dimension", "."}]}]}]}], "*)"}], 
+                   "\[IndentingNewLine]", 
+                   RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"level", "\[Equal]", "1"}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"maxnonplanardimension", "=", 
+                    RowBox[{"Max", "[", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"dimensionGrassmannian", "[", 
+                    RowBox[{
+                    RowBox[{"topleft", "/.", "#"}], ",", 
+                    RowBox[{"topright", "/.", "#"}], ",", 
+                    RowBox[{"bottomleft", "/.", "#"}], ",", "bottomright"}], 
+                    "]"}], "&"}], ",", 
+                    RowBox[{"boundarykillededges", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"Flatten", "[", 
+                    RowBox[{"Position", "[", 
+                    RowBox[{"newplanarity", ",", "False"}], "]"}], "]"}], 
+                    "]"}], "]"}]}], "]"}], "]"}]}], ";"}]}], 
+                    "\[IndentingNewLine]", "]"}], ";"}]}], 
+                 "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]",
+               "]"}], ";", "\[IndentingNewLine]", 
+             RowBox[{"For", "[", 
+              RowBox[{
+               RowBox[{"fix", "=", "1"}], ",", 
+               RowBox[{"fix", "\[LessEqual]", 
+                RowBox[{"Length", "[", "tofixlevels", "]"}]}], ",", 
+               RowBox[{"fix", "++"}], ",", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"removable", "[", 
+                  RowBox[{"tofixlevels", "[", 
+                   RowBox[{"[", "fix", "]"}], "]"}], "]"}], "=", 
+                 RowBox[{"{", "}"}]}], ";"}]}], "\[IndentingNewLine]", "]"}], 
+             ";", "\[IndentingNewLine]", 
+             RowBox[{"(*", 
+              RowBox[{
+               RowBox[{"Now", " ", 
+                RowBox[{"we", "'"}], "ll", " ", "identify", " ", "boundaries",
+                 " ", "according", " ", "to", " ", "their", " ", 
+                RowBox[{"substratification", ".", " ", "From"}], " ", "each", 
+                " ", "element"}], ",", " ", 
+               RowBox[{
+                RowBox[{"it", "'"}], "s", " ", "sufficient", " ", "to", " ", 
+                "check", " ", "the", " ", "substratification", " ", "one", 
+                " ", "level", " ", "down"}], ",", " ", 
+               RowBox[{
+               "since", " ", "everything", " ", "below", " ", "that", " ", 
+                "has", " ", "been", " ", "vetted", " ", "by", " ", "this", 
+                " ", "first", " ", "substratification", " ", 
+                RowBox[{"level", ".", " ", "At"}], " ", "the", " ", "bottom", 
+                " ", "level", " ", 
+                RowBox[{"(", 
+                 RowBox[{"zero", "-", "dimensional"}], ")"}], " ", "we", " ", 
+                "can", " ", "identify", " ", "everything", " ", "according", 
+                " ", "to", " ", "their", " ", "moduli", " ", 
+                RowBox[{"space", "."}]}]}], "*)"}], "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"identremovable", "[", "topdim", "]"}], "=", 
+              RowBox[{"Map", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"#", "[", 
+                  RowBox[{"[", 
+                   RowBox[{"1", ",", "All", ",", "1"}], "]"}], "]"}], "&"}], 
+                ",", 
+                RowBox[{"GatherBy", "[", 
+                 RowBox[{
+                  RowBox[{"removable", "[", "topdim", "]"}], ",", 
+                  RowBox[{
+                   RowBox[{"#", "[", 
+                    RowBox[{"[", "2", "]"}], "]"}], "&"}]}], "]"}], ",", 
+                RowBox[{"{", "2", "}"}]}], "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"(*", 
+              RowBox[{
+               RowBox[{
+               "In", " ", "order", " ", "to", " ", "compute", " ", "the", " ",
+                 "substratifications", " ", "in", " ", "a", " ", "fast", " ", 
+                "way"}], ",", " ", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"we", "'"}], "ll", " ", "check", " ", "which", " ", 
+                 "boundaries", " ", "of", " ", "one", " ", "dimension", " ", 
+                 "higher", " ", "have", " ", "these", " ", "as", " ", 
+                 RowBox[{"subsets", ".", " ", "We"}], " ", "can", " ", "do", 
+                 " ", "this", " ", "by", " ", "writing", " ", "0"}], "-", 
+                RowBox[{"dim", " ", "boundaries", " ", "as", " ", 
+                 RowBox[{"{", 
+                  RowBox[{"___", ",", "edge1", ",", "___", ",", "edge2", ",", 
+                   RowBox[{"__", "..."}]}], "}"}], " ", "and", " ", "check", 
+                 " ", "which", " ", "boundaries", " ", "of", " ", "one", " ", 
+                 "dimension", " ", "high", " ", "fit", " ", "this", " ", 
+                 "pattern"}]}]}], "*)"}], "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"patternidentremovable", "[", "topdim", "]"}], "=", 
+              RowBox[{"Map", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"Alternatives", "@@", "#"}], "&"}], ",", 
+                RowBox[{"Map", "[", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"Riffle", "[", 
+                    RowBox[{"#", ",", "___", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"1", ",", 
+                    RowBox[{"-", "1"}], ",", "2"}], "}"}]}], "]"}], "&"}], 
+                  ",", 
+                  RowBox[{"identremovable", "[", "topdim", "]"}], ",", 
+                  RowBox[{"{", "2", "}"}]}], "]"}]}], "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"(*", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"We", "'"}], "ll", " ", "now", " ", "go", " ", 
+                "through", " ", "each", " ", "of", " ", "the", " ", 
+                "dimensions"}], ",", " ", 
+               RowBox[{"starting", " ", "from", " ", "the", " ", "bottom"}]}],
+               "*)"}], "\[IndentingNewLine]", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{"BFTgraph", "||", "startingplanarity"}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"(*", 
+                RowBox[{
+                "We", " ", "can", " ", "identify", " ", "everything", " ", 
+                 "according", " ", "to", " ", "its", " ", "moduli", " ", 
+                 "space"}], "*)"}], "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"For", "[", 
+                 RowBox[{
+                  RowBox[{"dim", "=", "1"}], ",", 
+                  RowBox[{"dim", "<", "topdim"}], ",", 
+                  RowBox[{"dim", "++"}], ",", "\[IndentingNewLine]", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"identremovable", "[", 
+                    RowBox[{"topdim", "-", "dim"}], "]"}], "=", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"#", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"1", ",", "All", ",", "1"}], "]"}], "]"}], "&"}], 
+                    ",", 
+                    RowBox[{"GatherBy", "[", 
+                    RowBox[{
+                    RowBox[{"removable", "[", 
+                    RowBox[{"topdim", "-", "dim"}], "]"}], ",", 
+                    RowBox[{
+                    RowBox[{"Sort", "[", 
+                    RowBox[{"DeleteDuplicates", "[", 
+                    RowBox[{"Transpose", "[", 
+                    RowBox[{"#", "[", 
+                    RowBox[{"[", "2", "]"}], "]"}], "]"}], "]"}], "]"}], 
+                    "&"}]}], "]"}], ",", 
+                    RowBox[{"{", "2", "}"}]}], "]"}]}], ";"}]}], 
+                 "\[IndentingNewLine]", "]"}], ";"}], "\[IndentingNewLine]", 
+               ",", 
+               RowBox[{"(*", 
+                RowBox[{
+                 RowBox[{"we", "'"}], "ll", " ", "need", " ", "to", " ", 
+                 "identify", " ", "according", " ", "to", " ", "the", " ", 
+                 "substratifications"}], "*)"}], "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"For", "[", 
+                 RowBox[{
+                  RowBox[{"dim", "=", "1"}], ",", 
+                  RowBox[{"dim", "<", "topdim"}], ",", 
+                  RowBox[{"dim", "++"}], ",", "\[IndentingNewLine]", 
+                  RowBox[{"(*", 
+                   RowBox[{
+                   "Begin", " ", "by", " ", "turning", " ", "the", " ", 
+                    "boundaries", " ", "into", " ", "lists", " ", "of", " ", 
+                    "edges"}], "*)"}], "\[IndentingNewLine]", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"removable", "[", 
+                    RowBox[{"topdim", "-", "dim"}], "]"}], "=", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"#", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"1", ",", "All", ",", "1"}], "]"}], "]"}], "&"}], 
+                    ",", 
+                    RowBox[{"removable", "[", 
+                    RowBox[{"topdim", "-", "dim"}], "]"}]}], "]"}]}], ";", 
+                   "\[IndentingNewLine]", 
+                   RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    "For", " ", "each", " ", "of", " ", "the", " ", "sub"}], 
+                    "-", "boundaries"}], ",", " ", 
+                    RowBox[{
+                    RowBox[{
+                    "we", " ", "want", " ", "to", " ", "find", " ", "which", 
+                    " ", "graphs", " ", "of", " ", "one", " ", "dimension", 
+                    " ", "higher", " ", "terminate", " ", "in", " ", "this", 
+                    " ", "sub"}], "-", "boundary"}]}], "*)"}], 
+                   "\[IndentingNewLine]", 
+                   RowBox[{"locationofparents", "=", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Flatten", "[", 
+                    RowBox[{"Position", "[", 
+                    RowBox[{
+                    RowBox[{"removable", "[", 
+                    RowBox[{"topdim", "-", "dim"}], "]"}], ",", "#"}], "]"}], 
+                    "]"}], "&"}], ",", 
+                    RowBox[{"patternidentremovable", "[", 
+                    RowBox[{"topdim", "-", "dim", "+", "1"}], "]"}]}], 
+                    "]"}]}], ";", "\[IndentingNewLine]", 
+                   RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{
+                    "In", " ", "each", " ", "of", " ", "the", " ", "elements",
+                     " ", "in", " ", 
+                    RowBox[{"removable", "[", 
+                    RowBox[{"topdim", "-", "dim"}], "]"}]}], ",", " ", 
+                    RowBox[{
+                    "we", " ", "now", " ", "want", " ", "to", " ", "know", 
+                    " ", "where", " ", "they", " ", "are", " ", "in", " ", 
+                    "the", " ", "list", " ", "of", " ", 
+                    RowBox[{"locationofparents", "."}]}]}], "*)"}], 
+                   "\[IndentingNewLine]", 
+                   RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{
+                    "Since", " ", "locationofparents", " ", "indexes", " ", 
+                    "according", " ", "to", " ", "position"}], ",", " ", 
+                    RowBox[{
+                    RowBox[{"we", "'"}], "ll", " ", "turn", " ", 
+                    RowBox[{"removable", "[", 
+                    RowBox[{"topdim", "-", "dim"}], "]"}], " ", "into", " ", 
+                    "positions", " ", 
+                    RowBox[{"first", "."}]}]}], "*)"}], "\[IndentingNewLine]", 
+                   RowBox[{"thislevelspositions", "=", 
+                    RowBox[{"Range", "[", 
+                    RowBox[{"Length", "[", 
+                    RowBox[{"removable", "[", 
+                    RowBox[{"topdim", "-", "dim"}], "]"}], "]"}], "]"}]}], 
+                   ";", "\[IndentingNewLine]", 
+                   RowBox[{
+                    RowBox[{"identremovable", "[", 
+                    RowBox[{"topdim", "-", "dim"}], "]"}], "=", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"removable", "[", 
+                    RowBox[{"topdim", "-", "dim"}], "]"}], "[", 
+                    RowBox[{"[", "#", "]"}], "]"}], "&"}], ",", 
+                    RowBox[{"GatherBy", "[", 
+                    RowBox[{"thislevelspositions", ",", 
+                    RowBox[{
+                    RowBox[{"Position", "[", 
+                    RowBox[{"locationofparents", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"___", ",", "#", ",", "___"}], "}"}]}], "]"}], 
+                    "&"}]}], "]"}], ",", 
+                    RowBox[{"{", "2", "}"}]}], "]"}]}], ";", 
+                   "\[IndentingNewLine]", 
+                   RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{"Now", " ", 
+                    RowBox[{"we", "'"}], "re", " ", "ready", " ", "to", " ", 
+                    "do", " ", "the", " ", "same", " ", "thing", " ", "for", 
+                    " ", "the", " ", "next", " ", "dimension"}], ",", " ", 
+                    RowBox[{
+                    "and", " ", "will", " ", "need", " ", 
+                    "patternidentremovable", " ", "for", " ", "this", " ", 
+                    "dimension"}]}], "*)"}], "\[IndentingNewLine]", 
+                   RowBox[{
+                    RowBox[{"patternidentremovable", "[", 
+                    RowBox[{"topdim", "-", "dim"}], "]"}], "=", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Alternatives", "@@", "#"}], "&"}], ",", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Riffle", "[", 
+                    RowBox[{"#", ",", "___", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"1", ",", 
+                    RowBox[{"-", "1"}], ",", "2"}], "}"}]}], "]"}], "&"}], 
+                    ",", 
+                    RowBox[{"identremovable", "[", 
+                    RowBox[{"topdim", "-", "dim"}], "]"}], ",", 
+                    RowBox[{"{", "2", "}"}]}], "]"}]}], "]"}]}], ";"}]}], 
+                 "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]",
+               "]"}], ";", "\[IndentingNewLine]", 
+             RowBox[{"(*", 
+              RowBox[{"Finally", ",", " ", 
+               RowBox[{
+                RowBox[{"the", " ", "top"}], "-", 
+                RowBox[{
+                "dimensional", " ", "level", " ", "is", " ", "simply", " ", 
+                 "the", " ", "list", " ", "of", " ", "edges", " ", "in", " ", 
+                 "the", " ", "starting", " ", "point"}]}]}], "*)"}], 
+             "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"identremovable", "[", "0", "]"}], "=", 
+              RowBox[{"Map", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"{", 
+                  RowBox[{"#", "[", 
+                   RowBox[{"[", 
+                    RowBox[{"1", ",", "All", ",", "1"}], "]"}], "]"}], "}"}], 
+                 "&"}], ",", 
+                RowBox[{"removable", "[", "0", "]"}]}], "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"(*", 
+              RowBox[{
+               RowBox[{
+               "The", " ", "stratification", " ", "will", " ", "be", " ", 
+                "outputted", " ", "as", " ", "a", " ", "list", " ", "of", " ",
+                 "elements"}], ",", " ", 
+               RowBox[{
+                RowBox[{
+                "each", " ", "containing", " ", "all", " ", "the", " ", 
+                 "boundaries", " ", "of", " ", "a", " ", "certain", " ", 
+                 RowBox[{"dimensionality", ".", " ", "Each"}], " ", 
+                 "boundary", " ", "is", " ", "expressed", " ", "as", " ", "a",
+                  " ", "list", " ", "of", " ", "possible", " ", "non"}], "-", 
+                RowBox[{
+                "zero", " ", "edges", " ", "which", " ", "are", " ", "move"}],
+                 "-", 
+                RowBox[{"equivalent", " ", "configurations"}]}], ",", " ", 
+               RowBox[{
+               "all", " ", "representing", " ", "the", " ", "same", " ", 
+                RowBox[{"boundary", "."}]}]}], "*)"}], "\[IndentingNewLine]", 
+             RowBox[{"stratification", "=", 
+              RowBox[{"Table", "[", 
+               RowBox[{
+                RowBox[{"identremovable", "[", "iii", "]"}], ",", 
+                RowBox[{"{", 
+                 RowBox[{"iii", ",", "0", ",", "topdim"}], "}"}]}], "]"}]}], 
+             ";"}]}], "\[IndentingNewLine]", "]"}], ";"}], 
+         "\[IndentingNewLine]", ",", 
+         RowBox[{
+          RowBox[{"stratification", "=", "Null"}], ";"}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       "stratification"}]}], "\[IndentingNewLine]", "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
    RowBox[{"allTestStratification", "[", 
     RowBox[{
      RowBox[{"{", 
@@ -16435,8 +17632,8 @@ lists, or they don't give the expected Euler number.\>\""}], "]"}], ";"}]}],
                 RowBox[{
                  RowBox[{
                   RowBox[{
-                   RowBox[{"Head", "[", "scatteringstratification", "]"}], 
-                   "=!=", "List"}], "||", 
+                   RowBox[{"Head", "[", "scatteringstratification", "]"}], "=!=",
+                    "List"}], "||", 
                   RowBox[{"(", 
                    RowBox[{"Or", "@@", 
                     RowBox[{"Map", "[", 
@@ -16478,6 +17675,114 @@ stratification! It doesn't output a list of lists\>\"", ",",
                     "\"\< : There's a problem with the gauging 2 \
 stratification! It doesn't output a list of lists\>\""}], "]"}], ";"}]}], 
                 "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"dimP", ">", "0"}], "&&", 
+                  RowBox[{
+                   RowBox[{"Map", "[", 
+                    RowBox[{"Sort", ",", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{"Sort", ",", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{"Length", ",", "scatteringstratification", ",", 
+                    RowBox[{"{", "3", "}"}]}], "]"}], ",", 
+                    RowBox[{"{", "2", "}"}]}], "]"}]}], "]"}], "=!=", 
+                   RowBox[{"Map", "[", 
+                    RowBox[{"Sort", ",", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{"Sort", ",", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{"Length", ",", 
+                    RowBox[{"stratificationBoundariesNoPlanarity", "[", 
+                    RowBox[{
+                    "a", ",", "b", ",", "c", ",", "d", ",", "True", ",", 
+                    "False", ",", "2"}], "]"}], ",", 
+                    RowBox[{"{", "3", "}"}]}], "]"}], ",", 
+                    RowBox[{"{", "2", "}"}]}], "]"}]}], "]"}]}]}], ",", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"Print", "[", 
+                   RowBox[{"\"\<kast=\>\"", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                    "\"\< : There's a problem with the scattering \
+stratification! It gives a different result when we don't use the planarity \
+of the graph to speed things up\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]",
+                 "]"}], ";", "\[IndentingNewLine]", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"dimP", ">", "0"}], "&&", 
+                  RowBox[{
+                   RowBox[{"Map", "[", 
+                    RowBox[{"Sort", ",", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{"Sort", ",", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{"Length", ",", "bft2stratification", ",", 
+                    RowBox[{"{", "3", "}"}]}], "]"}], ",", 
+                    RowBox[{"{", "2", "}"}]}], "]"}]}], "]"}], "=!=", 
+                   RowBox[{"Map", "[", 
+                    RowBox[{"Sort", ",", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{"Sort", ",", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{"Length", ",", 
+                    RowBox[{"stratificationBoundariesNoPlanarity", "[", 
+                    RowBox[{
+                    "a", ",", "b", ",", "c", ",", "d", ",", "True", ",", 
+                    "False", ",", "2"}], "]"}], ",", 
+                    RowBox[{"{", "3", "}"}]}], "]"}], ",", 
+                    RowBox[{"{", "2", "}"}]}], "]"}]}], "]"}]}]}], ",", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"Print", "[", 
+                   RowBox[{"\"\<kast=\>\"", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                    "\"\< : There's a problem with the gauging 2 \
+stratification! It gives a different result when we don't use the planarity \
+of the graph to speed things up\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]",
+                 "]"}], ";", "\[IndentingNewLine]", 
+               RowBox[{"If", "[", 
+                RowBox[{"bftlabeling", ",", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"If", "[", 
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{"dimP", ">", "0"}], "&&", 
+                    RowBox[{
+                    RowBox[{"Map", "[", 
+                    RowBox[{"Sort", ",", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{"Sort", ",", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{"Length", ",", "bft1stratification", ",", 
+                    RowBox[{"{", "3", "}"}]}], "]"}], ",", 
+                    RowBox[{"{", "2", "}"}]}], "]"}]}], "]"}], "=!=", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{"Sort", ",", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{"Sort", ",", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{"Length", ",", 
+                    RowBox[{"stratificationBoundariesNoPlanarity", "[", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d", ",", "True", 
+                    ",", "True", ",", "1"}], "]"}], ",", 
+                    RowBox[{"{", "3", "}"}]}], "]"}], ",", 
+                    RowBox[{"{", "2", "}"}]}], "]"}]}], "]"}]}]}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Print", "[", 
+                    RowBox[{"\"\<kast=\>\"", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                    "\"\< : There's a problem with the gauging 1 \
+stratification! It gives a different result when we don't use the planarity \
+of the graph to speed things up\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]",
+                    "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+               "\[IndentingNewLine]", 
                RowBox[{"If", "[", 
                 RowBox[{
                  RowBox[{
@@ -16623,6 +17928,7 @@ stratification! Its length is not equal to dim(P)+1\>\""}], "]"}], ";"}]}],
                    RowBox[{"\"\<kast=\>\"", ",", 
                     RowBox[{"{", 
                     RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                    
                     "\"\< : There's a problem with the scattering \
 stratification numbers! After initial zeroes, there should be a nonzero \
 number\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
@@ -16914,6 +18220,7 @@ at all levels\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";",
                    RowBox[{"\"\<kast=\>\"", ",", 
                     RowBox[{"{", 
                     RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                    
                     "\"\< : There's a problem with the gauging 2 \
 stratification! Move-equivalent boundaries should have the same subboundaries \
 at all levels\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
@@ -17696,6 +19003,7 @@ stratification doesn't match those using SubsetQ\>\""}], "]"}], ";"}]}],
                     RowBox[{"\"\<kast=\>\"", ",", 
                     RowBox[{"{", 
                     RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], ",", 
+                    
                     "\"\< : There's a problem with the scattering \
 stratification graph! The numbers of parents of elements in the \
 stratification doesn't match those using SubsetQ\>\""}], "]"}], ";"}]}], 
@@ -17987,7 +19295,9 @@ stratification doesn't match those using SubsetQ\>\""}], "]"}], ";"}]}],
    3.68534306056389*^9, 3.68534306850448*^9}, {3.6853444341802998`*^9, 
    3.685344525775797*^9}, {3.685344635726242*^9, 3.6853446523827467`*^9}, {
    3.6853509081259866`*^9, 3.685350921663103*^9}, {3.6853545209742746`*^9, 
-   3.685354529259407*^9}}]
+   3.685354529259407*^9}, {3.685693608814596*^9, 3.685693611183132*^9}, {
+   3.6856936441251955`*^9, 3.6856938626797323`*^9}, {3.685706307903427*^9, 
+   3.6857063187030067`*^9}}]
 }, Open  ]],
 
 Cell[BoxData[""], "Input",
@@ -24650,186 +25960,186 @@ Cell[219285, 4756, 19875, 403, 1232, "Input",
 }, Closed]],
 Cell[239175, 5162, 94, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[239294, 5167, 953, 15, 31, "Input",
+Cell[239294, 5167, 1007, 16, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[240250, 5184, 24574, 533, 1252, "Input",
+Cell[240304, 5185, 24578, 534, 1252, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[264839, 5720, 96, 1, 25, "Input"],
+Cell[264897, 5722, 96, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[264960, 5725, 995, 17, 31, "Input",
+Cell[265018, 5727, 995, 17, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[265958, 5744, 14611, 308, 612, "Input",
+Cell[266016, 5746, 14611, 308, 612, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[280584, 6055, 94, 1, 25, "Input"],
+Cell[280642, 6057, 94, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[280703, 6060, 951, 16, 31, "Input",
+Cell[280761, 6062, 951, 16, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[281657, 6078, 12868, 267, 512, "Input",
+Cell[281715, 6080, 12868, 267, 512, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[294540, 6348, 92, 1, 25, "Input"],
+Cell[294598, 6350, 92, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[294657, 6353, 881, 15, 31, "Input",
+Cell[294715, 6355, 881, 15, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[295541, 6370, 30030, 651, 1912, "Input",
+Cell[295599, 6372, 30030, 651, 1912, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[325586, 7024, 92, 1, 25, "Input"],
+Cell[325644, 7026, 92, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[325703, 7029, 865, 14, 31, "Input",
+Cell[325761, 7031, 865, 14, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[326571, 7045, 31072, 673, 1992, "Input",
+Cell[326629, 7047, 31072, 673, 1992, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[357658, 7721, 92, 1, 25, "Input"],
+Cell[357716, 7723, 92, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[357775, 7726, 862, 14, 31, "Input",
+Cell[357833, 7728, 862, 14, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[358640, 7742, 10741, 213, 452, "Input",
+Cell[358698, 7744, 10741, 213, 452, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[369396, 7958, 92, 1, 25, "Input"],
+Cell[369454, 7960, 92, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[369513, 7963, 973, 16, 31, "Input",
+Cell[369571, 7965, 973, 16, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[370489, 7981, 72016, 1558, 4312, "Input",
+Cell[370547, 7983, 72016, 1558, 4312, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[442520, 9542, 94, 1, 25, "Input"],
+Cell[442578, 9544, 94, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[442639, 9547, 1003, 17, 31, "Input",
+Cell[442697, 9549, 1003, 17, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[443645, 9566, 58453, 1191, 3912, "Input",
+Cell[443703, 9568, 58453, 1191, 3912, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[502113, 10760, 92, 1, 25, "Input"],
+Cell[502171, 10762, 92, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[502230, 10765, 909, 15, 31, "Input",
+Cell[502288, 10767, 909, 15, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[503142, 10782, 25560, 487, 1752, "Input",
+Cell[503200, 10784, 25560, 487, 1752, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[528717, 11272, 92, 1, 25, "Input"],
+Cell[528775, 11274, 92, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[528834, 11277, 865, 14, 31, "Input",
+Cell[528892, 11279, 865, 14, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[529702, 11293, 14240, 280, 692, "Input",
+Cell[529760, 11295, 14240, 280, 692, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[543957, 11576, 92, 1, 25, "Input"],
+Cell[544015, 11578, 92, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[544074, 11581, 941, 15, 31, "Input",
+Cell[544132, 11583, 941, 15, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[545018, 11598, 18791, 369, 1032, "Input",
+Cell[545076, 11600, 18791, 369, 1032, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[563824, 11970, 93, 1, 25, "Input"],
+Cell[563882, 11972, 93, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[563942, 11975, 923, 15, 31, "Input",
+Cell[564000, 11977, 923, 15, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[564868, 11992, 11478, 230, 492, "Input",
+Cell[564926, 11994, 11478, 230, 492, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[576361, 12225, 92, 1, 25, "Input"],
+Cell[576419, 12227, 92, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[576478, 12230, 966, 15, 31, "Input",
+Cell[576536, 12232, 966, 15, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[577447, 12247, 12080, 246, 540, "Input",
+Cell[577505, 12249, 12080, 246, 540, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[589542, 12496, 92, 1, 25, "Input"],
+Cell[589600, 12498, 92, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[589659, 12501, 648, 11, 31, "Input",
+Cell[589717, 12503, 648, 11, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[590310, 12514, 56871, 1406, 2832, "Input",
+Cell[590368, 12516, 56871, 1406, 2832, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[647196, 13923, 96, 1, 25, "Input"],
+Cell[647254, 13925, 96, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[647317, 13928, 983, 16, 31, "Input",
+Cell[647375, 13930, 983, 16, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[648303, 13946, 11439, 231, 512, "Input",
+Cell[648361, 13948, 11439, 231, 512, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[659757, 14180, 94, 1, 25, "Input"],
+Cell[659815, 14182, 94, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[659876, 14185, 915, 14, 31, "Input",
+Cell[659934, 14187, 915, 14, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[660794, 14201, 32975, 665, 1612, "Input",
+Cell[660852, 14203, 32975, 665, 1612, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Open  ]],
-Cell[693784, 14869, 92, 1, 31, "Input"],
+Cell[693842, 14871, 92, 1, 31, "Input"],
 Cell[CellGroupData[{
-Cell[693901, 14874, 867, 14, 31, "Input",
+Cell[693959, 14876, 867, 14, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[694771, 14890, 21262, 425, 1032, "Input",
+Cell[694829, 14892, 21262, 425, 1032, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Open  ]],
-Cell[716048, 15318, 92, 1, 31, "Input"],
+Cell[716106, 15320, 92, 1, 31, "Input"],
 Cell[CellGroupData[{
-Cell[716165, 15323, 889, 15, 31, "Input",
+Cell[716223, 15325, 889, 15, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[717057, 15340, 19809, 406, 852, "Input",
+Cell[717115, 15342, 19809, 406, 852, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Open  ]],
-Cell[736881, 15749, 92, 1, 31, "Input"],
+Cell[736939, 15751, 92, 1, 31, "Input"],
 Cell[CellGroupData[{
-Cell[736998, 15754, 912, 15, 31, "Input",
+Cell[737056, 15756, 912, 15, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[737913, 15771, 21198, 429, 1032, "Input",
+Cell[737971, 15773, 21198, 429, 1032, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Open  ]],
-Cell[759126, 16203, 92, 1, 31, "Input"],
+Cell[759184, 16205, 92, 1, 31, "Input"],
 Cell[CellGroupData[{
-Cell[759243, 16208, 1048, 17, 31, "Input",
+Cell[759301, 16210, 1048, 17, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[760294, 16227, 86260, 1762, 4747, "Input",
+Cell[760352, 16229, 151130, 3070, 8647, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Open  ]],
-Cell[846569, 17992, 92, 1, 31, "Input"],
+Cell[911497, 19302, 92, 1, 31, "Input"],
 Cell[CellGroupData[{
-Cell[846686, 17997, 957, 15, 31, "Input",
+Cell[911614, 19307, 957, 15, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[847646, 18014, 23170, 463, 1275, "Input",
+Cell[912574, 19324, 23170, 463, 1275, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Open  ]],
-Cell[870831, 18480, 92, 1, 31, "Input"],
+Cell[935759, 19790, 92, 1, 31, "Input"],
 Cell[CellGroupData[{
-Cell[870948, 18485, 1123, 19, 31, "Input",
+Cell[935876, 19795, 1123, 19, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10001.}],
-Cell[872074, 18506, 108945, 2803, 6212, "Input",
+Cell[937002, 19816, 108945, 2803, 6212, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10001.}]
 }, Closed]],
 Cell[CellGroupData[{
-Cell[981056, 21314, 1289, 22, 25, "Input",
+Cell[1045984, 22624, 1289, 22, 25, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[982348, 21338, 17458, 352, 832, "Input",
+Cell[1047276, 22648, 17458, 352, 832, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Open  ]],
-Cell[999821, 21693, 92, 1, 31, "Input"],
+Cell[1064749, 23003, 92, 1, 31, "Input"],
 Cell[CellGroupData[{
-Cell[999938, 21698, 899, 15, 31, "Input",
+Cell[1064866, 23008, 899, 15, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[1000840, 21715, 28711, 590, 1892, "Input",
+Cell[1065768, 23025, 28711, 590, 1892, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Open  ]],
-Cell[1029566, 22308, 92, 1, 31, "Input"],
+Cell[1094494, 23618, 92, 1, 31, "Input"],
 Cell[CellGroupData[{
-Cell[1029683, 22313, 859, 14, 31, "Input",
+Cell[1094611, 23623, 859, 14, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[1030545, 22329, 85840, 1859, 5192, "Input",
+Cell[1095473, 23639, 85840, 1859, 5192, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Open  ]],
-Cell[1116400, 24191, 92, 1, 31, "Input"],
+Cell[1181328, 25501, 92, 1, 31, "Input"],
 Cell[CellGroupData[{
-Cell[1116517, 24196, 1372, 22, 52, "Input",
+Cell[1181445, 25506, 1372, 22, 52, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[1117892, 24220, 15345, 315, 732, "Input",
+Cell[1182820, 25530, 15345, 315, 732, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Open  ]],
-Cell[1133252, 24538, 92, 1, 31, "Input"]
+Cell[1198180, 25848, 92, 1, 31, "Input"]
 }
 ]
 *)
