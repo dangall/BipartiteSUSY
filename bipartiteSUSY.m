@@ -1820,7 +1820,7 @@ If[gauging==1,
 (*bubbles not only have the index structure _[onenumber_,secondnumber_]+_[secondnumber_,thirdnumber_], but also secondnumber must be an internal face, and there must in total only be two variables in the Kasteleyn with this index*)
 intfacelabels=getInternalFaceLabels[topleft,topright,bottomleft,bottomright];
 allvars=Variables[joinupKasteleyn[topleft,topright,bottomleft,bottomright]];
-aretherebubbles=MemberQ[joinupKasteleyn[topleft,topright,bottomleft,bottomright],{___,_[onenumber_Integer,secondnumber_Integer]+_[secondnumber_Integer,thirdnumber_Integer]+___,___}/;(MemberQ[intfacelabels,secondnumber]||Variables[{topright,bottomleft}]=={})&&Count[allvars,_[anynumber_Integer,secondnumber]|_[secondnumber,anynumber_Integer]]===2];
+aretherebubbles=MemberQ[joinupKasteleyn[topleft,topright,bottomleft,bottomright],{___,_[onenumber_Integer,secondnumber_Integer]+_[secondnumber_Integer,thirdnumber_Integer]+___,___}/;(MemberQ[intfacelabels,secondnumber]||Variables[{topright,bottomleft}]=={})&&Count[allvars,_[anynumber_Integer,secondnumber]|_[secondnumber,anynumber_Integer]]===2&&Count[Flatten[List@@@allvars],secondnumber]===2];
 ,aretherebubbles=MemberQ[joinupKasteleyn[topleft,topright,bottomleft,bottomright],{___,firstedge_+secondedge_+___,___}];
 ];
 aretherebubbles
