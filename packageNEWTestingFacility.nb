@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[   1210065,      26155]
-NotebookOptionsPosition[   1199315,      25868]
-NotebookOutlinePosition[   1199657,      25883]
-CellTagsIndexPosition[   1199614,      25880]
+NotebookDataLength[   1228520,      26593]
+NotebookOptionsPosition[   1217769,      26306]
+NotebookOutlinePosition[   1218111,      26321]
+CellTagsIndexPosition[   1218068,      26318]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -5187,9 +5187,19 @@ Cell[BoxData[
  RowBox[{
   RowBox[{"(*", 
    RowBox[{
-   "This", " ", "is", " ", "code", " ", "from", " ", "stackexchange", " ", 
-    "for", " ", "counting", " ", "the", " ", "number", " ", "of", " ", 
-    "faces"}], "*)"}], "\[IndentingNewLine]", 
+    RowBox[{
+    "This", " ", "is", " ", "code", " ", "from", " ", "stackexchange", " ", 
+     RowBox[{"http", ":"}]}], "//", 
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{
+        RowBox[{"mathematica", ".", "stackexchange", ".", "com"}], "/", 
+        "questions"}], "/", "18514"}], "/", "finding"}], "-", "face", "-", 
+     "vertices", "-", "from", "-", "the", "-", "face", "-", "adjacency", "-", 
+     RowBox[{
+     "graph", " ", "for", " ", "counting", " ", "the", " ", "number", " ", 
+      "of", " ", "faces"}]}]}], "*)"}], "\[IndentingNewLine]", 
   RowBox[{"(*", 
    RowBox[{
     RowBox[{
@@ -5201,11 +5211,287 @@ Cell[BoxData[
       "==="}], "=", 
      RowBox[{"===", "===", "===", "===", "===", "===", "===", "=="}]}]}], 
    "*)"}], "\[IndentingNewLine]", 
-  RowBox[{"(*", 
-   RowBox[{"simple", " ", 
-    RowBox[{"Kruskal", "'"}], "s", " ", "algorithm", " ", "without", " ", 
-    "sorting"}], "*)"}], "\[IndentingNewLine]", 
   RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"nextCandidate", "[", 
+      RowBox[{"s_", ",", "t_", ",", "adj_"}], "]"}], ":=", 
+     RowBox[{"Block", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"length", ",", "pos"}], "}"}], ",", 
+       RowBox[{
+        RowBox[{"length", "=", 
+         RowBox[{"Length", "[", "adj", "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"pos", "=", 
+         RowBox[{"Mod", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{"Position", "[", 
+              RowBox[{"adj", ",", "s"}], "]"}], "[", 
+             RowBox[{"[", 
+              RowBox[{"1", ",", "1"}], "]"}], "]"}], "+", "1"}], ",", 
+           "length", ",", "1"}], "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"{", 
+         RowBox[{"t", ",", 
+          RowBox[{"adj", "[", 
+           RowBox[{"[", "pos", "]"}], "]"}]}], "}"}]}]}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"FindFace", "[", 
+      RowBox[{"g_", "?", "PlanarGraphQ"}], "]"}], ":=", 
+     RowBox[{"Block", "[", 
+      RowBox[{
+       RowBox[{"{", "emb", "}"}], ",", 
+       RowBox[{
+        RowBox[{"emb", "=", 
+         RowBox[{"GraphEmbedding", "[", 
+          RowBox[{"g", ",", "\"\<PlanarEmbedding\>\""}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"FindFace", "[", 
+         RowBox[{"g", ",", "emb"}], "]"}]}]}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{
+    RowBox[{"FindFace", "[", 
+     RowBox[{
+      RowBox[{"g_", "?", "PlanarGraphQ"}], ",", "emb_"}], "]"}], ":=", 
+    RowBox[{"Block", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "m", ",", "realvertexlist", ",", "fakevertexlist", ",", "tofakenums", 
+        ",", "torealnums", ",", "orderings", ",", "pAdj", ",", "rightF", ",", 
+        "s", ",", "t", ",", "initial", ",", "face", ",", "answers", ",", 
+        "outputfaces"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"m", "=", 
+        RowBox[{"AdjacencyMatrix", "[", "g", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"realvertexlist", "=", 
+        RowBox[{"VertexList", "[", "g", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"fakevertexlist", "=", 
+        RowBox[{"Range", "[", 
+         RowBox[{"Length", "[", "realvertexlist", "]"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"tofakenums", "=", 
+        RowBox[{"MapThread", "[", 
+         RowBox[{"Rule", ",", 
+          RowBox[{"{", 
+           RowBox[{"realvertexlist", ",", "fakevertexlist"}], "}"}]}], 
+         "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"torealnums", "=", 
+        RowBox[{"Map", "[", 
+         RowBox[{"Reverse", ",", "tofakenums"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"pAdj", "[", "v", "]"}], "=", 
+          RowBox[{"SortBy", "[", 
+           RowBox[{
+            RowBox[{"Pick", "[", 
+             RowBox[{"fakevertexlist", ",", 
+              RowBox[{"m", "[", 
+               RowBox[{"[", "v", "]"}], "]"}], ",", "1"}], "]"}], ",", 
+            RowBox[{
+             RowBox[{"ArcTan", "@@", 
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"emb", "[", 
+                 RowBox[{"[", "v", "]"}], "]"}], "-", 
+                RowBox[{"emb", "[", 
+                 RowBox[{"[", "#", "]"}], "]"}]}], ")"}]}], "&"}]}], "]"}]}], 
+         ",", 
+         RowBox[{"{", 
+          RowBox[{"v", ",", "fakevertexlist"}], "}"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"rightF", "[", "_", "]"}], ":=", "False"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"answers", "=", 
+        RowBox[{
+         RowBox[{"Reap", "[", 
+          RowBox[{"Table", "[", 
+           RowBox[{
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{"!", 
+               RowBox[{"rightF", "[", "e", "]"}]}], ",", 
+              RowBox[{
+               RowBox[{"s", "=", 
+                RowBox[{"e", "[", 
+                 RowBox[{"[", "1", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+               RowBox[{"t", "=", 
+                RowBox[{"e", "[", 
+                 RowBox[{"[", "2", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+               RowBox[{"initial", "=", "s"}], ";", "\[IndentingNewLine]", 
+               RowBox[{"face", "=", 
+                RowBox[{"{", "s", "}"}]}], ";", "\[IndentingNewLine]", 
+               RowBox[{"While", "[", 
+                RowBox[{
+                 RowBox[{"t", "=!=", "initial"}], ",", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"rightF", "[", 
+                    RowBox[{"UndirectedEdge", "[", 
+                    RowBox[{"s", ",", "t"}], "]"}], "]"}], "=", "True"}], ";",
+                   "\[IndentingNewLine]", 
+                  RowBox[{
+                   RowBox[{"{", 
+                    RowBox[{"s", ",", "t"}], "}"}], "=", 
+                   RowBox[{"nextCandidate", "[", 
+                    RowBox[{"s", ",", "t", ",", 
+                    RowBox[{"pAdj", "[", "t", "]"}]}], "]"}]}], ";", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"face", "=", 
+                   RowBox[{"Join", "[", 
+                    RowBox[{"face", ",", 
+                    RowBox[{"{", "s", "}"}]}], "]"}]}], ";"}]}], "]"}], ";", 
+               "\[IndentingNewLine]", 
+               RowBox[{"Sow", "[", "face", "]"}], ";"}]}], "]"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"e", ",", 
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"EdgeList", "[", "g", "]"}], "/.", "tofakenums"}], 
+               ")"}]}], "}"}]}], "]"}], "]"}], "[", 
+         RowBox[{"[", "2", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"answers", "\[Equal]", 
+          RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"outputfaces", "=", 
+           RowBox[{"answers", "/.", "torealnums"}]}], ";"}], 
+         "\[IndentingNewLine]", ",", 
+         RowBox[{
+          RowBox[{"outputfaces", "=", 
+           RowBox[{
+            RowBox[{"answers", "[", 
+             RowBox[{"[", "1", "]"}], "]"}], "/.", "torealnums"}]}], ";"}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       "outputfaces"}]}], "]"}]}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"makeLoopsIndependent", "[", "internalfacenodes_", "]"}], ":=", 
+     RowBox[{"Block", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "indeploops", ",", "oppositeloops", ",", "tempindeploops", ",", 
+         "outputinternalfacenodes"}], "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"indeploops", "=", 
+         RowBox[{"Gather", "[", 
+          RowBox[{"internalfacenodes", ",", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"Sort", "[", "#1", "]"}], "\[Equal]", 
+             RowBox[{"Sort", "[", "#2", "]"}]}], "&"}]}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"oppositeloops", "=", 
+         RowBox[{"Sequence", "@@@", 
+          RowBox[{"indeploops", "[", 
+           RowBox[{"[", 
+            RowBox[{"All", ",", 
+             RowBox[{"2", ";;"}]}], "]"}], "]"}]}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"tempindeploops", "=", 
+         RowBox[{"Gather", "[", 
+          RowBox[{
+           RowBox[{"indeploops", "[", 
+            RowBox[{"[", 
+             RowBox[{"All", ",", "1"}], "]"}], "]"}], ",", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"SubsetQ", "[", 
+              RowBox[{"#1", ",", "#2"}], "]"}], "||", 
+             RowBox[{"SubsetQ", "[", 
+              RowBox[{"#2", ",", "#1"}], "]"}]}], "&"}]}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"indeploops", "=", 
+         RowBox[{"Map", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{"Cases", "[", 
+              RowBox[{"#", ",", 
+               RowBox[{"zz_", "/;", 
+                RowBox[{
+                 RowBox[{"Length", "[", "zz", "]"}], "\[Equal]", 
+                 RowBox[{"Min", "[", 
+                  RowBox[{"Map", "[", 
+                   RowBox[{"Length", ",", "#"}], "]"}], "]"}]}]}]}], "]"}], 
+             "[", 
+             RowBox[{"[", "1", "]"}], "]"}], "&"}], ",", "tempindeploops"}], 
+          "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"outputinternalfacenodes", "=", 
+         RowBox[{"DeleteCases", "[", 
+          RowBox[{
+           RowBox[{"Append", "[", 
+            RowBox[{"indeploops", ",", 
+             RowBox[{"Union", "[", 
+              RowBox[{"Flatten", "[", 
+               RowBox[{"{", 
+                RowBox[{"oppositeloops", ",", 
+                 RowBox[{"Sequence", "@@@", 
+                  RowBox[{"MapThread", "[", 
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{"Complement", "[", 
+                    RowBox[{"#1", ",", 
+                    RowBox[{"{", "#2", "}"}]}], "]"}], "&"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"tempindeploops", ",", "indeploops"}], "}"}]}], 
+                   "]"}]}]}], "}"}], "]"}], "]"}]}], "]"}], ",", 
+           RowBox[{"{", "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+        "outputinternalfacenodes"}]}], "\[IndentingNewLine]", "]"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{
+     "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
+       "===", "===", "===", "==="}], "=", 
+     RowBox[{
+      RowBox[{
+      "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", 
+       "==="}], "=", 
+      RowBox[{"===", "===", "===", "===", "===", "===", "===", "=="}]}]}], 
+    "*)"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{
+     "This", " ", "is", " ", "code", " ", "from", " ", "stackexchange", " ", 
+      RowBox[{"http", ":"}]}], "//", 
+     RowBox[{
+      RowBox[{
+       RowBox[{
+        RowBox[{
+         RowBox[{"mathematica", ".", "stackexchange", ".", "com"}], "/", 
+         "questions"}], "/", "52056"}], "/", "dual"}], "-", "graph", "-", 
+      "of", "-", "an", "-", "arbitrary", "-", "planar", "-", 
+      RowBox[{
+       RowBox[{"graph", "/", "52092"}], " ", "for", " ", "counting", " ", 
+       "the", " ", "number", " ", "of", " ", "faces"}]}]}], "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{
+     "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", "===",
+       "===", "===", "===", "==="}], "=", 
+     RowBox[{
+      RowBox[{
+      "===", "===", "===", "===", "===", "===", "===", "===", "===", "===", 
+       "==="}], "=", 
+      RowBox[{"===", "===", "===", "===", "===", "===", "===", "=="}]}]}], 
+    "*)"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"simple", " ", 
+     RowBox[{"Kruskal", "'"}], "s", " ", "algorithm", " ", "without", " ", 
+     "sorting"}], "*)"}], "\[IndentingNewLine]", 
    RowBox[{
     RowBox[{
      RowBox[{"SpanningTree", "[", "graph_", "]"}], ":=", 
@@ -5241,14 +5527,14 @@ Cell[BoxData[
        RowBox[{"list", ",", "2", ",", "1"}], "]"}]}]}]}], 
    "\[IndentingNewLine]", 
    RowBox[{"(*", 
-    RowBox[{"FindFace", ":", 
+    RowBox[{"FindFace2", ":", 
      RowBox[{
       RowBox[{"finds", " ", "the", " ", "smallest", " ", 
        RowBox[{"cycle", ".", "This"}], " ", "cycle", " ", "is", " ", "a", " ",
         "pseudo"}], "-", 
       RowBox[{"face", "."}]}]}], "*)"}], "\n", 
    RowBox[{
-    RowBox[{"FindFace", "[", 
+    RowBox[{"FindFace2", "[", 
      RowBox[{"graph_", ",", "edges_"}], "]"}], ":=", 
     RowBox[{"MapAt", "[", 
      RowBox[{"makeEges", ",", 
@@ -5302,7 +5588,7 @@ Cell[BoxData[
         RowBox[{"DeleteCases", "[", 
          RowBox[{"edges", ",", 
           RowBox[{"Last", "@", "#"}]}], "]"}]}], "]"}], "&"}], "[", 
-     RowBox[{"FindFace", "[", 
+     RowBox[{"FindFace2", "[", 
       RowBox[{"graph", ",", "edges"}], "]"}], "]"}]}], "\[IndentingNewLine]", 
    RowBox[{"(*", 
     RowBox[{"Faces", ":", 
@@ -5350,7 +5636,8 @@ Cell[BoxData[
        RowBox[{"{", 
         RowBox[{
         "a", ",", "b", ",", "c", ",", "d", ",", "planaritycollapsed", ",", 
-         "graph", ",", "externalnodes", ",", "internalfaces", ",", 
+         "graph", ",", "externalnodes", ",", "choppedgraph", ",", 
+         "connectedcomponents", ",", "internalfaces", ",", 
          "internalfacenodes", ",", "externaledges", ",", 
          "whichfacescouldyoubein", ",", "howmanyfacescanyoubein", ",", 
          "numcommonfaces"}], "}"}], ",", "\[IndentingNewLine]", 
@@ -5447,18 +5734,67 @@ Cell[BoxData[
             RowBox[{"getOrderingExternalNodesDefault", "[", 
              RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}]}], ";", 
            "\[IndentingNewLine]", 
-           RowBox[{"internalfaces", "=", 
-            RowBox[{"Faces", "[", 
-             RowBox[{"Graph", "[", 
-              RowBox[{"graph", ",", 
+           RowBox[{"choppedgraph", "=", 
+            RowBox[{"Graph", "[", 
+             RowBox[{
+              RowBox[{"turnIntoGraph", "[", 
                RowBox[{
-               "GraphLayout", "\[Rule]", "\"\<PlanarEmbedding\>\""}]}], "]"}],
+                RowBox[{"Sequence", "@@", 
+                 RowBox[{"(", 
+                  RowBox[{
+                   RowBox[{"{", 
+                    RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}], "/.", 
+                   RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"#", "\[Rule]", "0"}], "&"}], ",", 
+                    RowBox[{"Variables", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"b", ",", "c"}], "}"}], "]"}]}], "]"}]}], ")"}]}],
+                 ",", "False"}], "]"}], ",", 
+              RowBox[{"GraphLayout", "\[Rule]", "\"\<PlanarEmbedding\>\""}]}],
+              "]"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"connectedcomponents", "=", 
+            RowBox[{"Map", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"Subgraph", "[", 
+                RowBox[{"choppedgraph", ",", "#"}], "]"}], "&"}], ",", 
+              RowBox[{"DeleteCases", "[", 
+               RowBox[{
+                RowBox[{"ConnectedComponents", "[", "choppedgraph", "]"}], 
+                ",", 
+                RowBox[{"{", 
+                 RowBox[{"Alternatives", "@@", "externalnodes"}], "}"}]}], 
+               "]"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"internalfacenodes", "=", 
+            RowBox[{"DeleteCases", "[", 
+             RowBox[{
+              RowBox[{"Map", "[", 
+               RowBox[{"FindFace", ",", "connectedcomponents"}], "]"}], ",", 
+              RowBox[{"zz_", "/;", 
+               RowBox[{
+                RowBox[{"Length", "[", "zz", "]"}], "\[LessEqual]", "1"}]}]}],
               "]"}]}], ";", "\[IndentingNewLine]", 
            RowBox[{"internalfacenodes", "=", 
-            RowBox[{"Map", "[", 
-             RowBox[{"Union", ",", 
-              RowBox[{"internalfaces", "/.", 
-               RowBox[{"UndirectedEdge", "\[Rule]", "Sequence"}]}]}], "]"}]}],
+            RowBox[{"DeleteCases", "[", 
+             RowBox[{
+              RowBox[{"Append", "[", 
+               RowBox[{
+                RowBox[{"Join", "@@", 
+                 RowBox[{"internalfacenodes", "[", 
+                  RowBox[{"[", 
+                   RowBox[{"All", ",", 
+                    RowBox[{";;", 
+                    RowBox[{"-", "2"}]}]}], "]"}], "]"}]}], ",", 
+                RowBox[{"Join", "@@", 
+                 RowBox[{"internalfacenodes", "[", 
+                  RowBox[{"[", 
+                   RowBox[{"All", ",", 
+                    RowBox[{"-", "1"}]}], "]"}], "]"}]}]}], "]"}], ",", 
+              RowBox[{"{", "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"internalfacenodes", "=", 
+            RowBox[{"makeLoopsIndependent", "[", "internalfacenodes", "]"}]}],
             ";", "\[IndentingNewLine]", 
            RowBox[{"externaledges", "=", 
             RowBox[{"Cases", "[", 
@@ -5489,7 +5825,11 @@ Cell[BoxData[
                     RowBox[{"ii", ",", "ii"}], "}"}], ",", 
                     RowBox[{"{", 
                     RowBox[{"ii", ",", 
-                    RowBox[{"Length", "[", "internalfaces", "]"}]}], "}"}]}], 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"Length", "[", "internalfacenodes", "]"}], "/.", 
+                    RowBox[{"{", 
+                    RowBox[{"0", "\[Rule]", "1"}], "}"}]}], ")"}]}], "}"}]}], 
                     "]"}]}]}], ")"}], "[", 
                  RowBox[{"[", 
                   RowBox[{"All", ",", "1"}], "]"}], "]"}], "]"}], "&"}], ",", 
@@ -5501,37 +5841,6 @@ Cell[BoxData[
                    RowBox[{"Alternatives", "@@", "#"}]}], "]"}], "&"}], ",", 
                 "externaledges"}], "]"}]}], "]"}]}], ";", 
            "\[IndentingNewLine]", 
-           RowBox[{"howmanyfacescanyoubein", "=", 
-            RowBox[{
-             RowBox[{
-              RowBox[{"VertexDegree", "[", "graph", "]"}], "[", 
-              RowBox[{"[", 
-               RowBox[{"Flatten", "[", 
-                RowBox[{"externaledges", "/.", 
-                 RowBox[{
-                  RowBox[{"UndirectedEdge", "[", 
-                   RowBox[{"v1_Integer", ",", "v2_Integer"}], "]"}], 
-                  "\[RuleDelayed]", 
-                  RowBox[{"DeleteCases", "[", 
-                   RowBox[{
-                    RowBox[{"{", 
-                    RowBox[{"v1", ",", "v2"}], "}"}], ",", 
-                    RowBox[{"Alternatives", "@@", "externalnodes"}]}], 
-                   "]"}]}]}], "]"}], "]"}], "]"}], "-", "1"}]}], ";", 
-           "\[IndentingNewLine]", 
-           RowBox[{"whichfacescouldyoubein", "=", 
-            RowBox[{"DeleteCases", "[", 
-             RowBox[{
-              RowBox[{"MapThread", "[", 
-               RowBox[{
-                RowBox[{
-                 RowBox[{"PadRight", "[", 
-                  RowBox[{"#1", ",", "#2"}], "]"}], "&"}], ",", 
-                RowBox[{"{", 
-                 RowBox[{
-                 "whichfacescouldyoubein", ",", "howmanyfacescanyoubein"}], 
-                 "}"}]}], "]"}], ",", 
-              RowBox[{"{", "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
            RowBox[{"If", "[", 
             RowBox[{
              RowBox[{"whichfacescouldyoubein", "\[Equal]", 
@@ -5544,6 +5853,133 @@ Cell[BoxData[
                RowBox[{"Length", "[", 
                 RowBox[{"Intersection", "@@", "whichfacescouldyoubein"}], 
                 "]"}]}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+           "\[IndentingNewLine]", "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"planaritycollapsed", "===", "True"}], "&&", 
+                RowBox[{"numcommonfaces", "\[Equal]", "0"}]}], ")"}], "||", 
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"planaritycollapsed", "=!=", "True"}], "&&", 
+                RowBox[{"numcommonfaces", "\[GreaterEqual]", "1"}]}], ")"}]}],
+              ",", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"Print", "[", 
+               RowBox[{"\"\<Warning: first algorithm failed. kast=\>\"", ",", 
+                RowBox[{"{", 
+                 RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "}"}]}], "]"}], 
+              ";", "\[IndentingNewLine]", 
+              RowBox[{"(*", 
+               RowBox[{
+               "Recompute", " ", "the", " ", "faces", " ", "using", " ", 
+                "the", " ", "alternative", " ", 
+                RowBox[{"method", "!"}]}], "*)"}], "\[IndentingNewLine]", 
+              RowBox[{"externalnodes", "=", 
+               RowBox[{"getOrderingExternalNodesDefault", "[", 
+                RowBox[{"a", ",", "b", ",", "c", ",", "d"}], "]"}]}], ";", 
+              "\[IndentingNewLine]", 
+              RowBox[{"internalfaces", "=", 
+               RowBox[{"Faces", "[", 
+                RowBox[{"Graph", "[", 
+                 RowBox[{"graph", ",", 
+                  RowBox[{
+                  "GraphLayout", "\[Rule]", "\"\<PlanarEmbedding\>\""}]}], 
+                 "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+              RowBox[{"internalfacenodes", "=", 
+               RowBox[{"Map", "[", 
+                RowBox[{"Union", ",", 
+                 RowBox[{"internalfaces", "/.", 
+                  RowBox[{"UndirectedEdge", "\[Rule]", "Sequence"}]}]}], 
+                "]"}]}], ";", "\[IndentingNewLine]", 
+              RowBox[{"externaledges", "=", 
+               RowBox[{"Cases", "[", 
+                RowBox[{
+                 RowBox[{"EdgeList", "[", "graph", "]"}], ",", 
+                 RowBox[{
+                  RowBox[{"UndirectedEdge", "[", 
+                   RowBox[{
+                    RowBox[{"Alternatives", "@@", "externalnodes"}], ",", 
+                    "_"}], "]"}], "|", 
+                  RowBox[{"UndirectedEdge", "[", 
+                   RowBox[{"_", ",", 
+                    RowBox[{"Alternatives", "@@", "externalnodes"}]}], 
+                   "]"}]}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+              RowBox[{"whichfacescouldyoubein", "=", 
+               RowBox[{"Map", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"DeleteDuplicates", "[", 
+                   RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"#", "/.", 
+                    RowBox[{
+                    RowBox[{"{", "}"}], "\[Rule]", 
+                    RowBox[{"Table", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"ii", ",", "ii"}], "}"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"ii", ",", 
+                    RowBox[{"Length", "[", "internalfaces", "]"}]}], "}"}]}], 
+                    "]"}]}]}], ")"}], "[", 
+                    RowBox[{"[", 
+                    RowBox[{"All", ",", "1"}], "]"}], "]"}], "]"}], "&"}], 
+                 ",", 
+                 RowBox[{"Map", "[", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"Position", "[", 
+                    RowBox[{"internalfacenodes", ",", 
+                    RowBox[{"Alternatives", "@@", "#"}]}], "]"}], "&"}], ",", 
+                   "externaledges"}], "]"}]}], "]"}]}], ";", 
+              "\[IndentingNewLine]", 
+              RowBox[{"howmanyfacescanyoubein", "=", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"VertexDegree", "[", "graph", "]"}], "[", 
+                 RowBox[{"[", 
+                  RowBox[{"Flatten", "[", 
+                   RowBox[{"externaledges", "/.", 
+                    RowBox[{
+                    RowBox[{"UndirectedEdge", "[", 
+                    RowBox[{"v1_Integer", ",", "v2_Integer"}], "]"}], 
+                    "\[RuleDelayed]", 
+                    RowBox[{"DeleteCases", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"v1", ",", "v2"}], "}"}], ",", 
+                    RowBox[{"Alternatives", "@@", "externalnodes"}]}], 
+                    "]"}]}]}], "]"}], "]"}], "]"}], "-", "1"}]}], ";", 
+              "\[IndentingNewLine]", 
+              RowBox[{"whichfacescouldyoubein", "=", 
+               RowBox[{"DeleteCases", "[", 
+                RowBox[{
+                 RowBox[{"MapThread", "[", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"PadRight", "[", 
+                    RowBox[{"#1", ",", "#2"}], "]"}], "&"}], ",", 
+                   RowBox[{"{", 
+                    RowBox[{
+                    "whichfacescouldyoubein", ",", "howmanyfacescanyoubein"}],
+                     "}"}]}], "]"}], ",", 
+                 RowBox[{"{", "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{"whichfacescouldyoubein", "\[Equal]", 
+                 RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"numcommonfaces", "=", "1"}], ";"}], 
+                "\[IndentingNewLine]", ",", 
+                RowBox[{
+                 RowBox[{"numcommonfaces", "=", 
+                  RowBox[{"Length", "[", 
+                   RowBox[{"Intersection", "@@", "whichfacescouldyoubein"}], 
+                   "]"}]}], ";"}]}], "\[IndentingNewLine]", "]"}], ";"}]}], 
+            "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
            "\[IndentingNewLine]", 
            RowBox[{"If", "[", 
             RowBox[{
@@ -5717,7 +6153,9 @@ can't even be embedded on genus zero.\>\""}], "]"}], ";"}]}],
    3.6848235564367766`*^9, 3.6848235710374928`*^9}, {3.684823691921395*^9, 
    3.684823754499069*^9}, {3.684823819041852*^9, 3.684823858392539*^9}, {
    3.684824998305909*^9, 3.684825003882391*^9}, {3.6848250434792066`*^9, 
-   3.6848251432168674`*^9}, {3.6848254548005943`*^9, 3.684825460848869*^9}}]
+   3.6848251432168674`*^9}, {3.6848254548005943`*^9, 3.684825460848869*^9}, {
+   3.687524099975769*^9, 3.6875241002414083`*^9}, {3.687587804146922*^9, 
+   3.6875878045357523`*^9}, 3.687588548339995*^9}]
 }, Closed]],
 
 Cell[BoxData[""], "Input",
@@ -25979,184 +26417,184 @@ Cell[239175, 5162, 94, 1, 25, "Input"],
 Cell[CellGroupData[{
 Cell[239294, 5167, 1007, 16, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[240304, 5185, 24578, 534, 1252, "Input",
+Cell[240304, 5185, 43032, 972, 2512, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[264897, 5722, 96, 1, 25, "Input"],
+Cell[283351, 6160, 96, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[265018, 5727, 995, 17, 31, "Input",
+Cell[283472, 6165, 995, 17, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[266016, 5746, 14611, 308, 612, "Input",
+Cell[284470, 6184, 14611, 308, 612, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[280642, 6057, 94, 1, 25, "Input"],
+Cell[299096, 6495, 94, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[280761, 6062, 951, 16, 31, "Input",
+Cell[299215, 6500, 951, 16, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[281715, 6080, 12868, 267, 512, "Input",
+Cell[300169, 6518, 12868, 267, 512, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[294598, 6350, 92, 1, 25, "Input"],
+Cell[313052, 6788, 92, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[294715, 6355, 881, 15, 31, "Input",
+Cell[313169, 6793, 881, 15, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[295599, 6372, 30030, 651, 1912, "Input",
+Cell[314053, 6810, 30030, 651, 1912, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[325644, 7026, 92, 1, 25, "Input"],
+Cell[344098, 7464, 92, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[325761, 7031, 865, 14, 31, "Input",
+Cell[344215, 7469, 865, 14, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[326629, 7047, 31072, 673, 1992, "Input",
+Cell[345083, 7485, 31072, 673, 1992, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[357716, 7723, 92, 1, 25, "Input"],
+Cell[376170, 8161, 92, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[357833, 7728, 862, 14, 31, "Input",
+Cell[376287, 8166, 862, 14, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[358698, 7744, 10741, 213, 452, "Input",
+Cell[377152, 8182, 10741, 213, 452, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[369454, 7960, 92, 1, 25, "Input"],
+Cell[387908, 8398, 92, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[369571, 7965, 973, 16, 31, "Input",
+Cell[388025, 8403, 973, 16, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[370547, 7983, 72016, 1558, 4312, "Input",
+Cell[389001, 8421, 72016, 1558, 4312, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[442578, 9544, 94, 1, 25, "Input"],
+Cell[461032, 9982, 94, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[442697, 9549, 1003, 17, 31, "Input",
+Cell[461151, 9987, 1003, 17, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[443703, 9568, 58453, 1191, 3912, "Input",
+Cell[462157, 10006, 58453, 1191, 3912, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[502171, 10762, 92, 1, 25, "Input"],
+Cell[520625, 11200, 92, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[502288, 10767, 909, 15, 31, "Input",
+Cell[520742, 11205, 909, 15, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[503200, 10784, 25560, 487, 1752, "Input",
+Cell[521654, 11222, 25560, 487, 1752, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[528775, 11274, 92, 1, 25, "Input"],
+Cell[547229, 11712, 92, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[528892, 11279, 865, 14, 31, "Input",
+Cell[547346, 11717, 865, 14, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[529760, 11295, 14240, 280, 692, "Input",
+Cell[548214, 11733, 14240, 280, 692, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[544015, 11578, 92, 1, 25, "Input"],
+Cell[562469, 12016, 92, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[544132, 11583, 941, 15, 31, "Input",
+Cell[562586, 12021, 941, 15, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[545076, 11600, 18791, 369, 1032, "Input",
+Cell[563530, 12038, 18791, 369, 1032, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[563882, 11972, 93, 1, 25, "Input"],
+Cell[582336, 12410, 93, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[564000, 11977, 923, 15, 31, "Input",
+Cell[582454, 12415, 923, 15, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[564926, 11994, 11478, 230, 492, "Input",
+Cell[583380, 12432, 11478, 230, 492, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[576419, 12227, 92, 1, 25, "Input"],
+Cell[594873, 12665, 92, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[576536, 12232, 966, 15, 31, "Input",
+Cell[594990, 12670, 966, 15, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[577505, 12249, 12080, 246, 540, "Input",
+Cell[595959, 12687, 12080, 246, 540, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[589600, 12498, 92, 1, 25, "Input"],
+Cell[608054, 12936, 92, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[589717, 12503, 694, 11, 31, "Input",
+Cell[608171, 12941, 694, 11, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[590414, 12516, 57810, 1422, 2952, "Input",
+Cell[608868, 12954, 57810, 1422, 2952, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[648239, 13941, 96, 1, 25, "Input"],
+Cell[666693, 14379, 96, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[648360, 13946, 1037, 17, 31, "Input",
+Cell[666814, 14384, 1037, 17, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[649400, 13965, 11439, 231, 512, "Input",
+Cell[667854, 14403, 11439, 231, 512, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
-Cell[660854, 14199, 94, 1, 25, "Input"],
+Cell[679308, 14637, 94, 1, 25, "Input"],
 Cell[CellGroupData[{
-Cell[660973, 14204, 915, 14, 31, "Input",
+Cell[679427, 14642, 915, 14, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[661891, 14220, 32975, 665, 1612, "Input",
+Cell[680345, 14658, 32975, 665, 1612, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Open  ]],
-Cell[694881, 14888, 92, 1, 31, "Input"],
+Cell[713335, 15326, 92, 1, 31, "Input"],
 Cell[CellGroupData[{
-Cell[694998, 14893, 867, 14, 31, "Input",
+Cell[713452, 15331, 867, 14, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[695868, 14909, 21262, 425, 1032, "Input",
+Cell[714322, 15347, 21262, 425, 1032, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Open  ]],
-Cell[717145, 15337, 92, 1, 31, "Input"],
+Cell[735599, 15775, 92, 1, 31, "Input"],
 Cell[CellGroupData[{
-Cell[717262, 15342, 889, 15, 31, "Input",
+Cell[735716, 15780, 889, 15, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[718154, 15359, 19809, 406, 852, "Input",
+Cell[736608, 15797, 19809, 406, 852, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Open  ]],
-Cell[737978, 15768, 92, 1, 31, "Input"],
+Cell[756432, 16206, 92, 1, 31, "Input"],
 Cell[CellGroupData[{
-Cell[738095, 15773, 912, 15, 31, "Input",
+Cell[756549, 16211, 912, 15, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[739010, 15790, 21198, 429, 1032, "Input",
+Cell[757464, 16228, 21198, 429, 1032, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Open  ]],
-Cell[760223, 16222, 92, 1, 31, "Input"],
+Cell[778677, 16660, 92, 1, 31, "Input"],
 Cell[CellGroupData[{
-Cell[760340, 16227, 1048, 17, 31, "Input",
+Cell[778794, 16665, 1048, 17, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[761391, 16246, 151130, 3070, 8647, "Input",
+Cell[779845, 16684, 151130, 3070, 8647, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Open  ]],
-Cell[912536, 19319, 92, 1, 31, "Input"],
+Cell[930990, 19757, 92, 1, 31, "Input"],
 Cell[CellGroupData[{
-Cell[912653, 19324, 957, 15, 31, "Input",
+Cell[931107, 19762, 957, 15, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[913613, 19341, 23170, 463, 1275, "Input",
+Cell[932067, 19779, 23170, 463, 1275, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Open  ]],
-Cell[936798, 19807, 92, 1, 31, "Input"],
+Cell[955252, 20245, 92, 1, 31, "Input"],
 Cell[CellGroupData[{
-Cell[936915, 19812, 1123, 19, 31, "Input",
+Cell[955369, 20250, 1123, 19, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10001.}],
-Cell[938041, 19833, 108945, 2803, 6212, "Input",
+Cell[956495, 20271, 108945, 2803, 6212, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10001.}]
 }, Closed]],
 Cell[CellGroupData[{
-Cell[1047023, 22641, 1289, 22, 25, "Input",
+Cell[1065477, 23079, 1289, 22, 25, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[1048315, 22665, 17458, 352, 832, "Input",
+Cell[1066769, 23103, 17458, 352, 832, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Open  ]],
-Cell[1065788, 23020, 92, 1, 31, "Input"],
+Cell[1084242, 23458, 92, 1, 31, "Input"],
 Cell[CellGroupData[{
-Cell[1065905, 23025, 899, 15, 31, "Input",
+Cell[1084359, 23463, 899, 15, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[1066807, 23042, 28711, 590, 1892, "Input",
+Cell[1085261, 23480, 28711, 590, 1892, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Open  ]],
-Cell[1095533, 23635, 92, 1, 31, "Input"],
+Cell[1113987, 24073, 92, 1, 31, "Input"],
 Cell[CellGroupData[{
-Cell[1095650, 23640, 859, 14, 31, "Input",
+Cell[1114104, 24078, 859, 14, 31, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[1096512, 23656, 85840, 1859, 5192, "Input",
+Cell[1114966, 24094, 85840, 1859, 5192, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Open  ]],
-Cell[1182367, 25518, 92, 1, 31, "Input"],
+Cell[1200821, 25956, 92, 1, 31, "Input"],
 Cell[CellGroupData[{
-Cell[1182484, 25523, 1372, 22, 52, "Input",
+Cell[1200938, 25961, 1372, 22, 52, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[1183859, 25547, 15345, 315, 732, "Input",
+Cell[1202313, 25985, 15345, 315, 732, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Open  ]],
-Cell[1199219, 25865, 92, 1, 31, "Input"]
+Cell[1217673, 26303, 92, 1, 31, "Input"]
 }
 ]
 *)
