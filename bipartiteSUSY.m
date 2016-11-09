@@ -2393,6 +2393,9 @@ truemapminortoperfmatch={};
 ,minors=Minors[pathmat,Length[pathmat]][[1]];
 loopdenominator=Expand[referenceperfmatch loopDenominator[topleft,topright,bottomleft,bottomright,referenceperfmatch]];
 truemapminortoperfmatch=Expand[Simplify[minors loopdenominator]];
+If[Position[truemapminortoperfmatch,(Power[___,num1_]/;(num1>1||num1<0))|(Times[num2_,___]/;num2>1)]=!={},
+truemapminortoperfmatch=Expand[Simplify[truemapminortoperfmatch]];
+];
 ];
 ,truemapminortoperfmatch=Null;
 ];
@@ -2805,7 +2808,7 @@ anglesotheredges=Map[Mod[#[[2]],2Pi]&,rotatedotheredgesnewcoordinates];
 If[anglesotheredges=!={},
 anglesotheredges={Min[anglesotheredges],Max[anglesotheredges]-2Pi};
 smallestangle=anglesotheredges[[Ordering[Abs[anglesotheredges]][[1]]]];
-,smallestangle=Mod[externaledgenewcoordinates[[2]]+Pi,2Pi];
+,smallestangle=Pi;
 ];
 newexternaledgeposition=criticalnode+RotationMatrix[Power[0.95,iteration]smallestangle].(inputexternaledge-criticalnode);
 inputexternaledge->newexternaledgeposition]
