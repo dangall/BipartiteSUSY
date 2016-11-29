@@ -2678,7 +2678,7 @@ If[functionMemory,pluckerRelations[k,n]=relations;];
 relations
 ];
 
-independentPluckerRelations[k_Integer,n_Integer]:=Block[{pluckerrel,numindeppluckerrelations,solutions,independentrelations,newsolution,ii},
+independentPluckerRelations[k_Integer,n_Integer]:=Block[{pluckerrel,numindeppluckerrelations,solutions,independentrelations,newsolution,ii,possibleindependentrelations,kk,possiblenewsolutions},
 pluckerrel=pluckerRelations[k,n];
 (*The max number of independent Plucker relations*)
 numindeppluckerrelations=Binomial[n,k]-1-k(n-k);
@@ -2691,17 +2691,24 @@ solutions=Join[solutions,newsolution[[1]]];(*this variable will contain all inde
 (*Go through the remaining Plucker relations. If the next Plucker relation is not triviliazed by the solutions we already found to the previous relations, add it to the list of independent relations, and solve it.*)
 For[ii=2,ii<=Length[pluckerrel],ii++,
 If[Simplify[pluckerrel[[ii]]//.solutions]=!=True,
-independentrelations=Append[independentrelations,pluckerrel[[ii]]];
-newsolution=DeleteCases[Solve[And@@Simplify[independentrelations//.solutions]],zz_/;MemberQ[zz,_->0]];
-solutions=Join[solutions,newsolution[[1]]];
+possibleindependentrelations=Append[independentrelations,pluckerrel[[ii]]];
+newsolution=DeleteCases[Solve[And@@Simplify[possibleindependentrelations//.solutions]],zz_/;MemberQ[zz,_->0]];
+For[kk=1,kk<=Length[newsolution],kk++,
+possiblenewsolutions=Join[solutions,newsolution[[kk]]];
+(*Tidy up the solutions so that they all depend on the same set of variables*)
+possiblenewsolutions=MapThread[Rule,{Map[#[[1]]&,possiblenewsolutions],Simplify[Expand[Simplify[Map[#[[2]]&,possiblenewsolutions]//.possiblenewsolutions]]]}];
+If[FreeQ[possiblenewsolutions,_->0],
+independentrelations=possibleindependentrelations;
+solutions=possiblenewsolutions;
+Break[]
+];
+];
 (*If we have found as many solutions as there are independent relations in total, stop here, since the remaining Plucker relations cannot be independent*)
 If[Length[solutions]==numindeppluckerrelations,
 Break[];
 ];
 ];
 ];
-(*Tidy up the solutions so that they all depend on the same set of variables*)
-solutions=MapThread[Rule,{Map[#[[1]]&,solutions],Simplify[Map[#[[2]]&,solutions]//.solutions]}];
 ,(*if there are no Plucker relations, return empty sets*)
 independentrelations={};
 ];
