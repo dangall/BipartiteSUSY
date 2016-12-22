@@ -2768,6 +2768,7 @@ finalvertexlist={nextnode+{0,0.1},nextnode};
 remainingvertices=DeleteCases[remainingvertices,nextnode];
 While[remainingvertices=!={},
 polardistances=Map[{#[[1]],Mod[#[[2]]-ToPolarCoordinates[finalvertexlist[[-2]]-nextnode][[2]],2Pi]}&,Map[ToPolarCoordinates[#-nextnode]&,remainingvertices]];
+polardistances=Chop[SetPrecision[Chop[polardistances],10]];
 (*The next node is the first one reached going radially and clockwise from the current node*)
 nextnode=Cases[polardistances,{_,Max[Map[#[[2]]&,polardistances]]}];
 (*If there are multiple ones with the same angle, pick the nearest one*)
@@ -2795,7 +2796,7 @@ cutcoordinates=Table[{externalvertices[[iii]],externalvertices[[iii+1]]},{iii,Le
 (*Let's find the coordinates of those external nodes whose position forces a cut to run parallel over the external edge*)
 (*Sometimes an external node is not connected to an external edge, i.e. it is freestanding*)
 freestandingexternalvertices=Cases[externalvertices,Except[Alternatives@@Map[Sequence@@#[[1]]&,externaledges]]];
-doesitavoidmycriticalnode=Map[Table[Solve[SetPrecision[#[[1]]+param(#[[2]]-#[[1]])==(#[[iii]]/.tocriticalnode)&&param<=1.,10],param]==={},{iii,2}]&,cutcoordinates];
+doesitavoidmycriticalnode=Map[Table[Solve[Chop[SetPrecision[Chop[#[[1]]+param(#[[2]]-#[[1]])==(#[[iii]]/.tocriticalnode)]&&(0<=param<=1.),10]],param]==={},{iii,2}]&,cutcoordinates];
 corrections=Map[#&,Position[cutcoordinates,Alternatives@@freestandingexternalvertices]];
 For[jj=1,jj<=Length[corrections],jj++,
 doesitavoidmycriticalnode[[Sequence@@corrections[[jj]]]]=True;
@@ -2808,16 +2809,16 @@ rotateExternalEdge=Function[{inputexternaledge,iteration},
 (*This function needs tocriticalnode, newedgepos*)
 Block[{criticalnode,externaledgenewcoordinates,otheredgesnewcoordinates,rotatedotheredgesnewcoordinates,anglesotheredges,smallestangle,newexternaledgeposition},
 criticalnode=inputexternaledge/.tocriticalnode;
-externaledgenewcoordinates=ToPolarCoordinates[inputexternaledge-criticalnode];
-otheredgesnewcoordinates=Map[DeleteCases[#,{0.|0,0.|0}][[1]]&,Map[#-criticalnode&,DeleteCases[Map[#[[1]]&,Cases[newedgepos,{{___,criticalnode},___}|{{criticalnode,___},___}]],{___,inputexternaledge}|{inputexternaledge,___}],{2}]];
-rotatedotheredgesnewcoordinates=Map[ToPolarCoordinates[RotationMatrix[-externaledgenewcoordinates[[2]]].#]&,otheredgesnewcoordinates];
+externaledgenewcoordinates=Chop[SetPrecision[Chop[ToPolarCoordinates[inputexternaledge-criticalnode]],10]];
+otheredgesnewcoordinates=Map[DeleteCases[#,{0.|0,0.|0}][[1]]&,Map[Chop[SetPrecision[Chop[#-criticalnode],10]]&,DeleteCases[Map[#[[1]]&,Cases[newedgepos,{{___,criticalnode},___}|{{criticalnode,___},___}]],{___,inputexternaledge}|{inputexternaledge,___}],{2}]];
+rotatedotheredgesnewcoordinates=Map[Chop[SetPrecision[Chop[ToPolarCoordinates[RotationMatrix[-externaledgenewcoordinates[[2]]].#]],10]]&,otheredgesnewcoordinates];
 anglesotheredges=Map[Mod[#[[2]],2Pi]&,rotatedotheredgesnewcoordinates];
 If[anglesotheredges=!={},
 anglesotheredges={Min[anglesotheredges],Max[anglesotheredges]-2Pi};
 smallestangle=anglesotheredges[[Ordering[Abs[anglesotheredges]][[1]]]];
 ,smallestangle=Pi;
 ];
-newexternaledgeposition=criticalnode+RotationMatrix[Power[0.95,iteration]smallestangle].(inputexternaledge-criticalnode);
+newexternaledgeposition=Chop[SetPrecision[Chop[criticalnode+RotationMatrix[Power[0.95,iteration]smallestangle].(inputexternaledge-criticalnode)],10]];
 inputexternaledge->newexternaledgeposition]
 ];
 (*This function tells you whether two generic segments cross*)
@@ -2825,10 +2826,10 @@ segmentCrossQ=Function[{edge1coords,edge2coords},
 Block[{matrixtoinvert,crossdistance,crossq},
 matrixtoinvert={{edge1coords[[1,1]]-edge1coords[[2,1]],edge2coords[[2,1]]-edge2coords[[1,1]]},{edge1coords[[1,2]]-edge1coords[[2,2]],edge2coords[[2,2]]-edge2coords[[1,2]]}};
 If[N[Chop[Det[matrixtoinvert]]]=!=0.,(*if the matrix is invertible*)
-crossdistance=Inverse[matrixtoinvert].{edge1coords[[1,1]]-edge2coords[[1,1]],edge1coords[[1,2]]-edge2coords[[1,2]]};
-crossq=And@@Map[(#>=0)&&(#<=1)&,crossdistance];
+crossdistance=Chop[Inverse[matrixtoinvert].{edge1coords[[1,1]]-edge2coords[[1,1]],edge1coords[[1,2]]-edge2coords[[1,2]]}];
+crossq=And@@Map[(#>=0)&&(#<=1.)&,crossdistance];
 ,(*the edges are parallel*)
-If[Solve[SetPrecision[edge1coords[[1]]+param(edge1coords[[2]]-edge1coords[[1]])==edge2coords[[1]]&&0<=param<=1,10],param]=!={}||Solve[SetPrecision[edge1coords[[1]]+param(edge1coords[[2]]-edge1coords[[1]])==edge2coords[[2]]&&0<=param<=1,10],param]=!={},
+If[Solve[Chop[SetPrecision[Chop[edge1coords[[1]]+param(edge1coords[[2]]-edge1coords[[1]])==edge2coords[[1]]]&&0<=param<=1.,10]],param]=!={}||Solve[Chop[SetPrecision[Chop[edge1coords[[1]]+param(edge1coords[[2]]-edge1coords[[1]])==edge2coords[[2]]]&&0<=param<=1.,10]],param]=!={},
 (*the edges are parallel and overlap*)
 crossq=True;
 ,crossq=False;];
@@ -2851,7 +2852,7 @@ newedgepos=newedgepos/.newexternalnodesrule;
 externalvertices=spiralInList[externalvertices/.newexternalnodesrule];
 cutcoordinates=Table[{externalvertices[[iii]],externalvertices[[iii+1]]},{iii,Length[externalvertices]-1}];
 tocriticalnode=tocriticalnode/.newexternalnodesrule;
-doesitavoidmycriticalnode=Map[Table[Solve[#[[1]]+param(#[[2]]-#[[1]])==(#[[iii]]/.tocriticalnode),param]==={},{iii,2}]&,cutcoordinates];
+doesitavoidmycriticalnode=Map[Table[Solve[Chop[SetPrecision[Chop[#[[1]]+param(#[[2]]-#[[1]])==(#[[iii]]/.tocriticalnode)]&&(0<=param<=1.),10]],param]==={},{iii,2}]&,cutcoordinates];
 corrections=Map[#&,Position[cutcoordinates,Alternatives@@freestandingexternalvertices]];
 For[jj=1,jj<=Length[corrections],jj++,
 doesitavoidmycriticalnode[[Sequence@@corrections[[jj]]]]=True;
@@ -2875,12 +2876,15 @@ decreaseExternalEdgeLength=Function[{inputedge,decreasequantity},
 (*This function needs externalvertices to be accurate in order to work*)
 Block[{tosubtractcoords,externalnodepolarcoords,newposition,newpositionrule},
 tosubtractcoords=Cases[inputedge[[1]],Except[Alternatives@@externalvertices]][[1]];
-externalnodepolarcoords=ToPolarCoordinates[DeleteCases[Map[#-tosubtractcoords&,inputedge[[1]]],{0.,0.}][[1]]];
-newposition=tosubtractcoords+FromPolarCoordinates[{(1.-decreasequantity)externalnodepolarcoords[[1]],externalnodepolarcoords[[2]]}];
+externalnodepolarcoords=ToPolarCoordinates[DeleteCases[Map[Chop[SetPrecision[Chop[#-tosubtractcoords],10]]&,inputedge[[1]]],{0.|0,0.|0}][[1]]];
+newposition=Chop[SetPrecision[Chop[tosubtractcoords+FromPolarCoordinates[{(1.-decreasequantity)externalnodepolarcoords[[1]],externalnodepolarcoords[[2]]}]],10]];
 newpositionrule=Cases[inputedge[[1]],Except[tosubtractcoords]][[1]]->newposition;
 newpositionrule]
 ];
-shrinkedgesrule=Map[decreaseExternalEdgeLength[#,0.14]&,externaledges];
+(*Now we can shrink all edges by e.g. 0.14.*)
+(*shrinkedgesrule=Map[decreaseExternalEdgeLength[#,0.14]&,externaledges];*)
+(*Or, if you want, you can decrease the length of each external node differently, e.g. each node is decreased by 0.07 several times (but all of them a different number of times).*)
+shrinkedgesrule=MapThread[decreaseExternalEdgeLength[#1,#2]&,{externaledges,Table[1-(1-0.07)^jij,{jij,Length[externaledges]}]}];
 verticespos=verticespos/.shrinkedgesrule;
 edgepos=edgepos/.shrinkedgesrule;
 {verticespos,edgepos}=rotateExternalVertices[verticespos,edgepos,externalnodenumbers];
@@ -2909,37 +2913,31 @@ edgesCrossQ=Function[{cutcoords,edgecoords},
 Block[{matrixtoinvert,crossdistance,newcutcoords,crossq},
 matrixtoinvert={{cutcoords[[1,1]]-cutcoords[[2,1]],edgecoords[[2,1]]-edgecoords[[1,1]]},{cutcoords[[1,2]]-cutcoords[[2,2]],edgecoords[[2,2]]-edgecoords[[1,2]]}};
 If[N[Chop[Det[matrixtoinvert]]]=!=0.,(*if the matrix is invertible*)
-crossdistance=Inverse[matrixtoinvert].{cutcoords[[1,1]]-edgecoords[[1,1]],cutcoords[[1,2]]-edgecoords[[1,2]]};
-If[crossdistance[[2]]==1.||crossdistance[[2]]==0.,(*we are touching the endpoint of an edge*)
+crossdistance=Chop[Inverse[matrixtoinvert].{cutcoords[[1,1]]-edgecoords[[1,1]],cutcoords[[1,2]]-edgecoords[[1,2]]}];
+If[crossdistance[[2]]==1.||crossdistance[[2]]==0.||crossdistance[[2]]==0,(*we are touching the endpoint of an edge*)
 (*In this case we should slightly shift the cut downwards and so that it doesn't go right through the node*)
 newcutcoords=Map[#-{0,0.05}&,cutcoords];
 matrixtoinvert={{newcutcoords[[1,1]]-newcutcoords[[2,1]],edgecoords[[2,1]]-edgecoords[[1,1]]},{newcutcoords[[1,2]]-newcutcoords[[2,2]],edgecoords[[2,2]]-edgecoords[[1,2]]}};
 If[N[Chop[Det[matrixtoinvert]]]=!=0.,
-crossdistance=Inverse[matrixtoinvert].{newcutcoords[[1,1]]-edgecoords[[1,1]],newcutcoords[[1,2]]-edgecoords[[1,2]]};
-If[crossdistance[[2]]==1.||crossdistance[[2]]==0.,(*we are STILL touching the endpoint of an edge*)
+crossdistance=Chop[Inverse[matrixtoinvert].{newcutcoords[[1,1]]-edgecoords[[1,1]],newcutcoords[[1,2]]-edgecoords[[1,2]]}];
+If[crossdistance[[2]]==1.||crossdistance[[2]]==0.||crossdistance[[2]]==0,(*we are STILL touching the endpoint of an edge*)
 (*In this case we should slightly shift the cut to the right and so that it doesn't go right through the node*)
 newcutcoords=Map[#+{0.05,0}&,newcutcoords];
 matrixtoinvert={{newcutcoords[[1,1]]-newcutcoords[[2,1]],edgecoords[[2,1]]-edgecoords[[1,1]]},{newcutcoords[[1,2]]-newcutcoords[[2,2]],edgecoords[[2,2]]-edgecoords[[1,2]]}};
 If[N[Chop[Det[matrixtoinvert]]]=!=0.,
-crossdistance=Inverse[matrixtoinvert].{newcutcoords[[1,1]]-edgecoords[[1,1]],newcutcoords[[1,2]]-edgecoords[[1,2]]};
-,If[Solve[newcutcoords[[1]]+param(newcutcoords[[2]]-newcutcoords[[1]])==edgecoords[[1]]&&0<=param<=1,param]=!={}||Solve[newcutcoords[[1]]+param(newcutcoords[[2]]-newcutcoords[[1]])==edgecoords[[2]]&&0<=param<=1,param]=!={},
-(*the edges are parallel and overlap*)
-crossdistance={0.5,0.5};
-,crossdistance={2.,2.}];
+crossdistance=Chop[Inverse[matrixtoinvert].{newcutcoords[[1,1]]-edgecoords[[1,1]],newcutcoords[[1,2]]-edgecoords[[1,2]]}];
+,(*This situation should not be possible - we shifting the cut shouldn't change whether things are parallel or not. We include this possibility only in case of numerical instability.*)
+crossdistance={2.,2.};
 ];
 ];
-,If[Solve[newcutcoords[[1]]+param(newcutcoords[[2]]-newcutcoords[[1]])==edgecoords[[1]]&&0<=param<=1,param]=!={}||Solve[newcutcoords[[1]]+param(newcutcoords[[2]]-newcutcoords[[1]])==edgecoords[[2]]&&0<=param<=1,param]=!={},
-(*the edges are parallel and overlap*)
-crossdistance={0.5,0.5};
-,crossdistance={2.,2.}];
+,(*This situation should not be possible - we shifting the cut shouldn't change whether things are parallel or not. We include this possibility only in case of numerical instability.*)
+crossdistance={2.,2.};
 ];
 ];
-crossq=And@@Map[(#>=0)&&(#<=1)&,crossdistance];
+crossq=And@@Map[(#>=0)&&(#<=1.)&,crossdistance];
 ,(*the edges are parallel*)
-If[Solve[cutcoords[[1]]+param(cutcoords[[2]]-cutcoords[[1]])==edgecoords[[1]]&&0<=param<=1,param]=!={}||Solve[cutcoords[[1]]+param(cutcoords[[2]]-cutcoords[[1]])==edgecoords[[2]]&&0<=param<=1,param]=!={},
-(*the edges are parallel and overlap*)
-crossq=True;
-,crossq=False;];
+(*In these cases it is always possible to avoid it, even when the cut would run completely over the edge. Here the cut is declared to move infinitesimally either above or below the parallel edge, and hence never runs over it. (Whether it's above or below may be determined by how it behaves when it ends up crossing edges whose endpoint is on the cut, i.e. when the matrix is invertible above in the code).*)
+crossq=False;
 ];
 crossq]
 ];
@@ -2958,12 +2956,12 @@ externaledgename=Cases[edgepos,{{___,pairofcuts[[1,2]],___},___}];
 If[externaledgename=!={},
 externaledgename=externaledgename[[1,2]];
 externaledge=Cases[edgepos,{{___,pairofcuts[[1,2]],___},___}][[1,1]];
-externaledge=DeleteCases[Map[#-pairofcuts[[1,2]]&,externaledge],{0.,0.}];
-pairofcuts=DeleteCases[Sequence@@@Map[#-pairofcuts[[1,2]]&,pairofcuts,{2}],{0.,0.}];
+externaledge=DeleteCases[Map[Chop[SetPrecision[Chop[#-pairofcuts[[1,2]]],10]]&,externaledge],{0.|0,0.|0}];
+pairofcuts=DeleteCases[Sequence@@@Map[Chop[SetPrecision[Chop[#-pairofcuts[[1,2]]],10]]&,pairofcuts,{2}],{0.|0,0.|0}];
 cutangles=Map[Mod[#[[2]],2Pi]&,Map[ToPolarCoordinates,pairofcuts]];
 edgeangle=Map[Mod[#[[2]],2Pi]&,Map[ToPolarCoordinates,externaledge]];
-rotatedcutangles=Mod[cutangles-cutangles[[1]],2Pi];
-rotatededgeangle=Mod[edgeangle-cutangles[[1]],2Pi];
+rotatedcutangles=Mod[Chop[SetPrecision[Chop[cutangles-cutangles[[1]]],10]],2Pi];
+rotatededgeangle=Mod[Chop[SetPrecision[Chop[edgeangle-cutangles[[1]]],10]],2Pi];
 If[rotatededgeangle[[1]]<rotatedcutangles[[2]],
 return={externaledgename};
 ,return={};
