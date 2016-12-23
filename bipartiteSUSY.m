@@ -2842,7 +2842,8 @@ iterationvector=ConstantArray[1,Length[badexternalnodes]];(*iterationvector keep
 accidentallycrossededges=True;
 While[Or@@accidentallycrossededges,
 newexternaledgecoords=MapThread[{#1/.tocriticalnode,rotateExternalEdge[#1,#2][[2]]}&,{badexternalnodes,iterationvector}];
-edgeswemightcrossnow=Map[#[[1]]&,Map[DeleteCases[newedgepos,{{#,___},___}|{{___,#},___}]&,badexternalnodes/.tocriticalnode],{2}];
+(*We'll now check whether these new external edges cross any other edge. We must remember to check whether they cross other external edges which may have also rotated and changed position,(hence the MapThread for edgeswemightcrossnow).*)
+edgeswemightcrossnow=Map[#[[1]]&,Map[DeleteCases[newedgepos,{{#,___},___}|{{___,#},___}]&,badexternalnodes/.tocriticalnode],{2}]/.MapThread[#1->#2&,{badexternalnodes,newexternaledgecoords[[All,2]]}];
 accidentallycrossededges=MapThread[Or@@Table[segmentCrossQ[#1[[iii]],#2],{iii,Length[#1]}]&,{edgeswemightcrossnow,newexternaledgecoords}];
 iterationvector=iterationvector+accidentallycrossededges/.{False->0,True->1};
 ];
