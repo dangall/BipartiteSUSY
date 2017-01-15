@@ -1817,7 +1817,7 @@ BFTgraph=True;
 ,BFTgraph=inputBFTgraph;
 ];
 If[gauging==1,
-(*bubbles not only have the index structure _[onenumber_,secondnumber_]+_[secondnumber_,thirdnumber_], but also secondnumber must be an internal face, and there must in total only be two variables in the Kasteleyn with this index*)
+(*bubbles not only have the index structure _[onenumber_,secondnumber_]+_[secondnumber_,thirdnumber_], but also secondnumber must be an internal face, and there must in total only be two variables in the Kasteleyn with this index, and this index may only appear twice anywhere*)
 intfacelabels=getInternalFaceLabels[topleft,topright,bottomleft,bottomright];
 allvars=Variables[joinupKasteleyn[topleft,topright,bottomleft,bottomright]];
 aretherebubbles=MemberQ[joinupKasteleyn[topleft,topright,bottomleft,bottomright],{___,_[onenumber_Integer,secondnumber_Integer]+_[secondnumber_Integer,thirdnumber_Integer]+___,___}/;(MemberQ[intfacelabels,secondnumber]||Variables[{topright,bottomleft}]=={})&&Count[allvars,_[anynumber_Integer,secondnumber]|_[secondnumber,anynumber_Integer]]===2&&Count[Flatten[List@@@allvars],secondnumber]===2];
@@ -1833,10 +1833,10 @@ BFTgraph=True;
 ];
 If[gauging==1,
 (*we have to remove bubbles while keeping the index structure of the edges intact*)
-(*bubbles not only have the index structure _[onenumber_,secondnumber_]+_[secondnumber_,thirdnumber_], but also secondnumber must be an internal face, and there must in total only be two variables in the Kasteleyn with this index*)
+(*bubbles not only have the index structure _[onenumber_,secondnumber_]+_[secondnumber_,thirdnumber_], but also secondnumber must be an internal face, and there must in total only be two variables in the Kasteleyn with this index, and this index may only appear twice anywhere*)
 intfacelabels=getInternalFaceLabels[topleft,topright,bottomleft,bottomright];
 allvars=Variables[joinupKasteleyn[topleft,topright,bottomleft,bottomright]];
-{newtopleft,newtopright,newbottomleft,newbottomright}=({topleft,topright,bottomleft,bottomright}//.{_[onenumber_Integer,secondnumber_Integer]+_[secondnumber_Integer,thirdnumber_Integer]/;((MemberQ[intfacelabels,secondnumber]||Variables[{topright,bottomleft}]=={})&&Count[allvars,_[_Integer,secondnumber]|_[secondnumber,_Integer]]===2):>XX[onenumber,thirdnumber]});
+{newtopleft,newtopright,newbottomleft,newbottomright}=({topleft,topright,bottomleft,bottomright}//.{_[onenumber_Integer,secondnumber_Integer]+_[secondnumber_Integer,thirdnumber_Integer]/;((MemberQ[intfacelabels,secondnumber]||Variables[{topright,bottomleft}]=={})&&Count[allvars,_[_Integer,secondnumber]|_[secondnumber,_Integer]]===2&&Count[Flatten[List@@@allvars],secondnumber]===2):>XX[onenumber,thirdnumber]});
 {newtopleft,newtopright,newbottomleft,newbottomright}={newtopleft,newtopright,newbottomleft,newbottomright}//.{Times[mult_Integer,edgename_]:>(edgename+Total[Map[Symbol[StringJoin[SymbolName[Head[edgename]],#]]@@edgename&,Table[StringPadRight["",ii,"X"],{ii,1,mult-1}]]])};
 (*We might have created duplicate edge names after doing this. We'll now remove the duplicates*)
 findDoubles=Function[{tempkasteleyn},
