@@ -1698,7 +1698,7 @@ modulispace=Null;
 {masterspace,modulispace,basis}
 ];
 
-squareMove[topleft_,topright_,bottomleft_,bottomright_,fournodesorfacenum_,BFTgraph_:False,checkneeded_:True]/;(Head[fournodesorfacenum]===Integer&&BFTgraph===True||Head[fournodesorfacenum]===List&&Length[fournodesorfacenum]===4):=Block[{oktoproceed,newtopleft,fournodes,rows,columns,possiblefouredges,edgestosettozero,facenum,positions,duplicateedge,thefacenumber,rowset,columnset,edge4by4,final4by4,whitenodestoadd,blacknodestoadd,newedgeW,newedgeB,ii,biggestindex,newedgesW,newedgesB,newbottomleft,newtopright,newbottomright,findDoubles,doubleedges,replacement,positioninwhichtoreplace,jj},
+squareMove[topleft_,topright_,bottomleft_,bottomright_,fournodesorfacenum_,BFTgraph_:False,checkneeded_:True]/;(Head[fournodesorfacenum]===Integer&&BFTgraph===True||Head[fournodesorfacenum]===List&&Length[fournodesorfacenum]===4):=Block[{oktoproceed,newtopleft,fournodes,rows,columns,possiblefouredges,potentialfacelabels,edgestosettozero,facenum,positions,duplicateedge,thefacenumber,rowset,columnset,edge4by4,final4by4,whitenodestoadd,blacknodestoadd,newedgeW,newedgeB,ii,biggestindex,newedgesW,newedgesB,newbottomleft,newtopright,newbottomright,findDoubles,doubleedges,replacement,positioninwhichtoreplace,jj},
 oktoproceed=True;
 If[checkneeded,
 oktoproceed=getKasteleynCheckQ[topleft,topright,bottomleft,bottomright,BFTgraph];
@@ -1716,7 +1716,9 @@ possiblefouredges=DeleteCases[Tuples[Map[Variables[topleft[[Sequence@@#]]]&,Tupl
 (*if we have a BFT graph, we can only choose four edges that all have the same face label*)
 If[BFTgraph,
 (*we will need to set to zero the four edges that form the square face*)
-edgestosettozero=Cases[possiblefouredges,{_[___,thefacenumber_Integer,___],_[___,thefacenumber_Integer,___],_[___,thefacenumber_Integer,___],_[___,thefacenumber_Integer,___]}][[1]];
+(*The only possible face labels are those which appear exactly twice in the Kasteleyn matrix*)
+potentialfacelabels=Cases[Tally[Flatten[List@@@Variables[{topleft,topright,bottomleft,bottomright}]]],{_,4}][[All,1]];
+edgestosettozero=Cases[possiblefouredges,{_[___,thefacenumber_Integer,___],_[___,thefacenumber_Integer,___],_[___,thefacenumber_Integer,___],_[___,thefacenumber_Integer,___]}/;MemberQ[potentialfacelabels,thefacenumber]][[1]];
 facenum=(Intersection@@Map[List@@#&,edgestosettozero])[[1]];
 positions=Position[topleft,Alternatives@@edgestosettozero];
 ,edgestosettozero=possiblefouredges[[1]];
