@@ -1698,7 +1698,7 @@ modulispace=Null;
 {masterspace,modulispace,basis}
 ];
 
-squareMove[topleft_,topright_,bottomleft_,bottomright_,fournodesorfacenum_,BFTgraph_:False,checkneeded_:True]/;(Head[fournodesorfacenum]===Integer&&BFTgraph===True||Head[fournodesorfacenum]===List&&Length[fournodesorfacenum]===4):=Block[{oktoproceed,newtopleft,fournodes,rows,columns,possiblefouredges,potentialfacelabels,edgestosettozero,facenum,positions,duplicateedge,thefacenumber,rowset,columnset,edge4by4,final4by4,whitenodestoadd,blacknodestoadd,newedgeW,newedgeB,ii,biggestindex,newedgesW,newedgesB,newbottomleft,newtopright,newbottomright,findDoubles,doubleedges,replacement,positioninwhichtoreplace,jj},
+squareMove[topleft_,topright_,bottomleft_,bottomright_,fournodesorfacenum_,BFTgraph_:False,checkneeded_:True]/;(Head[fournodesorfacenum]===Integer&&BFTgraph===True||Head[fournodesorfacenum]===List&&Length[fournodesorfacenum]===4):=Block[{oktoproceed,newtopleft,fournodes,rows,columns,possiblefouredges,potentialfacelabels,edgestosettozero,facenum,positions,duplicateedge,thefacenumber,rowset,columnset,edge4by4,final4by4,whitenodestoadd,blacknodestoadd,newedgeW,newedgeB,ii,biggestindex,newedgesW,newedgesB,newbottomleft,newtopright,newbottomright,findDoubles,doubleedges,replacement,positioninwhichtoreplace,jj,fullkast,rowvariables,columnvariables,faceordersaroundwhitenode,faceordersaroundblacknode,openIndicesOfEdge4by4,newindicesonoldwhitenode,newindicesonoldblacknode},
 oktoproceed=True;
 If[checkneeded,
 oktoproceed=getKasteleynCheckQ[topleft,topright,bottomleft,bottomright,BFTgraph];
@@ -1719,7 +1719,7 @@ If[BFTgraph,
 (*The only possible face labels are those which appear exactly twice in the Kasteleyn matrix*)
 potentialfacelabels=Cases[Tally[Flatten[List@@@Variables[{topleft,topright,bottomleft,bottomright}]]],{_,4}][[All,1]];
 edgestosettozero=Cases[possiblefouredges,{_[___,thefacenumber_Integer,___],_[___,thefacenumber_Integer,___],_[___,thefacenumber_Integer,___],_[___,thefacenumber_Integer,___]}/;MemberQ[potentialfacelabels,thefacenumber]][[1]];
-facenum=(Intersection@@Map[List@@#&,edgestosettozero])[[1]];
+facenum=Cases[Intersection@@Map[List@@#&,edgestosettozero],Alternatives@@potentialfacelabels][[1]];
 positions=Position[topleft,Alternatives@@edgestosettozero];
 ,edgestosettozero=possiblefouredges[[1]];
 ];
@@ -1747,8 +1747,40 @@ edge4by4=edge4by4/.{{{firstedge_[facenum,otherlabel1_Integer],secondedge_},{thir
 ,If[Length[columnset]==2,
 edge4by4=Map[Variables,Transpose[newtopleft[[rowset,columnset]]]/.Map[#->0&,Complement[Variables[newtopleft[[rowset,columnset]]],edgestosettozero]]];
 edge4by4=Transpose[edge4by4/.{{{firstedge_[facenum,otherlabel1_Integer],secondedge_},{thirdedge_[facenum,otherlabel2_Integer],fourthedge_}}:>{{firstedge[facenum,otherlabel1],secondedge},{fourthedge,thirdedge[facenum,otherlabel2]}},{{firstedge_[otherlabel1_Integer,facenum],secondedge_},{thirdedge_[otherlabel2_Integer,facenum],fourthedge_}}:>{{firstedge[otherlabel1,facenum],secondedge},{fourthedge,thirdedge[otherlabel2,facenum]}}}];
-,edge4by4=Partition[edgestosettozero,2];
+,(*We have the situation of the form {{X+X+X+X}}*)
+edge4by4=Partition[edgestosettozero,2];
 edge4by4=edge4by4/.{{{firstedge_[facenum,otherlabel1_Integer],secondedge_[facenum,otherlabel2_Integer]},{thirdedge_,fourthedge_}}:>{{firstedge[facenum,otherlabel1],fourthedge},{thirdedge,secondedge[facenum,otherlabel2]}},{{firstedge_[otherlabel1_Integer,facenum],secondedge_[otherlabel2_Integer,facenum]},{thirdedge_,fourthedge_}}:>{{firstedge[otherlabel1,facenum],fourthedge},{thirdedge,secondedge[otherlabel2,facenum]}},{{firstedge_[facenum,otherlabel1_Integer],secondedge_},{thirdedge_[facenum,otherlabel2_Integer],fourthedge_}}:>{{firstedge[facenum,otherlabel1],secondedge},{fourthedge,thirdedge[facenum,otherlabel2]}},{{firstedge_[otherlabel1_Integer,facenum],secondedge_},{thirdedge_[otherlabel2_Integer,facenum],fourthedge_}}:>{{firstedge[otherlabel1,facenum],secondedge},{fourthedge,thirdedge[otherlabel2,facenum]}}};
+(*There are actually two possible choices for edge4by4, since its transpose also gives a consistent index structure. However, it isn't necessarily true that both choices preserve the cyclic ordering of faces around the white node and the black node (found at positions rowset and columnset in the Kasteleyn). We will first find out what the order around these nodes is, then only choose the edge4by4 which will preserve this order.*)
+fullkast=joinupKasteleyn[topleft,topright,bottomleft,bottomright];
+rowvariables=Variables[fullkast[[rowset[[1]]]]];
+columnvariables=Variables[Transpose[fullkast][[columnset[[1]]]]];
+faceordersaroundwhitenode=Map[DeleteCases[Flatten[List@@@#][[;;;;2]],facenum]&,cyclicEdgeOrderings[rowvariables,rowvariables[[1]]]];
+(*We add the first face to the end of the list in order to enforce the cyclicity, and turn the ordered list into pairs of faces, i.e. {1,2,3,4} \[Rule] {{1,2},{2,3},{3,4},{4,1}}.*)
+faceordersaroundwhitenode=Map[Table[{#[[iii]],#[[iii+1]]},{iii,Length[#]-1}]&,Map[Append[#,#[[1]]]&,faceordersaroundwhitenode]];
+(*Now we do the same thing for the faces around the black node*)
+faceordersaroundblacknode=Map[DeleteCases[Flatten[List@@@#][[;;;;2]],facenum]&,cyclicEdgeOrderings[columnvariables,columnvariables[[1]]]];
+faceordersaroundblacknode=Map[Table[{#[[iii]],#[[iii+1]]},{iii,Length[#]-1}]&,Map[Append[#,#[[1]]]&,faceordersaroundblacknode]];
+(*Now we need to find out what kind of residual index structure is going to result from edge4by4, and whether it's compatible with the face orders we have just found.*)
+(*This function returns a list of the form {___,{i,j},___,{k,l},___} for edge4by4 and its transpose. {i,...l} are the residual indices; newindicesonoldwhitenode is those indices that the white node will be forced to take from edge4by4, newindicesonoldblacknode is those indices that the black node will be forced to take*)
+openIndicesOfEdge4by4=Function[{inputedge4by4,inputfacenum},
+Block[{outputnewindicesonoldwhitenode,outputnewindicesonoldblacknode},
+outputnewindicesonoldwhitenode=Map[Total[(List@@@Variables[#])/.inputfacenum->0]&,inputedge4by4];
+outputnewindicesonoldwhitenode=Riffle[outputnewindicesonoldwhitenode,___,{1,-1,2}];
+outputnewindicesonoldblacknode=Map[Total[(List@@@Variables[#])/.inputfacenum->0]&,Transpose[inputedge4by4]];
+outputnewindicesonoldblacknode=Riffle[outputnewindicesonoldblacknode,___,{1,-1,2}];
+{outputnewindicesonoldwhitenode,outputnewindicesonoldblacknode}
+]
+];
+{newindicesonoldwhitenode,newindicesonoldblacknode}=openIndicesOfEdge4by4[edge4by4,facenum];
+If[Cases[faceordersaroundwhitenode,newindicesonoldwhitenode|Reverse[newindicesonoldwhitenode]]==={}||Cases[faceordersaroundblacknode,newindicesonoldblacknode|Reverse[newindicesonoldblacknode]]==={},
+(*The index structure in edge4by4 does not work with the possible index structures in faceordersaroundwhitenode and faceordersaroundblacknode. We need to transpose the matrix and try again.*)
+edge4by4=Transpose[edge4by4];
+{newindicesonoldwhitenode,newindicesonoldblacknode}=openIndicesOfEdge4by4[edge4by4,facenum];
+If[Cases[faceordersaroundwhitenode,newindicesonoldwhitenode|Reverse[newindicesonoldwhitenode]]==={}||Cases[faceordersaroundblacknode,newindicesonoldblacknode|Reverse[newindicesonoldblacknode]]==={},
+(*If there is still a problem with the index structure, something went wrong -- this example may need doing by hand.*)
+Print["Warning - unexpected behavior when performing square move on kasteleyn:",{topleft,topright,bottomleft,bottomright},"\nThis example may require doing by hand."];
+];
+];
 ];
 ];
 (*Finally we'll add the connectivity between the new white nodes and the new black nodes*)
