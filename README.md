@@ -30,9 +30,9 @@ load the package with all its functionality, simply evaluate
 ```
 in the first cell of the notebook.
 
-The includion of the (unpackage) file `premadePluckerRelations.rar` in 
+The inclusion of the (uncompressed) file `premadePluckerRelations.rar` in 
 the same folder will speed up the computation of Plucker relations. 
-More full instructions are found in the [documentation](https://arxiv.org/abs/1702.03949).
+More complete instructions are found in the [documentation](https://arxiv.org/abs/1702.03949).
 
 ## Inventory of files
 
@@ -75,25 +75,25 @@ particularly useful to contribute to:
 generate all square-move-equivalent phases of a diagram. This could be
 used to speed up the stratification functions, which currently perform
 the sub-stratification of multiple equivalent phases of a diagram.
- - Automate findind the integrand form associated to an on-shell 
+ - Automate finding the integrand form associated to an on-shell 
 diagram in N=4. Currently the fastest method known is explained in
 detail in [arXiv:1502.02034](https://arxiv.org/abs/1502.02034). The challenge I identified in completely 
-automating this method is that there are very many Plucker-relation-
-equivalent expressions that can result from this technique; these 
+automating this method is that there are very many Plucker-relation-equivalent 
+expressions that can result from this technique; these 
 depend on the choices made when creating the T-matrix and M-matrix, 
 and when taking residues around poles belonging to auxiliary edges.
 I did not find a satisfactory way of automating how to find the ideal, 
 most concise expression for the integrand form, which has the correct 
 little-group weights. However, I did not try very hard and it should 
 be relatively easy to make good progress on this, since it is rather
-simple to perform the copmutations by hand for each individual on-shell 
+simple to perform the computations by hand for each individual on-shell 
 diagram.
- - Expanding on the drawGraph functionality, for example by including 
+ - Expand on the drawGraph functionality, for example by including 
 the ability to spit out the integrand form (see previous point), or 
-by allowing it to perform collapse of bivalent nodes and square moves 
+by allowing it to perform the collapsing of bivalent nodes and square moves 
 directly in the graph-drawing box. Another nice feature would be the 
-ability to undo a certain numebr of steps, in the case of mistakes.
-------------------------------------------------------------------------
+ability to undo a certain numebr of steps.
+
 Before declaring any changes to the package complete, please check that 
 the changes haven't introduced bugs. This can be done by running the 
 tests found in the "testing facility" notebook 
