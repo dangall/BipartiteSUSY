@@ -92,7 +92,7 @@ diagram.
 the ability to spit out the integrand form (see previous point), or 
 by allowing it to perform the collapsing of bivalent nodes and square moves 
 directly in the graph-drawing box. Another nice feature would be the 
-ability to undo a certain numebr of steps.
+ability to undo a certain number of steps.
 
 Before declaring any changes to the package complete, please check that 
 the changes haven't introduced bugs. This can be done by running the 
